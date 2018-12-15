@@ -1,0 +1,94 @@
+.upload:hover, .upload-into-pieces:hover {
+  border-color: #FFA00A;
+  background: #FFE7DE;
+  color: #333333;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.upload p, .upload-into-pieces p {
+  color: #ccc;
+  margin-top: -10px;
+  cursor: pointer;
+}
+
+
+.upload-input {
+  position: absolute;
+
+  right: 0;
+  top: 0;
+  opacity: 0;
+  filter: alpha(opacity=1);
+  cursor: pointer;
+  width: 120px;
+}
+
+.upload-file-name{width:130px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis}
+
+
+/*当文件上传失败  重新上传的样式*/
+.fail-style{width:160px;height:160px;  padding-left: 15px;  padding-top: 30px;}
+.upload-picture-fail-txt{
+  color:#999;
+}
+
+.upload2 {
+  width: 80px;
+  margin-left:14px;
+}
+.upload2:hover{
+  cursor: pointer;
+}
+/*进件材料的上传样式*/
+.upload-into-pieces {
+  display: inline-block;
+  position: relative;
+  color: #999;
+  text-align: center;
+  margin-top: 10px;
+  cursor: pointer;
+}
+/*文件上传好的缩略图  和删除的小标签*/
+.success-uploadered-picture .picture-deletion{display: none}
+.success-uploadered-picture:hover .picture-deletion{display: block}
+.upload-file-box{
+  width: 160px;
+  float: left;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  position: relative;
+}
+.photo {
+  width: 160px;
+  height: 180px;
+  margin-right: 20px;
+  margin-bottom:20px;
+}
+
+.small-photo,.small-photo img{
+  width: 160px;
+  height: 160px;
+  display: block;
+}
+.upload-picture-styles-fail-style{
+  position: absolute;
+  top: 0px;
+  left:0px;
+  border: 1px dashed #ccc;
+
+}
+.upload-picture-styles-fail-style p{
+  line-height:28px;
+  color: #999;
+}
+.upload-picture-styles-fail-style a{
+  color: #669;
+}
+.garyButton-gai{line-height: 25px;}
+/*申请信息tab的“材料上载”块的样式*/
+.file-list-download{width:160px;height:160px;border:1px solid #ccc;display: inline-block;line-height: 160px;text-align: center;}
+.file-list-download-pic{width:70px;height:50px;background: url("./../../../assets/img/upload/main.png") -71px -86px no-repeat;margin:0 auto;    vertical-align: middle;
+  display:block; margin-top:50px;}
+.picture-deletion{  width:100%;position: absolute;left:0;top:0;  background:rgba(0,0,0,0.5);height:30px;}
+.picture-deletion .delete-icon{width:14px;height:14px;position: absolute;right:14px;top:8px;background-image: url("./../../../assets/img/index_hh_icons.png");background-position: -91px -72px;background-repeat:no-repeat;display:inline-block}

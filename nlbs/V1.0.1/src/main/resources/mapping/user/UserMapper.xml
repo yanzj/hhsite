@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.nlbs.user.dao.UserDao">
+
+    <select id="queryNlbsLoginNumByUserNo" resultType="com.vilio.nlbs.commonMapper.pojo.NlbsLoginNum" parameterType="java.lang.String" >
+      SELECT a.id, a.user_no as userNo, a.error_num as errorNum, a.hasLock FROM nlbs_login_num a, nlbs_user b where a.user_no = b.user_no and b.user_no = #{userNo}
+    </select>
+    <select id="queryNlbsLoginNumByUserName" resultType="com.vilio.nlbs.commonMapper.pojo.NlbsLoginNum" parameterType="java.lang.String" >
+      SELECT a.id, a.user_no as userNo, a.error_num as errorNum, a.hasLock FROM nlbs_login_num a, nlbs_user b where a.user_no = b.user_no and b.user_name = #{userName}
+    </select>
+
+    <select id="queryNlbsUserByUserName" resultType="com.vilio.nlbs.commonMapper.pojo.NlbsUser" parameterType="java.lang.String" >
+        SELECT
+            u.id,
+            u.user_no AS userNo,
+            u.mobile,
+            u.user_name AS userName,
+            u.email,
+            u.full_name AS fullName,
+            u.STATUS,
+            u.first_login AS firstLogin,
+            u.agent_id AS agentId
+        FROM
+            nlbs_user u
+        WHERE
+            u.user_name = #{userName}  and u.status = '0'
+    </select>
+
+    <select id="queryNlbsUserByUserNo" resultType="com.vilio.nlbs.commonMapper.pojo.NlbsUser" parameterType="java.lang.String" >
+        select
+            u.id,
+            u.user_no AS userNo,
+            u.mobile,
+            u.user_name AS userName,
+            u.email,
+            u.full_name AS fullName,
+            u.STATUS,
+            u.first_login AS firstLogin,
+            u.agent_id AS agentId,
+            ag.be_record_clerk as beRecordClerk
+        FROM
+            nlbs_user u left join nlbs_agent ag on u.agent_id = ag.agent_id
+        WHERE
+            u.user_no = #{userNo}  and u.status = '0'
+    </select>
+
+    <select id="queryNlbsUserByUserNoIgnoreStatus" resultType="com.vilio.nlbs.commonMapper.pojo.NlbsUser" parameterType="java.lang.String" >
+        select
+        u.id,
+        u.user_no AS userNo,
+        u.mobile,
+        u.user_name AS userName,
+        u.email,
+        u.full_name AS fullName,
+        u.STATUS,
+        u.first_login AS firstLogin,
+        u.agent_id AS agentId,
+        ag.be_record_clerk as beRecordClerk
+        FROM
+        nlbs_user u left join nlbs_agent ag on u.agent_id = ag.agent_id
+        WHERE
+        u.user_no = #{userNo}
+    </select>
+
+    <select id="queryNlbsUserByUserNameOrUserNoAndPsw" resultType="com.vilio.nlbs.commonMapper.pojo.NlbsUser" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsUser" >
+        SELECT
+        u.id,
+        u.user_no AS userNo,
+        u.mobile,
+        u.user_name AS userName,
+        u.email,
+        u.full_name AS fullName,
+        u.status,
+        u.first_login AS firstLogin,
+        u.agent_id as agentId
+        FROM
+        nlbs_user u
+        WHERE  u.status = '0'
+        <if test="userName != null" >
+            and u.user_name = #{userName}
+        </if>
+        <if test="userNo != null" >
+            and u.user_no = #{userNo}
+        </if>
+          AND u.password = #{password}
+
+    </select>
+
+    <delete id="deleteNlbsLoginNumByUserNo" parameterType="java.lang.String">
+        delete from nlbs_login_num where user_no = #{userNo}
+    </delete>
+
+    <delete id="deleteNlbsLoginAll">
+        delete from nlbs_login_num;
+    </delete>
+
+    <update id="updatePswByUserName" parameterType="java.util.HashMap" >
+        update nlbs_user
+           set password = #{newPassword,jdbcType=VARCHAR},first_login = 0
+         where user_no = #{userNo,jdbcType=VARCHAR}
+    </update>
+
+    <select id="getMenu" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+        select distinct bm.code as code,
+               bm.menu_name as menuName,
+               bm.menu_url as menuUrl,
+               bm.menu_order_no as menuOrderNo,
+               bm.father_menu_code as fatherMenuCode
+          from nlbs_role_user bru,
+               nlbs_role br,
+               nlbs_role_menu brm,
+               nlbs_menu bm
+         where bru.user_no = #{userNo,jdbcType=VARCHAR}
+           and bru.role_code = br.code
+           and br.code = brm.role_code
+           and brm.menu_code = bm.code
+            <if test="menuLevel != null" >
+                and bm.menu_level = #{menuLevel,jdbcType=INTEGER}
+            </if>
+            <if test="fatherMenuCode != null" >
+                and bm.father_menu_code = #{fatherMenuCode,jdbcType=VARCHAR}
+            </if>
+         order by bm.menu_order_no asc
+    </select>
+
+    <select id="getSpecialRoleNum" resultType="java.lang.Integer" parameterType="java.lang.String" >
+        select count(1)
+          from nlbs_role_user bru
+         where bru.user_no = #{userNo,jdbcType=VARCHAR}
+           and bru.role_code in ('005','006','009','008')
+    </select>
+
+    <select id="getRoleList" resultType="java.util.HashMap" parameterType="java.lang.String" >
+        select br.code as roleCode,
+               br.role_name as roleName,
+               br.role_type as roleType,
+               (case
+                 when br.role_type = '01' then '管理员'
+                 when br.role_type = '02' then '管理层'
+                 when br.role_type = '03' then '风控'
+                 when br.role_type = '04' then '资产渠道'
+                end) as roleTypeName
+          from nlbs_role_user bru,
+               nlbs_role br
+         where bru.role_code = br.code
+           and bru.user_no = #{userNo,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectLoginInfoByUserNo" resultType="java.util.HashMap" parameterType="java.lang.String" >
+        select bli.user_no as userNo,
+               bli.system_timestamp as systemTimestamp,
+               bli.client_timestamp as clientTimestamp
+          from nlbs_login_info bli
+         where bli.user_no = #{userNo,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteLoginInfoByUserNo" parameterType="java.lang.String">
+        delete from nlbs_login_info where user_no = #{userNo,jdbcType=VARCHAR}
+    </delete>
+
+    <update id="updateLoginInfoByUserNo" parameterType="java.util.HashMap" >
+        update nlbs_login_info
+        set system_timestamp = #{systemTimestamp,jdbcType=VARCHAR},
+            client_timestamp = #{clientTimestamp,jdbcType=VARCHAR}
+        where user_no = #{userNo,jdbcType=VARCHAR}
+    </update>
+    <!--根据用户编号更新用户状态-->
+    <update id="updateUserStatusByUserNo" parameterType="java.util.HashMap" >
+        update nlbs_user set status = #{status,jdbcType=VARCHAR}
+        where user_no = #{modifyUserNo,jdbcType=VARCHAR}
+    </update>
+
+    <select id="findUserByUserNoAndPsw" resultType="com.vilio.nlbs.commonMapper.pojo.NlbsUser" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsUser" >
+        SELECT
+        u.id,
+        u.user_no AS userNo,
+        u.mobile,
+        u.password,
+        u.user_name AS userName,
+        u.email,
+        u.full_name AS fullName,
+        u.agent_id as agentId,
+        u.status,
+        u.first_login AS firstLogin
+        FROM
+        nlbs_user u
+        WHERE u.user_no = #{userNo}
+        AND u.password = #{password}
+        AND u.status = '0'
+    </select>
+</mapper>

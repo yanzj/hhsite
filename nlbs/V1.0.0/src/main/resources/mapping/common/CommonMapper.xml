@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.nlbs.common.dao.CommonDao">
+
+    <select id="getUUID" resultType="java.lang.String"  >
+        select uuid() from dual
+    </select>
+
+    <select id="queryAllMaterialTypeList" resultType="java.util.HashMap" >
+        SELECT
+          code,
+          full_name AS name
+        FROM nlbs_apply_material_type
+    </select>
+
+    <select id="getTODOList" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        SELECT DISTINCT
+        x.bpsCode AS serialNo,
+        nu.full_name AS userName,
+        nuu.full_name AS pendingUserName,
+        nc.abbr_name AS cityName,
+        x.ADDRESS AS address,
+        x.PRICE AS price,
+        x.priceTime AS priceTime,
+        x.status AS status
+        FROM
+        (
+        SELECT
+        nia.BPS_CODE AS bpsCode,
+        nia.PENDING_USER_NO AS pendingUserNo,
+        nia.user_no,
+        nia.ADDRESS AS address,
+        nia.PRICE AS price,
+        nia.PRICE_TIME AS priceTime,
+        nia.status AS status,
+        nia.city_code AS cityCode,
+        nia.date_modified AS dateModified
+        FROM
+        NLBS_INQUIRY_APPLY nia
+        WHERE
+        nia.pending_user_no = #{userNo, jdbcType=VARCHAR}
+        OR (
+            nia.pending_user_no IS NULL
+            AND nia.user_no IN (
+                SELECT DISTINCT
+                npud.user_no
+                FROM
+                nlbs_pending_user_distributor npud
+                WHERE 1=1
+                    <if test='distributorCode != null and distributorCode != "" and distributorCode != "null" and distributorCode != "undefined"'>
+                        AND npud.distributor_code = #{distributorCode, jdbcType=VARCHAR}
+                    </if>
+                )
+          )
+        ) x
+        JOIN nlbs_user nu ON x.user_no = nu.user_no
+        JOIN nlbs_city nc ON x.cityCode = nc. CODE
+        LEFT JOIN nlbs_user nuu ON x.pendingUserNo = nuu.user_no
+        WHERE 1=1
+            AND   x.status = '00' /* 状态(00待评估，01评估中，02已评估，99失效) */
+        AND (x.bpsCode IS NOT NULL OR x.bpsCode != '')
+
+        <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+            AND   x.CITY_CODE = #{cityCode} /* 询价的房子所在城市 */
+        </if>
+
+        <if test='address != null and address != "" and address != "null" and address != "undefined"'>
+            AND   x.ADDRESS LIKE concat('%', #{address}, '%') /* 房屋地址 */
+        </if>
+        <if test='startDate != null and startDate != "" and startDate != "null" and startDate != "undefined"'>
+            AND   x.priceTime > concat(#{startDate} , ' 00:00:00')
+        </if>
+        <if test='endDate != null and endDate != "" and endDate != "null" and endDate != "undefined"'>
+            AND   concat(#{endDate} , ' 23:59:59') > x.priceTime
+        </if>
+
+        ORDER BY   x.dateModified DESC  /* 排序 */
+    </select>
+
+</mapper>

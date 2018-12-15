@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.LoanCaseUseDao">
+    <insert id="insert" parameterType="java.util.HashMap">
+        INSERT INTO plms_case_info (
+        CODE,
+        major_asset,
+        major_liabilities,
+        income_sources,
+        collateral_investigation,
+        loan_usage,
+        repayment_source,
+        apply_code,
+        status
+        )
+        VALUES
+        (
+        #{code,jdbcType=VARCHAR},
+        #{majorAsset,jdbcType=VARCHAR},
+        #{majorLiabilities,jdbcType=VARCHAR},
+        #{incomeSources,jdbcType=VARCHAR},
+        #{collateralInvestigation,jdbcType=VARCHAR},
+        #{loanUsage,jdbcType=VARCHAR},
+        #{repaymentSource,jdbcType=VARCHAR},
+        #{applyCode,jdbcType=VARCHAR},
+        #{status,jdbcType=TINYINT})
+    </insert>
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.nlbs.commonMapper.dao.NlbsProductMapper" >
+
+    <select id="selectProductByDistributorCode" resultType="com.vilio.nlbs.commonMapper.pojo.NlbsProduct" parameterType="java.lang.String" >
+        SELECT
+            p.code,
+            p.name,
+            p.max_loan_amount as maxLoanAmount
+        FROM
+            nlbs_product_distributor pd
+        JOIN nlbs_product p ON pd.product_code = p.CODE
+        WHERE
+            pd.distributor_code = #{code,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectProductByProductCode" resultType="com.vilio.nlbs.commonMapper.pojo.NlbsProduct" parameterType="java.lang.String" >
+        SELECT
+            p.code,
+            p.name,
+            p.max_loan_amount AS maxLoanAmount
+        FROM
+            nlbs_product p
+        WHERE
+            p.code = #{code,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

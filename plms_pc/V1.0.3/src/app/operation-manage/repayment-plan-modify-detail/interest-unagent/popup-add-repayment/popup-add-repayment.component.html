@@ -1,0 +1,43 @@
+<!--添加还款计划start-->
+<div class="popup dataInfoPersonPopup">
+  <header class="header">
+    <h4 class="header-title">添加还款计划</h4>
+    <span class="close-btn" (click)="popupCloseBtn()">X</span>
+  </header>
+  <div class="popup-main">
+    <div class="row">
+      <div class="filed-name col-3">还款日期：</div>
+      <div class="col-3">
+        <input type="text" class="msg-input width-120" name="applyTimeBegin" id="applyTimeBegin" placeholder="年/月/日">
+      </div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">应还本金：</div>
+      <div class="col-3 white-space-nowrap">
+        <input type="text" class="msg-input width-120" name="applyTimeBegin" id="principal">
+      </div>
+      <div class="filed-name col-3">应还利息：</div>
+      <div class="col-3 white-space-nowrap">
+        <input type="text" class="msg-input width-120" id="accruals">
+        <div class="uinit">元</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">应还服务费：</div>
+      <div class="col-3 white-space-nowrap">
+        <input type="text" class="msg-input width-120" id="serviceCharge">
+        <div class="uinit">元</div>
+      </div>
+      <div class="filed-name col-3">应还保证金：</div>
+      <div class="col-3 white-space-nowrap">
+        <input type="text" class="msg-input width-120" id="guarantee">
+        <div class="uinit">元</div>
+      </div>
+    </div>
+  </div>
+
+  <button class="orange-button margin-top-40 margin-bottom-0" (click)="confirmBtn()">确定</button>
+  <button class="gray-button margin-top-40 margin-bottom-0 margin-left-20" (click)="popupCloseBtn()">取消</button>
+
+</div>
+<!--添加还款计划end-->

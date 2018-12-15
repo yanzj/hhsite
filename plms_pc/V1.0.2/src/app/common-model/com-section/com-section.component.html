@@ -1,0 +1,209 @@
+<div (click)="task()" style="height:100%">
+  <header class="header-container">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+
+      <div class="navbar-header">
+        <a class="navbar-logo" ><img src="assets/logo.png" /></a>
+        <span class="nav-txt">贷后管理系统</span>
+
+      </div>
+      <div class="dropdown-menu-user">
+          <div class="navbar-perserCenter">
+            <div class="navbar-information perserCenter-com" (click)=isheaderPerserInfoFunction()>
+              <div class="perserCenter-icon info-icon">
+                <div class="perserCenter-popup"   *ngIf="isheaderPerserInfo" >
+                  <ul class="perserCenter-ul" *ngIf="messageTipsList.length>0">
+                      <li class="perserCenter-list" *ngFor="let item of messageTipsList">
+                       <p  [ngClass]="{'font-weight-bold':0==item.status}" [innerHtml]="item.content" (click)="mesgGotoOtherPage(item)"></p> <!---->
+                        <span class="info-date">{{item.createTime}}</span>
+                      </li>
+
+                  </ul>
+                  <p class="perserCenter-none" *ngIf="messageTipsList==0">暂无消息通知</p>
+                  <p class="perserCenter-checkUp"  (click)="checkAllmessage()">查看所有消息</p>
+
+              </div>
+            </div>
+            <em  class="perserCenter-number task-number" *ngIf="messageCount>0">{{messageCount}}</em>
+
+          </div>
+          <div class="navbar-task perserCenter-com" (click)=isheaderPerserTaskFunction()>
+            <div class="perserCenter-icon task-icon">
+               <div class="perserCenter-popup" *ngIf="isheaderPerserTask">
+                  <ul class="perserCenter-ul" *ngIf="todoCount>0">
+                    <li class="perserCenter-list" *ngFor="let item of todoTipsList">
+                      <p>
+                        {{item.leftContent}}
+                        <a *ngIf="item.todoType == '001'" [routerLink]="['./enquirySearch']"
+                           [queryParams] = "{applyStatus:'00'}"
+                           class="text-link">{{item.keyWords}}</a>
+                        <a *ngIf="item.todoType == '002'" [routerLink]="['./query']"
+                           [queryParams] = "{applyStatus:'01'}"
+                           class="text-link">{{item.keyWords}}</a>
+                        {{item.rightContent}}
+                      </p>
+                    </li>
+                  </ul>
+                  <p class="perserCenter-none" *ngIf="todoCount==0">暂无新的待办任务</p>
+                  <p class="perserCenter-checkUp" (click)="checkAlltask()">查看所有待办任务</p>
+                </div>
+            </div>
+            <em  class="perserCenter-number info-number" *ngIf="todoCount>0">{{todoCount}}</em>
+
+          </div>
+        </div>
+        <span class="hh-subhead" >{{distributorName}}</span>
+        <a class="user-drop" *ngIf="!isShowtab" (click)="toggleTab($event)" >
+          <span class="user-name" >{{fullName}}</span><i class="icon-arrow-down"></i>
+        </a>
+        <div class="drop-menu" *ngIf="isShowtab">
+
+          <a class="drop-menu-item login-user-name" href="javascript:;"><span class="user-name user-name-fff" >{{fullName}}</span><i class="icon-arrow-up"></i></a>
+          <a class="drop-menu-item" href="javascript:;" id="signOut" (click)="signOut()">退出</a>
+
+        </div>
+      </div>
+    </nav>
+  </header>
+  <div class="clearfix">
+      <div class="main"  [ngStyle]="{'padding-left': isShow ? '220px' : '80px','min-width':isShow ? '1300px' : '1160px'}" (mouseenter)="currentLevelMenuIdForClose=''">
+
+          <div class="siderbar" *ngIf="isShow" id="siderbar">
+            <div class="btn-icon" (click)="toggle()"><a class="toggle-icon"></a></div>
+
+            <!-- 循环一级菜单数据 -->
+            <ul class="siderbar-nav" *ngFor="let levelMenu of menuList">
+              <li class="level-menu">
+                <!-- 如果一级菜单有连接，如首页，则增加routerlink levelMenuClick方法是指定点击的菜单ID，用于控制是否展开对应二级菜单 -->
+                <a href="javascript:;" class="menu-text testMenu" *ngIf="levelMenu.url" (click)="levelMenuClick(levelMenu.menuId)"
+                   [routerLink]="levelMenu.url" routerLinkActive="cur" >
+                  <i class="mune_icon" [ngClass]="('首页'== levelMenu.menuName?muneIconIndex:('循环产品管理'== levelMenu.menuName?muneIconItem:('业务查询'== levelMenu.menuName?muneIconEnquiry:('资金管理'== levelMenu.menuName?moneyManagement:('运营管理'== levelMenu.menuName?operationManagement:('个人中心'== levelMenu.menuName?muneIconPersonCenter:''))))))"></i> {{ levelMenu.menuName }}
+                  <!--<em class="menu_arrow menu_arrow_up"></em>-->
+                </a>
+                <!-- 如果一级菜单无连接，则不添加routerlink -->
+                <a href="javascript:;" class="menu-text testMenu" *ngIf="!levelMenu.url" (click)="levelMenuClick(levelMenu.menuId)">
+                  <i class="mune_icon" [ngClass]="('首页'== levelMenu.menuName?muneIconIndex:('循环产品管理'== levelMenu.menuName?muneIconItem:('业务查询'== levelMenu.menuName?muneIconEnquiry:('资金管理'== levelMenu.menuName?moneyManagement:('运营管理'== levelMenu.menuName?operationManagement:('个人中心'== levelMenu.menuName?muneIconPersonCenter:''))))))"></i> {{ levelMenu.menuName }}
+                  <em class="menu_arrow" [ngClass]="(levelMenu.menuId == currentLevelMenuId)?menuArrowDown:menuArrowUp"></em>
+                </a>
+                <!-- 循环二级菜单数据 如果所属一级菜单被点击了，则展开二级菜单。-->
+                <ul class="menu-item-ul" *ngIf="levelMenu.menuId == currentLevelMenuId">
+                  <li class="menu-item" *ngFor="let childMenu of levelMenu.childMenus">
+                    <a class="menu-item-a" [routerLink]="childMenu.url" routerLinkActive="cur"
+                       [ngClass]="(childMenu.menuId == currentChildMenuId)?'cur':''"
+                       (mouseenter)="childMenuMouseenter(childMenu.menuId,$event)"
+                       (mouseleave)="childMenuMouseleave(childMenu.menuId,$event)"
+                       (click)="childMenuClick(childMenu.menuId)">{{ childMenu.menuName }}</a>
+                    <em class="perserCenter-number perserCenter-number-abs" *ngIf="'待办任务'== childMenu.menuName && todoCount>0">{{todoCount}}</em>
+                    <em class="perserCenter-number perserCenter-number-abs" *ngIf="'消息通知'== childMenu.menuName && messageCount>0">{{messageCount}}</em>
+                  </li>
+                </ul>
+
+              </li>
+            </ul>
+            <!--<ul class="siderbar-nav">-->
+              <!--<li class="level-menu">-->
+                <!--<a href="javascript:;" class="menu-text" [routerLink]="['./main']"  routerLinkActive="cur"><i class="mune_icon mune_icon_index"></i>首页</a>-->
+                <!--<ul class="menu-item-ul">-->
+
+                <!--</ul>-->
+              <!--</li>-->
+
+              <!--<li class="level-menu">-->
+                <!--<a href="javascript:;" class="menu-text testMenu" (click)="intoEnquiry()" ><i class="mune_icon mune_icon_enquiry"></i>询价管理-->
+                     <!--<em class="menu_arrow" [ngClass]="currentClasses"></em></a>-->
+                <!--<ul class="menu-item-ul" *ngIf="isIntoEnquiry">-->
+                  <!--<li class="menu-item" (click)="enquiry()"><a [routerLink]="['./enquiry']" routerLinkActive="cur" >自动询价</a> </li>-->
+                  <!--<li class="menu-item"><a [routerLink]="['./personEnquiry']" routerLinkActive="cur" >人工询价</a> </li>-->
+                  <!--<li class="menu-item"><a [routerLink]="['./enquirySearch']" routerLinkActive="cur" >询价查询</a> </li>-->
+                <!--</ul>-->
+
+              <!--</li>-->
+              <!--<li class="level-menu">-->
+                <!--<a href="javascript:;" class="menu-text testMenu" (click)="into()" ><i class="mune_icon mune_icon_item"></i>进件管理-->
+                      <!--<em class="menu_arrow" id="menu_arrow" [ngClass]="currentClasses2"></em></a>-->
+                <!--<ul class="menu-item-ul" *ngIf="isInto">-->
+                  <!--<li class="menu-item"><a [routerLink]="['./apply']" routerLinkActive="cur">进件申请提交</a> </li>-->
+                  <!--<li class="menu-item" id="menu-itemLast"><a [routerLink]="['./query']" routerLinkActive="cur">进件申请查询</a> </li>-->
+                <!--</ul>-->
+              <!--</li>-->
+              <!--<li class="level-menu">-->
+                  <!--<a href="javascript:;" class="menu-text testMenu" (click)="intoPersonCenter()" ><i class="mune_icon mune_icon_personCenter"></i>个人中心-->
+                        <!--<em class="menu_arrow" id="menu_arrow" [ngClass]="currentClasses3"></em></a>-->
+                  <!--<ul class="menu-item-ul" *ngIf="isPersonCenter">-->
+                    <!--<li class="menu-item"><a [routerLink]="['./gtasks']" routerLinkActive="cur">待办任务</a><em class="perserCenter-number perserCenter-number-abs" *ngIf="todoCount>0">{{todoCount}}</em></li>-->
+                    <!--<li class="menu-item"><a [routerLink]="['./message']" routerLinkActive="cur">消息通知</a><em class="perserCenter-number perserCenter-number-abs" *ngIf="messageCount>0">{{messageCount}}</em></li>-->
+                    <!--<li class="menu-item"><a [routerLink]="['./ChangePsw']" routerLinkActive="cur">修改密码</a> </li>-->
+                  <!--</ul>-->
+              <!--</li>-->
+
+
+            <!--</ul>-->
+          </div>
+
+          <div class="sidebarToggle" *ngIf="!isShow">
+            <div class="sidebarToggle_icon" (click)="toggle()">
+              <a class="sidebar_icon"><i class="sidebar_icon_0"></i></a>
+            </div>
+            <!-- 循环一级菜单数据 -->
+            <div class="sidebarToggle_com" *ngFor="let levelMenu of menuList" (mouseenter)="levelMenuMouseenter(levelMenu.menuId)" >
+              <!-- 如果一级菜单有连接，如首页，则增加routerlink levelMenuClick方法是指定点击的菜单ID，用于控制是否展开对应二级菜单 -->
+              <a class="sidebar_icon"  *ngIf="levelMenu.url" [routerLink]="levelMenu.url">
+                <i [ngClass]="('首页'== levelMenu.menuName?sidebarIconI1:('循环产品管理'== levelMenu.menuName?sidebarIconI2:('业务查询'== levelMenu.menuName?sidebarIconI3:('资金管理'== levelMenu.menuName?sidebarIconI4:('运营管理'== levelMenu.menuName?sidebarIconI5:('个人中心'== levelMenu.menuName?sidebarIconI6:''))))))"></i>
+              </a>
+              <!-- 如果一级菜单无连接，则不添加routerlink -->
+              <a class="sidebar_icon"  *ngIf="!levelMenu.url">
+                <i [ngClass]="('首页'== levelMenu.menuName?sidebarIconI1:('循环产品管理'== levelMenu.menuName?sidebarIconI2:('业务查询'== levelMenu.menuName?sidebarIconI3:('资金管理'== levelMenu.menuName?sidebarIconI4:('运营管理'== levelMenu.menuName?sidebarIconI5:('个人中心'== levelMenu.menuName?sidebarIconI6:''))))))"></i>
+              </a>
+              <!-- 循环二级菜单数据 如果所属一级菜单被点击了，则展开二级菜单。-->
+              <ul class="sidebarToggle_ul" *ngIf="levelMenu.menuId == currentLevelMenuIdForClose" (mouseleave)="currentLevelMenuIdForClose=''">
+                <li class="sidebarToggle_item" *ngFor="let childMenu of levelMenu.childMenus">
+                  <a  href="javascript:;" [routerLink]="childMenu.url" routerLinkActive="cur" >{{ childMenu.menuName }}</a>
+                  <em class="perserCenter-number perserCenter-number-abs" *ngIf="'待办任务'== childMenu.menuName && todoCount>0">{{todoCount}}</em>
+                  <em class="perserCenter-number perserCenter-number-abs" *ngIf="'消息通知'== childMenu.menuName && messageCount>0">{{messageCount}}</em>
+                </li>
+              </ul>
+            </div>
+            <div class="sidebarToggle_com" (mouseenter)="currentLevelMenuIdForClose=''">
+
+            </div>
+            <!---->
+            <!--<div class="sidebarToggle_com">-->
+              <!--<a class="sidebar_icon"  (click)="Toggle_part()"  [routerLink]="['main']"><i class="sidebar_icon_i1"></i></a>-->
+              <!--<ul class="sidebarToggle_ul">-->
+              <!--</ul>-->
+            <!--</div>-->
+            <!--<div class="sidebarToggle_com">-->
+                <!--<a class="sidebar_icon" (click)="Toggle_box1()"><i class="sidebar_icon_i2"></i></a>-->
+                <!--<ul class="sidebarToggle_ul" *ngIf="isEnquiryShowBox">-->
+                  <!--<li class="sidebarToggle_item"><a href="javascript:;" [routerLink]="['enquiry']" routerLinkActive="cur" >自动询价</a></li>-->
+                  <!--<li class="sidebarToggle_item"><a href="javascript:;" [routerLink]="['personEnquiry']" routerLinkActive="cur" >人工询价</a></li>-->
+                  <!--<li class="sidebarToggle_item"><a href="javascript:;" [routerLink]="['enquirySearch']" routerLinkActive="cur" >询价查询</a></li>-->
+                <!--</ul>-->
+
+            <!--</div>-->
+           <!--<div class="sidebarToggle_com">-->
+                <!--<a class="sidebar_icon" (click)="Toggle_box2()"><i class="sidebar_icon_i3"></i></a>-->
+                <!--<ul class="sidebarToggle_ul" *ngIf="isShowBox">-->
+                  <!--<li class="sidebarToggle_item"><a href="javascript:;" [routerLink]="['apply']" routerLinkActive="cur">进件申请提交</a></li>-->
+                  <!--<li class="sidebarToggle_item" id="sidebarToggle_itemLast"><a href="javascript:;" [routerLink]="['query']" routerLinkActive="cur">进件申请查询</a></li>-->
+                <!--</ul>-->
+            <!--</div>-->
+            <!--<div class="sidebarToggle_com">-->
+                <!--<a class="sidebar_icon" (click)="Toggle_box3()"><i class="sidebar_icon_i4"></i></a>-->
+                <!--<ul class="sidebarToggle_ul" *ngIf="isShowPersonBox">-->
+                  <!--<li class="sidebarToggle_item"><a href="javascript:;" [routerLink]="['gtasks']" routerLinkActive="cur">待办任务</a><em class="perserCenter-number perserCenter-number-abs" *ngIf="todoCount>0">{{todoCount}}</em></li>-->
+                  <!--<li class="sidebarToggle_item"><a href="javascript:;" [routerLink]="['query']" routerLinkActive="cur">消息通知</a><em class="perserCenter-number perserCenter-number-abs" *ngIf="messageCount>0">{{messageCount}}</em></li>-->
+                  <!--<li class="sidebarToggle_item"><a href="javascript:;" [routerLink]="['ChangePsw']" routerLinkActive="cur">修改密码</a></li>-->
+                <!--</ul>-->
+            <!--</div>-->
+
+
+          </div>
+
+        <router-outlet></router-outlet>
+
+      </div>
+
+
+  </div>
+</div>

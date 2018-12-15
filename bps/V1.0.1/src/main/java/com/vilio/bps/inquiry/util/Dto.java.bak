@@ -1,0 +1,85 @@
+//package com.vilio.bps.inquiry.util.caad;
+//
+//import com.fasterxml.jackson.annotation.JsonAutoDetect;
+//import com.fasterxml.jackson.annotation.JsonIgnore;
+//import com.fasterxml.jackson.annotation.JsonProperty;
+//
+//@JsonAutoDetect()
+//public class  Dto {
+//	// / <summary>
+//	// / 授权码
+//	// / </summary>
+//	@JsonProperty("Key")
+//	private String Key;
+//	// / <summary>
+//	// / 唯一性
+//	// / </summary>
+//	@JsonProperty("CaseId")
+//	private String CaseId;
+//	// / <summary>
+//	// / 城市编码
+//	// / </summary>
+//	@JsonProperty("AreaCode")
+//	private String AreaCode;
+//	// / <summary>
+//	// / 产证地址
+//	// / </summary>
+//	@JsonProperty("Address")
+//	private String Address;
+//	// / <summary>
+//	// / 面积（平方米 保留2位小数）
+//	// / </summary>
+//	@JsonProperty("HouseArea")
+//	private double HouseArea;
+//
+//	@JsonIgnore
+//	public String getKey() {
+//		return Key;
+//	}
+//
+//	@JsonIgnore
+//	public void setKey(String key) {
+//		Key = key;
+//	}
+//
+//	@JsonIgnore
+//	public String getCaseId() {
+//		return CaseId;
+//	}
+//
+//	@JsonIgnore
+//	public void setCaseId(String caseId) {
+//		CaseId = caseId;
+//	}
+//
+//	@JsonIgnore
+//	public String getAreaCode() {
+//		return AreaCode;
+//	}
+//
+//	@JsonIgnore
+//	public void setAreaCode(String areaCode) {
+//		AreaCode = areaCode;
+//	}
+//
+//	@JsonIgnore
+//	public String getAddress() {
+//		return Address;
+//	}
+//
+//	@JsonIgnore
+//	public void setAddress(String address) {
+//		Address = address;
+//	}
+//
+//	@JsonIgnore
+//	public double getHouseArea() {
+//		return HouseArea;
+//	}
+//
+//	@JsonIgnore
+//	public void setHouseArea(double buildArea) {
+//		HouseArea = buildArea;
+//	}
+//
+//}

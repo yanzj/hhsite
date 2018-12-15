@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.FundSideDao">
+
+    <!--查询还款申请表-->
+    <select id="queryFundSideByContract" resultType="com.vilio.plms.pojo.FundSide" parameterType="com.vilio.plms.pojo.FundSide">
+        SELECT
+            id,
+            `code`,
+            company_code,
+            Lenders,
+            bail_rate,
+            bail_amount,
+            bail_payed_amount,
+            bail_payed_time,
+            year_period,
+            default_interest_rate,
+            penalty_period,
+            over_interest,
+            contract_interest,
+            actual_interest,
+            receive_interest_method,
+            receive_interest_date,
+            mortgage_interest_period,
+            interest_grace_date,
+            contract_code,
+            `status`,
+            create_date,
+            modify_date
+        FROM
+            plms_fund_side
+        WHERE status != '0'
+        and contract_code = #{contractCode}
+    </select>
+    <insert id="saveFundSideInfo" parameterType="com.vilio.plms.pojo.FundSide">
+        INSERT INTO plms_fund_side (
+            code,
+            company_code,
+            lenders,
+            bail_rate,
+            bail_amount,
+            bail_payed_amount,
+            bail_payed_time,
+            year_period,
+            default_interest_rate,
+            penalty_period,
+            over_interest,
+            contract_interest,
+            actual_interest,
+            receive_interest_method,
+            receive_interest_date,
+            mortgage_interest_period,
+            interest_grace_date,
+            contract_code,
+            status,
+            create_date,
+            modify_date,
+            service_charge_rate,
+            service_charge_amount,
+            service_charge_paid_amount,
+            service_charge_paid_time,
+            receipt_fee_rate,
+            receipt_fee_amount,
+            receipt_fee_paid_amount,
+            receipt_fee_paid_time
+        )
+        VALUES (#{code,jdbcType=VARCHAR},
+                #{companyCode,jdbcType=VARCHAR},
+                #{lenders,jdbcType=VARCHAR},
+                #{bailRate,jdbcType=DECIMAL},
+                #{bailAmount,jdbcType=DECIMAL},
+                #{bailPayedAmount,jdbcType=DECIMAL},
+                #{bailPayedTime,jdbcType=TIMESTAMP},
+                #{yearPeriod,jdbcType=INTEGER},
+                #{defaultInterestRate,jdbcType=DECIMAL},
+                #{penaltyPeriod,jdbcType=INTEGER},
+                #{overInterest,jdbcType=DECIMAL},
+                #{contractInterest,jdbcType=DECIMAL},
+                #{actualInterest,jdbcType=DECIMAL},
+                #{receiveInterestMethod,jdbcType=VARCHAR},
+                #{receiveInterestDate,jdbcType=TIMESTAMP},
+                #{mortgageInterestPeriod,jdbcType=INTEGER},
+                #{interestGraceDate,jdbcType=INTEGER},
+                #{contractCode,jdbcType=VARCHAR},
+                #{status,jdbcType=VARCHAR},
+                #{createDate,jdbcType=TIMESTAMP},
+                #{modifyDate,jdbcType=TIMESTAMP},
+                #{serviceChargeRate,jdbcType=DECIMAL},
+                #{serviceChargeAmount,jdbcType=DECIMAL},
+                #{serviceChargePaidAmount,jdbcType=DECIMAL},
+                #{serviceChargePaidTime,jdbcType=TIMESTAMP},
+                #{receiptFeeRate,jdbcType=DECIMAL},
+                #{receiptFeeAmount,jdbcType=DECIMAL},
+                #{receiptFeePaidAmount,jdbcType=DECIMAL},
+                #{receiptFeePaidTime,jdbcType=TIMESTAMP}
+            )
+    </insert>
+</mapper>

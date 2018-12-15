@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.ppms.dao.common.SubAccountMapper" >
+  <resultMap id="BaseResultMap" type="com.vilio.ppms.pojo.common.SubAccount" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sys_serno" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="trans_amount" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="sub_acc_amount" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="sub_acc_status" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="status" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="remark1" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, sys_serno, trans_amount, sub_acc_amount, sub_acc_status, status, create_time, 
+    update_time, remark1
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from ppms_sub_account
+    where code = #{code,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ppms_sub_account
+    where code = #{code,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.vilio.ppms.pojo.common.SubAccount" >
+    insert into ppms_sub_account (id, code, sys_serno, 
+      trans_amount, sub_acc_amount, sub_acc_status, 
+      status, create_time, update_time, 
+      remark1)
+    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{sysSerno,jdbcType=VARCHAR}, 
+      #{transAmount,jdbcType=DECIMAL}, #{subAccAmount,jdbcType=DECIMAL}, #{subAccStatus,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{remark1,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.vilio.ppms.pojo.common.SubAccount" >
+    insert into ppms_sub_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="sysSerno != null" >
+        sys_serno,
+      </if>
+      <if test="transAmount != null" >
+        trans_amount,
+      </if>
+      <if test="subAccAmount != null" >
+        sub_acc_amount,
+      </if>
+      <if test="subAccStatus != null" >
+        sub_acc_status,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="remark1 != null" >
+        remark1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="sysSerno != null" >
+        #{sysSerno,jdbcType=VARCHAR},
+      </if>
+      <if test="transAmount != null" >
+        #{transAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="subAccAmount != null" >
+        #{subAccAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="subAccStatus != null" >
+        #{subAccStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark1 != null" >
+        #{remark1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vilio.ppms.pojo.common.SubAccount" >
+    update ppms_sub_account
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="sysSerno != null" >
+        sys_serno = #{sysSerno,jdbcType=VARCHAR},
+      </if>
+      <if test="transAmount != null" >
+        trans_amount = #{transAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="subAccAmount != null" >
+        sub_acc_amount = #{subAccAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="subAccStatus != null" >
+        sub_acc_status = #{subAccStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark1 != null" >
+        remark1 = #{remark1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vilio.ppms.pojo.common.SubAccount" >
+    update ppms_sub_account
+    set code = #{code,jdbcType=VARCHAR},
+      sys_serno = #{sysSerno,jdbcType=VARCHAR},
+      trans_amount = #{transAmount,jdbcType=DECIMAL},
+      sub_acc_amount = #{subAccAmount,jdbcType=DECIMAL},
+      sub_acc_status = #{subAccStatus,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      remark1 = #{remark1,jdbcType=VARCHAR}
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+</mapper>

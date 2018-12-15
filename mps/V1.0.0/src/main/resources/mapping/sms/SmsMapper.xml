@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.mps.sms.dao.SmsDao">
+
+
+    <insert id="insertSmsInfo" parameterType="com.vilio.mps.sms.pojo.Sms">
+      INSERT INTO mps_sms_info(
+            serial_no,
+            inner_sign_no,
+            inner_template_code,
+            template_param,
+            out_id,
+            receipt_no,
+            chl_ret_code,
+            chl_ret_msg,
+            timely_news,
+            content,
+            mobile,
+            status,
+            send_num,
+            lock_no) VALUES(#{serialNo,jdbcType=VARCHAR},#{innerSignNo,jdbcType=VARCHAR},#{innerTemplateCode,jdbcType=VARCHAR},
+            #{templateParam,jdbcType=VARCHAR},#{outId,jdbcType=VARCHAR},#{receiptNo,jdbcType=VARCHAR},#{chlRetCode,jdbcType=VARCHAR},
+            #{chlRetMsg,jdbcType=VARCHAR},#{timelyNews,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR},#{mobile,jdbcType=VARCHAR},
+            #{status,jdbcType=VARCHAR},#{sendNum,jdbcType=VARCHAR},#{lockNo,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateSmsStatusBySerialNo" parameterType="com.vilio.mps.sms.pojo.Sms">
+            UPDATE mps_sms_info m
+            SET m.status = #{status,jdbcType=VARCHAR},m.receipt_no = #{receiptNo,jdbcType=VARCHAR},
+            m.chl_ret_code = #{chlRetCode,jdbcType=VARCHAR},m.chl_ret_msg = #{chlRetMsg,jdbcType=VARCHAR},
+            m.send_num = #{sendNum,jdbcType=VARCHAR}
+            WHERE
+            m.serial_no = #{serialNo,jdbcType=VARCHAR}
+    </update>
+
+
+</mapper>

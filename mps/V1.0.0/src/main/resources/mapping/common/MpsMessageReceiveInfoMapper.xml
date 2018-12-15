@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.mps.common.dao.MpsMessageReceiveInfoMapper" >
+    <select id="selectMessageBySerialNo" resultType="com.vilio.mps.common.pojo.MpsReceiveMessageInfo" parameterType="java.lang.String">
+        SELECT
+            m.serial_no,
+            m.receiver_company_code,
+            m.receiver_company_name,
+            m.receiver_department_code,
+            m.receiver_department_name,
+            m.receiver_identity_id,
+            m.receiver_name,
+            m.receiver_system,
+            m.sender_company_code,
+            m.sender_company_name,
+            m.sender_department_code,
+            m.sender_department_name,
+            m.sender_identity_id,
+            m.sender_name,
+            m.sender_system,
+            m.title,
+            m.content,
+            m. STATUS,
+            m.type
+        FROM
+            mps_receive_message_info m
+        WHERE
+            m.serial_no = #{serialNo,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateStatusBySerialNo" parameterType="com.vilio.mps.common.pojo.MpsReceiveMessageInfo" >
+        UPDATE mps_receive_message_info m
+        SET m.status = #{status,jdbcType=VARCHAR}
+        WHERE
+        m.serial_no = #{serialNo,jdbcType=VARCHAR}
+    </update>
+
+    <insert id="insertMessageReceiveInfo" parameterType="com.vilio.mps.common.pojo.MpsReceiveMessageInfo" >
+        INSERT INTO mps_receive_message_info
+        SET serial_no =  #{serialNo,jdbcType=VARCHAR},
+         receiver_company_code =  #{receiverCompanyCode,jdbcType=VARCHAR},
+         receiver_company_name =  #{receiverCompanyName,jdbcType=VARCHAR},
+         receiver_department_code =  #{receiverDepartmentCode,jdbcType=VARCHAR},
+         receiver_department_name =  #{receiverDepartmentName,jdbcType=VARCHAR},
+         receiver_identity_id =  #{receiverIdentityId,jdbcType=VARCHAR},
+         receiver_name =  #{receiverName,jdbcType=VARCHAR},
+         receiver_system =  #{receiverSystem,jdbcType=VARCHAR},
+         sender_company_code =  #{senderCompanyCode,jdbcType=VARCHAR},
+         sender_company_name =  #{senderCompanyName,jdbcType=VARCHAR},
+         sender_department_code =  #{senderDepartmentCode,jdbcType=VARCHAR},
+         sender_department_name =  #{senderDepartmentName,jdbcType=VARCHAR},
+         sender_identity_id =  #{senderIdentityId,jdbcType=VARCHAR},
+         sender_name =  #{senderName,jdbcType=VARCHAR},
+         sender_system =  #{senderSystem,jdbcType=VARCHAR},
+         title =  #{title,jdbcType=VARCHAR},
+         content =  #{content,jdbcType=VARCHAR},
+         STATUS =  '0',
+         type =  #{type,jdbcType=VARCHAR},
+         internal_param = #{internalParam,jdbcType=VARCHAR},
+         request_no = #{requestNo,jdbcType=VARCHAR}
+    </insert>
+
+    <select id="getMessageBySerialNoList" resultType="com.vilio.mps.common.pojo.MpsReceiveMessageInfo" parameterType="java.util.Map">
+        SELECT
+        m.serial_no as serialNo,
+        m.receiver_company_code as receiverCompanyCode,
+        m.receiver_company_name as receiverCompanyName,
+        m.receiver_department_code AS receiverDepartmentCode,
+        m.receiver_department_name AS receiverDepartmentName,
+        m.receiver_identity_id AS receiverIdentityId,
+        m.receiver_name receiverName,
+        m.receiver_system AS receiverSystem,
+        m.sender_company_code AS senderCompanyCode,
+        m.sender_company_name AS senderCompanyName,
+        m.sender_department_code AS senderDepartmentCode,
+        m.sender_department_name AS senderDepartmentName,
+        m.sender_identity_id as senderIdentityId,
+        m.sender_name AS senderName,
+        m.sender_system AS senderSystem,
+        m.title,
+        m.content,
+        m.status,
+        m.type
+        FROM
+        mps_receive_message_info m
+        WHERE
+        m.serial_no in (
+        <foreach collection="serialNoList" item="v" separator=",">
+            #{v.serialNo,jdbcType=VARCHAR}
+        </foreach>
+        )
+
+
+    </select>
+</mapper>

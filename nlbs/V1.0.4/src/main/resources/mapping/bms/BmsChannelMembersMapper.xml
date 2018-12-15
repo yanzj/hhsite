@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.nlbs.bms.dao.BmsChannelMembersDao">
+
+    <select id="queryAgentById" parameterType="java.lang.String" resultType="java.util.HashMap">
+        SELECT
+            cm.id AS agentId,
+          cm.name AS fullName,
+          cm.channel_id AS distributorCode
+        FROM
+            channel_members cm
+        WHERE
+            cm.id = #{agentId}
+    </select>
+
+
+    <select id="queryChildrenAgents" parameterType="java.lang.String" resultType="java.util.HashMap">
+        SELECT
+            cm.id AS agentId,
+            cm. NAME AS fullName,
+            cm.channel_id AS distributorCode
+        FROM
+            channel_members cm
+        WHERE
+            cm.is_enabled = '1'
+        AND cm.parent_id = #{agentId}
+    </select>
+
+    <select id="queryAgentsByDistributorCode" parameterType="java.lang.String" resultType="java.util.HashMap">
+        SELECT
+            cm.id AS agentId,
+            cm.name AS fullName,
+            cm.channel_id AS distributorCode
+        FROM
+            channel_members cm
+        WHERE
+            cm.is_enabled = '1'
+        AND cm.channel_id = #{distributorCode}
+        ORDER BY  convert(cm.name USING gbk) COLLATE gbk_chinese_ci asc
+    </select>
+
+</mapper>

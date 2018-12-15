@@ -1,0 +1,56 @@
+
+
+
+
+/*列表项*/
+/*.table {*/
+/*table-layout: fixed;*/
+/*margin: 40px 0;*/
+/*}*/
+.table{
+  /*margin-top: 10px;*/
+}
+.table tr {
+  height: 40px;
+}
+
+.table tr th {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  padding: 0 8px;
+  text-align: left;
+  vertical-align: middle;
+  font-weight: bold;
+}
+
+.table tbody tr td {
+  height: 40px;
+  vertical-align: middle;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+  padding: 6px 8px;
+}
+
+.digit {
+  width: 40px;
+  margin-left: 15px;
+  text-align: right;
+  display: block;
+}
+
+
+.table tbody tr td span i {
+  margin: 0 8px;
+  color: #999;
+}
+
+.table tbody tr:nth-child(odd){
+  background: #F5F5F5;
+}
+.table tbody tr:hover{
+  cursor: pointer;
+  background: #FFE7DE;
+}
+
+
+

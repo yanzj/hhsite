@@ -1,0 +1,119 @@
+  ul,li,ol{list-style-type: none;margin:0;padding:0}
+a,a:hover{text-decoration: none;}
+.header-container{position: fixed;  left: 0;  top: 0;  width: 100%;  min-width: 800px;z-index: 201}
+.navbar-default{background: #222;color: #FFA00A ;height:50px;line-height: 50px;}
+.navbar-logo{width:105px;height:30px;display:inline-block;margin-left:20px;vertical-align: middle}
+.navbar-logo img{display: block}
+.navbar_fr{float:right}
+.nav-txt{font-size:16px;font-weight:bold;  margin-left:95px;display: inline-block;color:#ffa00a;}
+.navbar-header{height:50px;line-height: 50px;}
+
+/*导航的消息和代办任务*/
+.navbar-perserCenter{float: left;}
+.perserCenter-com{ float:left;padding:0 10px;background: #222; height: 49px;position: relative;cursor: pointer}
+.perserCenter-icon { width:14px;height:14px;background-image: url(../../../assets/img/upload/main.png);float:left; ;margin-top: 18px;position: relative}
+.navbar-task:hover{background: #555}
+.task-icon { background-position: -72px -35px;}
+.navbar-task:hover .task-icon{  background-position: -58px -35px;}
+.info-icon { background-position: -100px -35px;}
+.navbar-information:hover{background: #555}
+.navbar-information:hover .info-icon{  background-position: -86px -35px}
+.perserCenter-number{min-width: 20px;line-height: 12px;color: #FFF;background-color:#f50; float:left;border-radius: 5px;padding: 1px 5px;margin-top:11px;text-align: center }
+
+.perserCenter-popup{ width:300px;border:1px solid #ccc;position: absolute;left:50%;margin-left:-150px;top:31px;position: relative}
+.perserCenter-list,.perserCenter-checkUp{padding: 15px 20px;border-top: 1px solid #ccc;background: #fff;margin-top:-1px; line-height: 12px;}
+.perserCenter-checkUp{ background: #F5F5F5;text-align: center;cursor: pointer}
+.perserCenter-none{background: #fff;text-align: center;padding: 15px 20px;line-height: 12px;text-align: left}
+.perserCenter-checkUp:hover{ background: #F8F8F2;cursor: pointer}
+.perserCenter-list:hover,.perserCenter-none:hover{background: #F8F8F2}
+.info-date{color:#999;padding-top:3px;text-align: left;display: block}
+.perserCenter-number-abs{position: absolute;right:20px;top:3px;text-align: right;}
+
+.main .breadcrumb{background: #fff;}
+.dropdown-menu-user{  height: 50px;  line-height: 50px;  position: absolute;  right: 0px;  top: 0;  }
+.navbar-nav .nav-item{line-height: 49px;}
+.hh-subhead{margin-right:20px;float:left;font-size:12px;height: 50px;  line-height: 50px;color:#C3C3C3; }
+
+.user-drop{display:block;min-width:94px;height:50px;line-height: 50px;color:#C3C3C3;float:right;text-align: center;cursor: pointer;border-bottom: 1px solid #222;position: relative;font-size:12px;padding: 0 20px;}
+.user-drop:hover{background: #555;text-decoration: none}
+.user-drop:hover .user-name{color:#fff;}
+.user-drop:hover .icon-arrow-up{background-position: -8px -30px;}
+.user-name{display:inline-block;height:100%;float: left;height: 50px;color:#c3c3c3; line-height: 50px; }
+.drop-menu{float: left;  border:1px solid #ccc; }
+.drop-menu-item{height:30px;line-height: 30px;font-size:12px;display:block;min-width:92px;color:#fff;background: #222;border-top:1px solid #ccc;text-indent: 20px;}
+.drop-menu-item:hover{background: #555;}
+.login-user-name{height:50px;line-height: 50px;border-top:none;    margin-top: -2px;}
+.icon-arrow-up,.icon-arrow-down{width:8px; height:4px;float:left;margin-left:5px;position: relative;top:22px;
+  background-image: url(../../../assets/img/upload/main.png);background-repeat: no-repeat;background-position: -32px -30px;
+}
+
+.login-user-name .user-name{color:#fff;}
+.drop-menu-item:hover .icon-arrow-down{background-position: -48px -30px;}
+.icon-arrow-up{background-position: -48px -30px;}
+
+/*siderbar*/
+.siderbar{width:200px;background: #444;height:100%;min-height: 100%; margin-top: 50px; position: fixed;left:0;bottom:0;top: 0;z-index: 20}
+.level-menu{color:#fff;line-height: 40px;}
+.btn-icon{height:40px;line-height: 40px;text-align: right;}
+.toggle-icon{width:20px;height:14px; background-image: url(../../../assets/img/upload/main.png);background-repeat: no-repeat;background-position:0 -48px;  display: inline-block;margin-right:20px; cursor: pointer;}
+.toggle-icon:hover{background-position:-20px -48px;}
+.mune_icon{width:20px;height: 20px;display:inline-block;position: relative; top: 5px;margin-right: 14px;
+  background-image: url(../../../assets/img/upload/main.png);background-repeat: no-repeat;}
+.mune_icon_index{background-position: 0 -62px}
+.mune_icon_item{background-position: -41px -62px}
+.mune_icon_enquiry{background-position: -83px -62px}
+.money_management {background-position: -125px -62px}
+.operation_management{background-position: -167px -62px }
+.mune_icon_personCenter{background-position: -209px -62px}
+.level-menu{position: relative;}
+.menu-text:hover{background: #555555;text-decoration: none;color:#fff;}
+.menu-text:hover .mune_icon_index{background-position:-20px -62px}
+.menu-text:hover .mune_icon_item{background-position: -62px -62px}
+.menu-text:hover .mune_icon_enquiry{background-position:-104px -62px}
+.menu-text:hover .money_management{background-position:-146px -62px}
+.menu-text:hover .operation_management{background-position:-188px -62px}
+.menu-text:hover .mune_icon_personCenter{background-position: -229px -62px}
+
+.menu_arrow{width:8px;height:4px;display: inline-block;position: absolute;right:20px;top:18px;
+  background-repeat: no-repeat;
+}
+.menu_arrow_up{background-image: url(../../../assets/img/upload/main.png);background-position: -24px -30px}
+.menu_arrow_down{background-image: url(../../../assets/img/upload/main.png);background-position: -40px -30px}
+.menu-text:hover .menu_arrow_down{background-image: url(../../../assets/img/upload/main.png);background-position: -48px -30px;width:8px;height:4px;}
+.menu-text:hover .menu_arrow_up{background-position: -32px -30px}
+/*.menu-text:hover .menu_arrow__down{background-position: -48px -30px}*/
+.menu-text{cursor: pointer;color: #C3C3C3;padding-left:20px; display: block;font-size: 14px}
+.menu-item{position: relative}
+.menu-item-a{color:#C3C3C3;padding-left: 58px;display: block;height: 40px;  line-height: 40px;font-size: 14px}
+.menu-item-a-hover{background: #555;text-decoration: none;color:#fff;}
+/*需要切换的sidebar*/
+.sidebarToggle{width:60px;background: #444;height:100%;min-height: 100%; margin-top: 50px;    z-index: 200; position: fixed;left:0;bottom:0;top: 0;border-right: 1px solid #666666 ;box-sizing: content-box; }
+.sidebar_icon{display: block;height: 40px;line-height: 40px;vertical-align: middle;color:#C3C3C3;  cursor: pointer;  }
+.sidebar_icon:hover{background: #555}
+.sidebar_icon i{vertical-align: middle;width:20px;height:20px;display: inline-block; background-image: url(../../../assets/img/upload/main.png);background-repeat: no-repeat;background-position:0 -48px;}
+.sidebar_icon .sidebar_icon_0{height:14px;}
+.sidebar_icon:hover .sidebar_icon_0{background-position:-20px -48px;}
+.sidebar_icon .sidebar_icon_i1{background-position:0 -62px}
+.sidebar_icon:hover .sidebar_icon_i1{background-position:-20px -62px}
+.sidebar_icon .sidebar_icon_i2{background-position:-41px -62px}
+.sidebar_icon:hover .sidebar_icon_i2{background-position:-62px -62px}
+.sidebar_icon .sidebar_icon_i3{background-position:-83px -62px}
+.sidebar_icon:hover .sidebar_icon_i3{background-position:-104px -62px}
+.sidebar_icon .sidebar_icon_i4{background-position:-125px -62px}
+.sidebar_icon:hover .sidebar_icon_i4{background-position:-146px -62px}
+.sidebar_icon .sidebar_icon_i5{background-position:-167px -62px}
+.sidebar_icon:hover .sidebar_icon_i5{background-position:-188px -62px}
+.sidebar_icon .sidebar_icon_i6{background-position:-209px -62px}
+.sidebar_icon:hover .sidebar_icon_i6{background-position:-229px -62px}
+.sidebarToggle_com,.sidebarToggle_icon{height:40px;line-height: 40px;text-align: center;position: relative}
+.sidebarToggle_ul{position: absolute;top:0;left:61px;background: #444444;}
+.sidebarToggle_item{width:160px;height:40px;line-height: 40px;position: relative}
+.sidebarToggle_item a{color:#C3C3C3;padding-left: 20px;line-height: 40px;display: block;text-align: left;}
+.sidebarToggle_item a:hover{color:#fff;background: #555555}
+.cur{background: #333;color:#fff;cursor: default}
+/*主内容区域*/
+.main{margin-top:50px;margin-bottom:80px;float:left;width:100%;padding-right: 20px;}
+
+
+
+

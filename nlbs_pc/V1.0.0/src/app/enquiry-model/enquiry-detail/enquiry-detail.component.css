@@ -1,0 +1,35 @@
+.upload2 {
+  cursor: pointer;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  margin-top: 20px;
+}
+.enquire-result{
+  font-size: 18px;
+  color: #FFA00A;
+  font-weight: bold;
+}
+.goto-person{
+  width: 24px;
+  height: 21px;
+  /*border: 1px solid #000;*/
+  position: relative;
+  background: url("../../../assets/img/gotoPerson.png")center/cover;
+}
+.goto-person:hover .goto-person-title{
+  visibility: visible;
+}
+.goto-person-title{
+  position: absolute;
+  top: -13px;
+  height: 17px;
+  line-height: 17px;
+  word-break: keep-all;
+  white-space: nowrap;
+  border: 1px solid red;
+  background: #F7C4C4;
+  visibility: hidden;
+}
+
+

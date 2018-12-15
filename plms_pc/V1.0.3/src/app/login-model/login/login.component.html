@@ -1,0 +1,27 @@
+<div class="bg">
+</div>
+<!--  登录页面显示  -->
+<!--<img src="{{imgSrc}}" alt="" class="bg">-->
+<div class="login-container">
+  <div class="logo-title">
+    <div class="logo float-left"></div>
+    <p class="logo-subtitle float-right">贷后管理系统</p>
+  </div>
+  <div class="logo-phone">
+    <i></i>
+    <!--  设置输入类型只能为数字，并且最长是11位 -->
+    <!--<input type="number" placeholder="手机号" class="q_num" id="q_num" [ngClass]="{errborder:isPhone}" oninput="if(value.length>11)value=value.slice(0,11)">-->
+    <input type="number" placeholder="手机号" class="q_num" id="q_num" (keyup.enter)="submit()"  [ngClass]="{errborder:isPhone}"  oninput="if(value.length>11)value=value.slice(0,11)">
+  </div>
+  <div class="logo-lock">
+    <i></i>
+    <input type="text" onfocus="this.type='password'" placeholder="密码" class="q_pass" (keyup.enter)="submit()" [ngClass]="{errborder:isLock}" maxlength="16">
+  </div>
+  <div class="sql">
+    <div id="checkImg" class="float-left" (click)="check()"></div>
+    <div class="float-left remember">记住登录名</div>
+  </div>
+  <div id="errorMsg"></div>
+  <button class="logo-submit" (click)="submit()">登&nbsp;&nbsp; &nbsp; &nbsp;录</button>
+</div>
+

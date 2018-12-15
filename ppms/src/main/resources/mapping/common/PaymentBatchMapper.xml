@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.ppms.dao.common.PaymentBatchMapper" >
+  <resultMap id="BaseResultMap" type="com.vilio.ppms.pojo.common.PaymentBatch" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sys_serno" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="trans_type" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="req_file_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="req_file_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="total_count" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="total_amount" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="succ_count" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="succ_amount" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="fail_count" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="fail_amount" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="unsettled_count" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="unsettled_amount" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="batch_status" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="resp_file_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="resp_file_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="resp_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="resp_count" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="resp_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="resp_msg" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="status" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="remark1" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, sys_serno, trans_type, req_file_name, req_file_id, total_count, total_amount, 
+    succ_count, succ_amount, fail_count, fail_amount, unsettled_count, unsettled_amount, 
+    batch_status, resp_file_name, resp_file_id, resp_time, resp_count, resp_code, resp_msg, 
+    status, create_time, update_time, remark1
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from ppms_payment_batch
+    where code = #{code,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ppms_payment_batch
+    where code = #{code,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.vilio.ppms.pojo.common.PaymentBatch" >
+    insert into ppms_payment_batch (id, code, sys_serno, 
+      trans_type, req_file_name, req_file_id, 
+      total_count, total_amount, succ_count, 
+      succ_amount, fail_count, fail_amount, 
+      unsettled_count, unsettled_amount, batch_status, 
+      resp_file_name, resp_file_id, resp_time, 
+      resp_count, resp_code, resp_msg, 
+      status, create_time, update_time, 
+      remark1)
+    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{sysSerno,jdbcType=VARCHAR}, 
+      #{transType,jdbcType=VARCHAR}, #{reqFileName,jdbcType=VARCHAR}, #{reqFileId,jdbcType=VARCHAR}, 
+      #{totalCount,jdbcType=BIGINT}, #{totalAmount,jdbcType=DECIMAL}, #{succCount,jdbcType=BIGINT}, 
+      #{succAmount,jdbcType=DECIMAL}, #{failCount,jdbcType=BIGINT}, #{failAmount,jdbcType=DECIMAL}, 
+      #{unsettledCount,jdbcType=BIGINT}, #{unsettledAmount,jdbcType=DECIMAL}, #{batchStatus,jdbcType=VARCHAR}, 
+      #{respFileName,jdbcType=VARCHAR}, #{respFileId,jdbcType=VARCHAR}, #{respTime,jdbcType=TIMESTAMP}, 
+      #{respCount,jdbcType=BIGINT}, #{respCode,jdbcType=VARCHAR}, #{respMsg,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{remark1,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.vilio.ppms.pojo.common.PaymentBatch" >
+    insert into ppms_payment_batch
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="sysSerno != null" >
+        sys_serno,
+      </if>
+      <if test="transType != null" >
+        trans_type,
+      </if>
+      <if test="reqFileName != null" >
+        req_file_name,
+      </if>
+      <if test="reqFileId != null" >
+        req_file_id,
+      </if>
+      <if test="totalCount != null" >
+        total_count,
+      </if>
+      <if test="totalAmount != null" >
+        total_amount,
+      </if>
+      <if test="succCount != null" >
+        succ_count,
+      </if>
+      <if test="succAmount != null" >
+        succ_amount,
+      </if>
+      <if test="failCount != null" >
+        fail_count,
+      </if>
+      <if test="failAmount != null" >
+        fail_amount,
+      </if>
+      <if test="unsettledCount != null" >
+        unsettled_count,
+      </if>
+      <if test="unsettledAmount != null" >
+        unsettled_amount,
+      </if>
+      <if test="batchStatus != null" >
+        batch_status,
+      </if>
+      <if test="respFileName != null" >
+        resp_file_name,
+      </if>
+      <if test="respFileId != null" >
+        resp_file_id,
+      </if>
+      <if test="respTime != null" >
+        resp_time,
+      </if>
+      <if test="respCount != null" >
+        resp_count,
+      </if>
+      <if test="respCode != null" >
+        resp_code,
+      </if>
+      <if test="respMsg != null" >
+        resp_msg,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="remark1 != null" >
+        remark1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="sysSerno != null" >
+        #{sysSerno,jdbcType=VARCHAR},
+      </if>
+      <if test="transType != null" >
+        #{transType,jdbcType=VARCHAR},
+      </if>
+      <if test="reqFileName != null" >
+        #{reqFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="reqFileId != null" >
+        #{reqFileId,jdbcType=VARCHAR},
+      </if>
+      <if test="totalCount != null" >
+        #{totalCount,jdbcType=BIGINT},
+      </if>
+      <if test="totalAmount != null" >
+        #{totalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="succCount != null" >
+        #{succCount,jdbcType=BIGINT},
+      </if>
+      <if test="succAmount != null" >
+        #{succAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="failCount != null" >
+        #{failCount,jdbcType=BIGINT},
+      </if>
+      <if test="failAmount != null" >
+        #{failAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="unsettledCount != null" >
+        #{unsettledCount,jdbcType=BIGINT},
+      </if>
+      <if test="unsettledAmount != null" >
+        #{unsettledAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="batchStatus != null" >
+        #{batchStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="respFileName != null" >
+        #{respFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="respFileId != null" >
+        #{respFileId,jdbcType=VARCHAR},
+      </if>
+      <if test="respTime != null" >
+        #{respTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="respCount != null" >
+        #{respCount,jdbcType=BIGINT},
+      </if>
+      <if test="respCode != null" >
+        #{respCode,jdbcType=VARCHAR},
+      </if>
+      <if test="respMsg != null" >
+        #{respMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark1 != null" >
+        #{remark1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vilio.ppms.pojo.common.PaymentBatch" >
+    update ppms_payment_batch
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="sysSerno != null" >
+        sys_serno = #{sysSerno,jdbcType=VARCHAR},
+      </if>
+      <if test="transType != null" >
+        trans_type = #{transType,jdbcType=VARCHAR},
+      </if>
+      <if test="reqFileName != null" >
+        req_file_name = #{reqFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="reqFileId != null" >
+        req_file_id = #{reqFileId,jdbcType=VARCHAR},
+      </if>
+      <if test="totalCount != null" >
+        total_count = #{totalCount,jdbcType=BIGINT},
+      </if>
+      <if test="totalAmount != null" >
+        total_amount = #{totalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="succCount != null" >
+        succ_count = #{succCount,jdbcType=BIGINT},
+      </if>
+      <if test="succAmount != null" >
+        succ_amount = #{succAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="failCount != null" >
+        fail_count = #{failCount,jdbcType=BIGINT},
+      </if>
+      <if test="failAmount != null" >
+        fail_amount = #{failAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="unsettledCount != null" >
+        unsettled_count = #{unsettledCount,jdbcType=BIGINT},
+      </if>
+      <if test="unsettledAmount != null" >
+        unsettled_amount = #{unsettledAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="batchStatus != null" >
+        batch_status = #{batchStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="respFileName != null" >
+        resp_file_name = #{respFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="respFileId != null" >
+        resp_file_id = #{respFileId,jdbcType=VARCHAR},
+      </if>
+      <if test="respTime != null" >
+        resp_time = #{respTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="respCount != null" >
+        resp_count = #{respCount,jdbcType=BIGINT},
+      </if>
+      <if test="respCode != null" >
+        resp_code = #{respCode,jdbcType=VARCHAR},
+      </if>
+      <if test="respMsg != null" >
+        resp_msg = #{respMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark1 != null" >
+        remark1 = #{remark1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vilio.ppms.pojo.common.PaymentBatch" >
+    update ppms_payment_batch
+    set code = #{code,jdbcType=VARCHAR},
+      sys_serno = #{sysSerno,jdbcType=VARCHAR},
+      trans_type = #{transType,jdbcType=VARCHAR},
+      req_file_name = #{reqFileName,jdbcType=VARCHAR},
+      req_file_id = #{reqFileId,jdbcType=VARCHAR},
+      total_count = #{totalCount,jdbcType=BIGINT},
+      total_amount = #{totalAmount,jdbcType=DECIMAL},
+      succ_count = #{succCount,jdbcType=BIGINT},
+      succ_amount = #{succAmount,jdbcType=DECIMAL},
+      fail_count = #{failCount,jdbcType=BIGINT},
+      fail_amount = #{failAmount,jdbcType=DECIMAL},
+      unsettled_count = #{unsettledCount,jdbcType=BIGINT},
+      unsettled_amount = #{unsettledAmount,jdbcType=DECIMAL},
+      batch_status = #{batchStatus,jdbcType=VARCHAR},
+      resp_file_name = #{respFileName,jdbcType=VARCHAR},
+      resp_file_id = #{respFileId,jdbcType=VARCHAR},
+      resp_time = #{respTime,jdbcType=TIMESTAMP},
+      resp_count = #{respCount,jdbcType=BIGINT},
+      resp_code = #{respCode,jdbcType=VARCHAR},
+      resp_msg = #{respMsg,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      remark1 = #{remark1,jdbcType=VARCHAR}
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+</mapper>

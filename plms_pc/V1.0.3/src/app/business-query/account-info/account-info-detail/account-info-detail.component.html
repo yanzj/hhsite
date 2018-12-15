@@ -1,0 +1,101 @@
+<div class="row">
+  <ol class="breadcrumbNav col-12" >
+    <li (click)="querySection()"><a>账户信息查询</a><i>></i></li>
+    <li class="active">查看账户信息</li>
+  </ol>
+</div>
+
+<div class="row margin-bottom-20">
+  <div class="col-12">
+    <hr class="breadcrumbNavLine">
+  </div>
+</div>
+
+<app-professional-serial [professionalData]="professionalData"></app-professional-serial>
+
+<div class="row">
+  <div class="filed-name col-2">城市：</div>
+  <div class="filed-text col-2">{{currentItemLists.cityName}}</div>
+  <div class="filed-name col-2">渠道：</div>
+  <div class="filed-text col-2">{{currentItemLists.distributorName}}</div>
+  <div class="filed-name col-2">业务经理：</div>
+  <div class="filed-text col-2">{{currentItemLists.agentName}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">主借款人：</div>
+  <div class="filed-text col-2">{{currentItemLists.customerName}}</div>
+  <div class="filed-name col-2">资方：</div>
+  <div class="filed-text col-2">{{currentItemLists.fundSideName}}</div>
+  <div class="filed-name col-2">利息是否代收代付：</div>
+  <div class="filed-text col-2">{{currentItemLists.isInterestInstead=='1'?'是':'否'}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">宏获还款账户余额：</div>
+  <div class="filed-text col-2">{{currentItemLists.hongHuoAmount|lastNoneZero|keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">户名：</div>
+  <div class="filed-text col-6">{{currentItemLists.hongHuoAcountName}}</div>
+
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">账号：</div>
+  <div class="filed-text col-2">{{currentItemLists.hongHuoAccountNo}}</div>
+  <div class="filed-name col-2">开户行：</div>
+  <div class="filed-text col-6">{{currentItemLists.hongHuoBank}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">宏获保证金账户余额：</div>
+  <div class="filed-text col-2">{{currentItemLists.hongHuoBailAmount|lastNoneZero|keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">户名：</div>
+  <div class="filed-text col-6">{{currentItemLists.hongHuoBailAcountName}}</div>
+
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">账号：</div>
+  <div class="filed-text col-2">{{currentItemLists.hongHuoBailAccountNo}}</div>
+  <div class="filed-name col-2">开户行：</div>
+  <div class="filed-text col-6">{{currentItemLists.hongHuoBailBank}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">资方还款账户余额：</div>
+  <div class="filed-text col-2">{{currentItemLists.fundSideAmount|lastNoneZero|keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">户名：</div>
+  <div class="filed-text col-2">{{currentItemLists.fundSideAcountName }}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">账号：</div>
+  <div class="filed-text col-2">{{currentItemLists.fundSideAccountNo}}</div>
+  <div class="filed-name col-2">开户行：</div>
+  <div class="filed-text col-2">{{currentItemLists.fundSideBank}}</div>
+</div>
+
+
+
+<div class="tab-menu margin-top-40">
+  <ul class="tab-menu-ul">
+    <li [ngClass]="{'current':this.tabHighLight=='07'?true:false}" (click)="this.dependHighLight('07')">
+      <a href="javascript:;">还款记录</a>
+    </li>
+    <li [ngClass]="{'current':this.tabHighLight=='08'?true:false}" (click)="this.dependHighLight('08')">
+      <a href="javascript:;">扣款记录</a>
+    </li>
+  </ul>
+</div>
+<div class="label_hr"></div>
+<div class="tab_box margin-top-20">
+  <!--扣款记录-->
+  <app-debit-record [contractCode]="contractCode" *ngIf="this.tabHighLight=='08'"></app-debit-record>
+
+  <!--还款记录-->
+  <app-payment-history [contractCode]="contractCode" [paymentDetailPageShow]="paymentDetailPageShow" *ngIf="this.tabHighLight=='07'" (event)="getData($event)"></app-payment-history >
+
+</div>
+
+<div class="orange-button col-2 padding-right-0 margin-top-40" (click)="querySection()">返回账户信息</div>
+

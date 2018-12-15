@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.ppms.dao.common.AccountTurnoverInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.vilio.ppms.pojo.common.AccountTurnoverInfo" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="merchant_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="amount" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="acount_flag" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="trans_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="trans_sys_serno" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="status" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="remark1" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, merchant_code, amount, acount_flag, trans_date, trans_sys_serno, status, 
+    create_time, update_time, remark1
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from ppms_account_turnover_info
+    where code = #{code,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ppms_account_turnover_info
+    where code = #{code,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.vilio.ppms.pojo.common.AccountTurnoverInfo" >
+    insert into ppms_account_turnover_info (id, code, merchant_code, 
+      amount, acount_flag, trans_date, 
+      trans_sys_serno, status, create_time, 
+      update_time, remark1)
+    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{merchantCode,jdbcType=VARCHAR}, 
+      #{amount,jdbcType=DECIMAL}, #{acountFlag,jdbcType=VARCHAR}, #{transDate,jdbcType=TIMESTAMP}, 
+      #{transSysSerno,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{remark1,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.vilio.ppms.pojo.common.AccountTurnoverInfo" >
+    insert into ppms_account_turnover_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="merchantCode != null" >
+        merchant_code,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="acountFlag != null" >
+        acount_flag,
+      </if>
+      <if test="transDate != null" >
+        trans_date,
+      </if>
+      <if test="transSysSerno != null" >
+        trans_sys_serno,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="remark1 != null" >
+        remark1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantCode != null" >
+        #{merchantCode,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="acountFlag != null" >
+        #{acountFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="transDate != null" >
+        #{transDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="transSysSerno != null" >
+        #{transSysSerno,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark1 != null" >
+        #{remark1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vilio.ppms.pojo.common.AccountTurnoverInfo" >
+    update ppms_account_turnover_info
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantCode != null" >
+        merchant_code = #{merchantCode,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="acountFlag != null" >
+        acount_flag = #{acountFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="transDate != null" >
+        trans_date = #{transDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="transSysSerno != null" >
+        trans_sys_serno = #{transSysSerno,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark1 != null" >
+        remark1 = #{remark1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vilio.ppms.pojo.common.AccountTurnoverInfo" >
+    update ppms_account_turnover_info
+    set code = #{code,jdbcType=VARCHAR},
+      merchant_code = #{merchantCode,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DECIMAL},
+      acount_flag = #{acountFlag,jdbcType=VARCHAR},
+      trans_date = #{transDate,jdbcType=TIMESTAMP},
+      trans_sys_serno = #{transSysSerno,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      remark1 = #{remark1,jdbcType=VARCHAR}
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+</mapper>

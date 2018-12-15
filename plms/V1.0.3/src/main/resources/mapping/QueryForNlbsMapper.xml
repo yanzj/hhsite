@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.QueryForNlbsDao" >
+    <select id="qryLoanList" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        select pci.code as "contractCode",
+        pci.contract_no as "contractNo",
+        pc.abbr_name as "cityName",
+        pd.abbr_name as "distributorName",
+        (select name from plms_customer t where t.apply_code = pai.code and t.is_main != '0') as "customerName",
+        pci.credit_start_date as "creditStartDate",
+        pad.total_quota as "totalQuota",
+        pci.credit_period as "creditPeriod",
+        pad.principal as "principal",
+        (case when (ifnull(pad.principal,0) &gt; 0 ) then
+        (case when ifnull((select count(*) from plms_repayment_schedule prs
+        where prs.detail_code = pad.code
+        and prs.status = '03'),0) &gt; 0 then '03'
+        else '02'
+        end)
+        else '01'
+        end)
+        as "loanStatusCode",
+        (case when (ifnull(pad.principal,0) &gt; 0 ) then
+        (case when ifnull((select count(*) from plms_repayment_schedule prs
+        where prs.detail_code = pad.code
+        and prs.status = '03'),0) &gt; 0 then '逾期'
+        else '正常'
+        end)
+        else '已结清'
+        end)
+        as "loanStatusName"
+        from plms_contract_info pci,
+        plms_apply_info pai,
+        plms_distributor pd,
+        plms_city pc,
+        plms_account_detail pad
+        where pci.apply_code = pai.code
+        and pai.distribute_code = pd.code
+        and pd.city_no = pc.code
+        and pci.code = pad.contract_code
+        and pci.status != '0'
+        and pai.status != '0'
+        and pd.status != '0'
+        and pc.status != '0'
+        and pad.status != '0'
+        <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+            and pc.code=#{cityCode,jdbcType=VARCHAR}
+        </if>
+
+        <if test='distributorList != null'>
+            AND pd.code IN
+            <foreach item="item" index="index" collection="distributorList" open="(" separator="," close=")" >
+                #{item.distributorCode}
+            </foreach >
+        </if>
+
+        <if test='agentList != null'>
+            AND (pai.agent_code IN
+            <foreach item="item" index="index" collection="agentList" open="(" separator="," close=")">
+                #{item.distributorCode}
+            </foreach>
+            OR pai.clerk IN
+            <foreach item="item" index="index" collection="agentList" open="(" separator="," close=")">
+                #{item.distributorCode}
+            </foreach>
+            )
+        </if>
+
+
+        <if test='distributorCode != null and distributorCode != "" and distributorCode != "null" and distributorCode != "undefined"'>
+            and pd.code=#{distributorCode,jdbcType=VARCHAR}
+        </if>
+        <if test='customerName != null and customerName != "" and customerName != "null" and customerName != "undefined"'>
+            and exists (select name from plms_customer t where t.apply_code = pai.code and t.name like concat('%', #{customerName,jdbcType=VARCHAR}, '%') )
+        </if>
+        <if test='creditStartDate != null and creditStartDate != "" and creditStartDate != "null" and creditStartDate != "undefined"'>
+            and pci.credit_start_date &gt;= date_format(#{creditStartDate,jdbcType=VARCHAR}, '%Y/%m/%d')
+        </if>
+        <if test='creditEndDate != null and creditEndDate != "" and creditEndDate != "null" and creditEndDate != "undefined"'>
+            and pci.credit_start_date &lt; date_add(date_format(#{creditEndDate,jdbcType=VARCHAR}, '%Y/%m/%d'),INTERVAL 1 DAY)
+        </if>
+        <if test='agentName != null and agentName != "" and agentName != "null" and agentName != "undefined"'>
+            and exists (select name from plms_agent t where t.name like concat('%', #{agentName,jdbcType=VARCHAR}, '%') and t.distributor_code = pd.code)
+        </if>
+        <if test='loanStatusCode == "01"'>
+            and ifnull(pad.principal,0) &lt;= 0
+        </if>
+        <if test='loanStatusCode == "02"'>
+            and (ifnull(pad.principal,0) &gt;= 0 and not exists (select 1 from plms_repayment_schedule prs
+            where prs.detail_code = pad.code
+            and prs.status = '03'))
+        </if>
+        <if test='loanStatusCode == "03"'>
+            and (ifnull(pad.principal,0) &gt;= 0 and exists (select 1 from plms_repayment_schedule prs
+            where prs.detail_code = pad.code
+            and prs.status = '03'))
+        </if>
+        <if test='loanStatusCode == "04"'>
+            and ifnull(pad.principal,0) &gt;= 0
+        </if>
+        order by pci.credit_start_date desc
+    </select>
+
+    <select id="queryRepaymentScheduleList" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        SELECT
+        pc.abbr_name as "cityName",
+        pd.abbr_name as "distributorName",
+        (select name from plms_agent t where t.code = pai.agent_code and t.status != '0') "agentName",
+        (select name from plms_customer t where t.apply_code = pai.code and t.is_main = '1' and t.status != '0') as "customerName",
+        prs.code AS "repaymentScheduleCode",
+        prs.repayment_date AS "repaymentDate",
+        prs.principal AS "principal",
+        prs.interest AS "interest",
+        prs.overdue AS "overdue",
+        prs.service_fee AS "serviceFee",
+        prs.service_fee_penalty AS "serviceFeePenalty",
+        prs.bail AS "bail",
+        prs.bail_penalty AS "bailPenalty",
+        prs.amount AS "amount",
+        prs.status AS "loanStatusCode",
+        (
+        CASE
+        WHEN (prs.status = '01') THEN '已结清'
+        WHEN (prs.status = '02') THEN  '正常'
+        WHEN (prs.status = '03') THEN  '逾期'
+        END
+        ) AS "loanStatusName"
+        FROM
+        plms_repayment_schedule prs
+        JOIN plms_account_detail pad ON prs.detail_code = pad.code and pad.status != '0'
+        JOIN plms_contract_info pci ON pad.contract_code = pci.code and pci.status != '0'
+        JOIN plms_apply_interesting pain ON pain.contract_code = pci.code and pain.status != '0'
+        JOIN plms_apply_info pai ON pci.apply_code = pai.code and pai.status != '0'
+        JOIN plms_distributor pd ON pai.distribute_code = pd.code and pd.status != '0'
+        JOIN plms_city pc ON pd.city_no = pc.code and pc.status != '0'
+        WHERE
+        prs.STATUS != '00'
+
+        <if test='distributorList != null'>
+            AND pd.code IN
+            <foreach item="item" index="index" collection="distributorList" open="(" separator="," close=")" >
+                #{item.distributorCode}
+            </foreach >
+        </if>
+
+        <if test='agentList != null'>
+            AND (pai.agent_code IN
+            <foreach item="item" index="index" collection="agentList" open="(" separator="," close=")">
+                #{item.distributorCode}
+            </foreach>
+            OR pai.clerk IN
+            <foreach item="item" index="index" collection="agentList" open="(" separator="," close=")">
+                #{item.distributorCode}
+            </foreach>
+            )
+        </if>
+
+        <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+            and pc.code=#{cityCode,jdbcType=VARCHAR}
+        </if>
+        <if test='distributorCode != null and distributorCode != "" and distributorCode != "null" and distributorCode != "undefined"'>
+            and pd.code=#{distributorCode,jdbcType=VARCHAR}
+        </if>
+        <if test='customerName != null and customerName != "" and customerName != "null" and customerName != "undefined"'>
+            and exists (select name from plms_customer t where t.apply_code = pai.code and t.name like concat('%', #{customerName,jdbcType=VARCHAR}, '%') )
+        </if>
+        <if test='repaymentStartDate != null and repaymentStartDate != "" and repaymentStartDate != "null" and repaymentStartDate != "undefined"'>
+            and prs.repayment_date &gt;= date_format(#{repaymentStartDate,jdbcType=VARCHAR}, '%Y/%m/%d')
+        </if>
+        <if test='repaymentEndDate != null and repaymentEndDate != "" and repaymentEndDate != "null" and repaymentEndDate != "undefined"'>
+            and prs.repayment_date &lt; date_add(date_format(#{repaymentEndDate,jdbcType=VARCHAR}, '%Y/%m/%d'),INTERVAL 1 DAY)
+        </if>
+        <if test='agentName != null and agentName != "" and agentName != "null" and agentName != "undefined"'>
+            and exists (select name from plms_agent t where t.name like concat('%', #{agentName,jdbcType=VARCHAR}, '%') and t.distributor_code = pd.code)
+        </if>
+        <if test='loanStatusCode == "01"'>
+            and prs.status = '01'
+        </if>
+        <if test='loanStatusCode == "02"'>
+            and prs.status = '02'
+        </if>
+        <if test='loanStatusCode == "03"'>
+            and prs.status = '03'
+        </if>
+        <if test='loanStatusCode == "04"'>
+            and prs.status in( '02','03')
+        </if>
+        <if test='payeeCode == "00"'>
+            and ((pain.is_interest_Instead = '1' and (prs.overdue &gt; 0 or prs.interest &gt; 0))
+            or (pain.is_interest_Instead = '0' and (prs.overdue &gt; 0 or prs.service_fee &gt; 0 or prs.service_fee_penalty &gt; 0)))
+        </if>
+        <if test='payeeCode == "01"'>
+            and ((pain.is_interest_Instead = '1' and prs.principal &gt; 0)
+            or (pain.is_interest_Instead = '0' and (prs.overdue &gt; 0 or prs.principal &gt; 0)))
+        </if>
+        order by prs.repayment_date desc
+
+    </select>
+
+    <select id="queryOverDueRepaymentScheduleList" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        SELECT      prs.code as "repaymentScheduleCode",/*还款计划唯一标识*/
+        pc.abbr_name as "cityName",/*城市名称*/
+        pd.abbr_name as "distributorName",/*渠道名称*/
+        (select name from plms_customer t where t.apply_code = pai.code and t.is_main = '1' and t.status != '0') as "customerName",/*借款人*/
+        prs.repayment_date as "repaymentScheduleCode",/*还款日期*/
+        (case when (pain.is_interest_Instead = 0 ) then IFNULL(prs.principal,0) + IFNULL(prs.interest,0)
+        when (pain.is_interest_Instead = 1 ) then IFNULL(prs.principal,0)
+        end) as "fundSideAmount",/*应还资方金额*/
+        (case when (pain.is_interest_Instead = 0 ) then IFNULL(prs.repaymented_principal,0) + IFNULL(prs.repaymented_interest,0)
+        when (pain.is_interest_Instead = 1 ) then IFNULL(prs.repaymented_principal,0)
+        end) as "repaymentedFundSideAmount",/*已还资方金额*/
+        (case when (pain.is_interest_Instead = 0 ) then IFNULL(prs.service_fee,0) + IFNULL(prs.service_fee_penalty,0) + IFNULL(prs.bail,0) + IFNULL(prs.overdue,0) + IFNULL(prs.bail_penalty,0)
+        when (pain.is_interest_Instead = 1 ) then IFNULL(prs.interest,0) + IFNULL(prs.bail,0) + IFNULL(prs.overdue,0) + IFNULL(prs.bail_penalty,0)
+        end) as "hongHuoAmount",/*应还宏获金额*/
+        (case when (pain.is_interest_Instead = 0 ) then IFNULL(prs.repaymented_service_fee,0) + IFNULL(prs.repaymented_service_fee_penalty,0)+ IFNULL(prs.repaymented_bail,0) + IFNULL(prs.repaymented_overdue,0) + IFNULL(prs.repaymented_bail_penalty,0)
+        when (pain.is_interest_Instead = 1 ) then IFNULL(prs.repaymented_interest,0) + IFNULL(prs.repaymented_bail,0) + IFNULL(prs.repaymented_overdue,0) + IFNULL(prs.repaymented_bail_penalty,0)
+        end) as "repaymentedHongHuoAmount",/*已还宏获金额*/
+        (SELECT (case when IFNULL(max(prsd.total_overdue_days),0) > IFNULL(max(prsd.service_fee_total_overdue_days),0) then IFNULL(max(prsd.total_overdue_days),0)
+        else IFNULL(max(prsd.service_fee_total_overdue_days),0)
+        end)
+        from plms_repayment_schedule_detail prsd
+        where prsd.code = prs.code
+        and prsd.status != '00') as "overdueDays"/*逾期天数*/
+        FROM plms_contract_info pci,
+        plms_apply_info pai,
+        plms_distributor pd,
+        plms_city pc,
+        plms_account_detail pad,
+        plms_repayment_schedule prs,
+        plms_apply_interesting pain
+        where pci.apply_code = pai.code
+        and pai.distribute_code = pd.code
+        and pd.city_no = pc.code
+        and pci.code = pad.contract_code
+        and prs.detail_code = pad.code
+        and pain.contract_code = pci.code
+        and pci.status != '0'
+        and pai.status != '0'
+        and pd.status != '0'
+        and pc.status != '0'
+        and pad.status != '0'
+        and prs.status != '00'
+        and pain.status != '0'
+        and prs.status = '03'
+        <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+            and pc.code=#{cityCode,jdbcType=VARCHAR}
+        </if>
+        <if test='distributorList != null'>
+            AND pd.code IN
+            <foreach item="item" index="index" collection="distributorList" open="(" separator="," close=")" >
+                #{item.distributorCode}
+            </foreach >
+        </if>
+
+        <if test='agentList != null'>
+            AND (pai.agent_code IN
+            <foreach item="item" index="index" collection="agentList" open="(" separator="," close=")">
+                #{item.distributorCode}
+            </foreach>
+            OR pai.clerk IN
+            <foreach item="item" index="index" collection="agentList" open="(" separator="," close=")">
+                #{item.distributorCode}
+            </foreach>
+            )
+        </if>
+
+
+        <if test='distributorCode != null and distributorCode != "" and distributorCode != "null" and distributorCode != "undefined"'>
+            and pd.code=#{distributorCode,jdbcType=VARCHAR}
+        </if>
+        <if test='customerName != null and customerName != "" and customerName != "null" and customerName != "undefined"'>
+            and exists (select name from plms_customer t where t.apply_code = pai.code and t.name like concat('%', #{customerName,jdbcType=VARCHAR}, '%') )
+        </if>
+        <if test='repaymentStartDate != null and repaymentStartDate != "" and repaymentStartDate != "null" and repaymentStartDate != "undefined"'>
+            and prs.repayment_date &gt;= date_format(#{repaymentStartDate,jdbcType=VARCHAR}, '%Y/%m/%d')
+        </if>
+        <if test='repaymentEndDate != null and repaymentEndDate != "" and repaymentEndDate != "null" and repaymentEndDate != "undefined"'>
+            and prs.repayment_date &lt; date_add(date_format(#{repaymentEndDate,jdbcType=VARCHAR}, '%Y/%m/%d'),INTERVAL 1 DAY)
+        </if>
+        <if test='agentName != null and agentName != "" and agentName != "null" and agentName != "undefined"'>
+            and exists (select name from plms_agent t where t.name like concat('%', #{agentName,jdbcType=VARCHAR}, '%') and t.distributor_code = pd.code)
+        </if>
+        <if test='repaymentScheduleCode != null and repaymentScheduleCode != "" and repaymentScheduleCode != "null" and repaymentScheduleCode != "undefined"'>
+            and prs.status = #{repaymentScheduleCode,jdbcType=VARCHAR}
+        </if>
+        <if test='overdueDaysStart != null and overdueDaysStart != "" and overdueDaysStart != "null" and overdueDaysStart != "undefined"'>
+            and (SELECT (case when IFNULL(max(prsd.total_overdue_days),0) > IFNULL(max(prsd.service_fee_total_overdue_days),0) then IFNULL(max(prsd.total_overdue_days),0)
+            else IFNULL(max(prsd.service_fee_total_overdue_days),0)
+            end)
+            from plms_repayment_schedule_detail prsd
+            where prsd.code = prs.code
+            and prsd.status != '00') &gt;= #{overdueDaysStart,jdbcType=VARCHAR}
+        </if>
+        <if test='overdueDaysEnd != null and overdueDaysEnd != "" and overdueDaysEnd != "null" and overdueDaysEnd != "undefined"'>
+            and (SELECT (case when IFNULL(max(prsd.total_overdue_days),0) > IFNULL(max(prsd.service_fee_total_overdue_days),0) then IFNULL(max(prsd.total_overdue_days),0)
+            else IFNULL(max(prsd.service_fee_total_overdue_days),0)
+            end)
+            from plms_repayment_schedule_detail prsd
+            where prsd.code = prs.code
+            and prsd.status != '00') &lt;= #{overdueDaysEnd,jdbcType=VARCHAR}
+        </if>
+        order by prs.repayment_date desc
+
+    </select>
+
+</mapper>

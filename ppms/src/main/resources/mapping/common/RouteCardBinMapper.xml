@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.ppms.dao.common.RouteCardBinMapper" >
+  <resultMap id="BaseResultMap" type="com.vilio.ppms.pojo.common.RouteCardBin" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="route_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="issuer_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="single_min_amount" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="single_max_amount" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="day_max_amount" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="month_max_amount" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="day_max_count" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="month_max_count" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="trans_type" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="pc_flag" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="status" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="remark1" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, route_code, issuer_code, single_min_amount, single_max_amount, day_max_amount, 
+    month_max_amount, day_max_count, month_max_count, trans_type, pc_flag, status, create_time, 
+    update_time, remark1
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from ppms_route_card_bin
+    where code = #{code,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ppms_route_card_bin
+    where code = #{code,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.vilio.ppms.pojo.common.RouteCardBin" >
+    insert into ppms_route_card_bin (id, code, route_code, 
+      issuer_code, single_min_amount, single_max_amount, 
+      day_max_amount, month_max_amount, day_max_count, 
+      month_max_count, trans_type, pc_flag, 
+      status, create_time, update_time, 
+      remark1)
+    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{routeCode,jdbcType=VARCHAR}, 
+      #{issuerCode,jdbcType=VARCHAR}, #{singleMinAmount,jdbcType=DECIMAL}, #{singleMaxAmount,jdbcType=DECIMAL}, 
+      #{dayMaxAmount,jdbcType=DECIMAL}, #{monthMaxAmount,jdbcType=DECIMAL}, #{dayMaxCount,jdbcType=BIGINT}, 
+      #{monthMaxCount,jdbcType=BIGINT}, #{transType,jdbcType=VARCHAR}, #{pcFlag,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{remark1,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.vilio.ppms.pojo.common.RouteCardBin" >
+    insert into ppms_route_card_bin
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="routeCode != null" >
+        route_code,
+      </if>
+      <if test="issuerCode != null" >
+        issuer_code,
+      </if>
+      <if test="singleMinAmount != null" >
+        single_min_amount,
+      </if>
+      <if test="singleMaxAmount != null" >
+        single_max_amount,
+      </if>
+      <if test="dayMaxAmount != null" >
+        day_max_amount,
+      </if>
+      <if test="monthMaxAmount != null" >
+        month_max_amount,
+      </if>
+      <if test="dayMaxCount != null" >
+        day_max_count,
+      </if>
+      <if test="monthMaxCount != null" >
+        month_max_count,
+      </if>
+      <if test="transType != null" >
+        trans_type,
+      </if>
+      <if test="pcFlag != null" >
+        pc_flag,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="remark1 != null" >
+        remark1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="routeCode != null" >
+        #{routeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="issuerCode != null" >
+        #{issuerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="singleMinAmount != null" >
+        #{singleMinAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="singleMaxAmount != null" >
+        #{singleMaxAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="dayMaxAmount != null" >
+        #{dayMaxAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="monthMaxAmount != null" >
+        #{monthMaxAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="dayMaxCount != null" >
+        #{dayMaxCount,jdbcType=BIGINT},
+      </if>
+      <if test="monthMaxCount != null" >
+        #{monthMaxCount,jdbcType=BIGINT},
+      </if>
+      <if test="transType != null" >
+        #{transType,jdbcType=VARCHAR},
+      </if>
+      <if test="pcFlag != null" >
+        #{pcFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark1 != null" >
+        #{remark1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vilio.ppms.pojo.common.RouteCardBin" >
+    update ppms_route_card_bin
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="routeCode != null" >
+        route_code = #{routeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="issuerCode != null" >
+        issuer_code = #{issuerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="singleMinAmount != null" >
+        single_min_amount = #{singleMinAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="singleMaxAmount != null" >
+        single_max_amount = #{singleMaxAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="dayMaxAmount != null" >
+        day_max_amount = #{dayMaxAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="monthMaxAmount != null" >
+        month_max_amount = #{monthMaxAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="dayMaxCount != null" >
+        day_max_count = #{dayMaxCount,jdbcType=BIGINT},
+      </if>
+      <if test="monthMaxCount != null" >
+        month_max_count = #{monthMaxCount,jdbcType=BIGINT},
+      </if>
+      <if test="transType != null" >
+        trans_type = #{transType,jdbcType=VARCHAR},
+      </if>
+      <if test="pcFlag != null" >
+        pc_flag = #{pcFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark1 != null" >
+        remark1 = #{remark1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vilio.ppms.pojo.common.RouteCardBin" >
+    update ppms_route_card_bin
+    set code = #{code,jdbcType=VARCHAR},
+      route_code = #{routeCode,jdbcType=VARCHAR},
+      issuer_code = #{issuerCode,jdbcType=VARCHAR},
+      single_min_amount = #{singleMinAmount,jdbcType=DECIMAL},
+      single_max_amount = #{singleMaxAmount,jdbcType=DECIMAL},
+      day_max_amount = #{dayMaxAmount,jdbcType=DECIMAL},
+      month_max_amount = #{monthMaxAmount,jdbcType=DECIMAL},
+      day_max_count = #{dayMaxCount,jdbcType=BIGINT},
+      month_max_count = #{monthMaxCount,jdbcType=BIGINT},
+      trans_type = #{transType,jdbcType=VARCHAR},
+      pc_flag = #{pcFlag,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      remark1 = #{remark1,jdbcType=VARCHAR}
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,804 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!--
+******************************************************************************
+* 数据库表：BPS_HOUSE_INFO
+* 表的名称：房屋信息表
+* 对应实体：com.vilio.bps.commonMapper.pojo.BpsHouseInfo
+* 开发日期：2017-06-12
+* 技术服务：www.fwjava.com
+******************************************************************************
+-->
+<mapper namespace="com.vilio.bps.commonMapper.dao.IBpsHouseInfoMapper">
+
+    <!--
+    **************************************************************************
+    * 1.新增一条数据
+    * 注: 根据Bean实体执行新增操作.
+    **************************************************************************
+    -->
+    <insert id="getInsert"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsHouseInfo"
+            useGeneratedKeys="true"
+            keyProperty="id">
+    
+            INSERT   /* getInsert+@com.vilio.bps.commonMapper.sql.BpsHouseInfoMapper.xml */ 
+              INTO   BPS_HOUSE_INFO         /* 房屋信息表 */ 
+                    (
+                     CODE                   /*  */ 
+                    ,CITY_CODE              /* 关联城市 */ 
+                    ,CITY_NAME              /* 关联城市名称 */ 
+                    ,PLOTS_CODE             /* 关联小区id(各估价公司不同) */ 
+                    ,PLOT_NAME              /* 小区名称 */ 
+                    ,ADDRESS                /* 房屋地址 */ 
+                    ,UNIT_CODE              /* 楼栋id(各估价公司不同) */ 
+                    ,UNIT_NO                /* 楼栋号 */ 
+                    ,ROOM_CODE              /* 房间id(各估价公司不同) */ 
+                    ,ROOM_NO                /* 房号 */ 
+                    ,AREA                   /* 房屋面积 */ 
+                    ,HOUSE_TYPE             /* 房屋类型(别墅，公寓) */ 
+                    ,TOTAL_FLOOR            /* 总楼层 */ 
+                    ,CURRENT_FLOOR          /* 当前楼层 */ 
+                    ,COMPANY_CODE           /* 询价公司编号 */ 
+                    ,STATUS                 /* 状态(1可用，0不可用) */ 
+                    ,DATE_CREATED           /* 数据创建时间 */ 
+                    ,DATE_MODIFIED          /* 数据修改时间 */ 
+                    )
+            VALUES  (
+                     #{code}                /*  */ 
+                    ,#{cityCode}            /* 关联城市 */ 
+                    ,#{cityName}            /* 关联城市名称 */ 
+                    ,#{plotsCode}           /* 关联小区id(各估价公司不同) */ 
+                    ,#{plotName}            /* 小区名称 */ 
+                    ,#{address}             /* 房屋地址 */ 
+                    ,#{unitCode}            /* 楼栋id(各估价公司不同) */ 
+                    ,#{unitNo}              /* 楼栋号 */ 
+                    ,#{roomCode}            /* 房间id(各估价公司不同) */ 
+                    ,#{roomNo}              /* 房号 */ 
+                    ,#{area}                /* 房屋面积 */ 
+                    ,#{houseType}           /* 房屋类型(别墅，公寓) */ 
+                    ,#{totalFloor}          /* 总楼层 */ 
+                    ,#{currentFloor}        /* 当前楼层 */ 
+                    ,#{companyCode}         /* 询价公司编号 */ 
+                    ,#{status}              /* 状态(1可用，0不可用) */ 
+                    ,#{dateCreated}         /* 数据创建时间 */ 
+                    ,#{dateModified}        /* 数据修改时间 */ 
+                    )
+         
+    </insert>
+    
+    <insert id="getInsertPrmMap"
+            parameterType="java.util.HashMap"
+            useGeneratedKeys="true"
+            keyProperty="id">
+    
+            INSERT   /* getInsertPrmMap+@com.vilio.bps.commonMapper.sql.BpsHouseInfoMapper.xml */ 
+              INTO   BPS_HOUSE_INFO         /* 房屋信息表 */ 
+                    (
+                     CODE                   /*  */ 
+                    ,CITY_CODE              /* 关联城市 */ 
+                    ,CITY_NAME              /* 关联城市名称 */ 
+                    ,PLOTS_CODE             /* 关联小区id(各估价公司不同) */ 
+                    ,PLOT_NAME              /* 小区名称 */ 
+                    ,ADDRESS                /* 房屋地址 */ 
+                    ,UNIT_CODE              /* 楼栋id(各估价公司不同) */ 
+                    ,UNIT_NO                /* 楼栋号 */ 
+                    ,ROOM_CODE              /* 房间id(各估价公司不同) */ 
+                    ,ROOM_NO                /* 房号 */ 
+                    ,AREA                   /* 房屋面积 */ 
+                    ,HOUSE_TYPE             /* 房屋类型(别墅，公寓) */ 
+                    ,TOTAL_FLOOR            /* 总楼层 */ 
+                    ,CURRENT_FLOOR          /* 当前楼层 */ 
+                    ,COMPANY_CODE           /* 询价公司编号 */ 
+                    ,STATUS                 /* 状态(1可用，0不可用) */ 
+                    ,DATE_CREATED           /* 数据创建时间 */ 
+                    ,DATE_MODIFIED          /* 数据修改时间 */ 
+                    )
+            VALUES  (
+                     #{code}                /*  */ 
+                    ,#{cityCode}            /* 关联城市 */ 
+                    ,#{cityName}            /* 关联城市名称 */ 
+                    ,#{plotsCode}           /* 关联小区id(各估价公司不同) */ 
+                    ,#{plotName}            /* 小区名称 */ 
+                    ,#{address}             /* 房屋地址 */ 
+                    ,#{unitCode}            /* 楼栋id(各估价公司不同) */ 
+                    ,#{unitNo}              /* 楼栋号 */ 
+                    ,#{roomCode}            /* 房间id(各估价公司不同) */ 
+                    ,#{roomNo}              /* 房号 */ 
+                    ,#{area}                /* 房屋面积 */ 
+                    ,#{houseType}           /* 房屋类型(别墅，公寓) */ 
+                    ,#{totalFloor}          /* 总楼层 */ 
+                    ,#{currentFloor}        /* 当前楼层 */ 
+                    ,#{companyCode}         /* 询价公司编号 */ 
+                    ,#{status}              /* 状态(1可用，0不可用) */ 
+                    ,#{dateCreated}         /* 数据创建时间 */ 
+                    ,#{dateModified}        /* 数据修改时间 */ 
+                    )
+         
+    </insert>
+
+
+    <!--
+    **************************************************************************
+    * 2.删除一条数据
+    * 注: 根据Bean实体的主键ID执行删除操作.
+    **************************************************************************
+    -->
+    <delete id="getDelete"
+            parameterType="java.lang.Integer">
+    
+            DELETE   /* getDelete+@com.vilio.bps.commonMapper.sql.BpsHouseInfoMapper.xml */ 
+              FROM   BPS_HOUSE_INFO        /* 房屋信息表 */ 
+             WHERE   ID = #{_parameter}    /* 数据主键 */ 
+         
+    </delete>
+
+
+    <!--
+    **************************************************************************
+    * 3.变更一条数据
+    * 注: 根据Bean实体的主键ID执行变更操作.
+    **************************************************************************
+    -->
+    <update id="getUpdate"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsHouseInfo">
+    
+            UPDATE   /* getUpdate+@com.vilio.bps.commonMapper.sql.BpsHouseInfoMapper.xml */ 
+                     BPS_HOUSE_INFO                         /* 房屋信息表 */ 
+               SET   CODE              = #{code}            /*  */ 
+                    ,CITY_CODE         = #{cityCode}        /* 关联城市 */ 
+                    ,CITY_NAME         = #{cityName}        /* 关联城市名称 */ 
+                    ,PLOTS_CODE        = #{plotsCode}       /* 关联小区id(各估价公司不同) */ 
+                    ,PLOT_NAME         = #{plotName}        /* 小区名称 */ 
+                    ,ADDRESS           = #{address}         /* 房屋地址 */ 
+                    ,UNIT_CODE         = #{unitCode}        /* 楼栋id(各估价公司不同) */ 
+                    ,UNIT_NO           = #{unitNo}          /* 楼栋号 */ 
+                    ,ROOM_CODE         = #{roomCode}        /* 房间id(各估价公司不同) */ 
+                    ,ROOM_NO           = #{roomNo}          /* 房号 */ 
+                    ,AREA              = #{area}            /* 房屋面积 */ 
+                    ,HOUSE_TYPE        = #{houseType}       /* 房屋类型(别墅，公寓) */ 
+                    ,TOTAL_FLOOR       = #{totalFloor}      /* 总楼层 */ 
+                    ,CURRENT_FLOOR     = #{currentFloor}    /* 当前楼层 */ 
+                    ,COMPANY_CODE      = #{companyCode}     /* 询价公司编号 */ 
+                    ,STATUS            = #{status}          /* 状态(1可用，0不可用) */ 
+                    ,DATE_CREATED      = #{dateCreated}     /* 数据创建时间 */ 
+                    ,DATE_MODIFIED     = #{dateModified}    /* 数据修改时间 */ 
+             WHERE   ID                = #{id}              /* 数据主键 */ 
+         
+    </update>
+    
+    <update id="getUpdatePrmMap"
+            parameterType="java.util.HashMap">
+    
+            UPDATE   /* getUpdatePrmMap+@com.vilio.bps.commonMapper.sql.BpsHouseInfoMapper.xml */ 
+                     BPS_HOUSE_INFO                         /* 房屋信息表 */ 
+               SET   CODE              = #{code}            /*  */ 
+                    ,CITY_CODE         = #{cityCode}        /* 关联城市 */ 
+                    ,CITY_NAME         = #{cityName}        /* 关联城市名称 */ 
+                    ,PLOTS_CODE        = #{plotsCode}       /* 关联小区id(各估价公司不同) */ 
+                    ,PLOT_NAME         = #{plotName}        /* 小区名称 */ 
+                    ,ADDRESS           = #{address}         /* 房屋地址 */ 
+                    ,UNIT_CODE         = #{unitCode}        /* 楼栋id(各估价公司不同) */ 
+                    ,UNIT_NO           = #{unitNo}          /* 楼栋号 */ 
+                    ,ROOM_CODE         = #{roomCode}        /* 房间id(各估价公司不同) */ 
+                    ,ROOM_NO           = #{roomNo}          /* 房号 */ 
+                    ,AREA              = #{area}            /* 房屋面积 */ 
+                    ,HOUSE_TYPE        = #{houseType}       /* 房屋类型(别墅，公寓) */ 
+                    ,TOTAL_FLOOR       = #{totalFloor}      /* 总楼层 */ 
+                    ,CURRENT_FLOOR     = #{currentFloor}    /* 当前楼层 */ 
+                    ,COMPANY_CODE      = #{companyCode}     /* 询价公司编号 */ 
+                    ,STATUS            = #{status}          /* 状态(1可用，0不可用) */ 
+                    ,DATE_CREATED      = #{dateCreated}     /* 数据创建时间 */ 
+                    ,DATE_MODIFIED     = #{dateModified}    /* 数据修改时间 */ 
+             WHERE   ID                = #{id}              /* 数据主键 */ 
+         
+    </update>
+
+
+    <!--
+    **************************************************************************
+    * 4.获取一个Bean实体
+    * 注: 根据Bean实体的主键ID获取一个Bean实体.
+    **************************************************************************
+    -->
+    <select id="getBean"
+            parameterType="java.lang.Integer"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsHouseInfo">
+    
+            SELECT   /* getBean+@com.vilio.bps.commonMapper.sql.BpsHouseInfoMapper.xml */ 
+                     bhi.ID                 AS id              /* 数据主键 */ 
+                    ,bhi.CODE               AS code            /*  */ 
+                    ,bhi.CITY_CODE          AS cityCode        /* 关联城市 */ 
+                    ,bhi.CITY_NAME          AS cityName        /* 关联城市名称 */ 
+                    ,bhi.PLOTS_CODE         AS plotsCode       /* 关联小区id(各估价公司不同) */ 
+                    ,bhi.PLOT_NAME          AS plotName        /* 小区名称 */ 
+                    ,bhi.ADDRESS            AS address         /* 房屋地址 */ 
+                    ,bhi.UNIT_CODE          AS unitCode        /* 楼栋id(各估价公司不同) */ 
+                    ,bhi.UNIT_NO            AS unitNo          /* 楼栋号 */ 
+                    ,bhi.ROOM_CODE          AS roomCode        /* 房间id(各估价公司不同) */ 
+                    ,bhi.ROOM_NO            AS roomNo          /* 房号 */ 
+                    ,bhi.AREA               AS area            /* 房屋面积 */ 
+                    ,bhi.HOUSE_TYPE         AS houseType       /* 房屋类型(别墅，公寓) */ 
+                    ,bhi.TOTAL_FLOOR        AS totalFloor      /* 总楼层 */ 
+                    ,bhi.CURRENT_FLOOR      AS currentFloor    /* 当前楼层 */ 
+                    ,bhi.COMPANY_CODE       AS companyCode     /* 询价公司编号 */ 
+                    ,bhi.STATUS             AS status          /* 状态(1可用，0不可用) */ 
+                    ,bhi.DATE_CREATED       AS dateCreated     /* 数据创建时间 */ 
+                    ,bhi.DATE_MODIFIED      AS dateModified    /* 数据修改时间 */ 
+              FROM   BPS_HOUSE_INFO            bhi             /* 房屋信息表 */ 
+             WHERE   bhi.ID = #{_parameter}                    /* 数据主键 */ 
+         
+    </select>
+    
+    <select id="getBeanRtnMap"
+            parameterType="java.lang.Integer"
+            resultType="java.util.HashMap">
+    
+            SELECT   /* getBeanRtnMap+@com.vilio.bps.commonMapper.sql.BpsHouseInfoMapper.xml */ 
+                     bhi.ID                 AS id              /* 数据主键 */ 
+                    ,bhi.CODE               AS code            /*  */ 
+                    ,bhi.CITY_CODE          AS cityCode        /* 关联城市 */ 
+                    ,bhi.CITY_NAME          AS cityName        /* 关联城市名称 */ 
+                    ,bhi.PLOTS_CODE         AS plotsCode       /* 关联小区id(各估价公司不同) */ 
+                    ,bhi.PLOT_NAME          AS plotName        /* 小区名称 */ 
+                    ,bhi.ADDRESS            AS address         /* 房屋地址 */ 
+                    ,bhi.UNIT_CODE          AS unitCode        /* 楼栋id(各估价公司不同) */ 
+                    ,bhi.UNIT_NO            AS unitNo          /* 楼栋号 */ 
+                    ,bhi.ROOM_CODE          AS roomCode        /* 房间id(各估价公司不同) */ 
+                    ,bhi.ROOM_NO            AS roomNo          /* 房号 */ 
+                    ,bhi.AREA               AS area            /* 房屋面积 */ 
+                    ,bhi.HOUSE_TYPE         AS houseType       /* 房屋类型(别墅，公寓) */ 
+                    ,bhi.TOTAL_FLOOR        AS totalFloor      /* 总楼层 */ 
+                    ,bhi.CURRENT_FLOOR      AS currentFloor    /* 当前楼层 */ 
+                    ,bhi.COMPANY_CODE       AS companyCode     /* 询价公司编号 */ 
+                    ,bhi.STATUS             AS status          /* 状态(1可用，0不可用) */ 
+                    ,bhi.DATE_CREATED       AS dateCreated     /* 数据创建时间 */ 
+                    ,bhi.DATE_MODIFIED      AS dateModified    /* 数据修改时间 */ 
+              FROM   BPS_HOUSE_INFO            bhi             /* 房屋信息表 */ 
+             WHERE   bhi.ID = #{_parameter}                    /* 数据主键 */ 
+         
+    </select>
+
+
+    <!--
+    **************************************************************************
+    * 5.条件查询
+    * 注: 支持多条件查询、模糊查询、日期比较查询等操作.
+    **************************************************************************
+    -->
+    <select id="getList"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsHouseInfo"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsHouseInfo">
+    
+            SELECT   /* getList+@com.vilio.bps.commonMapper.sql.BpsHouseInfoMapper.xml */ 
+                     bhi.ID                 AS id              /* 数据主键 */ 
+                    ,bhi.CODE               AS code            /*  */ 
+                    ,bhi.CITY_CODE          AS cityCode        /* 关联城市 */ 
+                    ,bhi.CITY_NAME          AS cityName        /* 关联城市名称 */ 
+                    ,bhi.PLOTS_CODE         AS plotsCode       /* 关联小区id(各估价公司不同) */ 
+                    ,bhi.PLOT_NAME          AS plotName        /* 小区名称 */ 
+                    ,bhi.ADDRESS            AS address         /* 房屋地址 */ 
+                    ,bhi.UNIT_CODE          AS unitCode        /* 楼栋id(各估价公司不同) */ 
+                    ,bhi.UNIT_NO            AS unitNo          /* 楼栋号 */ 
+                    ,bhi.ROOM_CODE          AS roomCode        /* 房间id(各估价公司不同) */ 
+                    ,bhi.ROOM_NO            AS roomNo          /* 房号 */ 
+                    ,bhi.AREA               AS area            /* 房屋面积 */ 
+                    ,bhi.HOUSE_TYPE         AS houseType       /* 房屋类型(别墅，公寓) */ 
+                    ,bhi.TOTAL_FLOOR        AS totalFloor      /* 总楼层 */ 
+                    ,bhi.CURRENT_FLOOR      AS currentFloor    /* 当前楼层 */ 
+                    ,bhi.COMPANY_CODE       AS companyCode     /* 询价公司编号 */ 
+                    ,bhi.STATUS             AS status          /* 状态(1可用，0不可用) */ 
+                    ,bhi.DATE_CREATED       AS dateCreated     /* 数据创建时间 */ 
+                    ,bhi.DATE_MODIFIED      AS dateModified    /* 数据修改时间 */ 
+              FROM   BPS_HOUSE_INFO            bhi             /* 房屋信息表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   bhi.ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   bhi.CODE = #{code} /*  */ 
+             </if>
+        
+             <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+               AND   bhi.CITY_CODE = #{cityCode} /* 关联城市 */ 
+             </if>
+        
+             <if test='cityName != null and cityName != "" and cityName != "null" and cityName != "undefined"'>
+               AND   bhi.CITY_NAME = #{cityName} /* 关联城市名称 */ 
+             </if>
+        
+             <if test='plotsCode != null and plotsCode != "" and plotsCode != "null" and plotsCode != "undefined"'>
+               AND   bhi.PLOTS_CODE = #{plotsCode} /* 关联小区id(各估价公司不同) */ 
+             </if>
+        
+             <if test='plotName != null and plotName != "" and plotName != "null" and plotName != "undefined"'>
+               AND   bhi.PLOT_NAME = #{plotName} /* 小区名称 */ 
+             </if>
+        
+             <if test='address != null and address != "" and address != "null" and address != "undefined"'>
+               AND   bhi.ADDRESS = #{address} /* 房屋地址 */ 
+             </if>
+        
+             <if test='unitCode != null and unitCode != "" and unitCode != "null" and unitCode != "undefined"'>
+               AND   bhi.UNIT_CODE = #{unitCode} /* 楼栋id(各估价公司不同) */ 
+             </if>
+        
+             <if test='unitNo != null and unitNo != "" and unitNo != "null" and unitNo != "undefined"'>
+               AND   bhi.UNIT_NO = #{unitNo} /* 楼栋号 */ 
+             </if>
+        
+             <if test='roomCode != null and roomCode != "" and roomCode != "null" and roomCode != "undefined"'>
+               AND   bhi.ROOM_CODE = #{roomCode} /* 房间id(各估价公司不同) */ 
+             </if>
+        
+             <if test='roomNo != null and roomNo != "" and roomNo != "null" and roomNo != "undefined"'>
+               AND   bhi.ROOM_NO = #{roomNo} /* 房号 */ 
+             </if>
+        
+             <if test='area != null'>
+               AND   bhi.AREA = #{area} /* 房屋面积 */ 
+             </if>
+        
+             <if test='houseType != null and houseType != "" and houseType != "null" and houseType != "undefined"'>
+               AND   bhi.HOUSE_TYPE = #{houseType} /* 房屋类型(别墅，公寓) */ 
+             </if>
+        
+             <if test='totalFloor != null'>
+               AND   bhi.TOTAL_FLOOR = #{totalFloor} /* 总楼层 */ 
+             </if>
+        
+             <if test='currentFloor != null'>
+               AND   bhi.CURRENT_FLOOR = #{currentFloor} /* 当前楼层 */ 
+             </if>
+        
+             <if test='companyCode != null and companyCode != "" and companyCode != "null" and companyCode != "undefined"'>
+               AND   bhi.COMPANY_CODE = #{companyCode} /* 询价公司编号 */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   bhi.STATUS = #{status} /* 状态(1可用，0不可用) */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(bhi.DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /* 数据创建时间 */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(bhi.DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /* 数据修改时间 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+    
+    <select id="getListPrmMapRtnBean"
+            parameterType="java.util.HashMap"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsHouseInfo">
+    
+            SELECT   /* getListPrmMapRtnBean+@com.vilio.bps.commonMapper.sql.BpsHouseInfoMapper.xml */ 
+                     bhi.ID                 AS id              /* 数据主键 */ 
+                    ,bhi.CODE               AS code            /*  */ 
+                    ,bhi.CITY_CODE          AS cityCode        /* 关联城市 */ 
+                    ,bhi.CITY_NAME          AS cityName        /* 关联城市名称 */ 
+                    ,bhi.PLOTS_CODE         AS plotsCode       /* 关联小区id(各估价公司不同) */ 
+                    ,bhi.PLOT_NAME          AS plotName        /* 小区名称 */ 
+                    ,bhi.ADDRESS            AS address         /* 房屋地址 */ 
+                    ,bhi.UNIT_CODE          AS unitCode        /* 楼栋id(各估价公司不同) */ 
+                    ,bhi.UNIT_NO            AS unitNo          /* 楼栋号 */ 
+                    ,bhi.ROOM_CODE          AS roomCode        /* 房间id(各估价公司不同) */ 
+                    ,bhi.ROOM_NO            AS roomNo          /* 房号 */ 
+                    ,bhi.AREA               AS area            /* 房屋面积 */ 
+                    ,bhi.HOUSE_TYPE         AS houseType       /* 房屋类型(别墅，公寓) */ 
+                    ,bhi.TOTAL_FLOOR        AS totalFloor      /* 总楼层 */ 
+                    ,bhi.CURRENT_FLOOR      AS currentFloor    /* 当前楼层 */ 
+                    ,bhi.COMPANY_CODE       AS companyCode     /* 询价公司编号 */ 
+                    ,bhi.STATUS             AS status          /* 状态(1可用，0不可用) */ 
+                    ,bhi.DATE_CREATED       AS dateCreated     /* 数据创建时间 */ 
+                    ,bhi.DATE_MODIFIED      AS dateModified    /* 数据修改时间 */ 
+              FROM   BPS_HOUSE_INFO            bhi             /* 房屋信息表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   bhi.ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   bhi.CODE = #{code} /*  */ 
+             </if>
+        
+             <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+               AND   bhi.CITY_CODE = #{cityCode} /* 关联城市 */ 
+             </if>
+        
+             <if test='cityName != null and cityName != "" and cityName != "null" and cityName != "undefined"'>
+               AND   bhi.CITY_NAME = #{cityName} /* 关联城市名称 */ 
+             </if>
+        
+             <if test='plotsCode != null and plotsCode != "" and plotsCode != "null" and plotsCode != "undefined"'>
+               AND   bhi.PLOTS_CODE = #{plotsCode} /* 关联小区id(各估价公司不同) */ 
+             </if>
+        
+             <if test='plotName != null and plotName != "" and plotName != "null" and plotName != "undefined"'>
+               AND   bhi.PLOT_NAME = #{plotName} /* 小区名称 */ 
+             </if>
+        
+             <if test='address != null and address != "" and address != "null" and address != "undefined"'>
+               AND   bhi.ADDRESS = #{address} /* 房屋地址 */ 
+             </if>
+        
+             <if test='unitCode != null and unitCode != "" and unitCode != "null" and unitCode != "undefined"'>
+               AND   bhi.UNIT_CODE = #{unitCode} /* 楼栋id(各估价公司不同) */ 
+             </if>
+        
+             <if test='unitNo != null and unitNo != "" and unitNo != "null" and unitNo != "undefined"'>
+               AND   bhi.UNIT_NO = #{unitNo} /* 楼栋号 */ 
+             </if>
+        
+             <if test='roomCode != null and roomCode != "" and roomCode != "null" and roomCode != "undefined"'>
+               AND   bhi.ROOM_CODE = #{roomCode} /* 房间id(各估价公司不同) */ 
+             </if>
+        
+             <if test='roomNo != null and roomNo != "" and roomNo != "null" and roomNo != "undefined"'>
+               AND   bhi.ROOM_NO = #{roomNo} /* 房号 */ 
+             </if>
+        
+             <if test='area != null'>
+               AND   bhi.AREA = #{area} /* 房屋面积 */ 
+             </if>
+        
+             <if test='houseType != null and houseType != "" and houseType != "null" and houseType != "undefined"'>
+               AND   bhi.HOUSE_TYPE = #{houseType} /* 房屋类型(别墅，公寓) */ 
+             </if>
+        
+             <if test='totalFloor != null'>
+               AND   bhi.TOTAL_FLOOR = #{totalFloor} /* 总楼层 */ 
+             </if>
+        
+             <if test='currentFloor != null'>
+               AND   bhi.CURRENT_FLOOR = #{currentFloor} /* 当前楼层 */ 
+             </if>
+        
+             <if test='companyCode != null and companyCode != "" and companyCode != "null" and companyCode != "undefined"'>
+               AND   bhi.COMPANY_CODE = #{companyCode} /* 询价公司编号 */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   bhi.STATUS = #{status} /* 状态(1可用，0不可用) */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(bhi.DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /* 数据创建时间 */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(bhi.DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /* 数据修改时间 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+    
+    <select id="getListPrmMapRtnMap"
+            parameterType="java.util.HashMap"
+            resultType="java.util.HashMap">
+    
+            SELECT   /* getListPrmMapRtnMap+@com.vilio.bps.commonMapper.sql.BpsHouseInfoMapper.xml */ 
+                     bhi.ID                 AS id              /* 数据主键 */ 
+                    ,bhi.CODE               AS code            /*  */ 
+                    ,bhi.CITY_CODE          AS cityCode        /* 关联城市 */ 
+                    ,bhi.CITY_NAME          AS cityName        /* 关联城市名称 */ 
+                    ,bhi.PLOTS_CODE         AS plotsCode       /* 关联小区id(各估价公司不同) */ 
+                    ,bhi.PLOT_NAME          AS plotName        /* 小区名称 */ 
+                    ,bhi.ADDRESS            AS address         /* 房屋地址 */ 
+                    ,bhi.UNIT_CODE          AS unitCode        /* 楼栋id(各估价公司不同) */ 
+                    ,bhi.UNIT_NO            AS unitNo          /* 楼栋号 */ 
+                    ,bhi.ROOM_CODE          AS roomCode        /* 房间id(各估价公司不同) */ 
+                    ,bhi.ROOM_NO            AS roomNo          /* 房号 */ 
+                    ,bhi.AREA               AS area            /* 房屋面积 */ 
+                    ,bhi.HOUSE_TYPE         AS houseType       /* 房屋类型(别墅，公寓) */ 
+                    ,bhi.TOTAL_FLOOR        AS totalFloor      /* 总楼层 */ 
+                    ,bhi.CURRENT_FLOOR      AS currentFloor    /* 当前楼层 */ 
+                    ,bhi.COMPANY_CODE       AS companyCode     /* 询价公司编号 */ 
+                    ,bhi.STATUS             AS status          /* 状态(1可用，0不可用) */ 
+                    ,bhi.DATE_CREATED       AS dateCreated     /* 数据创建时间 */ 
+                    ,bhi.DATE_MODIFIED      AS dateModified    /* 数据修改时间 */ 
+              FROM   BPS_HOUSE_INFO            bhi             /* 房屋信息表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   bhi.ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   bhi.CODE = #{code} /*  */ 
+             </if>
+        
+             <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+               AND   bhi.CITY_CODE = #{cityCode} /* 关联城市 */ 
+             </if>
+        
+             <if test='cityName != null and cityName != "" and cityName != "null" and cityName != "undefined"'>
+               AND   bhi.CITY_NAME = #{cityName} /* 关联城市名称 */ 
+             </if>
+        
+             <if test='plotsCode != null and plotsCode != "" and plotsCode != "null" and plotsCode != "undefined"'>
+               AND   bhi.PLOTS_CODE = #{plotsCode} /* 关联小区id(各估价公司不同) */ 
+             </if>
+        
+             <if test='plotName != null and plotName != "" and plotName != "null" and plotName != "undefined"'>
+               AND   bhi.PLOT_NAME = #{plotName} /* 小区名称 */ 
+             </if>
+        
+             <if test='address != null and address != "" and address != "null" and address != "undefined"'>
+               AND   bhi.ADDRESS = #{address} /* 房屋地址 */ 
+             </if>
+        
+             <if test='unitCode != null and unitCode != "" and unitCode != "null" and unitCode != "undefined"'>
+               AND   bhi.UNIT_CODE = #{unitCode} /* 楼栋id(各估价公司不同) */ 
+             </if>
+        
+             <if test='unitNo != null and unitNo != "" and unitNo != "null" and unitNo != "undefined"'>
+               AND   bhi.UNIT_NO = #{unitNo} /* 楼栋号 */ 
+             </if>
+        
+             <if test='roomCode != null and roomCode != "" and roomCode != "null" and roomCode != "undefined"'>
+               AND   bhi.ROOM_CODE = #{roomCode} /* 房间id(各估价公司不同) */ 
+             </if>
+        
+             <if test='roomNo != null and roomNo != "" and roomNo != "null" and roomNo != "undefined"'>
+               AND   bhi.ROOM_NO = #{roomNo} /* 房号 */ 
+             </if>
+        
+             <if test='area != null'>
+               AND   bhi.AREA = #{area} /* 房屋面积 */ 
+             </if>
+        
+             <if test='houseType != null and houseType != "" and houseType != "null" and houseType != "undefined"'>
+               AND   bhi.HOUSE_TYPE = #{houseType} /* 房屋类型(别墅，公寓) */ 
+             </if>
+        
+             <if test='totalFloor != null'>
+               AND   bhi.TOTAL_FLOOR = #{totalFloor} /* 总楼层 */ 
+             </if>
+        
+             <if test='currentFloor != null'>
+               AND   bhi.CURRENT_FLOOR = #{currentFloor} /* 当前楼层 */ 
+             </if>
+        
+             <if test='companyCode != null and companyCode != "" and companyCode != "null" and companyCode != "undefined"'>
+               AND   bhi.COMPANY_CODE = #{companyCode} /* 询价公司编号 */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   bhi.STATUS = #{status} /* 状态(1可用，0不可用) */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(bhi.DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /* 数据创建时间 */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(bhi.DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /* 数据修改时间 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+
+
+    <!--
+    **************************************************************************
+    * 6.验证多条件数据是否存在
+    * 注: 根据多条件验证该数据是否存在 ,并返回数据量.
+    **************************************************************************
+    -->
+    <select id="getCheckBy"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsHouseInfo"
+            resultType="java.lang.Integer">
+    
+            SELECT   /* getCheckBy+@com.vilio.bps.commonMapper.sql.BpsHouseInfoMapper.xml */ 
+                     count(1)
+              FROM   BPS_HOUSE_INFO  /* 房屋信息表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   CODE = #{code} /*  */ 
+             </if>
+        
+             <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+               AND   CITY_CODE = #{cityCode} /* 关联城市 */ 
+             </if>
+        
+             <if test='cityName != null and cityName != "" and cityName != "null" and cityName != "undefined"'>
+               AND   CITY_NAME = #{cityName} /* 关联城市名称 */ 
+             </if>
+        
+             <if test='plotsCode != null and plotsCode != "" and plotsCode != "null" and plotsCode != "undefined"'>
+               AND   PLOTS_CODE = #{plotsCode} /* 关联小区id(各估价公司不同) */ 
+             </if>
+        
+             <if test='plotName != null and plotName != "" and plotName != "null" and plotName != "undefined"'>
+               AND   PLOT_NAME = #{plotName} /* 小区名称 */ 
+             </if>
+        
+             <if test='address != null and address != "" and address != "null" and address != "undefined"'>
+               AND   ADDRESS = #{address} /* 房屋地址 */ 
+             </if>
+        
+             <if test='unitCode != null and unitCode != "" and unitCode != "null" and unitCode != "undefined"'>
+               AND   UNIT_CODE = #{unitCode} /* 楼栋id(各估价公司不同) */ 
+             </if>
+        
+             <if test='unitNo != null and unitNo != "" and unitNo != "null" and unitNo != "undefined"'>
+               AND   UNIT_NO = #{unitNo} /* 楼栋号 */ 
+             </if>
+        
+             <if test='roomCode != null and roomCode != "" and roomCode != "null" and roomCode != "undefined"'>
+               AND   ROOM_CODE = #{roomCode} /* 房间id(各估价公司不同) */ 
+             </if>
+        
+             <if test='roomNo != null and roomNo != "" and roomNo != "null" and roomNo != "undefined"'>
+               AND   ROOM_NO = #{roomNo} /* 房号 */ 
+             </if>
+        
+             <if test='area != null'>
+               AND   AREA = #{area} /* 房屋面积 */ 
+             </if>
+        
+             <if test='houseType != null and houseType != "" and houseType != "null" and houseType != "undefined"'>
+               AND   HOUSE_TYPE = #{houseType} /* 房屋类型(别墅，公寓) */ 
+             </if>
+        
+             <if test='totalFloor != null'>
+               AND   TOTAL_FLOOR = #{totalFloor} /* 总楼层 */ 
+             </if>
+        
+             <if test='currentFloor != null'>
+               AND   CURRENT_FLOOR = #{currentFloor} /* 当前楼层 */ 
+             </if>
+        
+             <if test='companyCode != null and companyCode != "" and companyCode != "null" and companyCode != "undefined"'>
+               AND   COMPANY_CODE = #{companyCode} /* 询价公司编号 */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   STATUS = #{status} /* 状态(1可用，0不可用) */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /* 数据创建时间 */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /* 数据修改时间 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+    </select>
+    
+    <select id="getCheckByPrmMap"
+            parameterType="java.util.HashMap"
+            resultType="java.lang.Integer">
+    
+            SELECT   /* getCheckByPrmMap+@com.vilio.bps.commonMapper.sql.BpsHouseInfoMapper.xml */ 
+                     count(1)
+              FROM   BPS_HOUSE_INFO  /* 房屋信息表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   CODE = #{code} /*  */ 
+             </if>
+        
+             <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+               AND   CITY_CODE = #{cityCode} /* 关联城市 */ 
+             </if>
+        
+             <if test='cityName != null and cityName != "" and cityName != "null" and cityName != "undefined"'>
+               AND   CITY_NAME = #{cityName} /* 关联城市名称 */ 
+             </if>
+        
+             <if test='plotsCode != null and plotsCode != "" and plotsCode != "null" and plotsCode != "undefined"'>
+               AND   PLOTS_CODE = #{plotsCode} /* 关联小区id(各估价公司不同) */ 
+             </if>
+        
+             <if test='plotName != null and plotName != "" and plotName != "null" and plotName != "undefined"'>
+               AND   PLOT_NAME = #{plotName} /* 小区名称 */ 
+             </if>
+        
+             <if test='address != null and address != "" and address != "null" and address != "undefined"'>
+               AND   ADDRESS = #{address} /* 房屋地址 */ 
+             </if>
+        
+             <if test='unitCode != null and unitCode != "" and unitCode != "null" and unitCode != "undefined"'>
+               AND   UNIT_CODE = #{unitCode} /* 楼栋id(各估价公司不同) */ 
+             </if>
+        
+             <if test='unitNo != null and unitNo != "" and unitNo != "null" and unitNo != "undefined"'>
+               AND   UNIT_NO = #{unitNo} /* 楼栋号 */ 
+             </if>
+        
+             <if test='roomCode != null and roomCode != "" and roomCode != "null" and roomCode != "undefined"'>
+               AND   ROOM_CODE = #{roomCode} /* 房间id(各估价公司不同) */ 
+             </if>
+        
+             <if test='roomNo != null and roomNo != "" and roomNo != "null" and roomNo != "undefined"'>
+               AND   ROOM_NO = #{roomNo} /* 房号 */ 
+             </if>
+        
+             <if test='area != null'>
+               AND   AREA = #{area} /* 房屋面积 */ 
+             </if>
+        
+             <if test='houseType != null and houseType != "" and houseType != "null" and houseType != "undefined"'>
+               AND   HOUSE_TYPE = #{houseType} /* 房屋类型(别墅，公寓) */ 
+             </if>
+        
+             <if test='totalFloor != null'>
+               AND   TOTAL_FLOOR = #{totalFloor} /* 总楼层 */ 
+             </if>
+        
+             <if test='currentFloor != null'>
+               AND   CURRENT_FLOOR = #{currentFloor} /* 当前楼层 */ 
+             </if>
+        
+             <if test='companyCode != null and companyCode != "" and companyCode != "null" and companyCode != "undefined"'>
+               AND   COMPANY_CODE = #{companyCode} /* 询价公司编号 */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   STATUS = #{status} /* 状态(1可用，0不可用) */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /* 数据创建时间 */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /* 数据修改时间 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+    </select>
+
+
+</mapper>

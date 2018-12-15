@@ -1,0 +1,32 @@
+
+/*---------------错误提示框---------------*/
+.error-container {
+  /*position: absolute;*/
+  float: left;
+  height:	40px;
+}
+.error-icon {
+  display: inline-block;
+  margin-top: 13px;
+  width: 14px;
+  height: 14px;
+  background: url(../../img/index_hh_icons.png) -77px -72px;
+  cursor: pointer;
+}
+
+
+[id*='firstNum']>.error-icon{
+margin-left: 170px;
+}
+[id*='secondNum']>.error-icon{
+  margin-left: 24px;
+}
+.error-tips {
+  position: absolute;
+  /*height: 20px;*/
+  color: #E00;
+}
+
+.hide {
+  display: none;
+}

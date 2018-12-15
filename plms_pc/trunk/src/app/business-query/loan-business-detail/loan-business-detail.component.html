@@ -1,0 +1,152 @@
+<div class="row">
+<ol class="breadcrumbNav col-12" >
+  <li (click)="querySection()"><a>{{this.button.title}}</a><i>></i></li>
+  <li class="active">查看贷款业务</li>
+</ol>
+</div>
+
+<div class="row margin-bottom-20">
+  <div class="col-12">
+    <hr class="breadcrumbNavLine">
+  </div>
+</div>
+
+<app-professional-serial [professionalData]="professionalData"></app-professional-serial>
+
+<div class="row">
+  <div class="filed-name col-2">城市：</div>
+  <div class="filed-text col-2">{{currentItemLists.cityName}}</div>
+  <div class="filed-name col-2">渠道：</div>
+  <div class="filed-text col-2">{{currentItemLists.distributorName}}</div>
+  <div class="filed-name col-2">业务经理：</div>
+  <div class="filed-text col-2">{{currentItemLists.agentName}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">主借款人：</div>
+  <div class="filed-text col-2">{{currentItemLists.customerName}}</div>
+  <div class="filed-name col-2">产品名称：</div>
+  <div class="filed-text col-2">{{currentItemLists.productName}}</div>
+  <div class="filed-name col-2">放款方式：</div>
+  <div class="filed-text col-2">{{currentItemLists.lendingMethodsName}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">资方：</div>
+  <div class="filed-text col-2">{{currentItemLists.fundSideName}}</div>
+  <div class="filed-name col-2">担保公司：</div>
+  <div class="filed-text col-2">{{currentItemLists.guaranteeCorporationName}}</div>
+  <div class="filed-name col-2">保险公司：</div>
+  <div class="filed-text col-2">{{currentItemLists.insuranceCompanyName}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">授信金额：</div>
+  <div class="filed-text col-2">{{currentItemLists.totalquota |dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">已借金额：</div>
+  <div class="filed-text col-2">{{currentItemLists.principal |dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">应还总额：</div>
+  <div class="filed-text col-2">{{currentItemLists.repaymentAmount |dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}元</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">授信日期：</div>
+  <div class="filed-text col-2">{{currentItemLists.creditStartDate | date:'yyyy-MM-dd'}}</div>
+  <div class="filed-name col-2">授信到期日：</div>
+  <div class="filed-text col-2">{{currentItemLists.creditEndDate   | date:'yyyy-MM-dd'}}</div>
+  <div class="filed-name col-2">授信期限：</div>
+  <div class="filed-text col-2">{{currentItemLists.creditPeriod?currentItemLists.creditPeriod+'个月':''}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">授信天数：</div>
+  <div class="filed-text col-2">{{currentItemLists.creditDays}}天</div>
+  <div class="filed-name col-2">年化利率：</div>
+  <div class="filed-text col-2">{{(currentItemLists.annualizedInterest|dealNullPipe)*100|permil}}%</div>
+  <div class="filed-name col-2">状态：</div>
+  <div class="filed-text col-2">{{currentItemLists.loanStatusName}}</div>
+</div>
+
+<div class="row">
+  <div class="col-2 filed-name">抵押物：</div>
+  <div *ngFor="let item of currentItemLists.houseList let i=index">
+    <div class="col-2 filed-name" *ngIf="i>0"></div>
+    <div class="col-10 filed-text">{{item.houseAddress}}</div>
+  </div>
+</div>
+
+
+<div class="tab-menu margin-top-40">
+  <ul class="tab-menu-ul">
+    <li [ngClass]="{'current':this.tabHighLight=='01'?true:false}" (click)="this.dependHighLight('01')">
+      <a href="javascript:;">还款计划</a>
+    </li>
+
+    <li [ngClass]="{'current':this.tabHighLight=='08'?true:false}" (click)="this.dependHighLight('08')">
+      <a href="javascript:;">扣款记录</a>
+    </li>
+
+    <li [ngClass]="{'current':this.tabHighLight=='07'?true:false}" (click)="this.dependHighLight('07')">
+      <a href="javascript:;">还款记录</a>
+    </li>
+
+    <li [ngClass]="{'current':this.tabHighLight=='02'?true:false}" (click)="this.dependHighLight('02')">
+      <a href="javascript:;">放款记录</a>
+    </li>
+
+    <li [ngClass]="{'current':this.tabHighLight=='03'?true:false}" (click)="this.dependHighLight('03')">
+      <a href="javascript:;">公证抵押</a>
+    </li>
+
+    <li [ngClass]="{'current':this.tabHighLight=='04'?true:false}" (click)="this.dependHighLight('04')">
+      <a href="javascript:;">审批信息</a>
+    </li>
+
+    <li [ngClass]="{'current':this.tabHighLight=='05'?true:false}" (click)="this.dependHighLight('05')">
+      <a href="javascript:;">进件详情</a>
+    </li>
+
+    <li [ngClass]="{'current':this.tabHighLight=='06'?true:false}" (click)="this.dependHighLight('06')">
+      <a href="javascript:;">进件材料</a>
+    </li>
+  </ul>
+</div>
+<div class="label_hr"></div>
+<div class="tab_box margin-top-20 margin-bottom-40">
+<!--利息不代收还款计划-->
+<app-repay-schedule [contractCode]="contractCode" *ngIf="(currentItemLists.isInterestInstead=='0')&&(this.tabHighLight=='01')"></app-repay-schedule>
+
+  <!--&lt;!&ndash;利息代收还款计划&ndash;&gt;-->
+<app-repay-schedule-agent [contractCode]="contractCode" *ngIf="(currentItemLists.isInterestInstead=='1')&&(this.tabHighLight=='01')"></app-repay-schedule-agent>
+
+
+  <!--扣款记录-->
+<app-debit-record [contractCode]="contractCode" *ngIf="this.tabHighLight=='08'"></app-debit-record>
+
+  <!--还款记录-->
+<app-payment-history [contractCode]="contractCode" [paymentDetailPageShow]="paymentDetailPageShow" *ngIf="this.tabHighLight=='07'" (event)="getPaymentData($event)"></app-payment-history >
+
+  <!--放款记录-->
+<app-record-lending [contractCode]="contractCode" [recordDetailPageShow]="recordDetailPageShow" *ngIf="this.tabHighLight=='02'" (event)="getRecordData($event)"></app-record-lending>
+
+<!--公正抵押-->
+<app-justice-mortgage [contractCode]="contractCode" *ngIf="this.tabHighLight=='03'" ></app-justice-mortgage>
+
+<!--审批信息-->
+  <!--   &&this.currentItemLists.approvalInfo.mortgageList&&this.currentItemLists.approvalInfo.mortgageList.length=='1' 加上这个没有数据 -->
+<app-approval-information [contractCode]="contractCode" *ngIf="this.tabHighLight=='04'&&showSomeApproval"></app-approval-information>
+
+  <!--显示多套抵押物的审批信息-->
+<app-some-approval-info [contractCode]="contractCode" *ngIf="this.tabHighLight=='04'&&!showSomeApproval"></app-some-approval-info>
+
+<!--进件详情-->
+<app-apply-detail [contractCode]="contractCode" *ngIf="this.tabHighLight=='05'"></app-apply-detail>
+
+<!--进件材料-->
+
+<app-apply-material [contractCode]="contractCode" *ngIf="this.tabHighLight=='06'"></app-apply-material>
+
+</div>
+
+<div class="orange-button col-2 padding-right-0" (click)="querySection()" *ngIf="!paymentDetailPageShow&&!recordDetailPageShow&&this.tabHighLight!='06'&&this.tabHighLight!='03'">{{this.button.name}}</div>
+

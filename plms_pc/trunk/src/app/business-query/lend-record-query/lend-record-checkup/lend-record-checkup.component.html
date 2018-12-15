@@ -1,0 +1,72 @@
+<!--放款记录组件-->
+<div class="row">
+  <ol class="breadcrumbNav col-12">
+    <li (click)="querySection()"><a>放款记录查询</a><i>></i></li>
+    <li class="active">查看放款记录</li>
+  </ol>
+
+</div>
+
+
+<div class="row margin-bottom-20">
+  <div class="col-12">
+    <hr class="breadcrumbNavLine">
+  </div>
+</div>
+
+<app-professional-serial [professionalData]="professionalData"></app-professional-serial>
+
+<div class="row">
+  <div class="filed-name col-2">城市：</div>
+  <div class="filed-text col-2">{{currentItemLists.cityName }}</div>
+  <div class="filed-name col-2">渠道：</div>
+  <div class="filed-text col-2">{{currentItemLists.distributorName}}</div>
+  <div class="filed-name col-2">业务经理：</div>
+  <div class="filed-text col-2">{{currentItemLists.agentName}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">主借款人：</div>
+  <div class="filed-text col-2">{{currentItemLists.customerName }}</div>
+  <div class="filed-name col-2">资方：</div>
+  <div class="filed-text col-2">{{currentItemLists.fundSideName}}</div>
+</div>
+<div class="row">
+  <div class="filed-name col-2">放款时间：</div>
+  <div class="filed-text col-2">{{currentItemLists.paidTime}}</div>
+  <div class="filed-name col-2">放款金额：</div>
+  <div class="filed-text col-2">{{currentItemLists.paidAmount |dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}元</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">收款户名：</div>
+  <div class="filed-text col-10">{{currentItemLists.name}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">收款账号：</div>
+  <div class="filed-text col-10">{{currentItemLists.accountNo}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">收款账户开户行：</div>
+  <div class="filed-text col-10">{{currentItemLists.bank}}</div>
+</div>
+
+
+<div class="row">
+  <div class="filed-name col-2">备注：</div>
+  <div class="filed-text col-10">{{currentItemLists.remark}}</div>
+</div>
+
+<div class="row margin-top-40">
+  <div class="col-12" *ngIf="currentItemLists.fileList">
+    <div class="img-list col-2" *ngFor="let item of currentItemLists.fileList let i=index">
+      <a class="img-box" (click)="downloadFile(item)"><img style="width:160px;height:160px;" src={{selectFileList[i]}}></a>
+      <p class="upload-file-name margin-top-10">{{item.fileName}}</p>
+
+    </div>
+
+  </div>
+</div>
+<div class="orange-button col-2 padding-right-0  margin-top-40" (click)="querySection()">返回放款查询</div>

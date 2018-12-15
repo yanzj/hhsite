@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!--
+******************************************************************************
+* 数据库表：PLMS_TODO
+* 表的名称：待办任务列表
+* 对应实体：com.vilio.plms.pojo.Todo
+* 开发日期：2017-06-20
+* 技术服务：www.fwjava.com
+******************************************************************************
+-->
+<mapper namespace="com.vilio.plms.dao.TodoDao">
+
+    <!--
+    **************************************************************************
+    * 1.新增一条数据
+    * 注: 根据Bean实体执行新增操作.
+    **************************************************************************
+    -->
+
+    <insert id="getInsertPrmMap"
+            parameterType="java.util.HashMap"
+            useGeneratedKeys="true"
+            keyProperty="id">
+    
+            INSERT   /* getInsertPrmMap+@com.vilio.nlbs.commonMapper.sql.NlbsTodoMapper.xml */ 
+              INTO   PLMS_TODO            /* 待办任务列表 */
+                    (
+                     CONTENT              /* 待办任务详情 */
+                    ,TODO_TYPE            /* 待办任务类型 */ 
+                    ,USER_ID              /* 待处理人 */
+                    ,serial_no             /* 询价系统序列号 */
+                    ,user_full_name
+                    )
+            VALUES
+
+            <foreach collection="userList" index="index" item="item" separator=",">
+                <trim prefix="(" suffix=")" suffixOverrides=",">
+                    <if test="content !=null">#{content},</if>
+                    <if test="todoType !=null">#{todoType},</if>
+                    <if test="item.userId !=null">#{item.userId},</if>
+                    <if test="serialNo !=null">#{serialNo},</if>
+                    <if test="item.userName !=null">#{item.userName},</if>
+                </trim>
+            </foreach>
+
+    </insert>
+
+
+    <!--
+    **************************************************************************
+    * 2.删除一条数据
+    * 注: 根据Bean实体的主键ID执行删除操作.
+    **************************************************************************
+    -->
+
+    <delete id="deleteTask"
+            parameterType="java.util.HashMap">
+
+            DELETE   /* getDelete+@com.vilio.nlbs.commonMapper.sql.NlbsTodoMapper.xml */
+              FROM   PLMS_TODO             /* 待办任务列表 */
+             WHERE   1=1
+            <if test='userId != null'>
+                AND   user_id = #{userId}
+            </if>
+            <if test='serialNo != null'>
+                AND   serial_no = #{serialNo}
+            </if>
+            <if test='exceptUserNo != null'>
+                AND   user_id != #{exceptUserId}
+            </if>
+
+    </delete>
+
+
+    <select id="getTodoListWithSelective"
+            parameterType="java.util.HashMap"
+            resultType="java.util.HashMap">
+
+        SELECT   /* getListPrmMapRtnMap+@com.vilio.nlbs.commonMapper.sql.NlbsTodoMapper.xml */
+        nt.ID               AS id             /* 数据主键 */
+        ,nt.DATE_CREATED     AS dateCreated    /* 任务创建时间（分配时间） */
+        ,nt.CONTENT          AS content        /* 待办任务详情 */
+        ,nt.TODO_TYPE        AS todoType       /* 待办任务类型 */
+        ,ntt.name            AS todoName
+        ,nt.USER_ID          AS userId         /* 待处理人 */
+        ,nt.user_full_name        AS userName
+        ,nt.serial_no         AS serialNo        /* 询价系统序列号 */
+        FROM   PLMS_TODO              nt             /* 待办任务列表 */
+        JOIN PLMS_TODO_type ntt ON nt.todo_type = ntt.code
+        WHERE   nt.USER_ID = #{userId}
+
+        <if test='startDate != null and startDate != "" and startDate != "null" and startDate != "undefined"'>
+            AND   nt.date_created > concat(#{startDate} , ' 00:00:00')
+        </if>
+        <if test='endDate != null and endDate != "" and endDate != "null" and endDate != "undefined"'>
+            AND   concat(#{endDate} , ' 23:59:59') > nt.date_created
+        </if>
+
+        <if test='content != null and content != "" and content != "null" and content != "undefined"'>
+            AND   nt.CONTENT LIKE concat('%', #{content}, '%')
+        </if>
+
+        <if test='todoType != null and todoType != "" and todoType != "null" and todoType != "undefined"'>
+            AND   nt.TODO_TYPE = #{todoType} /* 待办任务类型 */
+        </if>
+
+        <if test='serialNo != null and serialNo != "" and serialNo != "null" and serialNo != "undefined"'>
+            AND   nt.serial_no = #{serialNo} /* 询价系统序列号 */
+        </if>
+
+         ORDER BY   nt.date_created DESC
+
+    </select>
+
+    <select id="getTodoType"
+            resultType="java.util.HashMap">
+
+        SELECT
+        ntt.code   AS  todoTypeCode,
+        ntt.name   AS  todoTypeNode
+        FROM   PLMS_TODO_type     ntt
+
+    </select>
+
+    <select id="getTodoListGroupByType"
+            parameterType="java.lang.String"
+            resultType="java.util.HashMap">
+       SELECT
+            nt.TODO_TYPE AS todoType,
+            case nt.TODO_TYPE
+                when '001'
+                        then concat('有',cast(count(1) as char),'条询价评估待处理。')
+                when '002'
+                        then concat('有',cast(count(1) as char),'条进件申请待提交。')
+                else ''
+            end as content,
+            case nt.TODO_TYPE
+                when '001'
+                        then concat(cast(count(1) as char),'条询价评估')
+                when '002'
+                        then concat(cast(count(1) as char),'条进件申请')
+                else ''
+            end as keyWords,
+            count(1) count
+        FROM
+            PLMS_TODO nt
+        WHERE
+            nt.user_id = #{userId}
+        GROUP BY
+            nt.todo_type;
+    </select>
+
+</mapper>

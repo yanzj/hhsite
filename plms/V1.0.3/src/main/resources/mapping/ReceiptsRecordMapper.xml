@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.ReceiptsRecordDao">
+
+    <!--插入入账流水表操作-->
+    <insert id="saveReceiptsRecord" parameterType="com.vilio.plms.pojo.ReceiptsRecord">
+        INSERT INTO plms_receipts_record(code,receipts_date,receipts_amount,contract_code,account_type,create_date,modify_date,
+        status,deal_status,deal_batch_no,deal_msg,repayment_apply_code,deal_user,deal_time,remark,fund_source)
+        VALUES (#{code,jdbcType=VARCHAR},#{receiptsDate,jdbcType=VARCHAR},#{receiptsAmount,jdbcType=VARCHAR}
+        ,#{contractCode,jdbcType=VARCHAR},#{accountType,jdbcType=VARCHAR},#{createDate,jdbcType=VARCHAR}
+        ,#{modifyDate,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},#{dealStatus,jdbcType=VARCHAR}
+        ,#{dealBatchNo,jdbcType=VARCHAR},#{dealMsg,jdbcType=VARCHAR},#{repaymentApplyCode,jdbcType=VARCHAR}
+        ,#{dealUser,jdbcType=VARCHAR},#{dealTime,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{fundSource,jdbcType=VARCHAR})
+    </insert>
+
+
+    <!--修改状态-->
+    <update id="updateReceiptsRecordStatusAndBatchNo" parameterType="java.util.Map">
+      UPDATE  plms_receipts_record SET deal_status=#{newDealStatus},deal_batch_no=#{dealBatchNo}
+      WHERE (deal_status=#{oldDealStatus1} or deal_status=#{oldDealStatus2}) and status != '0'
+    </update>
+
+    <!--根据批次号查询流水-->
+    <select id="queryReceiptsRecordByBatchNo" resultType="com.vilio.plms.pojo.ReceiptsRecord"
+            parameterType="com.vilio.plms.pojo.ReceiptsRecord">
+      SELECT
+        id,
+        `code`,
+        date_format(receipts_date,'%Y-%m-%d') as receiptsDate,
+        receipts_amount as receiptsAmount,
+        contract_code as contractCode,
+        account_type as accountType,
+        create_date as createDate,
+        modify_date as modifyDate,
+        `status`,
+        deal_status as dealStatus,
+        deal_batch_no as dealBatchNo,
+        deal_msg as dealMsg,
+        repayment_apply_code as repaymentApplyCode,
+        fund_source as fundSource
+    FROM
+        plms_receipts_record
+    WHERE deal_batch_no=#{dealBatchNo} and status != '0'
+    GROUP BY create_date ASC
+    </select>
+
+
+    <!--修改状态-->
+    <update id="updateReceiptsRecordDealStatusByCode" parameterType="java.util.Map">
+        UPDATE  plms_receipts_record SET deal_status=#{dealStatus},deal_msg=#{dealMsg}
+        WHERE code = #{code}
+    </update>
+
+    <!--根据批次号查询流水-->
+    <select id="queryReceiptsRecordByCode" resultType="com.vilio.plms.pojo.ReceiptsRecord"
+            parameterType="com.vilio.plms.pojo.ReceiptsRecord">
+            SELECT
+                id,
+                `code`,
+                date_format(receipts_date,'%Y-%m-%d') as receiptsDate,
+                receipts_amount as receiptsAmount,
+                contract_code as contractCode,
+                account_type as accountType,
+                create_date as createDate,
+                modify_date as modifyDate,
+                `status`,
+                deal_status as dealStatus,
+                deal_batch_no as dealBatchNo,
+                deal_msg as dealMsg,
+                repayment_apply_code as repaymentApplyCode,
+                remark
+            FROM
+                plms_receipts_record
+            WHERE code=#{code} and status != '0'
+    </select>
+
+    <!--修改状态-->
+    <update id="updateReceiptsRecordStatusByCode" parameterType="com.vilio.plms.pojo.ReceiptsRecord">
+        UPDATE  plms_receipts_record SET status=#{status}
+        WHERE code = #{code} and status != '0'
+    </update>
+
+
+    <select id="queryReceiptsRecordByReceiptsDate" parameterType="java.util.Map"
+            resultType="com.vilio.plms.pojo.ReceiptsRecord">
+        <![CDATA[
+            SELECT
+                id,
+                `code`,
+                receipts_date as receiptsDate,
+                receipts_amount as receiptsAmount,
+                contract_code as contractCode,
+                account_type as accountType,
+                create_date as createDate,
+                modify_date as modifyDate,
+                `status`,
+                deal_status as dealStatus,
+                deal_batch_no as dealBatchNo,
+                deal_msg as dealMsg,
+                repayment_apply_code as repaymentApplyCode,
+                remark,
+                deal_user as dealUser,
+                deal_time as dealTime,
+                fund_source as fundSource
+            FROM
+                plms_receipts_record
+            WHERE
+            date_format(receipts_date,'%Y%m%d')>date_format(#{rollBachDate},'%Y%m%d')
+            and date_format(receipts_date,'%Y%m%d')<=date_format(#{nowDate},'%Y%m%d')
+            and status!='0'
+            and contract_code=#{contractCode}
+            and deal_status=#{dealStatus}
+        ]]>
+    </select>
+
+    <select id="queryReceiptsRecordByReceiptsDateAndContractCode" parameterType="com.vilio.plms.pojo.ReceiptsRecord"
+            resultType="com.vilio.plms.pojo.ReceiptsRecord">
+          SELECT
+            id,
+            `code`,
+            date_format(receipts_date,'%Y-%m-%d') as receiptsDate,
+            receipts_amount as receiptsAmount,
+            contract_code as contractCode,
+            account_type as accountType,
+            create_date as createDate,
+            modify_date as modifyDate,
+            `status`,
+            deal_status as dealStatus,
+            deal_batch_no as dealBatchNo,
+            deal_msg as dealMsg,
+            repayment_apply_code as repaymentApplyCode,
+            remark,
+            deal_user as dealUser,
+            deal_time as dealTime,
+            fund_source as fundSource
+        FROM
+            plms_receipts_record
+        WHERE contract_code=#{contractCode}
+        and date_format(receipts_date,'%Y%m%d')=date_format(#{receiptsDate},'%Y%m%d')
+        and deal_status=#{dealStatus} and status!='0'
+    </select>
+
+
+</mapper>

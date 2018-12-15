@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.CityDao" >
+    <select id="queryAllCity" resultType="com.vilio.plms.pojo.City" >
+        SELECT
+        c.code code,
+        c.abbr_name AS abbrName,
+        c.full_name AS fullName
+        FROM
+        plms_city c
+        WHERE c.status = '1'
+    </select>
+
+    <select id="queryCityByCode" resultType="com.vilio.plms.pojo.City" parameterType="java.lang.String">
+        SELECT
+        c.code code,
+        c.abbr_name AS abbrName,
+        c.full_name AS fullName
+        FROM
+        plms_city c
+        WHERE c.code=#{cityCode,jdbcType=VARCHAR}
+    </select>
+
+
+</mapper>

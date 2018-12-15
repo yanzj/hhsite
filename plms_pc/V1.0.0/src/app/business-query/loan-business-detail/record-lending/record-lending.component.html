@@ -1,0 +1,43 @@
+<!--放款记录的tab 组件 start-->
+<div class="row" *ngIf="!recordDetailPageShow">
+  <div class="col-12">
+    <table class="table width-100per" border="0" cellpadding="0" cellspacing="0">
+      <thead>
+      <tr>
+        <th class="width-140">放款时间</th>
+        <th class="width-160">放款金额（元）</th>
+        <th class="width-100">放款凭证</th>
+        <th>备注</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of currentItemLists">
+
+        <td class="width-140">{{item.paidTime   | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+        <td class="width-160">{{item.paidAmount |dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}</td>
+        <td class="width-100" (click)="readDetail(item)"><a class="text-link">查看</a></td>
+        <td >{{item.remark}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row" *ngIf="!recordDetailPageShow">
+  <div class="table_footer col-12">
+    <div class="table_ll">
+      共{{totalListsCount}}条，显示第{{startListIndex}}至{{endListIndex}}条
+    </div>
+    <div class="table_rr">
+      <div class="tablePageCode"></div>
+    </div>
+  </div>
+</div>
+
+<!--放款记录的tab 组件 end-->
+
+<app-record-lending-detail (event)="getData($event)" *ngIf="recordDetailPageShow" [recordDetailPageShow]="recordDetailPageShow"
+                           [receiptsRecordList]="paidInfoDetail">
+
+
+</app-record-lending-detail>

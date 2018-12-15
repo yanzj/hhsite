@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context-3.1.xsd
+                        http://www.springframework.org/schema/tx
+                        http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+
+    <!-- Quartz配置 -->
+    <!-- quartz持久化存储 -->
+    <bean id="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="dataSource">
+            <ref bean="nlbsDataSource"/>
+        </property>
+        <property name="startupDelay" value="20"/>
+        <property name="autoStartup" value="true"/>
+        <property name="overwriteExistingJobs" value="true"/>
+        <property name="applicationContextSchedulerContextKey" value="applicationContextKey"/>
+        <property name="configLocation" value="classpath:quartz.properties"/>
+        <property name="schedulerContextAsMap">
+            <map>
+                <!-- spring 管理的service需要放到这里，才能够注入成功 -->
+                <description>schedulerContextAsMap</description>
+                <entry key="loginService" value-ref="loginService"/>
+                <entry key="applyService" value-ref="applyService" />
+                <entry key="bmsSyncDataService" value-ref="bmsSyncDataService" />
+            </map>
+        </property>
+        <property name="jobDetails">
+            <list>
+                <ref bean="clearLoginNumJob"/>
+                <ref bean="syncBmsBaseDataJob"/>
+            </list>
+        </property>
+        <property name="triggers">
+            <list>
+                <ref bean="clearLoginNumJobTrigger"/>
+                <ref bean="syncBmsBaseDataJobTrigger"/>
+            </list>
+        </property>
+
+    </bean>
+
+    <bean id="clearLoginNumJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.vilio.nlbs.quartz.service.ClearLoginNum"/>
+        <property name="name" value="clearLoginNumJob"/>
+        <property name="durability" value="true"/>
+    </bean>
+    <bean id="clearLoginNumJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="clearLoginNumJob"/>
+        <property name="cronExpression" value="${clearLoginNumJobTriggerCronExpression}"/>
+    </bean>
+    <!--同步核心系统基表数据-->
+    <bean id="syncBmsBaseDataJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.vilio.nlbs.quartz.service.SyncBmsBaseData"/>
+        <property name="name" value="syncBmsBaseDataJob"/>
+        <property name="durability" value="true"/>
+    </bean>
+    <bean id="syncBmsBaseDataJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="syncBmsBaseDataJob"/>
+        <property name="cronExpression" value="${syncBmsBaseDataJobTriggerGronExpression}"/>
+    </bean>
+
+</beans>

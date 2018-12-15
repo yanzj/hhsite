@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.PlmsRepaymentScheduleDetailDao">
+    <insert id="saveRepaymentScheduleDetail" parameterType="com.vilio.plms.pojo.PlmsRepaymentScheduleDetail">
+            INSERT INTO plms_repayment_schedule_detail (
+                code,
+                current_period,
+                total_period,
+                repayment_date,
+                amount,
+                principal,
+                interest,
+                overdue,
+                repaymented_principal,
+                repaymented_interest,
+                repaymented_overdue,
+                status,
+                paid_code,
+                create_date,
+                modify_date,
+                schedule_code,
+                principal_account_code,
+                interest_account_code,
+                total_overdue_days,
+                service_fee_total_overdue_days,
+                service_fee,
+                service_fee_penalty,
+                repaymented_service_fee,
+                repaymented_service_fee_penalty,
+                bail,
+                bail_penalty,
+                repaymented_bail,
+                repaymented_bail_penalty
+              )
+            VALUES (
+                    #{code},
+                    #{currentPeriod,jdbcType=VARCHAR},
+                    #{totalPeriod,jdbcType=VARCHAR},
+                    #{repaymentDate,jdbcType=TIMESTAMP},
+                    #{amount,jdbcType=DECIMAL},
+                    #{principal,jdbcType=DECIMAL},
+                    #{interest,jdbcType=DECIMAL},
+                    #{overdue,jdbcType=DECIMAL},
+                    #{repaymentedPrincipal,jdbcType=DECIMAL},
+                    #{repaymentedInterest,jdbcType=DECIMAL},
+                    #{repaymentedOverdue,jdbcType=DECIMAL},
+                    #{status,jdbcType=VARCHAR},
+                    #{paidCode,jdbcType=VARCHAR},
+                    #{createDate,jdbcType=TIMESTAMP},
+                    #{modifyDate,jdbcType=TIMESTAMP},
+                    #{scheduleCode,jdbcType=VARCHAR},
+                    #{principalAccountCode,jdbcType=VARCHAR},
+                    #{interestAccountCode,jdbcType=VARCHAR},
+                    #{totalOverdueDays,jdbcType=INTEGER},
+                    #{serviceFeeTotalOverdueDays,jdbcType=INTEGER},
+                    #{serviceFee,jdbcType=TIMESTAMP},
+                    #{serviceFeePenalty,jdbcType=TIMESTAMP},
+                    #{repaymentedServiceFee,jdbcType=TIMESTAMP},
+                    #{repaymentedServiceFeePenalty,jdbcType=TIMESTAMP},
+                    #{bail,jdbcType=DECIMAL},
+                    #{bailPenalty,jdbcType=DECIMAL},
+                    #{repaymentedBail,jdbcType=DECIMAL},
+                    #{repaymentedBailPenalty,jdbcType=DECIMAL}
+                )
+        </insert>
+    <!--获取最近还款日（最近的未结清的还款日）-->
+    <select id="getUnpaidDetailForContractCode" parameterType="java.lang.String" resultType="java.util.Map">
+                SELECT
+                    date_format(d.repayment_date, '%Y-%m-%d') as repaymentDate,
+                    s.code
+                FROM plms_contract_info i
+                join plms_account_detail a on a.contract_code = i.code
+                JOIN plms_repayment_schedule s on s.detail_code = a.code
+                join plms_repayment_schedule_detail d on d.schedule_code = s.code
+                WHERE i.code = #{contractCode}
+                and d.status in ('02','03')
+                order by d.repayment_date
+        </select>
+
+    <select id="statisticsOverDueAmontAndCountForContract" parameterType="java.util.Map" resultType="java.util.Map">
+                SELECT
+                count(1) count,
+                ifnull(
+                    sum(d.principal) + sum(ifnull(d.interest, 0)) + sum(ifnull(d.service_fee, 0)) - (
+                        sum(
+                            ifnull(d.repaymented_principal, 0)
+                        ) + sum(
+                            ifnull(d.repaymented_interest, 0)
+                        ) + sum(
+                            ifnull(
+                                d.repaymented_service_fee,
+                                0
+                            )
+                        )
+                    ),
+                    0
+                ) AS amount
+                FROM
+                plms_account_detail a
+                JOIN plms_repayment_schedule s ON s.detail_code = a. CODE
+                JOIN plms_repayment_schedule_detail d ON d.schedule_code = s. CODE
+                WHERE
+                a.contract_code =  #{contractCode}
+                AND d. STATUS in ('02','03')
+                AND date_format(d.repayment_date, '%Y%m%d') &lt; #{today}
+        </select>
+
+    <!--查询当前还款计划下的所有划款计划明细-->
+    <select id="queryRepaymentScheduleDetailBatch" parameterType="java.util.List"
+            resultType="com.vilio.plms.pojo.PlmsRepaymentScheduleDetail">
+        SELECT
+        id,
+        `code`,
+        current_period as currentPeriod,
+        total_period as totalPeriod,
+        date_format(repayment_date,'%Y-%m-%d') as repaymentDate,
+        amount,
+        principal,
+        interest,
+        overdue,
+        repaymented_principal as repaymentedPrincipal,
+        repaymented_interest as repaymentedInterest,
+        repaymented_overdue as repaymentedOverdue,
+        `status`,
+        paid_code as paidCode,
+        create_date as createDate,
+        modify_date as modifyDate,
+        schedule_code as scheduleCode,
+        principal_account_code as principalAccountCode,
+        interest_account_code as interestAccountCode,
+        total_overdue_days as totalOverdueDays,
+        service_fee_total_overdue_days as serviceFeeTotalOverdueDays,
+        service_fee as serviceFee,
+        service_fee_penalty as serviceFeePenalty,
+        repaymented_service_fee as repaymentedServiceFee,
+        repaymented_service_fee_penalty as repaymentedServiceFeePenalty,
+        bail,
+        bail_penalty as bailPenalty,
+        repaymented_bail as repaymentedBail,
+        repaymented_bail_penalty as repaymentedBailPenalty
+        FROM
+        plms_repayment_schedule_detail
+        WHERE status != '00'
+        and schedule_code in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item.code}
+        </foreach>
+    </select>
+
+    <select id="queryAllNeedPayScheduleDetail" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        d.code as detailCode,
+        p.contract_code as contractCode,
+        ifnull(d.service_fee_penalty,0) as serviceFeePenalty,
+        ifnull(d.repaymented_service_fee_penalty,0) AS repaymentedServiceFeePenalty,
+        ifnull(d.overdue,0) as overdue,
+        ifnull(d.repaymented_overdue,0) AS repaymentedOverdue,
+        ifnull(d.service_fee,0) AS serviceFee,
+        ifnull(d.repaymented_service_fee,0) AS repaymentedServiceFee,
+        ifnull(d.interest,0) as interest,
+        ifnull(d.repaymented_interest,0) AS repaymentedInterest,
+        ifnull(d.principal,0) as principal,
+        ifnull(d.repaymented_principal,0) AS repaymentedPrincipal,
+        d.repayment_date as repaymentDate,
+        ifnull(ad.fund_side_balance,0) AS fundSideBalance,
+        ifnull(ad.honghuo_balance,0) AS honghuoBalance,
+        ad.CODE AS accountDetailCode,
+        p.paid_time AS paidTime,
+        i.principal_over_interest AS principalOverInterest,
+        i.interest_over_interest AS interestOverInterest,
+        i.default_interest_rate AS defaultInterestRate,
+        i.is_interest_Instead as isInterestInstead,
+        i.service_fee_interest_rate as serviceFeeInterestRate,
+        i.annualized_interest as annualizedInterest,
+        ifnull(d.bail,0) as bail,
+        ifnull(d.repaymented_bail,0) as repaymentedBail,
+        ifnull(d.bail_penalty,0) as bailPenalty,
+        ifnull(d.repaymented_bail_penalty,0) as repaymentedBailPenalty
+        FROM
+        plms_repayment_schedule_detail d
+        JOIN plms_paid_info p ON p.CODE = d.paid_code
+        JOIN plms_apply_interesting i ON p.contract_code = i.contract_code
+        JOIN plms_account_detail ad ON ad.contract_code = p.contract_code
+        WHERE d.STATUS in ('02','03')
+        and p.contract_code = #{contractCode}
+        and d.repayment_date <![CDATA[ < ]]> #{today,jdbcType=TIMESTAMP}
+    </select>
+
+    <select id="queryAllNeedPayContract" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        DISTINCT(p.contract_code) as contractCode
+        FROM
+        plms_repayment_schedule_detail d
+        JOIN plms_paid_info p ON p. CODE = d.paid_code
+        JOIN plms_contract_info c ON c. CODE = p.contract_code
+        WHERE
+        d.STATUS in ('02','03')
+        and d.repayment_date &lt; #{today,jdbcType=TIMESTAMP}
+    </select>
+
+    <select id="getPayInfoForOneScheduleDetail"  parameterType="java.lang.String" resultType="java.util.Map">
+        SELECT
+            d.paid_code AS paidCode,
+            d.schedule_code as scheduleCode,
+            s.detail_code AS accountDetailCode,
+            ad.account_code AS accountCode,
+            ifnull(ad.fund_side_balance,0) AS fundSideBalance,
+            ifnull(ad.honghuo_balance,0) AS honghuoBalance,
+            ifnull(ad.honghuo_bail_account_balance,0) as honghuoBailAccountBalance
+        FROM
+            plms_repayment_schedule_detail d
+        JOIN plms_repayment_schedule s ON s. CODE = d.schedule_code
+        JOIN plms_account_detail ad ON s.detail_code = ad. CODE
+        JOIN plms_account a ON a. CODE = ad.account_code
+        WHERE
+            d.CODE = #{detailCode,jdbcType=VARCHAR}
+    </select>
+
+    <!--更新还款计划明细表中的应还金额、应还罚息、应还服务费违约金-->
+    <update id="updateRepaymentScheduleDetailAmountByCode" parameterType="com.vilio.plms.pojo.PlmsRepaymentScheduleDetail">
+        update plms_repayment_schedule_detail SET amount=#{amount},overdue=#{overdue},service_fee_penalty=#{serviceFeePenalty},total_overdue_days=#{totalOverdueDays},
+        service_fee_total_overdue_days=#{serviceFeeTotalOverdueDays},bail_penalty=#{bailPenalty}
+        WHERE code=#{code}
+    </update>
+
+    <!--更新还款计划明细表中的已还金额-->
+    <update id="updateRepaymentScheduleDetailRepaymentAmountByCode" parameterType="com.vilio.plms.pojo.PlmsRepaymentScheduleDetail">
+        UPDATE plms_repayment_schedule_detail
+        <set>
+            <if test="repaymentedServiceFee != null">
+                repaymented_service_fee = ifnull(repaymented_service_fee,0) + #{repaymentedServiceFee,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentedServiceFeePenalty != null">
+                repaymented_service_fee_penalty = ifnull(repaymented_service_fee_penalty,0) + #{repaymentedServiceFeePenalty,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentedPrincipal != null">
+                repaymented_principal = ifnull(repaymented_principal,0) + #{repaymentedPrincipal,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentedInterest != null">
+                repaymented_interest = ifnull(repaymented_interest,0) + #{repaymentedInterest,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentedOverdue != null">
+                repaymented_overdue = ifnull(repaymented_overdue,0) + #{repaymentedOverdue,jdbcType=DECIMAL},
+            </if>
+
+            <if test="repaymentedBail != null">
+                repaymented_bail = ifnull(repaymented_bail,0) + #{repaymentedBail,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentedBailPenalty != null">
+                repaymented_bail_penalty = ifnull(repaymented_bail_penalty,0) + #{repaymentedBailPenalty,jdbcType=DECIMAL},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        WHERE
+        CODE = #{code}
+    </update>
+
+    <!--更新还款计划明细表中的已还金额-->
+    <update id="updateRepaymentScheduleDetail" parameterType="com.vilio.plms.pojo.PlmsRepaymentScheduleDetail">
+        UPDATE plms_repayment_schedule_detail
+        <set>
+            <if test="amount != null">
+                amount = #{amount},
+            </if>
+            <if test="principal != null">
+                principal = #{principal},
+            </if>
+            <if test="interest != null">
+                interest = #{interest},
+            </if>
+            <if test="serviceFee != null">
+                service_fee = #{serviceFee},
+            </if>
+            <if test="bail != null">
+                bail = #{bail},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        WHERE
+        CODE = #{code}
+    </update>
+
+    <update id="updateFinishedScheduleDetailStatusByCodeAndStatus" parameterType="java.util.Map">
+        update plms_repayment_schedule_detail set status = #{status}
+        WHERE
+            (
+                IFNULL(principal,0) + IFNULL(interest,0) + IFNULL(overdue, 0) + IFNULL(service_fee, 0) + IFNULL(service_fee_penalty, 0) + IFNULL(bail, 0) + IFNULL(bail_penalty, 0)
+            ) - (
+                IFNULL(repaymented_principal, 0)
+                + IFNULL(repaymented_interest, 0)
+                + IFNULL(repaymented_overdue, 0)
+                + IFNULL(repaymented_service_fee, 0)
+                + IFNULL(repaymented_service_fee_penalty, 0)
+
+                + IFNULL(repaymented_bail_penalty, 0)
+                + IFNULL(repaymented_bail, 0)
+            ) = 0
+        and code = #{code}
+    </update>
+
+    <update id="updateRepaymentScheduleDetailToRepaymentedByCode" parameterType="com.vilio.plms.pojo.PlmsRepaymentScheduleDetail">
+        UPDATE  plms_repayment_schedule_detail set repaymented_principal=#{repaymentedPrincipal},
+        repaymented_interest=#{repaymentedInterest},
+        repaymented_service_fee=#{repaymentedServiceFee},
+        repaymented_overdue=#{repaymentedOverdue},
+        repaymented_service_fee_penalty=#{repaymentedServiceFeePenalty},
+        status=#{status},
+        repaymented_bail=#{repaymentedBail},
+        repaymented_bail_penalty=#{repaymentedBailPenalty}
+        WHERE code=#{code}
+    </update>
+
+    <update id="updateRepaymentScheduleDetailStatusByPaidCode" parameterType="java.util.Map">
+        UPDATE  plms_repayment_schedule_detail set status=#{status}
+        <where>
+            <if test="paidCode != null">
+                paid_code = #{paidCode}
+            </if>
+        </where>
+    </update>
+
+    <select id="queryScheduleDetailByPaidCode" parameterType="java.lang.String" resultType="java.util.Map">
+        SELECT
+            d.code as detailCode,
+            ifnull(d.service_fee_penalty,0) as serviceFeePenalty,
+            ifnull(d.repaymented_service_fee_penalty,0) AS repaymentedServiceFeePenalty,
+            ifnull(d.overdue,0) as overdue,
+            ifnull(d.repaymented_overdue,0) AS repaymentedOverdue,
+            ifnull(d.service_fee,0) AS serviceFee,
+            ifnull(d.repaymented_service_fee,0) AS repaymentedServiceFee,
+            ifnull(d.interest,0) as interest,
+            ifnull(d.repaymented_interest,0) AS repaymentedInterest,
+            ifnull(d.principal,0) as principal,
+            ifnull(d.bail,0) as bail,
+            ifnull(d.repaymented_principal,0) AS repaymentedPrincipal,
+            d.repayment_date as repaymentDate,
+            d.schedule_code as scheduleCode,
+            d.amount
+        FROM plms_repayment_schedule_detail d
+        WHERE d.STATUS != '00'
+        and d.paid_code = #{paidCode,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateSecheduleAmountByDetail" parameterType="java.util.Map">
+        update plms_repayment_schedule s
+        set s.amount = s.amount + #{principal,jdbcType=DECIMAL}+ #{interest,jdbcType=DECIMAL} + #{serviceFee,jdbcType=DECIMAL},
+        s.principal = ifnull(s.principal,0) + #{principal,jdbcType=DECIMAL},
+        s.interest = ifnull(s.interest,0) + #{interest,jdbcType=DECIMAL},
+        s.service_fee = ifnull(s.service_fee,0) + #{serviceFee,jdbcType=DECIMAL},
+        s.bail = ifnull(s.bail,0) + #{bail,jdbcType=DECIMAL},
+        s.status =
+        case s.amount + #{principal,jdbcType=DECIMAL}+ #{interest,jdbcType=DECIMAL} + #{serviceFee,jdbcType=DECIMAL}
+        when 0 then '00'
+        else status
+        end
+        WHERE s.STATUS != '00'
+        and s.code = #{code,jdbcType=VARCHAR}
+    </update>
+
+    <select id="sumScheduleDetailByPaidCode" parameterType="java.lang.String" resultType="java.util.Map">
+        SELECT
+        ifnull(sum(ifnull(d.service_fee_penalty,0)),0) as serviceFeePenalty,
+        ifnull(sum(ifnull(d.service_fee,0)),0) AS serviceFee,
+        ifnull(sum(ifnull(d.interest,0)),0) as interest,
+        ifnull(sum(ifnull(d.principal,0)),0) as principal,
+        ifnull(sum(ifnull(d.bail,0)),0) as bail,
+        ifnull(sum(d.amount),0) as amount
+        FROM plms_repayment_schedule_detail d
+        WHERE d.STATUS != '00'
+        and d.paid_code = #{paidCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryOverdueRecordByStatus" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            DATE_FORMAT(repaymentDate,'%Y-%m-%d') as repaymentDate,
+            DATE_FORMAT(paidTime,'%Y-%m-%d') as loanDate,
+            paidAmount as loanAmount,
+            totalPeriod as periods,
+            (principal + interest + serviceFee + bail + overdue + serviceFeePenalty + bailPenalty) as amount,
+            principal,
+            interest,
+            serviceFee,
+            bail,
+            bailPenalty,
+            overdue,
+            serviceFeePenalty,
+            DATE_FORMAT(finishDate,'%Y-%m-%d') as finishDate
+        FROM
+            (
+                SELECT
+                    sd.repayment_date AS repaymentDate,
+                    p.paid_time AS paidTime,
+                    p.paid_amount AS paidAmount,
+                    sd.total_period AS totalPeriod,
+                    p.CODE AS paidCode,
+                    d.subject,
+                    sd.principal,
+                    sd.interest,
+                    ifnull(sd.service_fee, 0) AS serviceFee,
+                    sd.modify_date as finishDate,
+                    ifnull(sd.bail, 0) as bail,
+                    <choose>
+                        <when test="#{detailStatus} == '01'">
+                            ifnull(sd.repaymented_overdue, 0) as overdue,
+                            ifnull(sd.repaymented_service_fee_penalty, 0) as serviceFeePenalty,
+                            ifnull(sd.bail_penalty, 0) as bailPenalty
+                        </when>
+                        <otherwise>
+                            ifnull(sd.overdue, 0) - ifnull(sd.repaymented_overdue, 0) AS overdue,
+                            ifnull(sd.service_fee_penalty, 0) - ifnull(sd.repaymented_service_fee_penalty, 0) AS serviceFeePenalty,
+                            ifnull(sd.bail_penalty, 0) - ifnull(sd.repaymented_bail_penalty, 0) AS bailPenalty
+                        </otherwise>
+                    </choose>
+                FROM plms_overdue d
+                JOIN plms_repayment_schedule_detail sd ON sd. CODE = d.schedule_detail_code
+                JOIN plms_paid_info p ON p. CODE = sd.paid_code
+                JOIN plms_user_info u ON u. CODE = p.user_code
+                WHERE	p.STATUS != '00'
+                AND d.status = #{overdueStatus}
+                AND sd.status = #{detailStatus}
+                AND u.um_id = #{umId}
+                ORDER BY sd.repayment_date
+            ) m
+        GROUP BY repaymentDate,paidCode
+    </select>
+
+    <select id="queryScheduleDetailBeanByPaidCode" parameterType="java.lang.String" resultType="com.vilio.plms.pojo.PlmsRepaymentScheduleDetail">
+        SELECT
+				d.id,
+                d.`code`,
+                d.current_period as currentPeriod,
+                d.total_period as totalPeriod,
+                d.repayment_date as repaymentDate,
+                d.amount,
+                d.principal,
+                d.interest,
+                d.overdue,
+                d.repaymented_principal as repaymentedPrincipal,
+                d.repaymented_interest as repaymentedInterest,
+                d.repaymented_overdue as repaymentedOverdue,
+                d.`status`,
+                d.paid_code as paidCode,
+                d.create_date as createDate,
+                d.modify_date as modifyDate,
+                d.schedule_code as scheduleCode,
+                d.principal_account_code as principalAccountCode,
+                d.interest_account_code as interestAccountCode,
+                d.total_overdue_days as totalOverdueDays,
+                d.service_fee_total_overdue_days as serviceFeeTotalOverdueDays,
+                d.service_fee as serviceFee,
+                d.service_fee_penalty as serviceFeePenalty,
+                d.repaymented_service_fee as repaymentedServiceFee,
+                d.repaymented_service_fee_penalty as repaymentedServiceFeePenalty,
+                d.bail,
+                d.bail_penalty as bailPenalty,
+                d.repaymented_bail as repaymentedBail,
+                d.repaymented_bail_penalty as repaymentedBailPenalty
+		FROM plms_repayment_schedule_detail d
+		WHERE d.STATUS != '00'
+		and d.paid_code = #{paidCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryScheduleDetailBeanByCode" parameterType="java.lang.String" resultType="com.vilio.plms.pojo.PlmsRepaymentScheduleDetail">
+        SELECT
+				d.code
+				,d.total_period as totalPeriod
+				,d.current_period AS currentPeriod
+				,d.amount
+				,d.principal
+				,d.interest
+				,d.service_fee AS serviceFee
+				,d.overdue
+				,d.service_fee_penalty AS serviceFeePenalty
+				,d.repaymented_principal AS repaymentedPrincipal
+				,d.repaymented_interest AS repaymentedInterest
+				,d.repaymented_service_fee AS repaymentedServiceFee
+				,d.repaymented_overdue AS repaymentedOverdue
+				,d.repaymented_service_fee_penalty AS repaymentedServiceFeePenalty
+				,d.paid_code AS paidCode
+				,d.schedule_code AS scheduleCode
+				,d.status
+		FROM plms_repayment_schedule_detail d
+		WHERE d.STATUS != '00'
+		and d.code = #{code,jdbcType=VARCHAR}
+    </select>
+
+    <!--作废应还金额为0的还款计划-->
+    <update id="updateScheduleIsUnavaliableWhereAmountIsZero" parameterType="java.lang.String">
+        UPDATE plms_repayment_schedule
+        SET STATUS = '00'
+        WHERE
+            amount = 0
+        AND STATUS != '00'
+        AND CODE IN (
+            SELECT
+                de.schedule_code
+            FROM
+                plms_repayment_schedule_detail de
+            JOIN plms_paid_info pa ON pa.CODE = de.paid_code
+            WHERE pa.contract_code = #{contractCode}
+        )
+    </update>
+    <!--作废应还金额为0的还款计划明细-->
+    <update id="updateScheduleDetailIsUnavaliableWhereAmountIsZero" parameterType="java.lang.String">
+        UPDATE plms_repayment_schedule_detail d
+        SET d.`status` = '00'
+        WHERE
+            d.`status` != '00'
+        AND d.amount = 0
+        AND d.paid_code IN (
+            SELECT
+                pa.CODE
+            FROM
+                plms_paid_info pa
+            WHERE
+                pa.contract_code = #{contractCode}
+        )
+    </update>
+
+</mapper>

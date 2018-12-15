@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.PlmsSignNotarialDao">
+
+    <insert id="saveSignNotarialInfo" parameterType="com.vilio.plms.pojo.PlmsSignNotarial">
+        INSERT INTO plms_sign_notarial (
+            code,
+            sign_time,
+            sign_result,
+            remark,
+            contract_code,
+            status,
+            create_date,
+            modify_date,
+            sign_place
+        )
+        VALUES
+            (   #{code},
+                #{signTime},
+                #{signResult},
+                #{remark},
+                #{contractCode},
+                #{status},
+                #{createDate},
+                #{modifyDate},
+                #{signPlace}
+            )
+    </insert>
+</mapper>

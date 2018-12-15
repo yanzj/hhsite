@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.PlmsContractInfoDao">
+
+    <!--贷款业务综合信息查询-->
+    <select id="queryContractInfoByCode" resultType="java.util.Map" parameterType="java.lang.String">
+        SELECT
+        a.contract_code as contractCode,
+        a.credit_end_date AS creditEndDate,
+        a.principal,
+        a.total_quota AS totalQuota,
+        a.remaining_quota AS remainingQuota,
+        c.annualized_interest AS annualizedInterest,
+        c.principal_over_interest AS principalOverInterest,
+        f.is_period_select AS isPeriodSelect,
+        f.repayment_methods AS repaymentMethods,
+        d.account_no AS accountNo,
+        date_format(a.principal_date, '%Y%m%d%H%i%s') AS principalDate,
+        f.loan_minimum_unit AS loanMinimumUnit,
+        f.loan_minimum_amount AS loanMinimumAmount,
+        f.is_first_max AS isFirstMax,
+        a.first_amount AS firstAmount
+        FROM
+        plms_contract_info ct,
+        plms_account_detail a,
+        plms_account account,
+        plms_apply_interesting c,
+        plms_customer d,
+        plms_apply_info e,
+        plms_product f
+        WHERE
+        a.contract_code = ct.CODE
+        AND a.account_code = account.CODE
+        AND account.customer_code = d.CODE
+        AND ct.apply_code = e.CODE
+        AND f.apply_code = e.CODE
+        AND a.STATUS != '0'
+        AND c.STATUS != '0'
+        AND d.STATUS != '0'
+        AND e.STATUS = '1'
+        AND f.STATUS != '0'
+        AND f.STATUS = '1'
+        AND ct.CODE = #{contractCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getProductInfoAndInterest" resultType="java.util.Map" parameterType="java.lang.String">
+        select
+            pro.year_period as yearPeriod
+            ,pro.mortgage_interest_period*1 AS mortgageInterestPeriod
+            ,ai.annualized_interest AS annualizedInterest
+            ,ai.is_interest_Instead as isInterestInstead
+            ,pro.interest_collection_method as interestCollectionMethod
+            ,pro.paid_days_computational_rule as paidDaysComputationalRule
+            ,pro.interest_repayment_day as interestRepaymentDay
+            ,pro.is_spread_one_time as isSpreadOneTime
+            ,pro.repayment_methods as repaymentMethods
+            ,pro.interest_cycle as interestCycle
+            ,pro.paid_days_computational_rule as paidDaysComputationalRule
+        from plms_contract_info ct join plms_apply_info ap on ct.apply_code=ap.code
+        join plms_product pro on pro.apply_code = ap.code
+        join plms_apply_interesting ai on ai.contract_code = ct.code
+        where ct.code = #{contractCode,jdbcType=VARCHAR}
+    </select>
+</mapper>

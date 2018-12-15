@@ -1,0 +1,1120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.SysInfoParamDao">
+
+    <!--查询抵押物信息-->
+    <select id="qryAccountLockList" resultType="java.util.Map">
+        <![CDATA[
+        SELECT
+            a.id id,
+            a.code code,
+            a.syscode syscode,
+            a.item_id itemId,
+            a.item_name itemName,
+            a.item_cval itemCval,
+            a.item_ival itemIval,
+            date_format(a.execute_time,'%Y-%m-%d') executeTime,
+            a.item_desc itemDesc,
+            a.remark remark,
+            a.remark1 remark1,
+            a.remark2 remark2
+        FROM
+            plms_sysparam_info a
+        WHERE
+            a.item_id = 'ACCOUNT_LOCK'
+        ]]>
+    </select>
+
+    <select id="qryCurrentDayPayScheduleJobList" resultType="java.util.Map">
+        <![CDATA[
+        SELECT
+            a.id id,
+            a.code code,
+            a.syscode syscode,
+            a.item_id itemId,
+            a.item_name itemName,
+            a.item_cval itemCval,
+            a.item_ival itemIval,
+            date_format(a.execute_time,'%Y-%m-%d') executeTime,
+            a.item_desc itemDesc,
+            a.remark remark,
+            a.remark1 remark1,
+            a.remark2 remark2
+        FROM
+            plms_sysparam_info a
+        WHERE
+            a.item_id = 'PAY_SCHEDULE_JOB'
+            and date_format(a.execute_time,'%Y-%m-%d') = #{executeTime}
+        ]]>
+    </select>
+
+    <select id="qryCurrentDayOverdueJobList" resultType="java.util.Map">
+        <![CDATA[
+        SELECT
+            a.id id,
+            a.code code,
+            a.syscode syscode,
+            a.item_id itemId,
+            a.item_name itemName,
+            a.item_cval itemCval,
+            a.item_ival itemIval,
+            a.execute_time executeTime,
+            a.item_desc itemDesc,
+            a.remark remark,
+            a.remark1 remark1,
+            a.remark2 remark2
+        FROM
+            plms_sysparam_info a
+        WHERE
+            a.item_id = 'CALCULATE_OVERDUE_INTEREST_JOB'
+        ]]>
+    </select>
+
+    <select id="qryOverdueRepaymentScheduleDetailList" resultType="java.util.Map">
+        <![CDATA[
+        (SELECT
+            prsd.code code,
+            prsd.repayment_date repaymentDate,
+            ifnull(prsd.amount,0) amount,
+            ifnull(prsd.principal,0) principal,
+            ifnull(prsd.interest,0) interest,
+            ifnull(prsd.service_fee,0) serviceFee,
+            ifnull(prsd.overdue,0) overdue,
+            ifnull(prsd.service_fee_penalty,0) serviceFeePenalty,
+            ifnull(prsd.repaymented_principal,0) repaymentedPrincipal,
+            ifnull(prsd.repaymented_interest,0) repaymentedInterest,
+            ifnull(prsd.repaymented_overdue,0) repaymentedOverdue,
+            ifnull(prsd.repaymented_service_fee,0) repaymentedServiceFee,
+            ifnull(prsd.repaymented_service_fee_penalty,0) repaymentedServiceFeePenalty,
+            prsd.paid_code paidCode,
+            prsd.schedule_code scheduleCode,
+            prsd.principal_account_code principalAccountCode,
+            prsd.interest_account_code interestAccountCode,
+            ifnull(prsd.total_overdue_days,0) totalOverDays,
+           (select sum(ifnull(a.amount,0)) from plms_overdue a where a.`subject` = '01' and a.schedule_detail_code = prsd.`code`) principalOverdue,
+           (select sum(ifnull(b.amount,0)) from plms_overdue b where b.`subject` = '02' and b.schedule_detail_code = prsd.`code`) interestOverdue,
+           (select sum(ifnull(c.amount,0)) from plms_overdue c where c.`subject` = '03' and c.schedule_detail_code = prsd.`code`) serviceFeeInterestOverdue,
+
+          ppi.paid_amount paidAmount,
+          pp.year_period yearPeriod
+        FROM
+            plms_repayment_schedule_detail prsd,plms_paid_info ppi,plms_apply_info pai,plms_product pp
+        WHERE
+               prsd.paid_code = ppi.`code`
+          and ppi.user_code = pai.user_code
+          and pp.apply_code = pai.code
+		  and DATE_FORMAT(ppi.paid_time,'%Y-%m-%d') < DATE_FORMAT(prsd.repayment_date,'%Y-%m-%d')
+          and date_add(
+                  prsd.repayment_date,
+                  INTERVAL pp.grace_days day)
+                  < date #{executeTime} and prsd.`status` in  ('02','03'))
+        UNION
+		 (SELECT
+            prsd.code code,
+            prsd.repayment_date repaymentDate,
+            ifnull(prsd.amount,0) amount,
+            ifnull(prsd.principal,0) principal,
+            ifnull(prsd.interest,0) interest,
+            ifnull(prsd.service_fee,0) serviceFee,
+            ifnull(prsd.overdue,0) overdue,
+            ifnull(prsd.service_fee_penalty,0) serviceFeePenalty,
+            ifnull(prsd.repaymented_principal,0) repaymentedPrincipal,
+            ifnull(prsd.repaymented_interest,0) repaymentedInterest,
+            ifnull(prsd.repaymented_overdue,0) repaymentedOverdue,
+            ifnull(prsd.repaymented_service_fee,0) repaymentedServiceFee,
+            ifnull(prsd.repaymented_service_fee_penalty,0) repaymentedServiceFeePenalty,
+            prsd.paid_code paidCode,
+            prsd.schedule_code scheduleCode,
+            prsd.principal_account_code principalAccountCode,
+            prsd.interest_account_code interestAccountCode,
+            ifnull(prsd.total_overdue_days,0) totalOverDays,
+           (select sum(ifnull(a.amount,0)) from plms_overdue a where a.`subject` = '01' and a.schedule_detail_code = prsd.`code`) principalOverdue,
+           (select sum(ifnull(b.amount,0)) from plms_overdue b where b.`subject` = '02' and b.schedule_detail_code = prsd.`code`) interestOverdue,
+           (select sum(ifnull(c.amount,0)) from plms_overdue c where c.`subject` = '03' and c.schedule_detail_code = prsd.`code`) serviceFeeInterestOverdue,
+          ppi.paid_amount paidAmount,
+          pp.year_period yearPeriod
+        FROM
+            plms_repayment_schedule_detail prsd,plms_paid_info ppi,plms_apply_info pai,plms_product pp
+        WHERE
+               prsd.paid_code = ppi.`code`
+          and ppi.user_code = pai.user_code
+          and pp.apply_code = pai.code
+					and DATE_FORMAT(ppi.paid_time,'%Y-%m-%d') = DATE_FORMAT(prsd.repayment_date,'%Y-%m-%d')
+          and date_add(
+                  prsd.repayment_date,
+                  INTERVAL pp.paid_date_grace_days day)
+                  < date #{executeTime} and prsd.`status` in  ('02','03'))
+        ]]>
+    </select>
+
+    <select id="qryOverdueFirstDayRepaymentScheduleDetailList" resultType="java.util.Map">
+        <![CDATA[
+        (SELECT
+            prsd.code code,
+            prsd.repayment_date repaymentDate,
+            ifnull(prsd.amount,0) amount,
+            ifnull(prsd.principal,0) principal,
+            ifnull(prsd.interest,0) interest,
+            ifnull(prsd.service_fee,0) serviceFee,
+            ifnull(prsd.bail,0) bail,
+            ifnull(prsd.overdue,0) overdue,
+            ifnull(prsd.service_fee_penalty,0) serviceFeePenalty,
+            ifnull(prsd.bail_penalty,0) bailPenalty,
+            ifnull(prsd.repaymented_principal,0) repaymentedPrincipal,
+            ifnull(prsd.repaymented_interest,0) repaymentedInterest,
+            ifnull(prsd.repaymented_overdue,0) repaymentedOverdue,
+            ifnull(prsd.repaymented_service_fee,0) repaymentedServiceFee,
+            ifnull(prsd.repaymented_service_fee_penalty,0) repaymentedServiceFeePenalty,
+            ifnull(prsd.repaymented_bail,0) repaymentedBail,
+            ifnull(prsd.repaymented_bail_penalty,0) repaymentedBailPenalty,
+            prsd.paid_code paidCode,
+            prsd.schedule_code scheduleCode,
+            prsd.principal_account_code principalAccountCode,
+            prsd.interest_account_code interestAccountCode,
+            ifnull(prsd.total_overdue_days,0) totalOverDays,
+            ifnull(prsd.service_fee_total_overdue_days,0) serviceFeeTotalOverdueDays,
+            ifnull(pp.grace_days,0) graceDays,
+           (select ifnull(sum(ifnull(a.amount, 0)),0) from plms_overdue a where a.`subject` = '01' and a.schedule_detail_code = prsd.`code` and a.status = '02') principalOverdue,
+           (select ifnull(sum(ifnull(b.amount, 0)),0) from plms_overdue b where b.`subject` = '02' and b.schedule_detail_code = prsd.`code` and b.status = '02') interestOverdue,
+           (select ifnull(sum(ifnull(c.amount, 0)),0) from plms_overdue c where c.`subject` = '03' and c.schedule_detail_code = prsd.`code` and c.status = '02') serviceFeeInterestOverdue,
+           (select ifnull(sum(ifnull(d.amount, 0)),0) from plms_overdue d where d.`subject` = '04' and d.schedule_detail_code = prsd.`code` and d.status = '02') bailOverdue,
+          ppi.paid_amount paidAmount,
+          pp.year_period yearPeriod,
+          pp.overdue_method overdueMethod,
+          pai.principal_over_interest principalOverInterest,
+          pai.interest_over_interest interestOverInterest,
+          pai.service_fee_interest_rate serviceFeeInterestRate
+        FROM
+            plms_repayment_schedule_detail prsd,plms_paid_info ppi,plms_contract_info pci,plms_product pp,plms_apply_interesting pai
+        WHERE
+               prsd.paid_code = ppi.`code`
+          and ppi.contract_code = pci.code
+          and pci.apply_code = pp.apply_code
+          and pci.code = pai.contract_code
+		  and DATE_FORMAT(ppi.paid_time,'%Y-%m-%d') < DATE_FORMAT(prsd.repayment_date,'%Y-%m-%d')
+          and DATE_FORMAT(date_add(
+                  prsd.repayment_date,
+                  INTERVAL pp.grace_days day),'%Y-%m-%d')
+                  <  #{calculationDate} and prsd.`status` in  ('02','03'))
+        UNION
+		 (SELECT
+            prsd.code code,
+            prsd.repayment_date repaymentDate,
+            ifnull(prsd.amount,0) amount,
+            ifnull(prsd.principal,0) principal,
+            ifnull(prsd.interest,0) interest,
+            ifnull(prsd.service_fee,0) serviceFee,
+			ifnull(prsd.bail,0) bail,
+            ifnull(prsd.overdue,0) overdue,
+            ifnull(prsd.service_fee_penalty,0) serviceFeePenalty,
+			ifnull(prsd.bail_penalty,0) bailPenalty,
+            ifnull(prsd.repaymented_principal,0) repaymentedPrincipal,
+            ifnull(prsd.repaymented_interest,0) repaymentedInterest,
+            ifnull(prsd.repaymented_overdue,0) repaymentedOverdue,
+            ifnull(prsd.repaymented_service_fee,0) repaymentedServiceFee,
+            ifnull(prsd.repaymented_service_fee_penalty,0) repaymentedServiceFeePenalty,
+			ifnull(prsd.repaymented_bail,0) repaymentedBail,
+            ifnull(prsd.repaymented_bail_penalty,0) repaymentedBailPenalty,
+            prsd.paid_code paidCode,
+            prsd.schedule_code scheduleCode,
+            prsd.principal_account_code principalAccountCode,
+            prsd.interest_account_code interestAccountCode,
+            ifnull(prsd.total_overdue_days,0) totalOverDays,
+            ifnull(prsd.service_fee_total_overdue_days,0) serviceFeeTotalOverdueDays,
+            ifnull(pp.paid_date_grace_days,0) graceDays,
+           (select sum(ifnull(a.amount,0)) from plms_overdue a where a.`subject` = '01' and a.schedule_detail_code = prsd.`code`) principalOverdue,
+           (select sum(ifnull(b.amount,0)) from plms_overdue b where b.`subject` = '02' and b.schedule_detail_code = prsd.`code`) interestOverdue,
+           (select sum(ifnull(c.amount,0)) from plms_overdue c where c.`subject` = '03' and c.schedule_detail_code = prsd.`code`) serviceFeeInterestOverdue,
+           (select ifnull(sum(ifnull(d.amount, 0)),0) from plms_overdue d where d.`subject` = '04' and d.schedule_detail_code = prsd.`code` and d.status = '02') bailOverdue,
+          ppi.paid_amount paidAmount,
+          pp.year_period yearPeriod,
+          pp.overdue_method overdueMethod,
+          pai.principal_over_interest principalOverInterest,
+          pai.interest_over_interest interestOverInterest,
+          pai.service_fee_interest_rate serviceFeeInterestRate
+        FROM
+            plms_repayment_schedule_detail prsd,plms_paid_info ppi,plms_contract_info pci,plms_product pp,plms_apply_interesting pai
+        WHERE
+               prsd.paid_code = ppi.`code`
+          and ppi.contract_code = pci.code
+          and pci.apply_code = pp.apply_code
+          and pci.code = pai.contract_code
+		  and DATE_FORMAT(ppi.paid_time,'%Y-%m-%d') = DATE_FORMAT(prsd.repayment_date,'%Y-%m-%d')
+          and DATE_FORMAT(date_add(
+                  prsd.repayment_date,
+                  INTERVAL pp.paid_date_grace_days day),'%Y-%m-%d')
+                  < #{calculationDate} and prsd.`status` in  ('02','03'))
+        ]]>
+    </select>
+
+    <select id="qryOverdueRepaymentScheduleDetailListByContractNo" resultType="java.util.Map" parameterType="java.util.Map">
+        <![CDATA[
+        (SELECT
+            prsd.code code,
+            prsd.repayment_date repaymentDate,
+            ifnull(prsd.amount,0) amount,
+            ifnull(prsd.principal,0) principal,
+            ifnull(prsd.interest,0) interest,
+            ifnull(prsd.service_fee,0) serviceFee,
+            ifnull(prsd.bail,0) bail,
+            ifnull(prsd.overdue,0) overdue,
+            ifnull(prsd.service_fee_penalty,0) serviceFeePenalty,
+            ifnull(prsd.bail_penalty,0) bailPenalty,
+            ifnull(prsd.repaymented_principal,0) repaymentedPrincipal,
+            ifnull(prsd.repaymented_interest,0) repaymentedInterest,
+            ifnull(prsd.repaymented_overdue,0) repaymentedOverdue,
+            ifnull(prsd.repaymented_service_fee,0) repaymentedServiceFee,
+            ifnull(prsd.repaymented_service_fee_penalty,0) repaymentedServiceFeePenalty,
+            ifnull(prsd.repaymented_bail,0) repaymentedBail,
+            ifnull(prsd.repaymented_bail_penalty,0) repaymentedBailPenalty,
+            prsd.paid_code paidCode,
+            prsd.schedule_code scheduleCode,
+            prsd.principal_account_code principalAccountCode,
+            prsd.interest_account_code interestAccountCode,
+            ifnull(prsd.total_overdue_days,0) totalOverDays,
+            ifnull(prsd.service_fee_total_overdue_days,0) serviceFeeTotalOverdueDays,
+            ifnull(pp.grace_days,0) graceDays,
+           (select ifnull(sum(ifnull(a.amount, 0)),0) from plms_overdue a where a.`subject` = '01' and a.schedule_detail_code = prsd.`code` and a.status = '02') principalOverdue,
+           (select ifnull(sum(ifnull(b.amount, 0)),0) from plms_overdue b where b.`subject` = '02' and b.schedule_detail_code = prsd.`code` and b.status = '02') interestOverdue,
+           (select ifnull(sum(ifnull(c.amount, 0)),0) from plms_overdue c where c.`subject` = '03' and c.schedule_detail_code = prsd.`code` and c.status = '02') serviceFeeInterestOverdue,
+           (select ifnull(sum(ifnull(d.amount, 0)),0) from plms_overdue d where d.`subject` = '04' and d.schedule_detail_code = prsd.`code` and d.status = '02') bailOverdue,
+          ppi.paid_amount paidAmount,
+          pp.year_period yearPeriod,
+          pp.overdue_method overdueMethod,
+          pai.principal_over_interest principalOverInterest,
+          pai.interest_over_interest interestOverInterest,
+          pai.service_fee_interest_rate serviceFeeInterestRate
+        FROM
+            plms_repayment_schedule prs,plms_account_detail pad,plms_repayment_schedule_detail prsd,plms_paid_info ppi,plms_contract_info pci,plms_product pp,plms_apply_interesting pai
+        WHERE
+               prsd.paid_code = ppi.`code`
+          and ppi.contract_code = pci.code
+          and pci.apply_code = pp.apply_code
+          and pci.code = pai.contract_code
+		  and prsd.schedule_code = prs.code
+          and prs.detail_code = pad.code
+          and pad.contract_code = #{contractCode}
+		  and DATE_FORMAT(ppi.paid_time,'%Y-%m-%d') < DATE_FORMAT(prsd.repayment_date,'%Y-%m-%d')
+          and DATE_FORMAT(date_add(
+                  prsd.repayment_date,
+                  INTERVAL pp.grace_days day),'%Y-%m-%d')
+                  <  #{calculationDate} and prsd.`status` in  ('02','03'))
+        UNION
+		 (SELECT
+            prsd.code code,
+            prsd.repayment_date repaymentDate,
+            ifnull(prsd.amount,0) amount,
+            ifnull(prsd.principal,0) principal,
+            ifnull(prsd.interest,0) interest,
+            ifnull(prsd.service_fee,0) serviceFee,
+			ifnull(prsd.bail,0) bail,
+            ifnull(prsd.overdue,0) overdue,
+            ifnull(prsd.service_fee_penalty,0) serviceFeePenalty,
+			ifnull(prsd.bail_penalty,0) bailPenalty,
+            ifnull(prsd.repaymented_principal,0) repaymentedPrincipal,
+            ifnull(prsd.repaymented_interest,0) repaymentedInterest,
+            ifnull(prsd.repaymented_overdue,0) repaymentedOverdue,
+            ifnull(prsd.repaymented_service_fee,0) repaymentedServiceFee,
+            ifnull(prsd.repaymented_service_fee_penalty,0) repaymentedServiceFeePenalty,
+			ifnull(prsd.repaymented_bail,0) repaymentedBail,
+            ifnull(prsd.repaymented_bail_penalty,0) repaymentedBailPenalty,
+            prsd.paid_code paidCode,
+            prsd.schedule_code scheduleCode,
+            prsd.principal_account_code principalAccountCode,
+            prsd.interest_account_code interestAccountCode,
+            ifnull(prsd.total_overdue_days,0) totalOverDays,
+            ifnull(prsd.service_fee_total_overdue_days,0) serviceFeeTotalOverdueDays,
+            ifnull(pp.paid_date_grace_days,0) graceDays,
+           (select sum(ifnull(a.amount,0)) from plms_overdue a where a.`subject` = '01' and a.schedule_detail_code = prsd.`code`) principalOverdue,
+           (select sum(ifnull(b.amount,0)) from plms_overdue b where b.`subject` = '02' and b.schedule_detail_code = prsd.`code`) interestOverdue,
+           (select sum(ifnull(c.amount,0)) from plms_overdue c where c.`subject` = '03' and c.schedule_detail_code = prsd.`code`) serviceFeeInterestOverdue,
+           (select ifnull(sum(ifnull(d.amount, 0)),0) from plms_overdue d where d.`subject` = '04' and d.schedule_detail_code = prsd.`code` and d.status = '02') bailOverdue,
+          ppi.paid_amount paidAmount,
+          pp.year_period yearPeriod,
+          pp.overdue_method overdueMethod,
+          pai.principal_over_interest principalOverInterest,
+          pai.interest_over_interest interestOverInterest,
+          pai.service_fee_interest_rate serviceFeeInterestRate
+        FROM
+            plms_repayment_schedule prs,plms_account_detail pad,plms_repayment_schedule_detail prsd,plms_paid_info ppi,plms_contract_info pci,plms_product pp,plms_apply_interesting pai
+        WHERE
+               prsd.paid_code = ppi.`code`
+          and ppi.contract_code = pci.code
+          and pci.apply_code = pp.apply_code
+          and pci.code = pai.contract_code
+		  and prsd.schedule_code = prs.code
+          and prs.detail_code = pad.code
+          and pad.contract_code = #{contractCode}
+		  and DATE_FORMAT(ppi.paid_time,'%Y-%m-%d') = DATE_FORMAT(prsd.repayment_date,'%Y-%m-%d')
+          and DATE_FORMAT(date_add(
+                  prsd.repayment_date,
+                  INTERVAL pp.paid_date_grace_days day),'%Y-%m-%d')
+                  < #{calculationDate} and prsd.`status` in  ('02','03'))
+        ]]>
+    </select>
+
+    <select id="qryPaidInfo" parameterType = "java.lang.String" resultType="java.util.Map">
+        <![CDATA[
+        SELECT
+            a.id id,
+            a.code  code,
+            ifnull(a.paid_amount,0) paidAmount,
+            a.paid_time paidTime,
+            a.iou_code iouCode,
+            a.borrow_code borrowCode,
+            ifnull(a.repaymented_principal,0) repaymentedPrincipal,
+            ifnull(a.repaymented_interest,0) repaymentedInterest,
+            ifnull(a.repaymented_service_fee,0) repaymentedServiceFee,
+            ifnull(a.repaymented_service_fee_penalty,0) repaymentServiceFeePenalty,
+            ifnull(a.repaymented_overdue,0) repaymentedOverdue,
+            ifnull(a.interest,0) interest,
+            ifnull(a.overdue,0) overdue,
+            ifnull(a.service_fee,0) serviceFee,
+            ifnull(a.service_fee_penalty,0) serviceFeePenalty,
+            a.business_code businessCode,
+            a.user_code userCode,
+            a.contract_code contractCode,
+            a.remark remark,
+            a.account_code accountCode,
+            ifnull(a.bail,0) bail,
+            ifnull(a.bail_penalty,0) bailPenalty,
+            ifnull(a.repaymented_bail,0) repaymentedBail,
+            ifnull(a.repaymented_bail_penalty,0) repaymentedBailPenalty
+        FROM
+            plms_paid_info a
+        WHERE
+            a.CODE = #{paidCode}
+        ]]>
+    </select>
+
+    <select id="qryOverdueByScheduleDetailCodeAndSubject" parameterType = "java.util.Map" resultType="java.util.Map">
+        <![CDATA[
+        SELECT
+            a.`subject` SUBJECT,
+            a.overdue_days overdueDays,
+            ifnull(a.overdue_amount,0) overdueAmount,
+            ifnull(a.amount,0) amount,
+            a.schedule_detail_code scheduleDetailCode,
+            a.repayment_detail_code repaymentDetailCode
+        FROM
+            plms_overdue a
+        WHERE
+            a.schedule_detail_code = #{scheduleDetailCode}
+        AND a.`subject` = #{subject}
+        AND a. STATUS = '02'
+        ]]>
+    </select>
+
+    <update id="updateOverdue" parameterType="java.util.Map" >
+        update plms_overdue
+        <set >
+            <if test="code != null" >
+                CODE = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="overdueDays != null" >
+                overdue_days = #{overdueDays,jdbcType=INT},
+            </if>
+            <if test="overdueAmount != null" >
+                overdue_amount = #{overdueAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="scheduleDetailCode != null" >
+                schedule_detail_code = #{scheduleDetailCode,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="repaymentDetailCode != null" >
+                repayment_detail_code = #{repaymentDetailCode,jdbcType=VARCHAR},
+            </if>
+            <if test="subject != null" >
+                subject = #{subject,jdbcType=VARCHAR},
+            </if>
+            <if test="amount != null" >
+                amount = #{amount,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where code = #{code,jdbcType=NUMERIC}
+    </update>
+
+    <update id="updateSysInfoParam" parameterType="java.util.Map" >
+        update plms_sysparam_info
+        <set >
+            <if test="code != null" >
+                CODE = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="syscode != null" >
+                syscode = #{syscode,jdbcType=INT},
+            </if>
+            <if test="sysname != null" >
+                sysname = #{sysname,jdbcType=DECIMAL},
+            </if>
+            <if test="itemId != null" >
+                item_id = #{itemId,jdbcType=VARCHAR},
+            </if>
+            <if test="itemName != null" >
+                item_name = #{itemName,jdbcType=VARCHAR},
+            </if>
+            <if test="itemCval != null" >
+                item_cval = #{itemCval,jdbcType=VARCHAR},
+            </if>
+            <if test="itemIval != null" >
+                item_ival = #{itemIval,jdbcType=VARCHAR},
+            </if>
+            <if test="executeTime != null" >
+                execute_time = #{executeTime,jdbcType=VARCHAR},
+            </if>
+            <if test="itemDesc != null" >
+                item_desc = #{itemDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="remark1 != null" >
+                remark1 = #{remark1,jdbcType=VARCHAR},
+            </if>
+            <if test="remark2 != null" >
+                remark2 = #{remark2,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where code = #{code,jdbcType=NUMERIC}
+    </update>
+
+    <insert id="insertOverdue" parameterType="java.util.Map" >
+        INSERT INTO plms_overdue(code,overdue_days,overdue_amount,schedule_detail_code,repayment_detail_code,
+        status,subject,amount)
+        VALUES
+            (#{code,jdbcType=VARCHAR},
+            #{overdueDays,jdbcType=INTEGER},
+            #{overdueAmount,jdbcType=DECIMAL},
+            #{scheduleDetailCode,jdbcType=VARCHAR},
+            #{repaymentDetailCode,jdbcType=VARCHAR},
+            #{status,jdbcType=VARCHAR},
+            #{subject,jdbcType=VARCHAR},
+            #{amount,jdbcType=DECIMAL})
+    </insert>
+
+    <insert id="insertOverdueDetail" parameterType="java.util.Map" >
+        INSERT INTO plms_overdue_detail(code,overdue_amount,time,overdue_code,
+        status)
+        VALUES
+            (#{code,jdbcType=VARCHAR},
+            #{overdueAmount,jdbcType=DECIMAL},
+            #{time,jdbcType=DATE},
+            #{overdueCode,jdbcType=VARCHAR},
+            #{status,jdbcType=VARCHAR})
+    </insert>
+
+    <select id="qryRepaymentScheduleDetail" parameterType = "java.util.Map" resultType="java.util.Map">
+        <![CDATA[
+        SELECT
+            a.code code,
+            a.current_period currentPeriod,
+			a.total_period totalPeriod,
+			a.repayment_date repaymentDate,
+            ifnull(a.amount,0) amount,
+            ifnull(a.principal,0) principal,
+            ifnull(a.interest,0) interest,
+            ifnull(a.service_fee,0) serviceFee,
+			ifnull(a.overdue,0) overdue,
+			ifnull(a.service_fee_penalty,0) serviceFeePenalty,
+			ifnull(a.repaymented_principal,0) repaymentedPrincipal,
+			ifnull(a.repaymented_interest,0) repaymentedInterest,
+			ifnull(a.repaymented_service_fee,0) repaymentedServiceFee,
+			ifnull(a.repaymented_overdue,0) repaymentedOverdue,
+			ifnull(a.repaymented_service_fee_penalty,0) repaymentedServiceFeePenalty,
+			ifnull(a.bail,0) bail,
+			ifnull(a.bail_penalty,0) bailPenalty,
+			ifnull(a.repaymented_bail,0) repaymentedBail,
+			ifnull(a.repaymented_bail_penalty,0) repaymentedBailPenalty,
+			a.`status` `status`,
+			a.paid_code paidCode,
+			a.schedule_code scheduleCode,
+			a.principal_account_code principalAccountCode,
+			a.interest_account_code interestAccountCode,
+			ifnull(a.total_overdue_days,0) totalOverdueDays,
+			ifnull(a.service_fee_total_overdue_days,0) serviceFeeTotalOverdueDays
+        FROM
+            plms_repayment_schedule_detail a
+        WHERE
+            a.code = #{scheduleDetailCode}
+        ]]>
+    </select>
+
+    <select id="qryRepaymentSchedule" parameterType = "java.lang.String" resultType="java.util.Map">
+        <![CDATA[
+        SELECT
+            a.code code,
+            a.current_period currentPeriod,
+            a.total_period totalPeriod,
+            a.repayment_date repaymentDate,
+            ifnull(a.amount,0) amount,
+            ifnull(a.principal,0) principal,
+            ifnull(a.interest,0) interest,
+            ifnull(a.service_fee,0) serviceFee,
+            ifnull(a.overdue,0) overdue,
+            ifnull(a.service_fee_penalty,0) serviceFeePenalty,
+            ifnull(a.repaymented_principal,0) repaymentedPrincipal,
+            ifnull(a.repaymented_interest,0) repaymentedInterest,
+            ifnull(a.repaymented_service_fee,0) repaymentedServiceFee,
+            ifnull(a.repaymented_overdue,0) repaymentedOverdue,
+            ifnull(a.repaymented_service_fee_penalty,0) repaymentedServiceFeePenalty,
+            ifnull(a.bail,0) bail,
+			ifnull(a.bail_penalty,0) bailPenalty,
+			ifnull(a.repaymented_bail,0) repaymentedBail,
+			ifnull(a.repaymented_bail_penalty,0) repaymentedBailPenalty,
+            a.`status` `status`,
+            a.detail_code detailCode,
+            a.user_code userCode,
+            a.create_date createDate,
+            a.modify_date modifyDate
+        FROM
+            plms_repayment_schedule a
+        WHERE
+            a.code = #{scheduleCode}
+        ]]>
+    </select>
+
+    <select id="qryAccountDetail" parameterType = "java.lang.String" resultType="java.util.Map">
+        <![CDATA[
+        SELECT
+            a.code code,
+			a.total_quota totalQuota,
+		  	ifnull(a.principal,0) principal,
+			ifnull(a.remaining_quota,0) remainingQuota,
+            ifnull(a.interest,0) interest,
+			ifnull(a.service_fee,0) serviceFee,
+			ifnull(a.overdue,0) overdue,
+			ifnull(a.service_fee_penalty,0) serviceFeePenalty,
+			ifnull(a.fund_side_balance,0) fundSideBalance,
+			ifnull(a.honghuo_balance,0) honghuoBalance,
+			a.account_code accountCode,
+			a.credit_end_date creditEndDate,
+			a.principal_date principalDate,
+			a.contract_code contractCode,
+			a.`status` stauts,
+			ifnull(a.first_amount,0) firstAmount,
+			ifnull(a.repaymented_principal,0) repaymentedPrincipal,
+			ifnull(a.repaymented_interest,0) repaymentedInterest,
+			ifnull(a.repaymented_service_fee,0) repaymentedServiceFee,
+			ifnull(a.repaymented_overdue,0) repaymentedOverdue,
+			ifnull(a.repaymented_service_fee_penalty,0) repaymentedServiceFeePenalty,
+			ifnull(a.repaymented_penalty,0) repaymentedPenalty,
+			ifnull(a.bail,0) bail,
+			ifnull(a.bail_penalty,0) bailPenalty,
+			ifnull(a.repaymented_bail,0) repaymentedBail,
+			ifnull(a.repaymented_bail_penalty,0) repaymentedBailPenalty,
+			a.confirmed confirmed,
+            a.create_date createDate,
+            a.modify_date modifyDate
+        FROM
+            plms_account_detail a
+        WHERE
+            a.CODE = #{detailCode}
+        ]]>
+    </select>
+
+    <select id="qryAccountDetailByCreditEndDate" parameterType = "java.util.Date" resultType="java.util.Map">
+        <![CDATA[
+        SELECT
+            a. code code,
+            a.total_quota totalQuota,
+            ifnull(a.principal, 0) principal,
+            ifnull(a.remaining_quota, 0) remainingQuota,
+            ifnull(a.interest, 0) interest,
+            ifnull(a.service_fee, 0) serviceFee,
+            ifnull(a.overdue, 0) overdue,
+            ifnull(a.service_fee_penalty, 0) serviceFeePenalty,
+            ifnull(a.fund_side_balance, 0) fundSideBalance,
+            ifnull(a.honghuo_balance, 0) honghuoBalance,
+            a.account_code accountCode,
+            a.credit_end_date creditEndDate,
+            a.principal_date principalDate,
+            a.contract_code contractCode,
+            a.`status` stauts,
+            ifnull(a.first_amount, 0) firstAmount,
+            ifnull(a.repaymented_principal, 0) repaymentedPrincipal,
+            ifnull(a.repaymented_interest, 0) repaymentedInterest,
+            ifnull(
+                a.repaymented_service_fee,
+                0
+            ) repaymentedServiceFee,
+            ifnull(a.repaymented_overdue, 0) repaymentedOverdue,
+            ifnull(
+                a.repaymented_service_fee_penalty,
+                0
+            ) repaymentedServiceFeePenalty,
+            ifnull(a.repaymented_penalty, 0) repaymentedPenalty,
+            a.confirmed confirmed,
+            a.create_date createDate,
+            a.modify_date modifyDate,
+            ifnull(a.bail,0) bail,
+			ifnull(a.bail_penalty,0) bailPenalty,
+			ifnull(a.repaymented_bail,0) repaymentedBail,
+			ifnull(a.repaymented_bail_penalty,0) repaymentedBailPenalty
+        FROM
+            plms_account_detail a
+        WHERE
+            a.credit_end_date = #{creditEndDate}
+        ]]>
+    </select>
+
+    <select id="qryMinCreditEndDateByAccountCode" parameterType = "java.lang.String" resultType="java.util.Map">
+        <![CDATA[
+        SELECT
+            min(a.credit_end_date)
+        FROM
+            plms_account_detail a
+        WHERE
+            a.account_code = #{accountCode}
+						and DATE_FORMAT(a.credit_end_date,'%Y-%m-%d')>=#{creditEndDate}
+        ]]>
+    </select>
+
+    <select id="qryAccount" parameterType = "java.lang.String" resultType="java.util.Map">
+        <![CDATA[
+        SELECT
+            a.code code,
+            ifnull(a.total_quota,0) totalQuota,
+            ifnull(a.principal,0) principal,
+            ifnull(a.remaining_quota,0) remainingQuota,
+            ifnull(a.interest,0) interest,
+            ifnull(a.service_fee,0) serviceFee,
+            ifnull(a.overdue,0) overdue,
+            ifnull(a.service_fee_penalty,0) serviceFeePenalty,
+            a.user_code userCode,
+            a.credit_end_date creditEndDate,
+            a.`status` stauts,
+            ifnull(a.repaymented_principal,0) repaymentedPrincipal,
+            ifnull(a.repaymented_interest,0) repaymentedInterest,
+            ifnull(a.repaymented_service_fee,0) repaymentedServiceFee,
+            ifnull(a.repaymented_overdue,0) repaymentedOverdue,
+            ifnull(a.repaymented_service_fee_penalty,0) repaymentedServiceFeePenalty,
+            ifnull(a.repaymented_penalty,0) repaymentedPenalty,
+            a.create_date createDate,
+            a.modify_date modifyDate,
+            ifnull(a.bail,0) bail,
+			ifnull(a.bail_penalty,0) bailPenalty,
+			ifnull(a.repaymented_bail,0) repaymentedBail,
+			ifnull(a.repaymented_bail_penalty,0) repaymentedBailPenalty
+        FROM
+            plms_account a
+        WHERE
+            a.code = #{accountCode}
+        ]]>
+    </select>
+
+    <update id="updateRepaymentScheduleDetail" parameterType = "java.util.Map" >
+        update plms_repayment_schedule_detail
+        <set>
+            <if test="code != null" >
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="currentPeriod != null" >
+                current_period = #{currentPeriod,jdbcType=INTEGER},
+            </if>
+            <if test="totalPeriod != null" >
+                total_period = #{totalPeriod,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentDate != null" >
+                repayment_date = #{repaymentDate,jdbcType=DATE},
+            </if>
+            <if test="amount != null" >
+                amount = #{amount,jdbcType=DECIMAL},
+            </if>
+            <if test="principal!= null" >
+                principal = #{principal,jdbcType=DECIMAL},
+            </if>
+            <if test="interest != null" >
+                interest = #{interest,jdbcType=DECIMAL},
+            </if>
+            <if test="serviceFee != null" >
+                service_fee = #{serviceFee,jdbcType=DECIMAL},
+            </if>
+			<if test="overdue != null" >
+                overdue = #{overdue,jdbcType=DECIMAL},
+            </if>
+			<if test="serviceFeePenalty != null" >
+                service_fee_penalty = #{serviceFeePenalty,jdbcType=DECIMAL},
+            </if>
+			<if test="repaymentedPrincipal != null" >
+                repaymented_principal = #{repaymentedPrincipal,jdbcType=DECIMAL},
+            </if>
+			<if test="repaymentedInterest != null" >
+                repaymented_interest = #{repaymentedInterest,jdbcType=DECIMAL},
+            </if>
+			<if test="repaymentedServiceFee != null" >
+                repaymented_service_fee = #{repaymentedServiceFee,jdbcType=DECIMAL},
+            </if>
+			<if test="repaymentedOverdue != null" >
+                repaymented_overdue = #{repaymentedOverdue,jdbcType=DECIMAL},
+            </if>
+			<if test="repaymentedServiceFeePenalty != null" >
+                repaymented_service_fee_penalty = #{repaymentedServiceFeePenalty,jdbcType=DECIMAL},
+            </if>
+			<if test="status != null" >
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+			<if test="scheduleCode != null" >
+                schedule_code = #{scheduleCode,jdbcType=VARCHAR},
+            </if>
+			<if test="principalAccountCode != null" >
+                principal_account_code = #{principalAccountCode,jdbcType=VARCHAR},
+            </if>
+			<if test="interestAccountCode != null" >
+                interest_account_code = #{interestAccountCode,jdbcType=VARCHAR},
+            </if>
+			<if test="totalOverdueDays != null" >
+                total_overdue_days = #{totalOverdueDays,jdbcType=INTEGER},
+            </if>
+            <if test="serviceFeeTotalOverdueDays != null" >
+                service_fee_total_overdue_days = #{serviceFeeTotalOverdueDays,jdbcType=INTEGER},
+            </if>
+            <if test="bail != null" >
+                bail = #{bail,jdbcType=DECIMAL},
+            </if>
+            <if test="bailPenalty != null" >
+                bail_penalty = #{bailPenalty,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentedBail != null" >
+                repaymented_bail = #{repaymentedBail,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentedBailPenalty != null" >
+                repaymented_bail_penalty = #{repaymentedBailPenalty,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where code = #{code,jdbcType=NUMERIC}
+    </update>
+
+    <update id="updatePaidInfo" parameterType = "java.util.Map" >
+        update plms_paid_info
+        <set>
+            <if test="code != null" >
+                CODE = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="paidAmount != null" >
+                paid_amount = #{paidAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="paidTime != null" >
+                paid_time = #{paidTime,jdbcType=DATE},
+            </if>
+            <if test="iouCode != null" >
+                iou_code = #{iouCode,jdbcType=VARCHAR},
+            </if>
+            <if test="borrowCode != null" >
+                borrow_code = #{borrowCode,jdbcType=VARCHAR},
+            </if>
+            <if test="repaymentedPrincipal!= null" >
+                repaymented_principal = #{repaymentedPrincipal,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentedInterest != null" >
+                repaymented_interest = #{repaymentedInterest,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentedServiceFee != null" >
+                repaymented_service_fee = #{repaymentedServiceFee,jdbcType=DECIMAL},
+            </if>
+			<if test="repaymentedServiceFeePenalty != null" >
+                repaymented_service_fee_penalty = #{repaymentedServiceFeePenalty,jdbcType=DECIMAL},
+            </if>
+			<if test="repaymentedOverdue != null" >
+                repaymented_overdue = #{repaymentedOverdue,jdbcType=DECIMAL},
+            </if>
+			<if test="status != null" >
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+			<if test="interest != null" >
+                interest = #{interest,jdbcType=DECIMAL},
+            </if>
+			<if test="overdue != null" >
+                overdue = #{overdue,jdbcType=DECIMAL},
+            </if>
+			<if test="serviceFee != null" >
+                service_fee = #{serviceFee,jdbcType=DECIMAL},
+            </if>
+			<if test="serviceFeePenalty != null" >
+                service_fee_penalty = #{serviceFeePenalty,jdbcType=DECIMAL},
+            </if>
+			<if test="businessCode != null" >
+                business_code = #{businessCode,jdbcType=VARCHAR},
+            </if>
+			<if test="userCode != null" >
+                user_code = #{userCode,jdbcType=VARCHAR},
+            </if>
+			<if test="contractCode != null" >
+                contract_code = #{contractCode,jdbcType=VARCHAR},
+            </if>
+			<if test="remark != null" >
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+			<if test="accountCode != null" >
+                account_code = #{accountCode,jdbcType=VARCHAR},
+            </if>
+            <if test="bail != null" >
+                bail = #{bail,jdbcType=DECIMAL},
+            </if>
+            <if test="bailPenalty != null" >
+                bail_penalty = #{bailPenalty,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentedBail != null" >
+                repaymented_bail = #{repaymentedBail,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentedBailPenalty != null" >
+                repaymented_bail_penalty = #{repaymentedBailPenalty,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where code = #{code,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateRepaymentSchedule" parameterType = "java.util.Map" >
+        update plms_repayment_schedule
+        <set>
+            <if test="code != null" >
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="currentPeriod != null" >
+                current_period = #{currentPeriod,jdbcType=INTEGER},
+            </if>
+            <if test="totalPeriod != null" >
+                total_period = #{totalPeriod,jdbcType=INTEGER},
+            </if>
+            <if test="repaymentDate != null" >
+                repayment_date = #{repaymentDate,jdbcType=DATE},
+            </if>
+            <if test="amount != null" >
+                amount = #{amount,jdbcType=DECIMAL},
+            </if>
+            <if test="principal!= null" >
+                principal = #{principal,jdbcType=DECIMAL},
+            </if>
+            <if test="interest != null" >
+                interest = #{interest,jdbcType=DECIMAL},
+            </if>
+            <if test="serviceFee != null" >
+                service_fee = #{serviceFee,jdbcType=DECIMAL},
+            </if>
+			<if test="overdue != null" >
+                overdue = #{overdue,jdbcType=DECIMAL},
+            </if>
+			<if test="serviceFeePenalty != null" >
+                service_fee_penalty = #{serviceFeePenalty,jdbcType=DECIMAL},
+            </if>
+			<if test="status != null" >
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+			<if test="detailCode != null" >
+                detail_code = #{detailCode,jdbcType=VARCHAR},
+            </if>
+			<if test="userCode != null" >
+                user_code = #{userCode,jdbcType=VARCHAR},
+            </if>
+			<if test="repaymentedPrincipal != null" >
+                repaymented_principal = #{repaymentedPrincipal,jdbcType=DECIMAL},
+            </if>
+			<if test="repaymentedInterest != null" >
+                repaymented_interest = #{repaymentedInterest,jdbcType=DECIMAL},
+            </if>
+			<if test="repaymentedServiceFee != null" >
+                repaymented_service_fee = #{repaymentedServiceFee,jdbcType=DECIMAL},
+            </if>
+			<if test="repaymentedOverdue != null" >
+                repaymented_overdue = #{repaymentedOverdue,jdbcType=DECIMAL},
+            </if>
+			<if test="repaymentedServiceFeePenalty != null" >
+                repaymented_service_fee_penalty = #{repaymentedServiceFeePenalty,jdbcType=DECIMAL},
+            </if>
+            <if test="bail != null" >
+                bail = #{bail,jdbcType=DECIMAL},
+            </if>
+            <if test="bailPenalty != null" >
+                bail_penalty = #{bailPenalty,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentedBail != null" >
+                repaymented_bail = #{repaymentedBail,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentedBailPenalty != null" >
+                repaymented_bail_penalty = #{repaymentedBailPenalty,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where code = #{code,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateAccountDetail" parameterType = "java.util.Map" >
+        update plms_account_detail
+        <set>
+            <if test="code != null" >
+                CODE = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="totalQuota != null" >
+                total_quota = #{totalQuota,jdbcType=DECIMAL},
+            </if>
+            <if test="principal != null" >
+                principal = #{principal,jdbcType=DECIMAL},
+            </if>
+            <if test="remainingQuota != null" >
+                remaining_quota = #{remainingQuota,jdbcType=DECIMAL},
+            </if>
+            <if test="interest != null" >
+                interest = #{interest,jdbcType=DECIMAL},
+            </if>
+            <if test="serviceFee!= null" >
+                service_fee = #{serviceFee,jdbcType=DECIMAL},
+            </if>
+            <if test="overdue != null" >
+                overdue = #{overdue,jdbcType=DECIMAL},
+            </if>
+            <if test="serviceFeePenalty != null" >
+                service_fee_penalty = #{serviceFeePenalty,jdbcType=DECIMAL},
+            </if>
+            <if test="bail != null" >
+                bail = #{bail,jdbcType=DECIMAL},
+            </if>
+            <if test="bailPenalty != null" >
+                bail_penalty = #{bailPenalty,jdbcType=DECIMAL},
+            </if>
+			<if test="fundSideBalance != null" >
+                fund_side_balance = #{fundSideBalance,jdbcType=DECIMAL},
+            </if>
+			<if test="honghuoBalance != null" >
+                honghuo_balance = #{honghuoBalance,jdbcType=DECIMAL},
+            </if>
+			<if test="accountCode != null" >
+                account_code = #{accountCode,jdbcType=VARCHAR},
+            </if>
+			<if test="creditEndDate != null" >
+                credit_end_date = #{creditEndDate,jdbcType=DATE},
+            </if>
+			<if test="principalDate != null" >
+                principal_date = #{principalDate,jdbcType=DATE},
+            </if>
+			<if test="contractCode != null" >
+                contract_code = #{contractCode,jdbcType=VARCHAR},
+            </if>
+			<if test="status != null" >
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+			<if test="firstAmount != null" >
+                first_amount = #{firstAmount,jdbcType=DECIMAL},
+            </if>
+			<if test="repaymentedPrincipal != null" >
+                repaymented_principal = #{repaymentedPrincipal,jdbcType=DECIMAL},
+            </if>
+			<if test="repaymentedInterest != null" >
+                repaymented_interest = #{repaymentedInterest,jdbcType=DECIMAL},
+            </if>
+			<if test="repaymentedServiceFee != null" >
+                repaymented_service_fee = #{repaymentedServiceFee,jdbcType=DECIMAL},
+            </if>
+			<if test="repaymentedOverdue != null" >
+                repaymented_overdue = #{repaymentedOverdue,jdbcType=DECIMAL},
+            </if>
+			<if test="repaymentedServiceFeePenalty != null" >
+                repaymented_service_fee_penalty = #{repaymentedServiceFeePenalty,jdbcType=DECIMAL},
+            </if>
+			<if test="repaymentedPenalty != null" >
+                repaymented_penalty = #{repaymentedPenalty,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentedBail != null" >
+                repaymented_bail = #{repaymentedBail,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentedBailPenalty != null" >
+                repaymented_bail_penalty = #{repaymentedBailPenalty,jdbcType=DECIMAL},
+            </if>
+			<if test="confirmed != null" >
+                confirmed = #{confirmed,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where code = #{code,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateAccount" parameterType = "java.util.Map" >
+        update plms_account
+        <set>
+            <if test="code != null" >
+                CODE = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="totalQuota != null" >
+                total_quota = #{totalQuota,jdbcType=DECIMAL},
+            </if>
+            <if test="principal != null" >
+                principal = #{principal,jdbcType=DECIMAL},
+            </if>
+            <if test="remainingQuota != null" >
+                remaining_quota = #{remainingQuota,jdbcType=DECIMAL},
+            </if>
+            <if test="interest != null" >
+                interest = #{interest,jdbcType=DECIMAL},
+            </if>
+            <if test="serviceFee!= null" >
+                service_fee = #{serviceFee,jdbcType=DECIMAL},
+            </if>
+            <if test="overdue != null" >
+                overdue = #{overdue,jdbcType=DECIMAL},
+            </if>
+            <if test="serviceFeePenalty != null" >
+                service_fee_penalty = #{serviceFeePenalty,jdbcType=DECIMAL},
+            </if>
+            <if test="bail != null" >
+                bail = #{bail,jdbcType=DECIMAL},
+            </if>
+            <if test="bailPenalty != null" >
+                bail_penalty = #{bailPenalty,jdbcType=DECIMAL},
+            </if>
+			<if test="userCode != null" >
+                user_code = #{userCode,jdbcType=VARCHAR},
+            </if>
+			<if test="creditEndDate != null" >
+                credit_end_date = #{creditEndDate,jdbcType=DATE},
+            </if>
+			<if test="status != null" >
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+			<if test="repaymentedPrincipal != null" >
+                repaymented_principal = #{repaymentedPrincipal,jdbcType=DECIMAL},
+            </if>
+			<if test="repaymentedInterest != null" >
+                repaymented_interest = #{repaymentedInterest,jdbcType=DECIMAL},
+            </if>
+			<if test="repaymentedServiceFee != null" >
+                repaymented_service_fee = #{repaymentedServiceFee,jdbcType=DECIMAL},
+            </if>
+			<if test="repaymentedOverdue != null" >
+                repaymented_overdue = #{repaymentedOverdue,jdbcType=DECIMAL},
+            </if>
+			<if test="repaymentedServiceFeePenalty != null" >
+                repaymented_service_fee_penalty = #{repaymentedServiceFeePenalty,jdbcType=DECIMAL},
+            </if>
+			<if test="repaymentedPenalty != null" >
+                repaymented_penalty = #{repaymentedPenalty,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentedBail != null" >
+                repaymented_bail = #{repaymentedBail,jdbcType=DECIMAL},
+            </if>
+            <if test="repaymentedBailPenalty != null" >
+                repaymented_bail_penalty = #{repaymentedBailPenalty,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where code = #{code,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateAccountByRemainingQuotaAndCreditEndDate" parameterType = "java.util.Map" >
+        update plms_account
+        <set>
+            <if test="totalQuota != null" >
+                total_quota = #{totalQuota,jdbcType=DECIMAL}-#{accountDetailRemainingQuota.jdbcType=DECIMAL},
+            </if>
+            <if test="remainingQuota != null" >
+                remaining_quota = #{remainingQuota,jdbcType=DECIMAL}-#{accountDetailRemainingQuota.jdbcType=DECIMAL},
+            </if>
+            <if test="creditEndDate != null" >
+                credit_end_date = #{creditEndDate,jdbcType=DATE},
+            </if>
+        </set>
+        where code = #{accountCode,jdbcType=VARCHAR}
+    </update>
+    <!--更新锁表执行时间-->
+    <update id="updateSysparamInfoExecuteTime" parameterType="java.util.Map">
+        UPDATE plms_sysparam_info SET execute_time = #{executeTime} WHERE item_id = #{itemId}
+    </update>
+
+
+
+</mapper>

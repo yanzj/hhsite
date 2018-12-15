@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.um.dao.UmGroupDao">
+
+    <!--查询机构信息表-->
+    <select id="queryGroup" resultType="com.vilio.um.pojo.UmGroup" parameterType="com.vilio.um.pojo.UmGroup">
+        SELECT
+            id,
+            group_id as groupId,
+            group_name as groupName,
+            super_id as superId,
+            status,
+            group_desc as groupDesc,
+            group_type as groupType,
+            group_city as groupCity,
+            group_abbr as groupAbbr,
+            english_abbr as englishAbbr,
+            DATE_FORMAT(create_time,'%Y%m%d%H%i%s') as createTime
+        FROM
+            um_group_info
+        WHERE
+          group_id = #{groupId}
+    </select>
+
+
+    <!--查询机构信息表-->
+    <select id="queryGroupList" resultType="com.vilio.um.pojo.UmGroup">
+        SELECT
+        id,
+        group_id as groupId,
+        group_name as groupName,
+        super_id as superId,
+        status,
+        group_desc as groupDesc,
+        group_type as groupType,
+        group_city as groupCity,
+        group_abbr as groupAbbr,
+        english_abbr as englishAbbr,
+        DATE_FORMAT(create_time,'%Y%m%d%H%i%s') as createTime
+        FROM
+        um_group_info
+        WHERE status != '2'
+    </select>
+
+
+</mapper>

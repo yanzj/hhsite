@@ -1,0 +1,10 @@
+<div class="row">
+  <ol class="breadcrumbNav col-12" id="breadcrumbNav1" [ngStyle]="{'display':breadcrumbNavDisplay==false?'block':'none'}">
+    <li class="active">进件申请提交</li>
+  </ol>
+  <ol class="breadcrumbNav col-12" id="breadcrumbNav2" [ngStyle]="{'display':breadcrumbNavDisplay==false?'none':'block'}">
+    <li><a (click)="querySection()">进件申请查询</a><i>></i></li>
+    <li class="active">进件申请提交<i>|</i></li>
+    <li><a (click)="history()">历史</a></li>
+  </ol>
+</div>

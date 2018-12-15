@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.ppms.dao.common.CardBinInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.vilio.ppms.pojo.common.CardBinInfo" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="issuer_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="issuser_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="card_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="card_no_start_pos" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="card_no_len" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="bin_len" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="bin_num" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="card_type" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="status" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="remark1" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, issuer_code, issuser_name, card_name, card_no_start_pos, card_no_len, bin_len, 
+    bin_num, card_type, status, create_time, update_time, remark1
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from ppms_card_bin_info
+    where code = #{code,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ppms_card_bin_info
+    where code = #{code,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.vilio.ppms.pojo.common.CardBinInfo" >
+    insert into ppms_card_bin_info (id, code, issuer_code, 
+      issuser_name, card_name, card_no_start_pos, 
+      card_no_len, bin_len, bin_num, 
+      card_type, status, create_time, 
+      update_time, remark1)
+    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{issuerCode,jdbcType=VARCHAR}, 
+      #{issuserName,jdbcType=VARCHAR}, #{cardName,jdbcType=VARCHAR}, #{cardNoStartPos,jdbcType=VARCHAR}, 
+      #{cardNoLen,jdbcType=VARCHAR}, #{binLen,jdbcType=VARCHAR}, #{binNum,jdbcType=VARCHAR}, 
+      #{cardType,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{remark1,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.vilio.ppms.pojo.common.CardBinInfo" >
+    insert into ppms_card_bin_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="issuerCode != null" >
+        issuer_code,
+      </if>
+      <if test="issuserName != null" >
+        issuser_name,
+      </if>
+      <if test="cardName != null" >
+        card_name,
+      </if>
+      <if test="cardNoStartPos != null" >
+        card_no_start_pos,
+      </if>
+      <if test="cardNoLen != null" >
+        card_no_len,
+      </if>
+      <if test="binLen != null" >
+        bin_len,
+      </if>
+      <if test="binNum != null" >
+        bin_num,
+      </if>
+      <if test="cardType != null" >
+        card_type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="remark1 != null" >
+        remark1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="issuerCode != null" >
+        #{issuerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="issuserName != null" >
+        #{issuserName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardName != null" >
+        #{cardName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNoStartPos != null" >
+        #{cardNoStartPos,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNoLen != null" >
+        #{cardNoLen,jdbcType=VARCHAR},
+      </if>
+      <if test="binLen != null" >
+        #{binLen,jdbcType=VARCHAR},
+      </if>
+      <if test="binNum != null" >
+        #{binNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cardType != null" >
+        #{cardType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark1 != null" >
+        #{remark1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vilio.ppms.pojo.common.CardBinInfo" >
+    update ppms_card_bin_info
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="issuerCode != null" >
+        issuer_code = #{issuerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="issuserName != null" >
+        issuser_name = #{issuserName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardName != null" >
+        card_name = #{cardName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNoStartPos != null" >
+        card_no_start_pos = #{cardNoStartPos,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNoLen != null" >
+        card_no_len = #{cardNoLen,jdbcType=VARCHAR},
+      </if>
+      <if test="binLen != null" >
+        bin_len = #{binLen,jdbcType=VARCHAR},
+      </if>
+      <if test="binNum != null" >
+        bin_num = #{binNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cardType != null" >
+        card_type = #{cardType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark1 != null" >
+        remark1 = #{remark1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vilio.ppms.pojo.common.CardBinInfo" >
+    update ppms_card_bin_info
+    set code = #{code,jdbcType=VARCHAR},
+      issuer_code = #{issuerCode,jdbcType=VARCHAR},
+      issuser_name = #{issuserName,jdbcType=VARCHAR},
+      card_name = #{cardName,jdbcType=VARCHAR},
+      card_no_start_pos = #{cardNoStartPos,jdbcType=VARCHAR},
+      card_no_len = #{cardNoLen,jdbcType=VARCHAR},
+      bin_len = #{binLen,jdbcType=VARCHAR},
+      bin_num = #{binNum,jdbcType=VARCHAR},
+      card_type = #{cardType,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      remark1 = #{remark1,jdbcType=VARCHAR}
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.AccountDetailDao">
+
+    <!--查询账户明细信息-->
+    <select id="qryAccountDetail" resultType="com.vilio.plms.pojo.AccountDetail"
+            parameterType="com.vilio.plms.pojo.AccountDetail">
+        SELECT
+            id,
+            code,
+            total_quota as totalQuota,
+            principal,
+            remaining_quota as remainingQuota,
+            interest,
+            overdue,
+            DATE_FORMAT(credit_end_date,'%Y-%m-%d') as creditEndDate,
+            account_code as accountCode,
+            DATE_FORMAT(principal_date,'%Y-%m-%d') as principalDate,
+            contract_code as contractCode,
+            `status`,
+            first_amount as firstAmount,
+            create_date as createDate,
+            modify_date as modifyDate
+        FROM
+          plms_account_detail
+        WHERE status != '0' and contract_code = #{contractCode}
+        and account_code = #{accountCode}
+
+    </select>
+
+    <select id="qryPrincipalDateForUpdate" resultType="com.vilio.plms.pojo.AccountDetail"
+            parameterType="com.vilio.plms.pojo.AccountDetail">
+        SELECT
+        a.id id,
+        a. CODE code,
+        a.total_quota totalQuota,
+        a.principal principal,
+        a.remaining_quota remainingQuota,
+        a.interest interest,
+        a.overdue overdue,
+        a.account_code accountCode,
+        DATE_FORMAT(credit_end_date,'%Y%m%d%H%i%s') creditEndDate,
+        DATE_FORMAT(principal_date,'%Y%m%d%H%i%s') principalDate,
+        a.contract_code contractCode,
+        a. STATUS status,
+        a.create_date createDate,
+        a.modify_date modifyDate,
+        a.first_amount firstAmount,
+        a.repaymented_principal repaymentedPrincipal,
+        a.repaymented_interest repaymentedInterest,
+        a.repaymented_overdue repaymentedOverdue,
+        a.repaymented_penalty repaymentedPenalty
+        FROM
+        (
+        SELECT
+        *
+        FROM
+        plms_account_detail pad
+        WHERE
+        <![CDATA[pad.principal_date < CURRENT_DATE ()
+        AND pad.credit_end_date >= CURRENT_DATE ()]]>
+        UNION
+        SELECT
+        *
+        FROM
+        plms_account_detail pad
+        WHERE
+        pad.principal_date > pad.credit_end_date
+        ) a
+    </select>
+
+    <!--修改剩余额度-->
+    <update id="updateAccountDetail" parameterType="com.vilio.plms.pojo.AccountDetail">
+        update plms_account_detail set remaining_quota = #{remainingQuota} WHERE code = #{code}
+    </update>
+
+    <!--修改剩余额度-->
+    <update id="updateAccountDetailQuota" parameterType="java.util.Map">
+        update plms_account_detail set
+        remaining_quota = CAST(if(remaining_quota is null,0,remaining_quota)-if(#{amount}='' or #{amount} is null,0,#{amount}) as DECIMAL(11,2))
+        WHERE contract_code = #{contractCode}
+    </update>
+
+    <select id="getAccountDetailByCode" resultType="com.vilio.plms.pojo.AccountDetail" parameterType="java.lang.String">
+        SELECT
+        id,
+        code,
+        total_quota as totalQuota,
+        principal,
+        remaining_quota as remainingQuota,
+        interest,
+        overdue,
+        DATE_FORMAT(credit_end_date,'%Y%m%d') as creditEndDate,
+        account_code as accountCode,
+        contract_code as contractCode,
+        `status`,
+        first_amount as firstAmount,
+        date_format(create_date,'%Y%m%d%H%i%s') as createDate,
+        date_format(modify_date,'%Y%m%d%H%i%s') as modifyDate,
+        repaymented_principal as repaymentedPrincipal,
+        repaymented_interest as repaymentedInterest,
+        repaymented_overdue as repaymentedOverdue,
+        repaymented_penalty as repaymentedPenalty,
+        service_fee as serviceFee,
+        service_fee_penalty as serviceFeePenalty,
+        fund_side_balance as fundSideBalance,
+        honghuo_balance as honghuoBalance,
+        honghuo_bail_account_balance as honghuoBailAccountBalance,
+        repaymented_service_fee as repaymentedServiceFee,
+        repaymented_service_fee_penalty as repaymentedServiceFeePenalty,
+        bail                   as  bail,
+        bail_penalty                    as  bailPenalty,
+        repaymented_bail                       as  repaymentedBail,
+        repaymented_bail_penalty           as  repaymentedBailPenalty,
+        confirmed
+        FROM
+        plms_account_detail
+        WHERE contract_code = #{contractCode} and status != '0'
+    </select>
+    <select id="findAccountDetailByCode" resultType="java.util.Map" parameterType="java.lang.String">
+       SELECT
+            d.code,
+            d.total_quota AS totalQuota,
+            d.principal,
+            d.remaining_quota AS remainingQuota,
+            d.interest,
+            d.overdue,
+            DATE_FORMAT(
+            d.credit_end_date,
+            '%Y%m%d%H%i%s'
+            ) AS creditEndDate,
+            d.account_code AS accountCode,
+            DATE_FORMAT(
+            d.principal_date,
+            '%Y%m%d%H%i%s'
+            ) AS principalDate,
+            d.contract_code AS contractCode,
+            d. STATUS,
+            d.first_amount AS firstAmount,
+            d.create_date AS createDate,
+            d.modify_date AS modifyDate,
+            a.user_code AS userCode
+        FROM
+          plms_account_detail d
+        JOIN plms_account a ON a. CODE = d.account_code
+        WHERE
+          d.contract_code = #{contractCode} and d.status != '0' and a.status != '0'
+    </select>
+
+    <select id="queryAccountDetailByContractCode" resultType="com.vilio.plms.pojo.AccountDetail" parameterType="java.lang.String">
+        SELECT
+        d.code,
+        d.total_quota AS totalQuota,
+        d.principal,
+        d.remaining_quota AS remainingQuota,
+        d.interest,
+        d.service_fee AS serviceFee,
+        d.bail,
+        d.overdue,
+        d.service_fee_penalty serviceFeePenalty,
+        d.bail_penalty bailPenalty,
+        d.account_code AS accountCode,
+        d.contract_code AS contractCode,
+        d.status,
+        d.first_amount AS firstAmount,
+        d.create_date AS createDate,
+        d.modify_date AS modifyDate
+        FROM
+        plms_account_detail d
+        WHERE
+        d.contract_code = #{contractCode} and d.status != '0'
+    </select>
+
+
+    <select id="queryAccountDetailByCode" resultType="com.vilio.plms.pojo.AccountDetail"
+            parameterType="com.vilio.plms.pojo.AccountDetail">
+        SELECT
+            	id,
+                `code`,
+                total_quota as totalQuota,
+                principal,
+                remaining_quota as remainingQuota,
+                interest,
+                overdue,
+                credit_end_date as creditEndDate,
+                account_code as accountCode,
+                contract_code as contractCode,
+                `status`,
+                first_amount as firstAmount,
+                create_date as createDate,
+                modify_date as modifyDate,
+                repaymented_principal as repaymentedPrincipal,
+                repaymented_interest as repaymentedInterest,
+                repaymented_overdue as repaymentedOverdue,
+                repaymented_penalty as repaymentedPenalty,
+                service_fee as serviceFee,
+                service_fee_penalty as serviceFeePenalty,
+                fund_side_balance as fundSideBalance,
+                honghuo_balance as honghuoBalance,
+                repaymented_ahead_interest_penalty as repaymentedAheadInterestPenalty,
+                repaymented_ahead_service_fee_penalty as repaymentedAheadServiceFeePenalty,
+                confirmed,
+                bail,
+                bail_penalty as bailPenalty,
+                repaymented_bail as repaymentedBail,
+                repaymented_bail_penalty as repaymentedBailPenalty,
+                principal_date as principalDate,
+                repaymented_service_fee as repaymentedServiceFee,
+                repaymented_service_fee_penalty as repaymentedServiceFeePenalty,
+                honghuo_bail_account_balance as honghuoBailAccountBalance
+        FROM
+            plms_account_detail
+        WHERE code=#{code} and status!='0'
+    </select>
+
+
+    <!--更新账户明细表应还罚息、应还服务费违约金-->
+    <update id="updateAccountDetailAmountByCode" parameterType="com.vilio.plms.pojo.AccountDetail">
+        update plms_account_detail set overdue = #{overdue},service_fee_penalty=#{serviceFeePenalty},bail_penalty=#{bailPenalty}
+        WHERE code = #{code}
+    </update>
+
+    <update id="updateAccountDetailByCode" parameterType="com.vilio.plms.pojo.AccountDetail">
+        UPDATE plms_account_detail
+        <set>
+            <if test="fundSideBalance != null">
+                fund_side_balance = fund_side_balance - #{fundSideBalance},
+            </if>
+            <if test="honghuoBalance != null">
+                honghuo_balance = honghuo_balance - #{honghuoBalance},
+            </if>
+            <if test="honghuoBailAccountBalance != null">
+                honghuo_bail_account_balance = honghuo_bail_account_balance - #{honghuoBailAccountBalance},
+            </if>
+            <if test="repaymentedServiceFee != null">
+                repaymented_service_fee = ifnull(repaymented_service_fee,0) + #{repaymentedServiceFee},
+                service_fee = ifnull(service_fee,0) - #{repaymentedServiceFee},
+            </if>
+            <if test="repaymentedServiceFeePenalty != null">
+                repaymented_service_fee_penalty = ifnull(repaymented_service_fee_penalty,0) +
+                #{repaymentedServiceFeePenalty},
+                service_fee_penalty = ifnull(service_fee_penalty,0) - #{repaymentedServiceFeePenalty},
+            </if>
+            <if test="repaymentedPrincipal != null">
+                repaymented_principal = ifnull(repaymented_principal,0) + #{repaymentedPrincipal},
+                principal = principal - #{repaymentedPrincipal},
+                remaining_quota = remaining_quota + #{repaymentedPrincipal},
+            </if>
+            <if test="repaymentedInterest != null">
+                repaymented_interest = ifnull(repaymented_interest,0) + #{repaymentedInterest},
+                interest = ifnull(interest,0) - #{repaymentedInterest},
+            </if>
+            <if test="repaymentedOverdue != null">
+                repaymented_overdue = ifnull(repaymented_overdue,0) + #{repaymentedOverdue},
+                overdue = ifnull(overdue,0) - #{repaymentedOverdue},
+            </if>
+            <if test="repaymentedBail != null">
+                repaymented_bail = ifnull(repaymented_bail,0) + #{repaymentedBail},
+                bail = ifnull(bail,0) - #{repaymentedBail},
+            </if>
+            <if test="repaymentedBailPenalty != null">
+                repaymented_bail_penalty = ifnull(repaymented_bail_penalty,0) + #{repaymentedBailPenalty},
+                bailPenalty = ifnull(bailPenalty,0) - #{repaymentedBailPenalty},
+            </if>
+            <if test="status != null">
+                t.status = #{status},
+            </if>
+        </set>
+        WHERE
+        CODE = #{code}
+    </update>
+
+    <update id="updateAccountDetailByCodeOriginalData" parameterType="com.vilio.plms.pojo.AccountDetail">
+        UPDATE plms_account_detail
+        <set>
+            <if test="principal != null">
+                principal = #{principal},
+            </if>
+            <if test="remainingQuota != null">
+                remaining_quota = #{remainingQuota},
+            </if>
+            <if test="interest != null">
+                interest = #{interest},
+            </if>
+            <if test="serviceFee != null">
+                service_fee = #{serviceFee},
+            </if>
+            <if test="bail != null">
+                bail = #{bail},
+            </if>
+        </set>
+        WHERE
+        CODE = #{code}
+    </update>
+
+    <!--更新确认状态-->
+    <update id="updateConfirmedByContractCode" parameterType="com.vilio.plms.pojo.AccountDetail">
+        update plms_account_detail set confirmed = #{confirmed}
+        WHERE contract_code = #{contractCode}
+    </update>
+
+
+    <!--更新已贷本金、剩余额度、已还本金、应还利息、已还利息、应还服务费、已还服务费、应还罚息、已还罚息、
+    应还服务费违约金、已还服务费违约金、宏获账户余额、资方账户余额-->
+    <update id="updateAccountDetailRollBackAmountByCode" parameterType="com.vilio.plms.pojo.AccountDetail">
+        update plms_account_detail set principal=#{principal},remaining_quota=#{remainingQuota},repaymented_principal=#{repaymentedPrincipal},
+        repaymented_interest=#{repaymentedInterest},repaymented_service_fee=#{repaymentedServiceFee},repaymented_overdue=#{repaymentedOverdue},
+        repaymented_service_fee_penalty=#{repaymentedServiceFeePenalty},interest=#{interest},service_fee=#{serviceFee},overdue=#{overdue},
+        service_fee_penalty=#{serviceFeePenalty},fund_side_balance=#{fundSideBalance},honghuo_balance=#{honghuoBalance},bail=#{bail},repaymented_bail=#{repaymentedBail}
+        ,bail_penalty=#{bailPenalty},repaymented_bail_penalty=#{repaymentedBailPenalty},honghuo_bail_account_balance=#{honghuoBailAccountBalance}
+        WHERE code = #{code}
+    </update>
+
+    <!--更新宏获余额和资方余额-->
+    <update id="updateAccountDetailBalanceByCode" parameterType="com.vilio.plms.pojo.AccountDetail">
+         update plms_account_detail set honghuo_balance=#{honghuoBalance},fund_side_balance=#{fundSideBalance},honghuo_bail_account_balance=#{honghuoBailAccountBalance}
+         WHERE code=#{code}
+    </update>
+
+    <update id="updatelAccountDetailByContractCode" parameterType="java.util.Map">
+        UPDATE plms_account_detail t
+        SET t.principal = t.principal - #{principal,jdbcType=DECIMAL},
+         t.interest = t.interest - #{interest,jdbcType=DECIMAL},
+         t.service_fee = t.service_fee - #{serviceFee,jdbcType=DECIMAL},
+         t.bail = t.bail - #{bail,jdbcType=DECIMAL}
+        WHERE
+            t.contract_code = #{contractCode,jdbcType=VARCHAR}
+        AND t.STATUS != '0'
+    </update>
+
+    <insert id="saveAccountDetail" parameterType="com.vilio.plms.pojo.AccountDetail">
+        INSERT INTO plms_account_detail (
+            code,
+            total_quota,
+            principal,
+            remaining_quota,
+            interest,
+            overdue,
+            credit_end_date,
+            account_code,
+            contract_code,
+            status,
+            first_amount,
+            create_date,
+            modify_date,
+            repaymented_principal,
+            repaymented_interest,
+            repaymented_overdue,
+            repaymented_penalty,
+            service_fee,
+            service_fee_penalty,
+            fund_side_balance,
+            honghuo_balance,
+            repaymented_ahead_interest_penalty,
+            repaymented_ahead_service_fee_penalty,
+            confirmed,
+            bail,
+            bail_penalty,
+            repaymented_bail,
+            repaymented_bail_penalty,
+            repaymented_service_fee,
+            repaymented_service_fee_penalty,
+            honghuo_bail_account_balance
+        )
+        VALUES
+            (
+                #{code},
+                #{totalQuota},
+                #{principal},
+                #{remainingQuota},
+                #{interest},
+                #{overdue},
+                #{creditEndDate},
+                #{accountCode},
+                #{contractCode},
+                #{status},
+                #{firstAmount},
+                #{createDate},
+                #{modifyDate},
+                #{repaymentedPrincipal},
+                #{repaymentedInterest},
+                #{repaymentedOverdue},
+                #{repaymentedPenalty},
+                #{serviceFee},
+                #{serviceFeePenalty},
+                #{fundSideBalance},
+                #{honghuoBalance},
+                #{repaymentedAheadInterestPenalty},
+                #{repaymentedAheadServiceFeePenalty},
+                #{confirmed},
+                #{bail},
+                #{bailPenalty},
+                #{repaymentedBail},
+                #{repaymentedBailPenalty},
+                #{repaymentedServiceFee},
+                #{repaymentedServiceFeePenalty},
+                #{honghuoBailAccountBalance}
+            )
+    </insert>
+<!--更新账户明细表金额-->
+    <update id="updateAccountDetailAmountAdd" parameterType="com.vilio.plms.pojo.AccountDetail">
+        UPDATE plms_account_detail
+        <set>
+            <if test="fundSideBalance != null">
+                fund_side_balance = ifnull(fund_side_balance,0) + #{fundSideBalance},
+            </if>
+            <if test="honghuoBalance != null">
+                honghuo_balance = ifnull(honghuo_balance,0) + #{honghuoBalance},
+            </if>
+            <if test="honghuoBailAccountBalance != null">
+                honghuo_bail_account_balance = ifnull(honghuo_bail_account_balance,0) + #{honghuoBailAccountBalance},
+            </if>
+            <if test="totalQuota != null">
+                total_quota = total_quota + #{totalQuota},
+            </if>
+            <if test="principal != null">
+                principal = ifnull(principal,0) + #{principal},
+            </if>
+            <if test="remainingQuota != null">
+                remaining_quota = ifnull(remaining_quota,0) + #{remainingQuota},
+            </if>
+            <if test="interest != null">
+                interest = ifnull(interest,0) + #{interest},
+            </if>
+            <if test="overdue != null">
+                overdue = ifnull(overdue,0) + #{overdue},
+            </if>
+            <if test="serviceFee != null">
+                service_fee = ifnull(service_fee,0) + #{serviceFee},
+            </if>
+            <if test="serviceFeePenalty != null">
+                service_fee_penalty = ifnull(service_fee_penalty,0) + #{serviceFeePenalty},
+            </if>
+            <if test="bail != null">
+                bail = ifnull(bail,0) + #{bail},
+            </if>
+            <if test="bailPenalty != null">
+                bail_penalty = ifnull(bail_penalty,0) + #{bailPenalty},
+            </if>
+            <if test="repaymentedPrincipal != null">
+                repaymented_principal = ifnull(repaymented_principal,0) + #{repaymentedPrincipal},
+            </if>
+            <if test="repaymentedInterest != null">
+                repaymented_interest = ifnull(repaymented_interest,0) + #{repaymentedInterest},
+            </if>
+            <if test="repaymentedServiceFee != null">
+                repaymented_service_fee = ifnull(repaymented_service_fee,0) + #{repaymentedServiceFee},
+            </if>
+            <if test="repaymentedBail != null">
+                repaymented_bail = ifnull(repaymented_bail,0) + #{repaymentedBail},
+            </if>
+            <if test="repaymentedOverdue != null">
+                repaymented_overdue = ifnull(repaymented_overdue,0) + #{repaymentedOverdue},
+            </if>
+            <if test="repaymentedBailPenalty != null">
+                repaymented_bail_penalty = ifnull(repaymented_bail_penalty,0) + #{repaymentedBailPenalty},
+            </if>
+            <if test="repaymentedServiceFeePenalty != null">
+                repaymented_service_fee_penalty = ifnull(repaymented_service_fee_penalty,0) + #{repaymentedServiceFeePenalty},
+            </if>
+            <if test="repaymentedAheadInterestPenalty != null">
+                repaymented_ahead_interest_penalty = ifnull(repaymented_ahead_interest_penalty,0) + #{repaymentedAheadInterestPenalty},
+            </if>
+            <if test="repaymentedAheadServiceFeePenalty != null">
+                repaymented_ahead_service_fee_penalty = ifnull(repaymented_ahead_service_fee_penalty,0) + #{repaymentedAheadServiceFeePenalty},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        WHERE
+        CODE = #{code}
+    </update>
+</mapper>

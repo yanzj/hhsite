@@ -1,0 +1,47 @@
+
+<div class="row">
+  <ol class="breadcrumbNav col-12">
+    <li><a (click)="querySection()">{{resubmit}}</a><i>></i></li>
+    <li><a (click)="itemDetails()">{{originFlag}}</a><i>|</i></li>
+    <li class="active">历史</li>
+  </ol>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <hr class="breadcrumbNavLine">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="row">
+      <table class="table col-12 table-auto-height" border="0" cellpadding="0" cellspacing="0">
+        <thead>
+        <tr>
+          <th class="col-2">时间</th>
+          <th class="col-4">公司</th>
+          <th class="col-2">用户</th>
+          <th class="col-2">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of operationList">
+          <td class="col-2">{{item.createTime}}</td>
+          <td class="col-4">{{item.distributorName}}</td>
+          <td class="col-2">{{item.userName}}</td>
+          <td class="operation col-2">{{item.operateName}}</td>
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-2"><button class="orange-button float-right" (click)="itemDetails()" >返回{{originFlag}}</button></div>
+  <div class="col-10"><button class="gray-button" (click)="querySection()" >返回{{resubmit}}</button></div>
+</div>
+
+

@@ -1,0 +1,52 @@
+
+.uinit2{
+  margin: 0 10px 0 10px;
+  height: 40px;
+  line-height: 40px;
+  float: left;
+}
+
+.action {
+  float: right;
+  height: 40px;
+  line-height: 40px;
+  padding: 0px 20px;
+  display: inline-block;
+}
+.action .icon {
+  margin-top: 13px;
+  margin-right: 12px;
+  float: left;
+}
+.action:hover{
+  color: #FFA00A;
+  cursor: pointer;
+}
+.action:hover .icon-add-gray {
+  background-position: 14px -44px;
+}
+.success-container {
+  border: 1px dashed #ccc;
+  border-radius: 5px;
+}
+.delete-redX{
+  width: 14px;
+  height:14px;
+  display:inline-block;
+  position: absolute;
+  top:10px;
+  right:10px;
+}
+.delete-redX img{
+  width: 14px;
+  height:14px;
+  display:block;
+}
+/*!*表格边框设置为#ccc*!*/
+/*.select2-selection__rendered{*/
+  /*border-color: #CCCCCC;*/
+/*}*/
+/*.select2-container--default .select2-selection--single .select2-selection__arrow b{*/
+  /*border-color: #CCCCCC;*/
+/*}*/
+

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.UserInfoDao">
+
+    <!--查询还款申请表-->
+    <select id="queryUserInfo" resultType="com.vilio.plms.pojo.UserInfo" parameterType="com.vilio.plms.pojo.UserInfo">
+        SELECT
+            id,
+            `code`,
+            um_id as umId,
+            `name`,
+            id_type as idType,
+            id_no as idNo,
+            `status`,
+            create_date as createDate,
+            modify_date as modifyDate
+        FROM
+            plms_user_info
+        WHERE status != '0'
+        <if test="umId!=null and umId!=''">
+            and um_id = #{umId}
+        </if>
+        <if test="code!=null and code!=''">
+            and code = #{code}
+        </if>
+    </select>
+
+    <!--通过姓名、证件类型、证件号码查询用户信息-->
+    <select id="queryUserInfoByNameAndIdNo" resultType="com.vilio.plms.pojo.UserInfo" parameterType="com.vilio.plms.pojo.UserInfo">
+        SELECT
+        id,
+        `code`,
+        um_id as umId,
+        `name`,
+        id_type as idType,
+        id_no as idNo,
+        `status`,
+        create_date as createDate,
+        modify_date as modifyDate
+        FROM
+        plms_user_info
+        WHERE status != '0'
+          and name = #{name}
+          and id_type = #{idType}
+          and id_no = #{idNo}
+    </select>
+
+    <!--通过姓名、证件类型、证件号码查询用户信息-->
+    <select id="queryUserInfoMapByNameAndIdNo" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        SELECT
+        id,
+        `code`,
+        um_id as umId,
+        `name`,
+        id_type as idType,
+        id_no as idNo,
+        `status`,
+        create_date as createDate,
+        modify_date as modifyDate
+        FROM
+        plms_user_info
+        WHERE status != '0'
+        and name = #{name}
+        and id_type = #{idType}
+        and id_no = #{idNo}
+    </select>
+
+    <insert id = "insert" parameterType="java.util.HashMap">
+        INSERT INTO plms_user_info (
+            CODE,
+            um_id,
+            NAME,
+            id_type,
+            id_no,
+            status
+        )
+        VALUES
+            (
+                #{code,jdbcType=VARCHAR},
+                #{umId,jdbcType=VARCHAR},
+                #{name,jdbcType=VARCHAR},
+                #{idType,jdbcType=VARCHAR},
+                #{idNo,jdbcType=VARCHAR},
+                #{status,jdbcType=VARCHAR})
+    </insert>
+
+
+</mapper>

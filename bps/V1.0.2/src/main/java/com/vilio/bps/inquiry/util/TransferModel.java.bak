@@ -1,0 +1,16 @@
+//package com.vilio.bps.inquiry.util.caad;
+//
+//
+//public class TransferModel
+//{
+//	private String Data;
+//
+//	public String getData() {
+//		return Data;
+//	}
+//
+//	public void setData(String data) {
+//		Data = data;
+//	}
+//
+//}

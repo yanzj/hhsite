@@ -1,0 +1,36 @@
+
+
+
+
+.table tr{
+  height: 40px;
+}
+.table tr th{
+  border-top:1px solid #ccc;
+  border-bottom:1px solid #ccc;
+  padding: 0 8px;
+  text-align: left;
+  vertical-align: middle;
+  font-weight: bold;
+}
+.table tbody tr td{
+  height:40px;
+  vertical-align: middle;
+  text-align: left;
+  border-bottom:1px solid #ccc;
+  padding: 0 8px;
+}
+.digit{
+  width:40px;
+  margin-left: 15px;
+  text-align: right;
+  display: block;
+}
+.table tbody tr:nth-child(odd) td{
+  background-color:#F5F5F5 ;
+}
+.table tbody tr td a{color:#666699}
+.operation sapn i{margin:0 8px;}
+
+.table tbody tr .txtc{text-align: center}
+.table tbody tr .txtc i{text-align: right}

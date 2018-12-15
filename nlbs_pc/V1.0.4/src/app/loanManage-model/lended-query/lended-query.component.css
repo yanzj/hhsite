@@ -1,0 +1,31 @@
+
+/*当状态为“逾期”显示这个颜色*/
+.addColorF50 td,.table tbody .addColorF50 td a{color:#f50;}
+/*列表的样式*/
+.table tr{
+  height: 40px;
+}
+.table tr th{
+  border-top:1px solid #ccc;
+  border-bottom:1px solid #ccc;
+  padding: 0 8px;
+  text-align: left;
+  vertical-align: middle;
+  font-weight: bold;
+}
+.table tbody tr:nth-child(odd) td{
+  background-color:#F5F5F5 ;
+}
+.table tbody tr td a{color:#666699}
+.operation sapn i{margin:0 8px;}
+
+.table tbody tr td{
+  height:40px;
+  vertical-align: middle;
+  text-align: left;
+  border-bottom:1px solid #ccc;
+  padding: 0 8px;
+}
+.table tbody tr td a{
+  color:#669
+}

@@ -1,0 +1,701 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!--
+******************************************************************************
+* 数据库表：BPS_USER_INQUIRY
+* 表的名称：用户询价请求表
+* 对应实体：com.vilio.bps.commonMapper.pojo.BpsUserInquiry
+* 开发日期：2017-06-13
+* 技术服务：www.fwjava.com
+******************************************************************************
+-->
+<mapper namespace="com.vilio.bps.commonMapper.dao.IBpsUserInquiryMapper">
+
+    <!--
+    **************************************************************************
+    * 1.新增一条数据
+    * 注: 根据Bean实体执行新增操作.
+    **************************************************************************
+    -->
+    <insert id="getInsert"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsUserInquiry"
+            useGeneratedKeys="true"
+            keyProperty="id">
+    
+            INSERT   /* getInsert+@com.vilio.bps.commonMapper.sql.BpsUserInquiryMapper.xml */ 
+              INTO   BPS_USER_INQUIRY         /* 用户询价请求表 */ 
+                    (
+                     SERIAL_NO                /*  */ 
+                    ,DATE_CREATED             /*  */ 
+                    ,DATE_MODIFIED            /*  */ 
+                    ,USER_ID                  /* 询价用户号 */ 
+                    ,USER_NAME                /* 询价用户姓名 */ 
+                    ,COMPANY_ID               /* 询价用户所在公司id */ 
+                    ,COMPANY_NAME             /* 询价用户所在公司名称 */ 
+                    ,DEPARTMENT_ID            /* 询价用户所在部门id */ 
+                    ,DEPARTMENT_NAME          /* 询价用户所在部门名称 */ 
+                    ,DEADLINE                 /* 失效时间 */ 
+                    ,STATUS                   /* 状态(00创建，01失败，02完成，03人工询价中，04风控审批中) */ 
+                    )
+            VALUES  (
+                     #{serialNo}              /*  */ 
+                    ,#{dateCreated}           /*  */ 
+                    ,#{dateModified}          /*  */ 
+                    ,#{userId}                /* 询价用户号 */ 
+                    ,#{userName}              /* 询价用户姓名 */ 
+                    ,#{companyId}             /* 询价用户所在公司id */ 
+                    ,#{companyName}           /* 询价用户所在公司名称 */ 
+                    ,#{departmentId}          /* 询价用户所在部门id */ 
+                    ,#{departmentName}        /* 询价用户所在部门名称 */ 
+                    ,#{deadline}              /* 失效时间 */ 
+                    ,#{status}                /* 状态(00创建，01失败，02完成，03人工询价中，04风控审批中) */ 
+                    )
+         
+    </insert>
+    
+    <insert id="getInsertPrmMap"
+            parameterType="java.util.HashMap"
+            useGeneratedKeys="true"
+            keyProperty="id">
+    
+            INSERT   /* getInsertPrmMap+@com.vilio.bps.commonMapper.sql.BpsUserInquiryMapper.xml */ 
+              INTO   BPS_USER_INQUIRY         /* 用户询价请求表 */ 
+                    (
+                     SERIAL_NO                /*  */ 
+                    ,DATE_CREATED             /*  */ 
+                    ,DATE_MODIFIED            /*  */ 
+                    ,USER_ID                  /* 询价用户号 */ 
+                    ,USER_NAME                /* 询价用户姓名 */ 
+                    ,COMPANY_ID               /* 询价用户所在公司id */ 
+                    ,COMPANY_NAME             /* 询价用户所在公司名称 */ 
+                    ,DEPARTMENT_ID            /* 询价用户所在部门id */ 
+                    ,DEPARTMENT_NAME          /* 询价用户所在部门名称 */ 
+                    ,DEADLINE                 /* 失效时间 */ 
+                    ,STATUS                   /* 状态(00创建，01失败，02完成，03人工询价中，04风控审批中) */ 
+                    )
+            VALUES  (
+                     #{serialNo}              /*  */ 
+                    ,#{dateCreated}           /*  */ 
+                    ,#{dateModified}          /*  */ 
+                    ,#{userId}                /* 询价用户号 */ 
+                    ,#{userName}              /* 询价用户姓名 */ 
+                    ,#{companyId}             /* 询价用户所在公司id */ 
+                    ,#{companyName}           /* 询价用户所在公司名称 */ 
+                    ,#{departmentId}          /* 询价用户所在部门id */ 
+                    ,#{departmentName}        /* 询价用户所在部门名称 */ 
+                    ,#{deadline}              /* 失效时间 */ 
+                    ,#{status}                /* 状态(00创建，01失败，02完成，03人工询价中，04风控审批中) */ 
+                    )
+         
+    </insert>
+
+
+    <!--
+    **************************************************************************
+    * 2.删除一条数据
+    * 注: 根据Bean实体的主键ID执行删除操作.
+    **************************************************************************
+    -->
+    <delete id="getDelete"
+            parameterType="java.lang.Integer">
+    
+            DELETE   /* getDelete+@com.vilio.bps.commonMapper.sql.BpsUserInquiryMapper.xml */ 
+              FROM   BPS_USER_INQUIRY      /* 用户询价请求表 */ 
+             WHERE   ID = #{_parameter}    /*  */ 
+         
+    </delete>
+
+
+    <!--
+    **************************************************************************
+    * 3.变更一条数据
+    * 注: 根据Bean实体的主键ID执行变更操作.
+    **************************************************************************
+    -->
+    <update id="getUpdate"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsUserInquiry">
+    
+            UPDATE   /* getUpdate+@com.vilio.bps.commonMapper.sql.BpsUserInquiryMapper.xml */ 
+                     BPS_USER_INQUIRY                           /* 用户询价请求表 */ 
+               SET   SERIAL_NO           = #{serialNo}          /*  */ 
+                    ,DATE_CREATED        = #{dateCreated}       /*  */ 
+                    ,DATE_MODIFIED       = #{dateModified}      /*  */ 
+                    ,USER_ID             = #{userId}            /* 询价用户号 */ 
+                    ,USER_NAME           = #{userName}          /* 询价用户姓名 */ 
+                    ,COMPANY_ID          = #{companyId}         /* 询价用户所在公司id */ 
+                    ,COMPANY_NAME        = #{companyName}       /* 询价用户所在公司名称 */ 
+                    ,DEPARTMENT_ID       = #{departmentId}      /* 询价用户所在部门id */ 
+                    ,DEPARTMENT_NAME     = #{departmentName}    /* 询价用户所在部门名称 */ 
+                    ,DEADLINE            = #{deadline}          /* 失效时间 */ 
+                    ,STATUS              = #{status}            /* 状态(00创建，01失败，02完成，03人工询价中，04风控审批中) */ 
+             WHERE   ID                  = #{id}                /*  */
+         
+    </update>
+    
+    <update id="getUpdatePrmMap"
+            parameterType="java.util.HashMap">
+    
+            UPDATE   /* getUpdatePrmMap+@com.vilio.bps.commonMapper.sql.BpsUserInquiryMapper.xml */ 
+                     BPS_USER_INQUIRY                           /* 用户询价请求表 */ 
+               SET   SERIAL_NO           = #{serialNo}          /*  */ 
+                    ,DATE_CREATED        = #{dateCreated}       /*  */ 
+                    ,DATE_MODIFIED       = #{dateModified}      /*  */ 
+                    ,USER_ID             = #{userId}            /* 询价用户号 */ 
+                    ,USER_NAME           = #{userName}          /* 询价用户姓名 */ 
+                    ,COMPANY_ID          = #{companyId}         /* 询价用户所在公司id */ 
+                    ,COMPANY_NAME        = #{companyName}       /* 询价用户所在公司名称 */ 
+                    ,DEPARTMENT_ID       = #{departmentId}      /* 询价用户所在部门id */ 
+                    ,DEPARTMENT_NAME     = #{departmentName}    /* 询价用户所在部门名称 */ 
+                    ,DEADLINE            = #{deadline}          /* 失效时间 */ 
+                    ,STATUS              = #{status}            /* 状态(00创建，01失败，02完成，03人工询价中，04风控审批中) */ 
+             WHERE   ID                  = #{id}                /*  */
+         
+    </update>
+
+
+    <!--
+    **************************************************************************
+    * 4.获取一个Bean实体
+    * 注: 根据Bean实体的主键ID获取一个Bean实体.
+    **************************************************************************
+    -->
+    <select id="getBean"
+            parameterType="java.lang.Integer"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsUserInquiry">
+    
+            SELECT   /* getBean+@com.vilio.bps.commonMapper.sql.BpsUserInquiryMapper.xml */ 
+                     bui.ID                   AS id                /*  */ 
+                    ,bui.SERIAL_NO            AS serialNo          /*  */ 
+                    ,bui.DATE_CREATED         AS dateCreated       /*  */ 
+                    ,bui.DATE_MODIFIED        AS dateModified      /*  */ 
+                    ,bui.USER_ID              AS userId            /* 询价用户号 */ 
+                    ,bui.USER_NAME            AS userName          /* 询价用户姓名 */ 
+                    ,bui.COMPANY_ID           AS companyId         /* 询价用户所在公司id */ 
+                    ,bui.COMPANY_NAME         AS companyName       /* 询价用户所在公司名称 */ 
+                    ,bui.DEPARTMENT_ID        AS departmentId      /* 询价用户所在部门id */ 
+                    ,bui.DEPARTMENT_NAME      AS departmentName    /* 询价用户所在部门名称 */ 
+                    ,bui.DEADLINE             AS deadline          /* 失效时间 */ 
+                    ,bui.STATUS               AS status            /* 状态(00创建，01失败，02完成，03人工询价中，04风控审批中) */ 
+              FROM   BPS_USER_INQUIRY            bui               /* 用户询价请求表 */
+             WHERE   bui.ID = #{_parameter}                        /*  */ 
+         
+    </select>
+    
+    <select id="getBeanRtnMap"
+            parameterType="java.lang.Integer"
+            resultType="java.util.HashMap">
+    
+            SELECT   /* getBeanRtnMap+@com.vilio.bps.commonMapper.sql.BpsUserInquiryMapper.xml */ 
+                     bui.ID                   AS id                /*  */ 
+                    ,bui.SERIAL_NO            AS serialNo          /*  */ 
+                    ,bui.DATE_CREATED         AS dateCreated       /*  */ 
+                    ,bui.DATE_MODIFIED        AS dateModified      /*  */ 
+                    ,bui.USER_ID              AS userId            /* 询价用户号 */ 
+                    ,bui.USER_NAME            AS userName          /* 询价用户姓名 */ 
+                    ,bui.COMPANY_ID           AS companyId         /* 询价用户所在公司id */ 
+                    ,bui.COMPANY_NAME         AS companyName       /* 询价用户所在公司名称 */ 
+                    ,bui.DEPARTMENT_ID        AS departmentId      /* 询价用户所在部门id */ 
+                    ,bui.DEPARTMENT_NAME      AS departmentName    /* 询价用户所在部门名称 */ 
+                    ,bui.DEADLINE             AS deadline          /* 失效时间 */ 
+                    ,bui.STATUS               AS status            /* 状态(00创建，01失败，02完成，03人工询价中，04风控审批中) */ 
+              FROM   BPS_USER_INQUIRY            bui               /* 用户询价请求表 */
+             WHERE   bui.ID = #{_parameter}                        /*  */ 
+         
+    </select>
+
+
+    <!--
+    **************************************************************************
+    * 5.条件查询
+    * 注: 支持多条件查询、模糊查询、日期比较查询等操作.
+    **************************************************************************
+    -->
+    <select id="getList"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsUserInquiry"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsUserInquiry">
+    
+            SELECT   /* getList+@com.vilio.bps.commonMapper.sql.BpsUserInquiryMapper.xml */ 
+                     bui.ID                   AS id                /*  */ 
+                    ,bui.SERIAL_NO            AS serialNo          /*  */ 
+                    ,bui.DATE_CREATED         AS dateCreated       /*  */ 
+                    ,bui.DATE_MODIFIED        AS dateModified      /*  */ 
+                    ,bui.USER_ID              AS userId            /* 询价用户号 */ 
+                    ,bui.USER_NAME            AS userName          /* 询价用户姓名 */ 
+                    ,bui.COMPANY_ID           AS companyId         /* 询价用户所在公司id */ 
+                    ,bui.COMPANY_NAME         AS companyName       /* 询价用户所在公司名称 */ 
+                    ,bui.DEPARTMENT_ID        AS departmentId      /* 询价用户所在部门id */ 
+                    ,bui.DEPARTMENT_NAME      AS departmentName    /* 询价用户所在部门名称 */ 
+                    ,bui.DEADLINE             AS deadline          /* 失效时间 */ 
+                    ,bui.STATUS               AS status            /* 状态(00创建，01失败，02完成，03人工询价中，04风控审批中) */ 
+        FROM   BPS_USER_INQUIRY            bui               /* 用户询价请求表 */
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   bui.ID = #{id} /*  */ 
+             </if>
+        
+             <if test='serialNo != null and serialNo != "" and serialNo != "null" and serialNo != "undefined"'>
+               AND   bui.SERIAL_NO = #{serialNo} /*  */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(bui.DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /*  */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(bui.DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /*  */ 
+             </if>
+        
+             <if test='userId != null and userId != "" and userId != "null" and userId != "undefined"'>
+               AND   bui.USER_ID = #{userId} /* 询价用户号 */ 
+             </if>
+        
+             <if test='userName != null and userName != "" and userName != "null" and userName != "undefined"'>
+               AND   bui.USER_NAME = #{userName} /* 询价用户姓名 */ 
+             </if>
+        
+             <if test='companyId != null and companyId != "" and companyId != "null" and companyId != "undefined"'>
+               AND   bui.COMPANY_ID = #{companyId} /* 询价用户所在公司id */ 
+             </if>
+        
+             <if test='companyName != null and companyName != "" and companyName != "null" and companyName != "undefined"'>
+               AND   bui.COMPANY_NAME = #{companyName} /* 询价用户所在公司名称 */ 
+             </if>
+        
+             <if test='departmentId != null and departmentId != "" and departmentId != "null" and departmentId != "undefined"'>
+               AND   bui.DEPARTMENT_ID = #{departmentId} /* 询价用户所在部门id */ 
+             </if>
+        
+             <if test='departmentName != null and departmentName != "" and departmentName != "null" and departmentName != "undefined"'>
+               AND   bui.DEPARTMENT_NAME = #{departmentName} /* 询价用户所在部门名称 */ 
+             </if>
+        
+             <if test='deadline != null'>
+               AND   date_format(bui.DEADLINE ,'%Y-%m-%d') = #{deadlineChar} /* 失效时间 */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   bui.STATUS = #{status} /* 状态(00创建，01失败，02完成，03人工询价中，04风控审批中) */ 
+             </if>
+
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+    
+    <select id="getListPrmMapRtnBean"
+            parameterType="java.util.HashMap"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsUserInquiry">
+    
+            SELECT   /* getListPrmMapRtnBean+@com.vilio.bps.commonMapper.sql.BpsUserInquiryMapper.xml */ 
+                     bui.ID                   AS id                /*  */ 
+                    ,bui.SERIAL_NO            AS serialNo          /*  */ 
+                    ,bui.DATE_CREATED         AS dateCreated       /*  */ 
+                    ,bui.DATE_MODIFIED        AS dateModified      /*  */ 
+                    ,bui.USER_ID              AS userId            /* 询价用户号 */ 
+                    ,bui.USER_NAME            AS userName          /* 询价用户姓名 */ 
+                    ,bui.COMPANY_ID           AS companyId         /* 询价用户所在公司id */ 
+                    ,bui.COMPANY_NAME         AS companyName       /* 询价用户所在公司名称 */ 
+                    ,bui.DEPARTMENT_ID        AS departmentId      /* 询价用户所在部门id */ 
+                    ,bui.DEPARTMENT_NAME      AS departmentName    /* 询价用户所在部门名称 */ 
+                    ,bui.DEADLINE             AS deadline          /* 失效时间 */ 
+                    ,bui.STATUS               AS status            /* 状态(00创建，01失败，02完成，03人工询价中，04风控审批中) */ 
+              FROM   BPS_USER_INQUIRY            bui               /* 用户询价请求表 */
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   bui.ID = #{id} /*  */ 
+             </if>
+        
+             <if test='serialNo != null and serialNo != "" and serialNo != "null" and serialNo != "undefined"'>
+               AND   bui.SERIAL_NO = #{serialNo} /*  */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(bui.DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /*  */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(bui.DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /*  */ 
+             </if>
+        
+             <if test='userId != null and userId != "" and userId != "null" and userId != "undefined"'>
+               AND   bui.USER_ID = #{userId} /* 询价用户号 */ 
+             </if>
+        
+             <if test='userName != null and userName != "" and userName != "null" and userName != "undefined"'>
+               AND   bui.USER_NAME = #{userName} /* 询价用户姓名 */ 
+             </if>
+        
+             <if test='companyId != null and companyId != "" and companyId != "null" and companyId != "undefined"'>
+               AND   bui.COMPANY_ID = #{companyId} /* 询价用户所在公司id */ 
+             </if>
+        
+             <if test='companyName != null and companyName != "" and companyName != "null" and companyName != "undefined"'>
+               AND   bui.COMPANY_NAME = #{companyName} /* 询价用户所在公司名称 */ 
+             </if>
+        
+             <if test='departmentId != null and departmentId != "" and departmentId != "null" and departmentId != "undefined"'>
+               AND   bui.DEPARTMENT_ID = #{departmentId} /* 询价用户所在部门id */ 
+             </if>
+        
+             <if test='departmentName != null and departmentName != "" and departmentName != "null" and departmentName != "undefined"'>
+               AND   bui.DEPARTMENT_NAME = #{departmentName} /* 询价用户所在部门名称 */ 
+             </if>
+        
+             <if test='deadline != null'>
+               AND   date_format(bui.DEADLINE ,'%Y-%m-%d') = #{deadlineChar} /* 失效时间 */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   bui.STATUS = #{status} /* 状态(00创建，01失败，02完成，03人工询价中，04风控审批中) */ 
+             </if>
+
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+    
+    <select id="getListPrmMapRtnMap"
+            parameterType="java.util.HashMap"
+            resultType="java.util.HashMap">
+    
+            SELECT   /* getListPrmMapRtnMap+@com.vilio.bps.commonMapper.sql.BpsUserInquiryMapper.xml */ 
+                     bui.ID                   AS id                /*  */ 
+                    ,bui.SERIAL_NO            AS serialNo          /*  */ 
+                    ,bui.DATE_CREATED         AS dateCreated       /*  */ 
+                    ,bui.DATE_MODIFIED        AS dateModified      /*  */ 
+                    ,bui.USER_ID              AS userId            /* 询价用户号 */ 
+                    ,bui.USER_NAME            AS userName          /* 询价用户姓名 */ 
+                    ,bui.COMPANY_ID           AS companyId         /* 询价用户所在公司id */ 
+                    ,bui.COMPANY_NAME         AS companyName       /* 询价用户所在公司名称 */ 
+                    ,bui.DEPARTMENT_ID        AS departmentId      /* 询价用户所在部门id */ 
+                    ,bui.DEPARTMENT_NAME      AS departmentName    /* 询价用户所在部门名称 */ 
+                    ,bui.DEADLINE             AS deadline          /* 失效时间 */ 
+                    ,bui.STATUS               AS status            /* 状态(00创建，01失败，02完成，03人工询价中，04风控审批中) */ 
+              FROM   BPS_USER_INQUIRY            bui               /* 用户询价请求表 */
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   bui.ID = #{id} /*  */ 
+             </if>
+        
+             <if test='serialNo != null and serialNo != "" and serialNo != "null" and serialNo != "undefined"'>
+               AND   bui.SERIAL_NO = #{serialNo} /*  */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(bui.DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /*  */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(bui.DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /*  */ 
+             </if>
+        
+             <if test='userId != null and userId != "" and userId != "null" and userId != "undefined"'>
+               AND   bui.USER_ID = #{userId} /* 询价用户号 */ 
+             </if>
+        
+             <if test='userName != null and userName != "" and userName != "null" and userName != "undefined"'>
+               AND   bui.USER_NAME = #{userName} /* 询价用户姓名 */ 
+             </if>
+        
+             <if test='companyId != null and companyId != "" and companyId != "null" and companyId != "undefined"'>
+               AND   bui.COMPANY_ID = #{companyId} /* 询价用户所在公司id */ 
+             </if>
+        
+             <if test='companyName != null and companyName != "" and companyName != "null" and companyName != "undefined"'>
+               AND   bui.COMPANY_NAME = #{companyName} /* 询价用户所在公司名称 */ 
+             </if>
+        
+             <if test='departmentId != null and departmentId != "" and departmentId != "null" and departmentId != "undefined"'>
+               AND   bui.DEPARTMENT_ID = #{departmentId} /* 询价用户所在部门id */ 
+             </if>
+        
+             <if test='departmentName != null and departmentName != "" and departmentName != "null" and departmentName != "undefined"'>
+               AND   bui.DEPARTMENT_NAME = #{departmentName} /* 询价用户所在部门名称 */ 
+             </if>
+        
+             <if test='deadline != null'>
+               AND   date_format(bui.DEADLINE ,'%Y-%m-%d') = #{deadlineChar} /* 失效时间 */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   bui.STATUS = #{status} /* 状态(00创建，01失败，02完成，03人工询价中，04风控审批中) */ 
+             </if>
+
+
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+
+
+    <!--
+    **************************************************************************
+    * 6.验证多条件数据是否存在
+    * 注: 根据多条件验证该数据是否存在 ,并返回数据量.
+    **************************************************************************
+    -->
+    <select id="getCheckBy"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsUserInquiry"
+            resultType="java.lang.Integer">
+    
+            SELECT   /* getCheckBy+@com.vilio.bps.commonMapper.sql.BpsUserInquiryMapper.xml */ 
+                     count(1)
+              FROM   BPS_USER_INQUIRY  /* 用户询价请求表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   ID = #{id} /*  */ 
+             </if>
+        
+             <if test='serialNo != null and serialNo != "" and serialNo != "null" and serialNo != "undefined"'>
+               AND   SERIAL_NO = #{serialNo} /*  */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /*  */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /*  */ 
+             </if>
+        
+             <if test='userId != null and userId != "" and userId != "null" and userId != "undefined"'>
+               AND   USER_ID = #{userId} /* 询价用户号 */ 
+             </if>
+        
+             <if test='userName != null and userName != "" and userName != "null" and userName != "undefined"'>
+               AND   USER_NAME = #{userName} /* 询价用户姓名 */ 
+             </if>
+        
+             <if test='companyId != null and companyId != "" and companyId != "null" and companyId != "undefined"'>
+               AND   COMPANY_ID = #{companyId} /* 询价用户所在公司id */ 
+             </if>
+        
+             <if test='companyName != null and companyName != "" and companyName != "null" and companyName != "undefined"'>
+               AND   COMPANY_NAME = #{companyName} /* 询价用户所在公司名称 */ 
+             </if>
+        
+             <if test='departmentId != null and departmentId != "" and departmentId != "null" and departmentId != "undefined"'>
+               AND   DEPARTMENT_ID = #{departmentId} /* 询价用户所在部门id */ 
+             </if>
+        
+             <if test='departmentName != null and departmentName != "" and departmentName != "null" and departmentName != "undefined"'>
+               AND   DEPARTMENT_NAME = #{departmentName} /* 询价用户所在部门名称 */ 
+             </if>
+        
+             <if test='deadline != null'>
+               AND   date_format(DEADLINE ,'%Y-%m-%d') = #{deadlineChar} /* 失效时间 */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   STATUS = #{status} /* 状态(00创建，01失败，02完成，03人工询价中，04风控审批中) */ 
+             </if>
+
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+    </select>
+    
+    <select id="getCheckByPrmMap"
+            parameterType="java.util.HashMap"
+            resultType="java.lang.Integer">
+    
+            SELECT   /* getCheckByPrmMap+@com.vilio.bps.commonMapper.sql.BpsUserInquiryMapper.xml */ 
+                     count(1)
+              FROM   BPS_USER_INQUIRY  /* 用户询价请求表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   ID = #{id} /*  */ 
+             </if>
+        
+             <if test='serialNo != null and serialNo != "" and serialNo != "null" and serialNo != "undefined"'>
+               AND   SERIAL_NO = #{serialNo} /*  */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /*  */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /*  */ 
+             </if>
+        
+             <if test='userId != null and userId != "" and userId != "null" and userId != "undefined"'>
+               AND   USER_ID = #{userId} /* 询价用户号 */ 
+             </if>
+        
+             <if test='userName != null and userName != "" and userName != "null" and userName != "undefined"'>
+               AND   USER_NAME = #{userName} /* 询价用户姓名 */ 
+             </if>
+        
+             <if test='companyId != null and companyId != "" and companyId != "null" and companyId != "undefined"'>
+               AND   COMPANY_ID = #{companyId} /* 询价用户所在公司id */ 
+             </if>
+        
+             <if test='companyName != null and companyName != "" and companyName != "null" and companyName != "undefined"'>
+               AND   COMPANY_NAME = #{companyName} /* 询价用户所在公司名称 */ 
+             </if>
+        
+             <if test='departmentId != null and departmentId != "" and departmentId != "null" and departmentId != "undefined"'>
+               AND   DEPARTMENT_ID = #{departmentId} /* 询价用户所在部门id */ 
+             </if>
+        
+             <if test='departmentName != null and departmentName != "" and departmentName != "null" and departmentName != "undefined"'>
+               AND   DEPARTMENT_NAME = #{departmentName} /* 询价用户所在部门名称 */ 
+             </if>
+        
+             <if test='deadline != null'>
+               AND   date_format(DEADLINE ,'%Y-%m-%d') = #{deadlineChar} /* 失效时间 */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   STATUS = #{status} /* 状态(00创建，01失败，02完成，03人工询价中，04风控审批中) */ 
+             </if>
+
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+    </select>
+
+    <insert id="saveUserInquiry" parameterType="com.vilio.bps.commonMapper.pojo.BpsUserInquiry">
+        INSERT
+        INTO   BPS_USER_INQUIRY
+        (
+        SERIAL_NO
+        ,USER_ID
+        ,USER_NAME
+        ,COMPANY_ID
+        ,COMPANY_NAME
+        ,DEPARTMENT_ID
+        ,DEPARTMENT_NAME
+        ,address
+        ,city_code
+        ,source_system
+        ,house_type
+        ,status
+        ,deadline
+        )
+        VALUES
+        (
+        #{serialNo,jdbcType=VARCHAR}
+        ,#{userId,jdbcType=VARCHAR}
+        ,#{userName,jdbcType=VARCHAR}
+        ,#{companyId,jdbcType=VARCHAR}
+        ,#{companyName,jdbcType=VARCHAR}
+        ,#{departmentId,jdbcType=VARCHAR}
+        ,#{departmentName,jdbcType=VARCHAR}
+        ,#{address,jdbcType=VARCHAR}
+        ,#{cityCode,jdbcType=VARCHAR}
+        ,#{sourceSystem,jdbcType=VARCHAR}
+        ,#{houseType,jdbcType=VARCHAR}
+        ,#{status,jdbcType=VARCHAR}
+        ,#{deadline,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="saveInquiryPriceAndStatus"
+            parameterType="java.util.HashMap">
+        UPDATE
+        bps_user_inquiry
+        SET assessment_price = #{assessmentPrice,jdbcType=DECIMAL}
+            ,assessment_time = #{assessmentTime,jdbcType=TIMESTAMP}
+            ,status = #{status,jdbcType=VARCHAR}
+        WHERE   serial_no = #{serialNo}
+    </update>
+
+    <select id="getInquiryInfoBySerialNo" parameterType="java.lang.String" resultType="com.vilio.bps.commonMapper.pojo.BpsUserInquiry">
+        SELECT
+            t.serial_no AS serialNo,
+            t.city_code AS cityCode,
+            t.house_type AS houseType,
+            t.assessment_price AS assessmentPrice,
+            t.assessment_time AS assessmentTime,
+            t.address,
+            t.deadline,
+            t.source_system AS sourceSystem,
+            t.status,
+            t.user_id AS userId
+        FROM
+            bps_user_inquiry t
+        WHERE
+            t.serial_no = #{serialNo,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateInquiryBySerialNo" parameterType="java.util.Map">
+        UPDATE bps_user_inquiry t
+        <set>
+            <if test='assessmentPrice != null'>
+                t.assessment_price = #{assessmentPrice,jdbcType=DECIMAL},
+            </if>
+            <if test='assessmentTime != null'>
+                t.assessment_time = #{assessmentTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+                t.STATUS = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test='deadline != null'>
+                t.deadline = #{deadline,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        WHERE
+            t.serial_no = #{serialNo,jdbcType=VARCHAR}
+    </update>
+
+    <select id="queryInAssessInquiry"  resultType="com.vilio.bps.commonMapper.pojo.BpsUserInquiry">
+        SELECT
+            t.serial_no as serialNo
+        ,t.address
+        ,t.city_code as cityCode
+        ,t.house_type as houseType
+        ,t.source_system as sourceSystem
+        FROM
+            bps_user_inquiry t
+        WHERE
+            t.status = '01'
+    </select>
+
+    <select id="queryInAssessInquiryByStatus" parameterType="java.lang.String" resultType="com.vilio.bps.commonMapper.pojo.BpsUserInquiry">
+        SELECT
+        t.serial_no as serialNo
+        ,t.address
+        ,t.city_code as cityCode
+        ,t.house_type as houseType
+        ,t.source_system as sourceSystem
+        FROM
+        bps_user_inquiry t
+        WHERE
+        t.status = #{status,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryNeedOutDateInquiry" parameterType="java.util.Date" resultType="com.vilio.bps.commonMapper.pojo.BpsUserInquiry">
+        SELECT
+        t.serial_no as serialNo
+        ,t.address
+        ,t.city_code as cityCode
+        ,t.house_type as houseType
+        ,t.source_system as sourceSystem
+        FROM
+        bps_user_inquiry t
+        WHERE
+        t.deadline &lt; #{today,jdbcType=TIMESTAMP}
+        and t.status != '99'
+    </select>
+
+</mapper>

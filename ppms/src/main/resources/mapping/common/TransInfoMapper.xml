@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.ppms.dao.common.TransInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.vilio.ppms.pojo.common.TransInfo" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sys_serno" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="chl_serno" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="req_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="req_time" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="work_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="sys_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="source_system" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="trans_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="trans_type" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="trans_amount" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="payer_group_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="deal_status" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="resp_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="resp_msg" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="status" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="remark1" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="payee_group_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="source_fee" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="trans_amt_total" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.vilio.ppms.pojo.common.TransInfo" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sys_serno" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="chl_serno" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="req_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="req_time" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="work_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="sys_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="source_system" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="trans_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="trans_type" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="trans_amount" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="payer_group_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="deal_status" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="resp_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="resp_msg" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="status" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="remark1" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="payee_group_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="source_fee" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="trans_amt_total" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="request_json" jdbcType="LONGVARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, sys_serno, chl_serno, req_date, req_time, work_date, sys_time, source_system, 
+    trans_code, trans_type, trans_amount, payer_group_id, deal_status, resp_code, resp_msg, 
+    status, create_time, update_time, remark1, payee_group_id, source_fee, trans_amt_total
+  </sql>
+  <sql id="Blob_Column_List" >
+    request_json
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ppms_trans_info
+    where code = #{code,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ppms_trans_info
+    where code = #{code,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.vilio.ppms.pojo.common.TransInfo" >
+    insert into ppms_trans_info (id, code, sys_serno, 
+      chl_serno, req_date, req_time, 
+      work_date, sys_time, source_system, 
+      trans_code, trans_type, trans_amount, 
+      payer_group_id, deal_status, resp_code, 
+      resp_msg, status, create_time, 
+      update_time, remark1, payee_group_id, 
+      source_fee, trans_amt_total, request_json
+      )
+    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{sysSerno,jdbcType=VARCHAR}, 
+      #{chlSerno,jdbcType=VARCHAR}, #{reqDate,jdbcType=TIMESTAMP}, #{reqTime,jdbcType=VARCHAR}, 
+      #{workDate,jdbcType=TIMESTAMP}, #{sysTime,jdbcType=TIMESTAMP}, #{sourceSystem,jdbcType=VARCHAR}, 
+      #{transCode,jdbcType=VARCHAR}, #{transType,jdbcType=VARCHAR}, #{transAmount,jdbcType=DECIMAL}, 
+      #{payerGroupId,jdbcType=VARCHAR}, #{dealStatus,jdbcType=VARCHAR}, #{respCode,jdbcType=VARCHAR}, 
+      #{respMsg,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{remark1,jdbcType=VARCHAR}, #{payeeGroupId,jdbcType=VARCHAR}, 
+      #{sourceFee,jdbcType=DECIMAL}, #{transAmtTotal,jdbcType=DECIMAL}, #{requestJson,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.vilio.ppms.pojo.common.TransInfo" >
+    insert into ppms_trans_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="sysSerno != null" >
+        sys_serno,
+      </if>
+      <if test="chlSerno != null" >
+        chl_serno,
+      </if>
+      <if test="reqDate != null" >
+        req_date,
+      </if>
+      <if test="reqTime != null" >
+        req_time,
+      </if>
+      <if test="workDate != null" >
+        work_date,
+      </if>
+      <if test="sysTime != null" >
+        sys_time,
+      </if>
+      <if test="sourceSystem != null" >
+        source_system,
+      </if>
+      <if test="transCode != null" >
+        trans_code,
+      </if>
+      <if test="transType != null" >
+        trans_type,
+      </if>
+      <if test="transAmount != null" >
+        trans_amount,
+      </if>
+      <if test="payerGroupId != null" >
+        payer_group_id,
+      </if>
+      <if test="dealStatus != null" >
+        deal_status,
+      </if>
+      <if test="respCode != null" >
+        resp_code,
+      </if>
+      <if test="respMsg != null" >
+        resp_msg,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="remark1 != null" >
+        remark1,
+      </if>
+      <if test="payeeGroupId != null" >
+        payee_group_id,
+      </if>
+      <if test="sourceFee != null" >
+        source_fee,
+      </if>
+      <if test="transAmtTotal != null" >
+        trans_amt_total,
+      </if>
+      <if test="requestJson != null" >
+        request_json,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="sysSerno != null" >
+        #{sysSerno,jdbcType=VARCHAR},
+      </if>
+      <if test="chlSerno != null" >
+        #{chlSerno,jdbcType=VARCHAR},
+      </if>
+      <if test="reqDate != null" >
+        #{reqDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reqTime != null" >
+        #{reqTime,jdbcType=VARCHAR},
+      </if>
+      <if test="workDate != null" >
+        #{workDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysTime != null" >
+        #{sysTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sourceSystem != null" >
+        #{sourceSystem,jdbcType=VARCHAR},
+      </if>
+      <if test="transCode != null" >
+        #{transCode,jdbcType=VARCHAR},
+      </if>
+      <if test="transType != null" >
+        #{transType,jdbcType=VARCHAR},
+      </if>
+      <if test="transAmount != null" >
+        #{transAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="payerGroupId != null" >
+        #{payerGroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="dealStatus != null" >
+        #{dealStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="respCode != null" >
+        #{respCode,jdbcType=VARCHAR},
+      </if>
+      <if test="respMsg != null" >
+        #{respMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark1 != null" >
+        #{remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="payeeGroupId != null" >
+        #{payeeGroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceFee != null" >
+        #{sourceFee,jdbcType=DECIMAL},
+      </if>
+      <if test="transAmtTotal != null" >
+        #{transAmtTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="requestJson != null" >
+        #{requestJson,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vilio.ppms.pojo.common.TransInfo" >
+    update ppms_trans_info
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="sysSerno != null" >
+        sys_serno = #{sysSerno,jdbcType=VARCHAR},
+      </if>
+      <if test="chlSerno != null" >
+        chl_serno = #{chlSerno,jdbcType=VARCHAR},
+      </if>
+      <if test="reqDate != null" >
+        req_date = #{reqDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reqTime != null" >
+        req_time = #{reqTime,jdbcType=VARCHAR},
+      </if>
+      <if test="workDate != null" >
+        work_date = #{workDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysTime != null" >
+        sys_time = #{sysTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sourceSystem != null" >
+        source_system = #{sourceSystem,jdbcType=VARCHAR},
+      </if>
+      <if test="transCode != null" >
+        trans_code = #{transCode,jdbcType=VARCHAR},
+      </if>
+      <if test="transType != null" >
+        trans_type = #{transType,jdbcType=VARCHAR},
+      </if>
+      <if test="transAmount != null" >
+        trans_amount = #{transAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="payerGroupId != null" >
+        payer_group_id = #{payerGroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="dealStatus != null" >
+        deal_status = #{dealStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="respCode != null" >
+        resp_code = #{respCode,jdbcType=VARCHAR},
+      </if>
+      <if test="respMsg != null" >
+        resp_msg = #{respMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark1 != null" >
+        remark1 = #{remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="payeeGroupId != null" >
+        payee_group_id = #{payeeGroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceFee != null" >
+        source_fee = #{sourceFee,jdbcType=DECIMAL},
+      </if>
+      <if test="transAmtTotal != null" >
+        trans_amt_total = #{transAmtTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="requestJson != null" >
+        request_json = #{requestJson,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.vilio.ppms.pojo.common.TransInfo" >
+    update ppms_trans_info
+    set code = #{code,jdbcType=VARCHAR},
+      sys_serno = #{sysSerno,jdbcType=VARCHAR},
+      chl_serno = #{chlSerno,jdbcType=VARCHAR},
+      req_date = #{reqDate,jdbcType=TIMESTAMP},
+      req_time = #{reqTime,jdbcType=VARCHAR},
+      work_date = #{workDate,jdbcType=TIMESTAMP},
+      sys_time = #{sysTime,jdbcType=TIMESTAMP},
+      source_system = #{sourceSystem,jdbcType=VARCHAR},
+      trans_code = #{transCode,jdbcType=VARCHAR},
+      trans_type = #{transType,jdbcType=VARCHAR},
+      trans_amount = #{transAmount,jdbcType=DECIMAL},
+      payer_group_id = #{payerGroupId,jdbcType=VARCHAR},
+      deal_status = #{dealStatus,jdbcType=VARCHAR},
+      resp_code = #{respCode,jdbcType=VARCHAR},
+      resp_msg = #{respMsg,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      remark1 = #{remark1,jdbcType=VARCHAR},
+      payee_group_id = #{payeeGroupId,jdbcType=VARCHAR},
+      source_fee = #{sourceFee,jdbcType=DECIMAL},
+      trans_amt_total = #{transAmtTotal,jdbcType=DECIMAL},
+      request_json = #{requestJson,jdbcType=LONGVARCHAR}
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vilio.ppms.pojo.common.TransInfo" >
+    update ppms_trans_info
+    set code = #{code,jdbcType=VARCHAR},
+      sys_serno = #{sysSerno,jdbcType=VARCHAR},
+      chl_serno = #{chlSerno,jdbcType=VARCHAR},
+      req_date = #{reqDate,jdbcType=TIMESTAMP},
+      req_time = #{reqTime,jdbcType=VARCHAR},
+      work_date = #{workDate,jdbcType=TIMESTAMP},
+      sys_time = #{sysTime,jdbcType=TIMESTAMP},
+      source_system = #{sourceSystem,jdbcType=VARCHAR},
+      trans_code = #{transCode,jdbcType=VARCHAR},
+      trans_type = #{transType,jdbcType=VARCHAR},
+      trans_amount = #{transAmount,jdbcType=DECIMAL},
+      payer_group_id = #{payerGroupId,jdbcType=VARCHAR},
+      deal_status = #{dealStatus,jdbcType=VARCHAR},
+      resp_code = #{respCode,jdbcType=VARCHAR},
+      resp_msg = #{respMsg,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      remark1 = #{remark1,jdbcType=VARCHAR},
+      payee_group_id = #{payeeGroupId,jdbcType=VARCHAR},
+      source_fee = #{sourceFee,jdbcType=DECIMAL},
+      trans_amt_total = #{transAmtTotal,jdbcType=DECIMAL}
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+</mapper>

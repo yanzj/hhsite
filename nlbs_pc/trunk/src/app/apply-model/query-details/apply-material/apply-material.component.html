@@ -1,0 +1,132 @@
+<!--进件材料 start-->
+<div class="tab_content">
+  <div class="material_tab" id="material_tab1">
+    <div class="row">
+      <div class="col-6" id="messageTitle_classify">
+        <div class="row margin-bottom-20">
+          <div class="message-title-line"></div>
+          <div class="message-title-name">材料分类</div>
+        </div>
+
+        <div *ngIf="materialTypeListData">
+          <div class="material-panel" *ngFor="let materialObj of materialTypeListData let i=index"
+               (click)="onSelectMaterial(materialObj,i)"
+               [class.materialselected]="i == selectedMaterial">
+            <label class="material-label"><input type="radio" name="apply" class="material-input"
+                                                 value={{materialObj.materialTypeCode}}
+                                                 [checked]="materialObj.materialTypeCode==(selectedMaterial+1)">{{materialObj.materialTypeName}}
+              <em *ngIf="materialObj.fileSize != '0' ">（{{materialObj.fileList.length}}个文件）</em>
+            </label>
+          </div>
+        </div>
+
+
+        <div class="row margin-top-40">
+          <div class="col-4">
+            <button class="orange-button float-right" (click)="querySection()">返回进件查询
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="row margin-bottom-20">
+          <div class="message-title-line"></div>
+          <div class="message-title-name">材料清单</div>
+          <div class="orange-button material-btn" (click)="annexMaterialChange()">补充材料</div>
+        </div>
+        <div class="row" *ngIf="selectedMaterialDisplayImages">
+          <div class="img-list" *ngFor="let item of selectedMaterialDisplayImages">
+            <a class="img-box" (click)="downloadFile(item)"><img src="{{item.fileUrl}}" id="img-box"/></a>
+            <p class="upload-file-name ">{{item.fileName}}</p>
+            <div class="upload-file-time">{{item.uploadTime}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="material_tab" style="display: none" id="material_tab2">
+    <div class="row margin-bottom-20">
+      <div class="message-title-line"></div>
+      <div class="message-title-name">{{selectItemNameDisplay}}</div>
+    </div>
+    <div class="row">
+      <a class=" upload-into-pieces">
+        <div class="gray-button garyButton-gai">选择文件上传</div>
+        <!--将input中的multiple去掉设置为单个上传的文件-->
+        <input type="button" class="gray-button uploadofMaterial upload-input" type="file" ng2FileSelect
+               [uploader]="uploader" (change)="selectedFileOnChanged($event)" multiple>
+
+      </a>
+      <span class="margin-left-20 hide"
+            id="uploadedfileNumber">上传成功{{sucUploadFileNum}}个，上传失败{{failUploadFileNum}}个</span>
+      <span class="margin-left-20"
+            id=uploadingfileNumber>正在上传：第{{sucUploadFileNum}}个（共{{uploader.queue.length}}个）</span>
+      <p style="margin:20px 0;color:#999">单次最多可选30个文件，单个文件大小不超过10M</p>
+      <div class="row">
+        <div id="uploader" class="wu-example">
+          <div class="row">
+            <div *ngFor="let item of uploadList;let i=index" class="uploadFileBox">
+              <div class="upload-file-box">
+
+                <!-- 上传成功后，展示对应图片 -->
+                <div class="photo" *ngIf="item.isSuccess">
+                  <div  class="success-uploadered-picture">
+                    <div *ngIf="selectFileList[i]" class="picture-deletion"><a class="delete-icon" (click)="deleteFile(i,1,selectFileList[i].serialNo)"></a></div>
+                    <div *ngIf="selectFileList[i]" class="small-photo" id="smallPhoto"><img src="{{selectFileList[i].src}}"
+                                                                  id="uploadImg{{i}}"/></div>
+                    <p [ngStyle]="{'margin-top':item.isError?'0px':'10px'}" class="upload-picture-name image-name">
+                      {{item.file.name}}</p>
+                  </div>
+                </div>
+
+                <!-- 上传失败后，展示错误提示 -->
+                <div  *ngIf="item.isError">
+                  <div [ngClass]="{'upload-picture-styles-fail-style':item.isError}" class="fail-style">
+                    <p class="upload-picture-fail-txt">上传失败</p>
+                    <p>
+                      <a (click)="upAgiain(i)">
+                        重新上传
+                      </a>
+                      <a (click)="deleteFile(i, 0)" class="upload-picture-faildel">刪除</a>
+                    </p>
+                    <p [ngStyle]="{'margin-top':item.isError?'0px':'10px'}" class="upload-picture-name">
+                      {{item.file.name}}</p>
+
+                  </div>
+
+
+                </div>
+                <div class="progress" *ngIf="!item.isSuccess&&!item.isError">
+                  <div class="progress-bar progress-bar-warning progress-bar-striped active"
+                       [style.width.%]=item.progress>
+                    <div class="progress-value"></div>
+                  </div>
+
+
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!--原地方-->
+        <div class="uploader-detail-information margin-top-40">
+          <button type="button" class="disable-button" id="disableButton" disabled="disabled"
+                  [ngStyle]="{'display':issmallPhoto==false?'block':'none'}">提交
+          </button>
+          <button type="button" class="orange-button" style="display:none" id="onSubmitButton"
+                  [ngStyle]="{'display':issmallPhoto==false?'none':'block'}" (click)="onSubmitUploadFileFunc()">
+            提交
+          </button>
+          <button type="button" class="gray-button margin-left-20" (click)="cancelPopup()">取消</button>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!--进件材料 end-->

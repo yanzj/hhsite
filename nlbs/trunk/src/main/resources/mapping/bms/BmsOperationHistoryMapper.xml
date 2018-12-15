@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.nlbs.bms.dao.BmsOperationHistoryDao">
+
+
+    <select id="queryOperateListByLoanSerialNo" parameterType="java.lang.String" resultType="java.util.HashMap">
+        SELECT
+            lll.opperate_time AS createTime,
+            po.org_name AS distributorName,
+            SUBSTRING_INDEX(lll.opperator, ',' ,- 1) AS userName,
+            lll.opperator_action AS operateName
+        FROM
+            loan_log_loan lll
+        JOIN employees e ON SUBSTRING_INDEX(lll.opperator, ',', 1) = e.emp_account
+        LEFT JOIN emp_posts ep ON e.id = ep.emp_id
+        LEFT JOIN pfm_orgs po ON ep.org_id = po.id
+        WHERE
+            lll.opperator != '在线进件平台'
+            AND lll.opperator_target = #{loanSerialNo}
+        ORDER BY
+            lll.opperate_time DESC
+    </select>
+
+</mapper>

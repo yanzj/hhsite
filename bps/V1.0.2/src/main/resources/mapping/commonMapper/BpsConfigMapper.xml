@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!--
+******************************************************************************
+* 数据库表：BPS_CONFIG
+* 表的名称：系统配置表
+* 对应实体：com.vilio.bps.commonMapper.pojo.BpsConfig
+* 开发日期：2017-06-12
+* 技术服务：www.fwjava.com
+******************************************************************************
+-->
+<mapper namespace="com.vilio.bps.commonMapper.dao.IBpsConfigMapper">
+
+    <!--
+    **************************************************************************
+    * 1.新增一条数据
+    * 注: 根据Bean实体执行新增操作.
+    **************************************************************************
+    -->
+    <insert id="getInsert"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsConfig">
+    
+            INSERT   /* getInsert+@com.vilio.bps.commonMapper.sql.BpsConfigMapper.xml */ 
+              INTO   BPS_CONFIG                /* 系统配置表 */ 
+                    (
+                     ID                        /* 数据主键 */ 
+                    ,CONFIG_NAME               /* 配置名称 */ 
+                    ,CONFIG_VALUE              /* 配置值 */ 
+                    ,DESCRIPTION               /* 配置描述 */ 
+                    ,STATUS                    /* 状态(0不可用，1可用) */ 
+                    ,DATE_CREATED              /* 数据创建时间 */ 
+                    ,DATE_MODIFIED             /* 数据修改时间 */ 
+                    )
+            VALUES  (
+                     #{id}                     /* 数据主键 */ 
+                    ,#{configName}             /* 配置名称 */ 
+                    ,#{configValue}            /* 配置值 */ 
+                    ,#{description}            /* 配置描述 */ 
+                    ,#{status}                 /* 状态(0不可用，1可用) */ 
+                    ,#{dateCreated}            /* 数据创建时间 */ 
+                    ,#{dateModified}           /* 数据修改时间 */ 
+                    )
+         
+    </insert>
+    
+    <insert id="getInsertPrmMap"
+            parameterType="java.util.HashMap">
+    
+            INSERT   /* getInsertPrmMap+@com.vilio.bps.commonMapper.sql.BpsConfigMapper.xml */ 
+              INTO   BPS_CONFIG                /* 系统配置表 */ 
+                    (
+                     ID                        /* 数据主键 */ 
+                    ,CONFIG_NAME               /* 配置名称 */ 
+                    ,CONFIG_VALUE              /* 配置值 */ 
+                    ,DESCRIPTION               /* 配置描述 */ 
+                    ,STATUS                    /* 状态(0不可用，1可用) */ 
+                    ,DATE_CREATED              /* 数据创建时间 */ 
+                    ,DATE_MODIFIED             /* 数据修改时间 */ 
+                    )
+            VALUES  (
+                     #{id}                     /* 数据主键 */ 
+                    ,#{configName}             /* 配置名称 */ 
+                    ,#{configValue}            /* 配置值 */ 
+                    ,#{description}            /* 配置描述 */ 
+                    ,#{status}                 /* 状态(0不可用，1可用) */ 
+                    ,#{dateCreated}            /* 数据创建时间 */ 
+                    ,#{dateModified}           /* 数据修改时间 */ 
+                    )
+         
+    </insert>
+
+
+    <!--
+    **************************************************************************
+    * 2.删除一条数据
+    * 注: 根据Bean实体的主键ID执行删除操作.
+    **************************************************************************
+    -->
+    <delete id="getDelete"
+            parameterType="java.lang.String">
+    
+            DELETE   /* getDelete+@com.vilio.bps.commonMapper.sql.BpsConfigMapper.xml */ 
+              FROM   BPS_CONFIG            /* 系统配置表 */ 
+             WHERE   ID = #{_parameter}    /* 数据主键 */ 
+         
+    </delete>
+
+
+    <!--
+    **************************************************************************
+    * 3.变更一条数据
+    * 注: 根据Bean实体的主键ID执行变更操作.
+    **************************************************************************
+    -->
+    <update id="getUpdate"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsConfig">
+    
+            UPDATE   /* getUpdate+@com.vilio.bps.commonMapper.sql.BpsConfigMapper.xml */ 
+                     BPS_CONFIG                            /* 系统配置表 */ 
+               SET   CONFIG_NAME      = #{configName}      /* 配置名称 */ 
+                    ,CONFIG_VALUE     = #{configValue}     /* 配置值 */ 
+                    ,DESCRIPTION      = #{description}     /* 配置描述 */ 
+                    ,STATUS           = #{status}          /* 状态(0不可用，1可用) */ 
+                    ,DATE_CREATED     = #{dateCreated}     /* 数据创建时间 */ 
+                    ,DATE_MODIFIED    = #{dateModified}    /* 数据修改时间 */ 
+             WHERE   ID               = #{id}              /* 数据主键 */ 
+         
+    </update>
+    
+    <update id="getUpdatePrmMap"
+            parameterType="java.util.HashMap">
+    
+            UPDATE   /* getUpdatePrmMap+@com.vilio.bps.commonMapper.sql.BpsConfigMapper.xml */ 
+                     BPS_CONFIG                            /* 系统配置表 */ 
+               SET   CONFIG_NAME      = #{configName}      /* 配置名称 */ 
+                    ,CONFIG_VALUE     = #{configValue}     /* 配置值 */ 
+                    ,DESCRIPTION      = #{description}     /* 配置描述 */ 
+                    ,STATUS           = #{status}          /* 状态(0不可用，1可用) */ 
+                    ,DATE_CREATED     = #{dateCreated}     /* 数据创建时间 */ 
+                    ,DATE_MODIFIED    = #{dateModified}    /* 数据修改时间 */ 
+             WHERE   ID               = #{id}              /* 数据主键 */ 
+         
+    </update>
+
+
+    <!--
+    **************************************************************************
+    * 4.获取一个Bean实体
+    * 注: 根据Bean实体的主键ID获取一个Bean实体.
+    **************************************************************************
+    -->
+    <select id="getBean"
+            parameterType="java.lang.String"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsConfig">
+    
+            SELECT   /* getBean+@com.vilio.bps.commonMapper.sql.BpsConfigMapper.xml */ 
+                     bc.ID                AS id              /* 数据主键 */ 
+                    ,bc.CONFIG_NAME       AS configName      /* 配置名称 */ 
+                    ,bc.CONFIG_VALUE      AS configValue     /* 配置值 */ 
+                    ,bc.DESCRIPTION       AS description     /* 配置描述 */ 
+                    ,bc.STATUS            AS status          /* 状态(0不可用，1可用) */ 
+                    ,bc.DATE_CREATED      AS dateCreated     /* 数据创建时间 */ 
+                    ,bc.DATE_MODIFIED     AS dateModified    /* 数据修改时间 */ 
+              FROM   BPS_CONFIG              bc              /* 系统配置表 */ 
+             WHERE   bc.ID = #{_parameter}                   /* 数据主键 */ 
+         
+    </select>
+    
+    <select id="getBeanRtnMap"
+            parameterType="java.lang.String"
+            resultType="java.util.HashMap">
+    
+            SELECT   /* getBeanRtnMap+@com.vilio.bps.commonMapper.sql.BpsConfigMapper.xml */ 
+                     bc.ID                AS id              /* 数据主键 */ 
+                    ,bc.CONFIG_NAME       AS configName      /* 配置名称 */ 
+                    ,bc.CONFIG_VALUE      AS configValue     /* 配置值 */ 
+                    ,bc.DESCRIPTION       AS description     /* 配置描述 */ 
+                    ,bc.STATUS            AS status          /* 状态(0不可用，1可用) */ 
+                    ,bc.DATE_CREATED      AS dateCreated     /* 数据创建时间 */ 
+                    ,bc.DATE_MODIFIED     AS dateModified    /* 数据修改时间 */ 
+              FROM   BPS_CONFIG              bc              /* 系统配置表 */ 
+             WHERE   bc.ID = #{_parameter}                   /* 数据主键 */ 
+         
+    </select>
+
+
+    <!--
+    **************************************************************************
+    * 5.条件查询
+    * 注: 支持多条件查询、模糊查询、日期比较查询等操作.
+    **************************************************************************
+    -->
+    <select id="getList"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsConfig"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsConfig">
+    
+            SELECT   /* getList+@com.vilio.bps.commonMapper.sql.BpsConfigMapper.xml */ 
+                     bc.ID                AS id              /* 数据主键 */ 
+                    ,bc.CONFIG_NAME       AS configName      /* 配置名称 */ 
+                    ,bc.CONFIG_VALUE      AS configValue     /* 配置值 */ 
+                    ,bc.DESCRIPTION       AS description     /* 配置描述 */ 
+                    ,bc.STATUS            AS status          /* 状态(0不可用，1可用) */ 
+                    ,bc.DATE_CREATED      AS dateCreated     /* 数据创建时间 */ 
+                    ,bc.DATE_MODIFIED     AS dateModified    /* 数据修改时间 */ 
+              FROM   BPS_CONFIG              bc              /* 系统配置表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null and id != "" and id != "null" and id != "undefined"'>
+               AND   bc.ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='configName != null and configName != "" and configName != "null" and configName != "undefined"'>
+               AND   bc.CONFIG_NAME = #{configName} /* 配置名称 */ 
+             </if>
+        
+             <if test='configValue != null and configValue != "" and configValue != "null" and configValue != "undefined"'>
+               AND   bc.CONFIG_VALUE = #{configValue} /* 配置值 */ 
+             </if>
+        
+             <if test='description != null and description != "" and description != "null" and description != "undefined"'>
+               AND   bc.DESCRIPTION = #{description} /* 配置描述 */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   bc.STATUS = #{status} /* 状态(0不可用，1可用) */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(bc.DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /* 数据创建时间 */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(bc.DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /* 数据修改时间 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+    
+    <select id="getListPrmMapRtnBean"
+            parameterType="java.util.HashMap"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsConfig">
+    
+            SELECT   /* getListPrmMapRtnBean+@com.vilio.bps.commonMapper.sql.BpsConfigMapper.xml */ 
+                     bc.ID                AS id              /* 数据主键 */ 
+                    ,bc.CONFIG_NAME       AS configName      /* 配置名称 */ 
+                    ,bc.CONFIG_VALUE      AS configValue     /* 配置值 */ 
+                    ,bc.DESCRIPTION       AS description     /* 配置描述 */ 
+                    ,bc.STATUS            AS status          /* 状态(0不可用，1可用) */ 
+                    ,bc.DATE_CREATED      AS dateCreated     /* 数据创建时间 */ 
+                    ,bc.DATE_MODIFIED     AS dateModified    /* 数据修改时间 */ 
+              FROM   BPS_CONFIG              bc              /* 系统配置表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null and id != "" and id != "null" and id != "undefined"'>
+               AND   bc.ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='configName != null and configName != "" and configName != "null" and configName != "undefined"'>
+               AND   bc.CONFIG_NAME = #{configName} /* 配置名称 */ 
+             </if>
+        
+             <if test='configValue != null and configValue != "" and configValue != "null" and configValue != "undefined"'>
+               AND   bc.CONFIG_VALUE = #{configValue} /* 配置值 */ 
+             </if>
+        
+             <if test='description != null and description != "" and description != "null" and description != "undefined"'>
+               AND   bc.DESCRIPTION = #{description} /* 配置描述 */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   bc.STATUS = #{status} /* 状态(0不可用，1可用) */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(bc.DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /* 数据创建时间 */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(bc.DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /* 数据修改时间 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+    
+    <select id="getListPrmMapRtnMap"
+            parameterType="java.util.HashMap"
+            resultType="java.util.HashMap">
+    
+            SELECT   /* getListPrmMapRtnMap+@com.vilio.bps.commonMapper.sql.BpsConfigMapper.xml */ 
+                     bc.ID                AS id              /* 数据主键 */ 
+                    ,bc.CONFIG_NAME       AS configName      /* 配置名称 */ 
+                    ,bc.CONFIG_VALUE      AS configValue     /* 配置值 */ 
+                    ,bc.DESCRIPTION       AS description     /* 配置描述 */ 
+                    ,bc.STATUS            AS status          /* 状态(0不可用，1可用) */ 
+                    ,bc.DATE_CREATED      AS dateCreated     /* 数据创建时间 */ 
+                    ,bc.DATE_MODIFIED     AS dateModified    /* 数据修改时间 */ 
+              FROM   BPS_CONFIG              bc              /* 系统配置表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null and id != "" and id != "null" and id != "undefined"'>
+               AND   bc.ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='configName != null and configName != "" and configName != "null" and configName != "undefined"'>
+               AND   bc.CONFIG_NAME = #{configName} /* 配置名称 */ 
+             </if>
+        
+             <if test='configValue != null and configValue != "" and configValue != "null" and configValue != "undefined"'>
+               AND   bc.CONFIG_VALUE = #{configValue} /* 配置值 */ 
+             </if>
+        
+             <if test='description != null and description != "" and description != "null" and description != "undefined"'>
+               AND   bc.DESCRIPTION = #{description} /* 配置描述 */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   bc.STATUS = #{status} /* 状态(0不可用，1可用) */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(bc.DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /* 数据创建时间 */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(bc.DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /* 数据修改时间 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+
+
+    <!--
+    **************************************************************************
+    * 6.验证多条件数据是否存在
+    * 注: 根据多条件验证该数据是否存在 ,并返回数据量.
+    **************************************************************************
+    -->
+    <select id="getCheckBy"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsConfig"
+            resultType="java.lang.Integer">
+    
+            SELECT   /* getCheckBy+@com.vilio.bps.commonMapper.sql.BpsConfigMapper.xml */ 
+                     count(1)
+              FROM   BPS_CONFIG  /* 系统配置表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null and id != "" and id != "null" and id != "undefined"'>
+               AND   ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='configName != null and configName != "" and configName != "null" and configName != "undefined"'>
+               AND   CONFIG_NAME = #{configName} /* 配置名称 */ 
+             </if>
+        
+             <if test='configValue != null and configValue != "" and configValue != "null" and configValue != "undefined"'>
+               AND   CONFIG_VALUE = #{configValue} /* 配置值 */ 
+             </if>
+        
+             <if test='description != null and description != "" and description != "null" and description != "undefined"'>
+               AND   DESCRIPTION = #{description} /* 配置描述 */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   STATUS = #{status} /* 状态(0不可用，1可用) */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /* 数据创建时间 */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /* 数据修改时间 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+    </select>
+    
+    <select id="getCheckByPrmMap"
+            parameterType="java.util.HashMap"
+            resultType="java.lang.Integer">
+    
+            SELECT   /* getCheckByPrmMap+@com.vilio.bps.commonMapper.sql.BpsConfigMapper.xml */ 
+                     count(1)
+              FROM   BPS_CONFIG  /* 系统配置表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null and id != "" and id != "null" and id != "undefined"'>
+               AND   ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='configName != null and configName != "" and configName != "null" and configName != "undefined"'>
+               AND   CONFIG_NAME = #{configName} /* 配置名称 */ 
+             </if>
+        
+             <if test='configValue != null and configValue != "" and configValue != "null" and configValue != "undefined"'>
+               AND   CONFIG_VALUE = #{configValue} /* 配置值 */ 
+             </if>
+        
+             <if test='description != null and description != "" and description != "null" and description != "undefined"'>
+               AND   DESCRIPTION = #{description} /* 配置描述 */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   STATUS = #{status} /* 状态(0不可用，1可用) */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /* 数据创建时间 */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /* 数据修改时间 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+    </select>
+
+
+</mapper>

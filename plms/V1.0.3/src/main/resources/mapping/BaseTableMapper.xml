@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.BaseTableDao">
+
+    <!--更新城市表-->
+    <update id="updateCity" parameterType="java.util.Map">
+        update plms_city
+        <set>
+            <if test="code != null" >
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="abbrName != null" >
+                abbr_name = #{abbrName,jdbcType=VARCHAR},
+            </if>
+            <if test="fullName != null" >
+                full_name = #{fullName,jdbcType=VARCHAR},
+            </if>
+            <if test="areaCode != null" >
+                area_code = #{areaCode,jdbcType=VARCHAR},
+            </if>
+            <if test="orderByNo != null" >
+                order_by_no = #{orderByNo,jdbcType=VARCHAR},
+            </if>
+            <if test="bmsCode != null" >
+                bms_code = #{bmsCode,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where code = #{code,jdbcType=VARCHAR}
+    </update>
+    <!--更新区域表-->
+    <update id="updateArea" parameterType="java.util.Map">
+        update plms_area
+        <set>
+            <if test="code != null" >
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="areaName != null" >
+                area_name = #{areaName,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="bmsCode != null" >
+                bms_code = #{bmsCode,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where code = #{code,jdbcType=VARCHAR}
+    </update>
+    <!--更新业务员-->
+    <update id="updateAgent" parameterType="java.util.Map">
+        update plms_agent
+        <set>
+            <if test="code != null" >
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null" >
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null" >
+                status = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="mobileNo != null" >
+                mobile_no = #{mobileNo,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null" >
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="parentUser != null" >
+                parent_user = #{parentUser,jdbcType=VARCHAR},
+            </if>
+			<if test="status != null" >
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="distributorCode != null" >
+                distributor_code = #{distributorCode,jdbcType=VARCHAR},
+            </if>
+            <if test="bmsCode != null" >
+                bms_code = #{bmsCode,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where code = #{code,jdbcType=VARCHAR}
+    </update>
+
+    <!--更新公司表-->
+    <update id="updateCompany" parameterType="java.util.Map">
+        update plms_company
+        <set>
+            <if test="code != null" >
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="companyName != null" >
+                company_name = #{companyName,jdbcType=VARCHAR},
+            </if>
+            <if test="abbrName != null" >
+                abbr_name = #{abbrName,jdbcType=VARCHAR},
+            </if>
+            <if test="companyType != null" >
+                company_type = #{companyType,jdbcType=VARCHAR},
+            </if>
+			<if test="status != null" >
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="bmsCode != null" >
+                bms_code = #{bmsCode,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where code = #{code,jdbcType=VARCHAR}
+    </update>
+
+    <!--更新渠道表-->
+    <update id="updateDistribute" parameterType="java.util.Map">
+        update plms_distributor
+        <set>
+            <if test="code != null" >
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNo != null" >
+                order_no = #{orderNo,jdbcType=INTEGER},
+            </if>
+			<if test="fullName != null" >
+                full_name = #{fullName,jdbcType=VARCHAR},
+            </if>
+            <if test="abbrName != null" >
+                abbr_name = #{abbrName,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null" >
+                type = #{type,jdbcType=VARCHAR},
+            </if>
+			<if test="parentDistributor != null" >
+                parent_distributor = #{parentDistributor,jdbcType=VARCHAR},
+            </if>
+            <if test="cityNo != null" >
+                city_no = #{cityNo,jdbcType=VARCHAR},
+            </if>
+			<if test="status != null" >
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+			<if test="bmsCode != null" >
+                bms_code = #{bmsCode,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where code = #{code,jdbcType=VARCHAR}
+    </update>
+
+    <!--查询城市表-->
+    <select id="qryCity" resultType="java.util.Map">
+        SELECT
+        CODE code,
+        abbr_name abbrName,
+        full_name fullName,
+        order_by_no orderByNo,
+        STATUS status,
+        create_date createDate,
+        modify_date modifyDate,
+        area_code areaCode,
+        bms_code bmsCode
+        FROM
+        plms_city
+        WHERE
+        bms_code = #{bmsCityCode,jdbcType=VARCHAR}
+    </select>
+
+    <!--查询区域表-->
+    <select id="qryArea" resultType="java.util.Map">
+        SELECT
+        CODE code,
+        area_name areaName,
+        STATUS status,
+        create_date createDate,
+        modify_date modifyDate,
+        bms_code bmsCode
+        FROM
+        plms_area
+        WHERE
+        bms_code = #{bmsAreaCode,jdbcType=VARCHAR}
+    </select>
+
+    <!--查询业务员表-->
+    <select id="qryAgent" resultType="java.util.Map">
+        SELECT
+        CODE code,
+        name name,
+        title title,
+        mobile_no mobileNo,
+        email email,
+		parent_user parentUser,
+        create_date createDate,
+        modify_date modifyDate,
+        status status,
+        bms_code bmsCode
+        FROM
+        plms_agent
+        WHERE
+        bms_code = #{bmsAgentCode,jdbcType=VARCHAR}
+    </select>
+
+    <!--查询公司表-->
+    <select id="qryCompany" resultType="java.util.Map">
+        SELECT
+        CODE code,
+        company_name companyName,
+        company_type companyType,
+        status status,
+        create_date createDate,
+        modify_date modifyDate,
+        abbr_name abbrName,
+        bms_code bmsCode
+        FROM
+        plms_company
+        WHERE
+        bms_code = #{bmsCompanyCode,jdbcType=VARCHAR}
+    </select>
+
+    <!--查询渠道表-->
+    <select id="qryDistribute" resultType="java.util.Map">
+        SELECT
+        order_no orderNo,
+        code code,
+        full_name fullName,
+        abbr_name abbrName,
+        create_date createDate,
+        modify_date modifyDate,
+        type type,
+		parent_distributor parentDistributor,
+		city_no cityNo,
+		status status,
+        bms_code bmsCode
+        FROM
+        plms_distributor
+        WHERE
+        bms_code = #{bmsDistributeCode,jdbcType=VARCHAR}
+    </select>
+
+    <!--插入城市表-->
+    <insert id="insertCity" parameterType="java.util.Map">
+        <![CDATA[
+        INSERT INTO plms_city(code,abbr_name,full_name,order_by_no,
+        status,area_code,bms_code)
+        VALUES
+            (#{code,jdbcType=VARCHAR},
+            #{abbrName,jdbcType=VARCHAR},
+            #{fullName,jdbcType=VARCHAR},
+            #{orderByNo,jdbcType=VARCHAR},
+            #{status,jdbcType=VARCHAR},
+            #{areaCode,jdbcType=VARCHAR},
+            #{bmsCode,jdbcType=VARCHAR})
+        ]]>
+    </insert>
+
+    <!--插入区域表-->
+    <insert id="insertArea" parameterType="java.util.Map">
+        <![CDATA[
+        INSERT INTO plms_area(code,area_name,
+        status,bms_code)
+        VALUES
+            (#{code,jdbcType=VARCHAR},
+            #{areaName,jdbcType=VARCHAR},
+            #{status,jdbcType=VARCHAR},
+            #{bmsCode,jdbcType=VARCHAR})
+        ]]>
+    </insert>
+
+    <!--插入业务经理表-->
+    <insert id="insertAgent" parameterType="java.util.Map">
+        <![CDATA[
+        INSERT INTO plms_agent(code,name,title,mobile_no,email,parent_user,
+        status,distributor_code,bms_code)
+        VALUES
+            (#{code,jdbcType=VARCHAR},
+            #{name,jdbcType=VARCHAR},
+            #{title,jdbcType=VARCHAR},
+            #{mobileNo,jdbcType=VARCHAR},
+            #{email,jdbcType=VARCHAR},
+            #{parentUser,jdbcType=VARCHAR},
+            #{status,jdbcType=VARCHAR},
+            #{distributorCode,jdbcType=VARCHAR},
+            #{bmsCode,jdbcType=VARCHAR})
+        ]]>
+    </insert>
+
+    <!--插入公司表-->
+    <insert id="insertCompany" parameterType="java.util.Map">
+        <![CDATA[
+        INSERT INTO plms_company(code,company_name,abbr_name,company_type,
+        status,bms_code)
+        VALUES
+            (#{code,jdbcType=VARCHAR},
+            #{companyName,jdbcType=VARCHAR},
+            #{abbrName,jdbcType=VARCHAR},
+            #{companyType,jdbcType=VARCHAR},
+            #{status,jdbcType=VARCHAR},
+            #{bmsCode,jdbcType=VARCHAR})
+        ]]>
+    </insert>
+
+    <!--插入公司表-->
+    <insert id="insertDistribute" parameterType="java.util.Map">
+        <![CDATA[
+        INSERT INTO plms_distributor(code,order_no,full_name,abbr_name,type,parent_distributor,city_no,
+        status,bms_code)
+        VALUES
+            (#{code,jdbcType=VARCHAR},
+            #{orderNo,jdbcType=VARCHAR},
+            #{fullName,jdbcType=VARCHAR},
+            #{abbrName,jdbcType=VARCHAR},
+            #{type,jdbcType=VARCHAR},
+			#{parentDistributor,jdbcType=VARCHAR},
+            #{cityNo,jdbcType=VARCHAR},
+            #{status,jdbcType=VARCHAR},
+            #{bmsCode,jdbcType=VARCHAR})
+        ]]>
+    </insert>
+
+</mapper>

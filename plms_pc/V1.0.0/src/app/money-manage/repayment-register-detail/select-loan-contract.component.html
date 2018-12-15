@@ -1,0 +1,103 @@
+<!--选择借款合同-->
+<div class="row">
+  <ol class="breadcrumbNav col-12">
+    <li (click)="querySection()"><a>还款到账登记</a><i>></i></li>
+    <li class="active">选择借款合同</li>
+  </ol>
+
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <hr class="breadcrumbNavLine">
+  </div>
+</div>
+
+<div class="row">
+  <div class="condition-search">
+    <form>
+      <div class="bundle-area" id="cityWraper">
+        <div class="queryName">城市：</div>
+        <select class="width-100 queryContent" id="cityList" name="cityCode"  >
+          <option></option>
+        </select>
+      </div>
+      <div class="bundle-area" id="channel">
+        <div class="queryName">渠道：</div>
+        <select class="width-100 queryContent" id="channelList" name="channelCode">
+          <option></option>
+        </select>
+      </div>
+      <div class="bundle-area">
+        <div class="queryName">借款人：</div>
+        <input class="msg-input width-100 queryContent" type="text" id="loanCustomer" name="loanCustomer" />
+      </div>
+      <div class="bundle-area">
+        <div class="queryName">借款合同编号：</div>
+        <input class="msg-input width-200 queryContent" type="text" id="loanContractNumber" name="loanContractNumber" />
+      </div>
+
+      <button class="search-btn margin-left-20" id="search_btns" (click)="onSearchBtnClick()">搜索</button>
+    </form>
+  </div>
+</div>
+
+
+<div class="row margin-top-40">
+  <div class="col-12">
+    <table class="table width-100per" border="0" cellpadding="0" cellspacing="0">
+      <thead>
+      <tr>
+        <th class="width-16"></th>
+        <th>借款合同编号</th>
+        <th>城市</th>
+        <th>渠道</th>
+        <th>借款人</th>
+        <th>授信日期</th>
+        <th>授信金额（万元）</th>
+        <th>授信期限（月）</th>
+        <th>宏获还款账户</th>
+        <th>宏获保证金账户</th>
+        <th>资方还款账户</th>
+
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of currentItemLists">
+        <td class="width-16"></td>
+        <td>{{item.contractNo}}</td>
+        <td> {{item.cityName}}</td>
+        <td>{{item.distributorName}}</td>
+        <td>{{item.customerName}}</td>
+        <td>{{item.creditStartDate | date:"yyyy-MM-dd"}}</td>
+        <td>{{item.totalQuota/10000      |permil }}</td>
+        <td>{{item.creditPeriod}}</td>
+        <td>{{item.honghuoBalance      |lastNoneZero |keepTwoDecimal|permil}}</td>
+        <td>{{item.honghuoBailBalance  |lastNoneZero |keepTwoDecimal|permil}}</td>
+        <td>{{item.fundSideBalance     |lastNoneZero |keepTwoDecimal|permil}}</td>
+
+        <td class="operation"><a (click)="onSecondOperationClick(item)">登记</a></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="table_footer col-12">
+    <div class="table_ll">
+      共{{totalListsCount}}条，显示第{{startListIndex}}至{{endListIndex}}条
+    </div>
+    <div class="table_rr">
+      <div class="tablePageCode"></div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-2">
+    <button class="orange-button float-right" (click)="querySection()">返回还款到账登记</button>
+  </div>
+
+</div>

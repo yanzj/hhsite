@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.PlmsInvestDetailDao">
+
+    <insert id="saveInvestDetail" parameterType="com.vilio.plms.pojo.PlmsInvestDetail">
+        INSERT INTO plms_invest_detail (
+            code,
+            mortgage_rank,
+            creditor_rights_type,
+            creditor_rights_person,
+            creditor_property,
+            creditor_amount,
+            create_date,
+            modify_date,
+            status,
+            investigation_code
+        )
+        VALUES
+            (
+                #{code,jdbcType=VARCHAR},
+                #{mortgageRank,jdbcType=VARCHAR},
+                #{creditorRightsType,jdbcType=VARCHAR},
+                #{creditorRightsPerson,jdbcType=VARCHAR},
+                #{creditorProperty,jdbcType=VARCHAR},
+                #{creditorAmount,jdbcType=DECIMAL},
+                #{createDate,jdbcType=TIMESTAMP},
+                #{modifyDate,jdbcType=TIMESTAMP},
+                #{status,jdbcType=VARCHAR},
+                #{investigationCode,jdbcType=VARCHAR}
+            )
+    </insert>
+</mapper>

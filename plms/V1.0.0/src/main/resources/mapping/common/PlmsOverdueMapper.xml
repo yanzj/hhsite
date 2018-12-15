@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.PlmsOverdueDao">
+    <select id="queryOverdueByDetailCodeAndStatus" resultType="com.vilio.plms.pojo.PlmsOverdue" parameterType="java.util.Map">
+        SELECT
+            t.code,
+            t.amount,
+            t.overdue_amount as overdueAmount,
+            t.repayment_detail_code AS repaymentDetailCode,
+            t.schedule_detail_code AS scheduleDetailCode,
+            t.subject
+        FROM
+            plms_overdue t
+        WHERE
+            t.schedule_detail_code = #{scheduleDetailCode,jdbcType=VARCHAR}
+            and t.status = #{status,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateOverdueStatusByCode" parameterType="com.vilio.plms.pojo.PlmsOverdue">
+        update plms_overdue set  status = #{status,jdbcType=VARCHAR}
+        WHERE
+        code = #{code,jdbcType=VARCHAR}
+    </update>
+</mapper>

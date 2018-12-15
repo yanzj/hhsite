@@ -1,0 +1,307 @@
+<div class="row">
+  <ol class="breadcrumbNav col-12 Mp">
+      <li class="active">自动询价</li>
+  </ol>
+</div>
+<div class="row">
+  <div class="col-12">
+    <hr class="breadcrumbNavLine">
+  </div>
+</div>
+
+  <div class="progress-box">
+      <div class="progress-line">
+        <div *ngFor=" let item of itemStatusLists; let i=index ">
+                <span class="progress-circle circle{{i+1}} active title_cur"
+                      [ngClass]="{'title_cur':i<=itemSelectIndex}">
+                  <!--<i class="bigCircle" *ngIf=" itemSelectStatus == item ? true:false "></i>-->
+                  <i [ngClass]="{'bigCircle':i==itemSelectIndex}"></i>
+                  <ins [ngClass]="{'ins_line':i<itemSelectIndex}"></ins>
+                  <em [ngStyle]="{'color':i<=itemSelectIndex ? '#333' : '#999' }"
+                      [ngClass]="{'ProSeleceted':i==itemSelectIndex}">{{item}}</em>
+                </span>
+        </div>
+      </div>
+  </div>
+
+<div class="row">
+    <div class="col-2 filed-name"><span>*</span>城市：</div>
+    <div class="col-2 white-space-nowrap">
+      <select name="" id="city" class="selectmsg width-115 " [(ngModel)]="cityValue">
+        <option value=""></option>
+        <option *ngFor="let item of cityList;let i of index" [value]="item.cityCode">{{item.cityName}}</option>
+      </select>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-2 filed-name"><span>*</span>房屋类型：</div>
+    <div class="col-2 white-space-nowrap">
+      <select name="" id="house" class="selectmsg width-115" [(ngModel)]="houseValue">
+        <option value=""></option>
+        <option *ngFor="let item of houseList;let i of index" [value]="item.houseTypeCode">{{item.houseTypeName}}
+        </option>
+      </select>
+    </div>
+</div>
+
+<!--  当城市和房屋类型有一个为空时，则一下内容均不显示  选中别墅时也不显示-->
+<div [ngClass]="{'unvisible':isVilla}">
+  <div class="box" [ngClass]="{'unvisible': isCityEmpty||isHouseEmpty}">
+
+    <div class="row">
+      <div class="col-2 filed-name">小区地址/名称关键字：</div>
+      <div class="col-4">
+        <input type="text" class="msg-input width-100per" id="buildNameSearchInputID" [(ngModel)]="keyCode" id="keyCode">
+      </div>
+      <div class="col-6">
+        <button class="search-btn" id="search_btns" (click)="SearchBtnClick()">搜索</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- 世联评估 -->
+      <div class="col-6" [ngClass]="{'unvisible':!isL}">
+        <div class="row">
+          <div class="col-12 company-title">{{lValue}}评估</div>
+        </div>
+        <div class="row">
+          <div class="col-4 filed-name"><span>*</span>小区地址：</div>
+          <div class="col-8 white-space-nowrap">
+            <select name="" id="lPlot" class="selectmsg width-340" [(ngModel)]="lPlotValue">
+              <option value=""></option>
+              <option *ngFor="let item of kSLDataLists; let i of index" [value]="item.plotsCode">{{item.plotsName}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row" [ngClass]="{'unvisible':!(lHouseNo=='001')}">
+          <div class="col-4 filed-name">
+            <span>*</span>楼栋号：
+          </div>
+          <div class="col-8 white-space-nowrap">
+            <select name="" id="buildNo1" class="width-115 selectmsg buildSL" [(ngModel)]="lBuildingValue">
+              <option value=""></option>
+              <option *ngFor="let item of kSelectBuildNunLists; let i of index" [value]="item.unitCode">
+                {{item.unitName}}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row" [ngClass]="{'unvisible':!(lHouseNo=='002')}">
+          <div class="col-4 filed-name">
+            <span>*</span>楼栋号：
+          </div>
+          <div class="col-8 white-space-nowrap">
+            <input type="text" class="msg-input width-115 buildNo" [(ngModel)]="buildNo" id="buildNoSearch1">
+            <button class="margin-right-20 margin-left-10" id="search_btn2" (click)="SearchBtn1(lHouseNo,$event)">搜索</button>
+            <select name="" id="buildNo2" class="width-115 selectmsg buildCity">
+              <option value=" "></option>
+              <option *ngFor="let item of kSelectBuildNunLists; let i of index"
+                      [value]="item.unitCode+','+item.towards+','+item.yearBuilt">
+                {{item.unitName}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+            <div class="filed-name col-4">
+              <span>*</span>房号：
+            </div>
+          <div [ngClass]="{'unvisible':!(lHouseNo=='001')}" class="col-8 white-space-nowrap">
+            <select name="" id="houseNo1" class="width-115 selectmsg" [(ngModel)]="lHomeValue">
+              <option value=""></option>
+              <option *ngFor="let item of kSelectHouseNumList; let i of index" [value]="item.houseCode">
+                {{item.houseName}}
+              </option>
+            </select>
+          </div>
+          <div [ngClass]="{'unvisible':!(lHouseNo=='002')}" class="col-8 white-space-nowrap">
+            <input type="text" name="" id="houseNo2" class="width-115 msg-input">
+          </div>
+        </div>
+        <div class="row">
+            <div class="filed-name col-4">
+              <span>*</span>总楼层：
+            </div>
+          <div class="col-8 white-space-nowrap">
+            <input type="text" class="msg-input width-115" id="totalFloor" [(ngModel)]="allFloor">
+          </div>
+        </div>
+
+        <div class="row">
+            <div class="filed-name col-4"><span>*</span>所在楼层：</div>
+          <div class="col-8 white-space-nowrap">
+            <input type="text" class="msg-input width-115" id="currentFloor" [(ngModel)]="currentFloor">
+          </div>
+        </div>
+
+        <div class="row">
+            <div class="filed-name col-4"><span>*</span>建筑面积：</div>
+          <div class="col-8 white-space-nowrap">
+            <input type="text" class="msg-input width-115" id="buildArea" [(ngModel)]="area">
+            <div class="uinit">平方米</div>
+          </div>
+        </div>
+      </div>
+      <!-- 城市评估 -->
+      <div class="col-6" [ngClass]="{'unvisible':!isR}">
+        <div class="row">
+          <div class="col-12 company-title">{{rValue}}评估</div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <div class="filed-name"><span>*</span>小区地址：</div>
+          </div>
+          <div class="col-8 white-space-nowrap">
+            <select name="" id="rPlot" class="selectmsg width-340" [(ngModel)]="rPlotValue">
+              <option value=""></option>
+              <option *ngFor="let item of kCityDataLists; let i of index" [value]="item.plotsCode">{{item.plotsName}}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row" [ngClass]="{'unvisible':!(rHouseNo=='001')}">
+            <div class="filed-name col-4">
+              <span>*</span>楼栋号：
+            </div>
+
+          <div class="col-8 white-space-nowrap">
+            <select name="" id="buildNo3" class="width-115 selectmsg buildSL" [(ngModel)]="lBuildingValue">
+              <option value=""></option>
+              <option *ngFor="let item of kCSelectBuildNunLists; let i of index" [value]="item.unitCode">
+                {{item.unitName}}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row" [ngClass]="{'unvisible':!(rHouseNo=='002')}">
+            <div class="filed-name col-4">
+              <span>*</span>楼栋号：
+            </div>
+          <div class="col-8 white-space-nowrap">
+            <input type="text" class="msg-input width-115 buildNo" [(ngModel)]="buildNo" id="buildNoSearch2">
+            <button class="margin-left-10 margin-right-20 search-btn" id="search_btns2" (click)="SearchBtn2(rHouseNo,$event)">搜索</button>
+            <select name="" id="buildNo4" class="width-115 selectmsg buildCity">
+              <option value=""></option>
+              <option *ngFor="let item of kCSelectBuildNunLists; let i of index"
+                      [value]="item.unitCode+','+item.towards+','+item.yearBuilt">
+                {{item.unitName}}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+            <div class="filed-name col-4">
+              <span>*</span>房号：
+            </div>
+          <div [ngClass]="{'unvisible':!(rHouseNo=='001')}" class="col-8 white-space-nowrap">
+            <select name="" id="houseNo3" class="width-115 selectmsg" [(ngModel)]="lHomeValue">
+              <option value=""></option>
+              <option *ngFor="let item of kSelectHouseNumList; let i of index" [value]="item.houseCode">
+                {{item.houseName}}
+              </option>
+            </select>
+          </div>
+          <div [ngClass]="{'unvisible':!(rHouseNo=='002')}" class="col-8">
+            <input type="text" name="" id="houseNo4" class="width-115 msg-input" disabled="disabled" [(ngModel)]="houseName2">
+          </div>
+        </div>
+        <div class="row">
+            <div class="filed-name col-4">
+              <span>*</span>总楼层：
+            </div>
+          <div class="col-8 white-space-nowrap">
+            <input type="text" class="msg-input width-115 disabled" disabled="disabled" id="totalFloor2"
+                   [(ngModel)]="allFloor">
+          </div>
+        </div>
+
+        <div class="row">
+            <div class="filed-name col-4"><span>*</span>所在楼层：</div>
+          <div class="col-8 white-space-nowrap">
+            <input type="text" class="msg-input width-115 disabled" disabled="disabled" id="currentFloor2"
+                   [(ngModel)]="currentFloor" (ngModelChange)="changedExtraHandler($event)">
+          </div>
+        </div>
+
+        <div class="row">
+            <div class="filed-name col-4"><span>*</span>建筑面积：</div>
+          <div class="col-8 white-space-nowrap">
+            <input type="text" class="msg-input width-115 disabled" disabled="disabled" id="buildArea2" [(ngModel)]="area">
+            <div class="uinit">平方米</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-2">
+        <div class="orange-button float-right margin-top-40" (click)="assess()">评估</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div [ngClass]="{'unvisible':!isVilla}">
+  <div class="box" [ngClass]="{'unvisible': isCityEmpty||isHouseEmpty}">
+    <div class="row">
+      <!-- 世联评估 -->
+      <div class="col-6" [ngClass]="{'unvisible':!isL}">
+        <div class="row">
+          <div class="col-12 company-title">{{lValue}}评估</div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <div class="filed-name"><span>*</span>行政区域：</div>
+          </div>
+          <div class="col-8 white-space-nowrap">
+            <select name="" id="administrative" class="selectmsg width-115">
+              <option value=""></option>
+              <option *ngFor="let item of administrativeArea; let i of index" [value]="item.areaCode">
+                {{item.areaName}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <div class="filed-name"><span>*</span>房屋地址：</div>
+          </div>
+          <div class="col-8 white-space-nowrap">
+            <input type="text" class="msg-input col-12" [(ngModel)]="houseAddress" id="houseAddress">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <div class="filed-name"><span>*</span>建筑面积：</div>
+          </div>
+          <div class="col-8 white-space-nowrap">
+            <input type="text" class="msg-input width-115" [(ngModel)]="villaArea" id="villa">
+            <div class="uinit">平方米</div>
+          </div>
+        </div>
+      </div>
+      <!-- 城市评估 -->
+      <div class="col-6" [ngClass]="{'unvisible':!isR}">
+        <div class="row">
+          <div class="col-12 company-title">{{rValue}}评估</div>
+        </div>
+        <div class="row">
+          <div class="col-12 notSupprot">不支持别墅自动询价，请前往询价结果查询页面输入评估结果</div>
+
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-2">
+        <div class="orange-button float-right margin-top-40" (click)="villaAssess()">评估</div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.DistributorDao">
+
+    <!--查询还款申请表-->
+    <select id="queryDistributorByApplyNo" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT
+            a.is_principal_instead as isPrincipalInstead,
+            a.is_interest_instead as isInterestInstead
+        FROM
+            plms_distributor a,
+            plms_apply_info b
+        WHERE
+            a.`code` = b.distribute_code
+        and a.status != '0'
+        and b.status != '0'
+        and b.code = #{applyCode}
+    </select>
+
+    <select id="queryDistributorByCode" parameterType="java.lang.String" resultType="java.util.HashMap">
+        SELECT
+        c.code AS distributorCode,
+        c.abbr_name AS distributorName,
+        c.full_name AS distributorFullName
+        FROM
+        plms_distributor c
+        WHERE
+        c.code = #{distributorCode}
+    </select>
+
+    <select id="queryAllDistributors" resultType="java.util.HashMap">
+        SELECT
+        c.code AS distributorCode,
+        c.abbr_name AS distributorName,
+        c.full_name AS distributorFullName
+        FROM
+        plms_distributor c
+        WHERE
+        c.status = '1'
+    </select>
+
+    <select id="queryChildrenDistributors" parameterType="java.lang.String" resultType="java.util.HashMap">
+        SELECT
+        c.code AS distributorCode,
+        c.abbr_name AS distributorName,
+        c.full_name AS distributorFullName
+        FROM
+        plms_distributor c
+        WHERE
+        c.status = '1'
+        AND c.parent_distributor = #{distributorCode}
+    </select>
+
+    <select id="queryDistributorBatchByCode" parameterType="java.util.List" resultType="java.util.Map">
+        select a.code as distributorCode,b.user_code as userCode
+        from plms_distributor a,plms_apply_info b
+        WHERE a.code=b.distribute_code and
+        a.status!='0' and b.status!='0'
+        and a.code IN
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="queryDistributorListByBmsCode" parameterType="java.util.HashMap" resultType="java.util.Map">
+        select a.code as distributorCode,a.abbr_name as distributorName
+        from plms_distributor a
+        WHERE 1=1
+        <if test="distributorList != null">
+            AND a.code IN
+            <foreach collection="distributorList" index="index" item="item" open="(" close=")" separator=",">
+                #{item.distributorCode}
+            </foreach>
+        </if>
+    </select>
+
+</mapper>

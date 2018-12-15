@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.um.dao.UmUserDao">
+
+
+    <!--查询用户信息表-->
+    <select id="queryUser" resultType="com.vilio.um.pojo.UmUser" parameterType="com.vilio.um.pojo.UmUser">
+        SELECT
+        id,
+        user_id as userId,
+        user_name as userName,
+        city_code as cityCode,
+        mobile,
+        password,
+        email,
+        post,
+        status,
+        first_login as firstLogin,
+        full_name as fullName,
+        sex,
+        birthday,
+        birth_addr as birthAddr,
+        nick,
+        head_img as headImg,
+        register_chl as registerChl,
+        login_error as loginError,
+        hash_lock as hashLock,
+        group_id as groupId,
+        super_user_id as superUserId,
+        DATE_FORMAT(create_time,'%Y%m%d%H%i%s') as createTime,
+        lock_time as lockTime
+        FROM
+        um_user_info u
+        WHERE 1=1
+        <if test="userName!=null and userName!=''">
+            and u.user_name = #{userName}
+        </if>
+        <if test="mobile!=null and mobile!=''">
+            and u.mobile = #{mobile}
+        </if>
+        <if test="userId!=null and userId!=''">
+            and u.user_id = #{userId}
+        </if>
+    </select>
+
+    <!--更新用户信息表登录错误次数-->
+    <update id="updateLoginErrorByUserId" parameterType="com.vilio.um.pojo.UmUser">
+		UPDATE um_user_info u set u.login_error = #{loginError}
+		WHERE u.user_id = #{userId}
+	</update>
+
+    <!--用户锁定或解锁-->
+    <update id="updateHashLockByUserId" parameterType="com.vilio.um.pojo.UmUser">
+		UPDATE um_user_info u set u.hash_lock = #{hashLock},u.lock_time = #{lockTime}
+		WHERE u.user_id = #{userId}
+	</update>
+
+    <!--根据用户编号查询系统-->
+    <select id="queryUserSystem" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		SELECT
+			id,
+			user_id as userId,
+			system_id as systemId,
+			status,
+			DATE_FORMAT(create_time,'%Y%m%d%H%i%s') as createTime
+		FROM
+			um_user_system u
+		WHERE
+			u.user_id = #{userId}
+			and u.system_id = #{systemId}
+	</select>
+
+    <!--更新用户密码-->
+    <update id="updatePassword" parameterType="java.util.HashMap">
+		UPDATE um_user_info u set u.password = #{newPassword}
+        <if test="firstLogin!=null and firstLogin!=''">
+            ,u.first_login = #{firstLogin}
+        </if>
+		WHERE u.user_id = #{userId} and u.password = #{oldPassword} and u.status = ${status}
+	</update>
+
+    <!--用户解锁-->
+    <update id="updateUnLock" parameterType="java.util.HashMap">
+		UPDATE um_user_info u set u.hash_lock = #{unHashLock},login_error = #{loginError}
+		WHERE u.hash_lock = #{hashLock} and #{systemTimestamp}-lock_time>#{unLockTime}
+	</update>
+
+
+    <!--查询用户信息表返回列表形式-->
+    <select id="queryUserList" resultType="com.vilio.um.pojo.UmUser" parameterType="com.vilio.um.pojo.UmUser">
+        SELECT
+        id,
+        user_id as userId,
+        user_name as userName,
+        city_code as cityCode,
+        mobile,
+        password,
+        email,
+        status,
+        post,
+        first_login as firstLogin,
+        full_name as fullName,
+        sex,
+        birthday,
+        birth_addr as birthAddr,
+        nick,
+        head_img as headImg,
+        register_chl as registerChl,
+        login_error as loginError,
+        hash_lock as hashLock,
+        group_id as groupId,
+        super_user_id as superUserId,
+        DATE_FORMAT(create_time,'%Y%m%d%H%i%s') as createTime,
+        lock_time as lockTime
+        FROM
+        um_user_info u
+        WHERE  u.status != '2'
+        <if test="groupId!=null and groupId!=''">
+            and u.group_id = #{groupId}
+        </if>
+    </select>
+
+
+</mapper>

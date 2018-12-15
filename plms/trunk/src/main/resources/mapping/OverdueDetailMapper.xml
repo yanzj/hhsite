@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.OverdueDetailDao">
+
+    <!--查询罚息流水表记录：时间所属日期大于资金到账日期小于等于当前日期。-->
+    <select id="queryOverdueDetailByOverdueCodeAndTime" resultType="com.vilio.plms.pojo.OverdueDetail"
+            parameterType="java.util.Map">
+        <![CDATA[
+
+      SELECT
+        id,
+        `code`,
+        overdue_amount as overdueAmount,
+        time,
+        `status`,
+        create_date as createDate,
+        modify_date as modifyDate,
+        overdue_code as overdueCode,
+        overdue_days as overdueDays
+      FROM
+        plms_overdue_detail
+      WHERE status != '0'
+       and date_format(time,'%Y%m%d') > date_format(#{rollBachDate},'%Y%m%d')
+       and date_format(time,'%Y%m%d') <= date_format(#{nowDate},'%Y%m%d')
+       and overdue_code = #{overdueCode}
+
+        ]]>
+    </select>
+
+    <update id="updateOverdueDetailStatusByCodeBatch" parameterType="java.util.List">
+        UPDATE plms_overdue_detail SET status='0' WHERE
+        code in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item.code}
+        </foreach>
+    </update>
+
+    <!--根据日期分组，查询罚息明细表（统计出每条还款明细回滚的逾期天数，因为本金、利息和服务费罚息明细日期会重叠）-->
+    <select id="queryOverdueGroupDateByScheduleDetailCode" resultType="java.lang.Integer"
+            parameterType="java.util.Map">
+      <![CDATA[
+
+            select count(1) FROM (select b.time from plms_overdue_detail b,plms_overdue c WHERE b.overdue_code=c.`code` and c.schedule_detail_code=#{scheduleDetailCode}
+            and date_format(b.time,'%Y%m%d') > date_format(#{rollBachDate},'%Y%m%d')
+            and date_format(b.time,'%Y%m%d') <= date_format(#{nowDate},'%Y%m%d')
+            and b.status != '0' GROUP by b.time
+            ) a
+
+        ]]>
+    </select>
+
+    <!--根据日期和逾期天数进行分组，统计出逾期天数（本息逾期天数计算，统计出每条还款明细回滚的逾期天数，因为本金、利息和服务费罚息明细日期会重叠）-->
+    <select id="queryPrcpalAndIntstOverdueGroupByScheduleDetailCode" resultType="java.lang.Integer"
+            parameterType="java.util.Map">
+        <![CDATA[
+            select sum(t.overdue_days) from (
+            select a.time,a.overdue_days from plms_overdue_detail a,plms_overdue b WHERE a.overdue_code=b.`code` and b.schedule_detail_code=#{scheduleDetailCode}
+            and date_format(a.time,'%Y%m%d') > date_format(#{rollBachDate},'%Y%m%d')
+            and date_format(a.time,'%Y%m%d') <= date_format(#{nowDate},'%Y%m%d')
+            and a.status != '0' and b.subject in ('01','02') GROUP by a.time,a.overdue_days
+            ) t
+        ]]>
+    </select>
+
+    <!--根据日期和逾期天数进行分组，统计出逾期天数（服务费逾期天数计算，统计出每条还款明细回滚的逾期天数，因为本金、利息和服务费罚息明细日期会重叠）-->
+    <select id="queryServiceFeeOverdueGroupByScheduleDetailCode" resultType="java.lang.Integer"
+            parameterType="java.util.Map">
+        <![CDATA[
+            select sum(t.overdue_days) from (
+            select a.time,a.overdue_days from plms_overdue_detail a,plms_overdue b WHERE a.overdue_code=b.`code` and b.schedule_detail_code=#{scheduleDetailCode}
+            and date_format(a.time,'%Y%m%d') > date_format(#{rollBachDate},'%Y%m%d')
+            and date_format(a.time,'%Y%m%d') <= date_format(#{nowDate},'%Y%m%d')
+            and a.status != '0'  and b.subject in ('03','04') GROUP by a.time,a.overdue_days
+            ) t
+        ]]>
+    </select>
+
+
+</mapper>

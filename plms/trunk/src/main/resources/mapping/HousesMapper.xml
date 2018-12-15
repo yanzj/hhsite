@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.HouseDao">
+
+    <!--查询抵押物信息-->
+    <select id="qryHouse" resultType="com.vilio.plms.pojo.House" parameterType="com.vilio.plms.pojo.House">
+        SELECT
+            id,
+            `code`,
+            certificate_number_first as certificateNumberFirst,
+            certificate_number_second as certificateNumberSecond,
+            register_date as registerDate,
+            old_register_date as oldRegisterDate,
+            property_area as propertyArea,
+            certificate_address as certificateAddress,
+            land_property as landProperty,
+            acquisition_form as acquisitionForm,
+            land_usage as landUsage,
+            type,
+            covered_area as coveredArea,
+            garage_address as garageAddress,
+            garage_area as garageArea,
+            total_floor as totalFloor,
+            build_year as buildYear,
+            share_type as shareType,
+            minors_units as minorsUnits,
+            owner_source as ownerSource,
+            usage_detail as usageDetail,
+            is_unique as isUnique,
+            registered_residence_structure as registeredResidenceStructure,
+            remark,
+            mortgage_type as mortgageType,
+            first_balance_type as firstBalanceType,
+            first_balance_amount as firstBalanceAmount,
+            first_mortgage_amount as firstMortgageAmount,
+            second_mortgage_amount as secondMortgageAmount,
+            mortgage_rate as mortgageRate,
+            inquiry_information as inquiryInformation,
+            apply_code as applyCode,
+            `status`,
+            create_date as createDate,
+            modify_date as modifyDate
+        FROM
+            plms_house
+        WHERE code = #{code}
+        and status != '0'
+    </select>
+
+
+    <!--用户抵押物信息信息查询-->
+    <select id="qryHouseForContract" resultType="com.vilio.plms.pojo.House"  parameterType="java.lang.String">
+        SELECT
+            CODE,
+            certificate_number_first AS certificateNumberFirst,
+            certificate_number_second AS certificateNumberSecond,
+            register_date AS registerDate,
+            city_no AS cityNo,
+            property_area AS propertyArea,
+            certificate_address AS certificateAddress,
+            land_property AS landProperty,
+            acquisition_form AS acquisitionForm,
+            land_usage AS landUsage,
+            type,
+            covered_area AS coveredArea,
+            garage_address AS garageAddress,
+            garage_area AS garageArea,
+            total_floor AS totalFloor,
+            build_year AS buildYear,
+            share_type AS shareType,
+            minors_units AS minorsUnits,
+            owner_source AS ownerSource,
+            usage_detail AS usageDetail,
+            is_unique AS isUnique,
+            registered_residence_structure AS registeredResidenceStructure,
+            remark,
+            mortgage_type AS mortgageType,
+            first_balance_type AS firstBalanceType,
+            first_balance_amount AS firstBalanceAmount,
+            first_mortgage_amount AS firstMortgageAmount,
+            second_mortgage_amount AS secondMortgageAmount,
+            mortgage_rate AS mortgageRate,
+            inquiry_information AS inquiryInformation,
+            STATUS,
+            create_date AS createDate,
+            modify_date AS modifyDate,
+			contract_code AS contractCode
+        FROM
+            plms_house
+        WHERE
+            contract_code = #{contractCode}
+        AND STATUS = '1'
+    </select>
+
+    <select id="qryHouseByCode" resultType="java.util.Map"  parameterType="java.lang.String">
+        SELECT
+        CODE,
+        certificate_number_first AS certificateNumberFirst,
+        certificate_number_second AS certificateNumberSecond,
+        register_date AS registerDate,
+        old_register_date AS oldRegisterDate,
+        property_area AS propertyArea,
+        certificate_address AS certificateAddress,
+        land_property AS landProperty,
+        acquisition_form AS acquisitionForm,
+        land_usage AS landUsage,
+        type,
+        covered_area AS coveredArea,
+        garage_address AS garageAddress,
+        garage_area AS garageArea,
+        total_floor AS totalFloor,
+        build_year AS buildYear,
+        share_type AS shareType,
+        minors_units AS minorsUnits,
+        owner_source AS ownerSource,
+        usage_detail AS usageDetail,
+        is_unique AS isUnique,
+        registered_residence_structure AS registeredResidenceStructure,
+        remark,
+        mortgage_type AS mortgageType,
+        first_balance_type AS firstBalanceType,
+        first_balance_amount AS firstBalanceAmount,
+        first_mortgage_amount AS firstMortgageAmount,
+        second_mortgage_amount AS secondMortgageAmount,
+        mortgage_rate AS mortgageRate,
+        inquiry_information AS inquiryInformation,
+        STATUS,
+        create_date AS createDate,
+        modify_date AS modifyDate
+        FROM
+        plms_house
+        WHERE
+        code = #{code}
+        AND STATUS = '1'
+    </select>
+    <insert id="saveHouseInfo" parameterType="com.vilio.plms.pojo.House">
+        INSERT INTO plms_house (
+            code,
+            certificate_number_first,certificate_number_second,
+            register_date,
+            property_area, certificate_address, land_property,acquisition_form,land_usage,
+            type,covered_area,garage_address, garage_area, total_floor, build_year, share_type,
+            minors_units, owner_source, usage_detail, is_unique, registered_residence_structure,
+            remark, mortgage_type,first_balance_type, first_balance_amount, first_mortgage_amount,
+            second_mortgage_amount, mortgage_rate, inquiry_information, contract_code,
+            status, create_date, modify_date, city_no,
+            property_owner
+        )
+        VALUES
+            (
+                #{code},
+                #{certificateNumberFirst}, #{certificateNumberSecond},
+                #{registerDate, jdbcType=VARCHAR},
+                #{propertyArea},  #{certificateAddress}, #{landProperty},#{acquisitionForm}, #{landUsage},
+                #{type},#{coveredArea ,jdbcType=DECIMAL},#{garageAddress}, #{garageArea}, #{totalFloor,jdbcType=INTEGER},#{buildYear}, #{shareType},
+                #{minorsUnits},#{ownerSource}, #{usageDetail}, #{isUnique}, #{registeredResidenceStructure},
+                #{remark}, #{mortgageType}, #{firstBalanceType},#{firstBalanceAmount,jdbcType=DECIMAL},#{firstMortgageAmount,jdbcType=DECIMAL},
+                #{secondMortgageAmount,jdbcType=DECIMAL}, #{mortgageRate,jdbcType=DECIMAL}, #{inquiryInformation,jdbcType=DECIMAL},#{contractCode},
+                #{status}, #{createDate, jdbcType=TIMESTAMP}, #{modifyDate, jdbcType=TIMESTAMP}, #{cityNo},
+                #{propertyOwner}
+            )
+    </insert>
+</mapper>

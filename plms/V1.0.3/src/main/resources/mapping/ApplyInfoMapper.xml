@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.ApplyInfoDao">
+
+    <!--查询进件申请信息-->
+    <select id="qryApplyInfo" resultType="com.vilio.plms.pojo.ApplyInfo" parameterType="com.vilio.plms.pojo.ApplyInfo">
+            SELECT
+                id,
+                `code`,
+                apply_date as applyDate,
+                apply_amount as applyAmount,
+                apply_period as applyPeriod,
+                lending_methods as lendingMethods,
+                intention_money as intentionMoney,
+                identifying_code as identifyingCode,
+                remark,
+                `status`,
+                create_date as createDate,
+                modify_date as modifyDate,
+                account_code as accountCode,
+                agent_code as agentCode,
+                bms_code AS bmsCode,
+                distribute_code AS distributeCode,
+                user_code AS userCode
+            FROM
+                plms_apply_info
+            WHERE code = #{code} and status = '1'
+
+    </select>
+
+    <!--根据进件编号查询进件申请信息-->
+    <select id="qryApplyInfoByBmsCode" resultType="com.vilio.plms.pojo.ApplyInfo" parameterType="java.lang.String">
+        SELECT
+        id,
+        `code`,
+        apply_date as applyDate,
+        apply_amount as applyAmount,
+        apply_period as applyPeriod,
+        lending_methods as lendingMethods,
+        intention_money as intentionMoney,
+        identifying_code as identifyingCode,
+        remark,
+        `status`,
+        create_date as createDate,
+        modify_date as modifyDate,
+        account_code as accountCode,
+        agent_code as agentCode,
+        bms_code AS bmsCode,
+        distribute_code AS distributeCode,
+        user_code AS userCode
+        FROM
+        plms_apply_info
+        WHERE bms_code = #{bmsCode} and status = '1'
+
+    </select>
+
+    <!--新增-->
+    <insert id="insert"  parameterType="java.util.HashMap">
+            insert into plms_apply_info (code,apply_date,apply_amount,apply_period,lending_methods,intention_money,identifying_code,
+            remark,status,account_code,agent_code,distribute_code,bms_code,user_code) values (#{code,jdbcType=VARCHAR},
+            #{applyDate,jdbcType=DATE},#{applyAmount,jdbcType=DECIMAL},#{applyPeriod,jdbcType=VARCHAR},#{lendingMethods,jdbcType=VARCHAR},#{intentionMoney,jdbcType=DECIMAL},
+            #{identifyingCode,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},#{accountCode,jdbcType=VARCHAR},#{agentCode,jdbcType=VARCHAR},#{distributeCode,jdbcType=VARCHAR},
+            #{bmsCode,jdbcType=VARCHAR},#{userCode,jdbcType=VARCHAR})
+    </insert>
+
+    <!--新增-->
+    <insert id="insertMaterial"  parameterType="java.util.HashMap">
+    <![CDATA[
+        INSERT INTO plms_material (
+            CODE,
+            file_code,
+            file_type,
+            apply_code,
+            file_name,
+            file_suffix,
+            upload_time,
+            status
+        )
+        VALUES
+            (
+            #{code,jdbcType=VARCHAR},
+            #{fileCode,jdbcType=VARCHAR},
+            #{fileType,jdbcType=VARCHAR},
+            #{applyCode,jdbcType=VARCHAR},
+            #{fileName,jdbcType=VARCHAR},
+            #{fileSuffix,jdbcType=VARCHAR},
+            #{uploadTime,jdbcType=DATE},
+            #{status,jdbcType=TINYINT})
+             ]]>
+    </insert>
+
+    <update id="update" parameterType="java.util.HashMap">
+        UPDATE plms_apply_info pai
+        <set>
+            <if test="applyDate != null" >
+                pai.apply_date = #{applyDate,jdbcType=DATE},
+            </if>
+            <if test="applyAmount != null" >
+                pai.apply_amount = #{applyAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="applyPeriod != null" >
+                pai.apply_period = #{applyPeriod,jdbcType=INTEGER},
+            </if>
+            <if test="lendingMethods != null" >
+                pai.lending_methods = #{lendingMethods,jdbcType=VARCHAR},
+            </if>
+            <if test="intentionMoney != null" >
+                pai.intention_money = #{intentionMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="identifyingCode != null" >
+                pai.identifying_code = #{identifyingCode,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null" >
+                pai.remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                pai.status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="accountCode != null" >
+                pai.account_code = #{accountCode,jdbcType=VARCHAR},
+            </if>
+            <if test="agentCode != null" >
+                pai.agent_code = #{agentCode,jdbcType=VARCHAR},
+            </if>
+            <if test="distributeCode != null" >
+                pai.distribute_code = #{distributeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="bmsCode != null" >
+                pai.bms_code = #{bmsCode,jdbcType=VARCHAR},
+            </if>
+            <if test="userCode != null" >
+                pai.user_code = #{userCode,jdbcType=VARCHAR}
+            </if>
+        </set>
+        WHERE pai.status != '0'
+        and pai.code = #{code,jdbcType=VARCHAR}
+    </update>
+
+
+</mapper>

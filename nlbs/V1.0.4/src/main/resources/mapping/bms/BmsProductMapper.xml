@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.nlbs.bms.dao.BmsProductDao">
+
+
+    <select id="queryProductListByDistributorCode" parameterType="java.lang.String" resultType="java.util.HashMap">
+        SELECT
+            fp.id as productCode,
+            fp.name as productName,
+            fp.receipt_limit as maxLoanAmount
+        FROM
+          font_product fp
+        WHERE
+          fp.channel = #{distributorCode}
+    </select>
+
+</mapper>

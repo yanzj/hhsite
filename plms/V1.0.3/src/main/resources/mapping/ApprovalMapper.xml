@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.ApprovalDao">
+    <insert id="insert" parameterType="java.util.HashMap">
+        INSERT INTO plms_approval (
+            CODE,
+            first_approval_suggestion,
+            second_approval_suggesion,
+            final_approval_suggesion,
+            fund_side_suggesion,
+            guarantee_suggesion,
+            insurance_suggesion,
+            guarantee_condition,
+            lending_terms,
+            approval_quota,
+            guarantee_limit,
+            apply_code,
+            approval_period,
+            approval_time,
+            status
+        )
+        VALUES
+            (
+            #{code,jdbcType=VARCHAR},
+            #{firstApprovalSuggestion,jdbcType=VARCHAR},
+            #{secondApprovalSuggesion,jdbcType=VARCHAR},
+            #{finalApprovalSuggesion,jdbcType=VARCHAR},
+            #{fundSideSuggesion,jdbcType=VARCHAR},
+            #{guaranteeSuggesion,jdbcType=VARCHAR},
+            #{insuranceSuggesion,jdbcType=VARCHAR},
+            #{guaranteeCondition,jdbcType=VARCHAR},
+            #{lendingTerms,jdbcType=VARCHAR},
+            #{approvalQuota,jdbcType=DECIMAL},
+            #{guaranteeLimit,jdbcType=DECIMAL},
+            #{applyCode,jdbcType=VARCHAR},
+            #{approvalPeriod,jdbcType=INTEGER},
+            #{approvalTime,jdbcType=DATE},
+            #{status,jdbcType=TINYINT})
+    </insert>
+</mapper>

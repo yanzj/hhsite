@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.AppDao">
+
+    <select id = "queryAccountInfo" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+			pui.um_id as umId,
+            pa.code as accountCode,
+            pa.total_quota as totalQuotaTotal,
+            pa.remaining_quota as remainingQuotaTotal,
+            pa.principal as principalTotal,
+            pa.interest as interestTotal,
+            pa.overdue as repaymentOverdue,
+			date_format(CURRENT_TIMESTAMP(),'%Y-%m-%d') as systemDate
+        FROM
+            plms_account pa,
+            plms_user_info pui
+        WHERE
+			pa.user_code = pui.code
+			and pa.status = '1'
+			and pui.`status` = '1'
+        AND pui.um_id = #{userId}
+    </select>
+
+    <select id = "queryAccountDetail" parameterType="java.lang.String" resultType="java.util.Map">
+            SELECT
+                pad.id,
+                pad.`code`,
+                pad.total_quota AS totalQuota,
+                pad.principal,
+                pad.remaining_quota AS remainingQuota,
+                pad.interest,
+                pad.overdue,
+                pad.account_code AS accountCode,
+                pad.credit_end_date AS creditEndDate,
+                pad.contract_code AS contractCode,
+                pad.principal_date AS principalDate,
+                pad.`status`,
+                pad.create_date AS createDate,
+                pad.modify_date AS modifyDate,
+                pai.annualized_interest AS annualizedInterest,
+                (
+                    SELECT
+                        prs.repayment_date
+                    FROM
+                        plms_repayment_schedule prs
+                    WHERE
+                        prs.`status` = '1'
+                    AND prs.detail_code = pad.`code`
+                    AND prs.repayment_date = (
+                        SELECT
+                            min(c.repayment_date)
+                        FROM
+                            plms_repayment_schedule c
+                        WHERE
+                            c. STATUS = '1'
+                        AND c.detail_code = pad.`code`
+                        AND date_format(
+                            c.repayment_date,
+                            '%Y-%m-%d'
+                        ) >= CURRENT_DATE ()
+                    )
+                ) AS repaymentDate
+            FROM
+                plms_account_detail pad,
+                plms_contract_info pci,
+                plms_apply_interesting pai
+            WHERE
+                pad.contract_code = pci. CODE
+            AND pci. CODE = pai.contract_code
+            AND pad.`status` = '1'
+            AND pci.`status` = '1'
+            AND pai.`status` = '1'
+            AND pad.account_code = #{accountCode}
+    </select>
+
+    <select id = "queryFirstRepaymentMap" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            sum(a.amount) as repaymentAmount,
+            date_format(a.repayment_date,'%Y-%m-%d') as repaymentDate
+        FROM
+            plms_repayment_schedule a,plms_user_info b
+        WHERE
+			a.user_code = b.`code`
+        and b.um_id = #{userId}
+        AND a.`status` != '00'
+		and b.`status` = '1'
+        AND a.repayment_date = (
+            SELECT
+                min(c.repayment_date)
+            FROM
+                plms_repayment_schedule c,
+				plms_user_info d
+            WHERE
+                c.user_code = d.`code`
+			AND d.um_id = b.um_id
+			and c.`status` != '00'
+			and d.`status` = '1'
+			AND date_format(c.repayment_date, '%Y-%m-%d') >= CURRENT_DATE()
+        )
+		group by repaymentDate
+    </select>
+
+    <select id = "queryOverdueCountMap" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+             count(*) as overdueCount
+        FROM
+			  plms_repayment_schedule prs,plms_user_info pc
+        WHERE
+			  prs.user_code = pc.code
+		  and pc.um_id = #{userId}
+		  and prs.`status` = '02'
+		  and pc.status = '1'
+    </select>
+
+    <select id = "queryBorrowClosedPeriodMap" parameterType="java.lang.String" resultType="java.util.Map">
+            SELECT
+                pp.borrow_closed_period AS borrowClosedPeriod,
+                pp.circle
+            FROM
+                plms_product pp,
+                plms_apply_info pai,
+                plms_contract_info pci
+            WHERE
+                pci. CODE = #{contract_no}
+            AND pci.apply_code = pai.`code`
+            AND pai. CODE = pp.apply_code
+            AND pp.`status` = '1'
+            AND pai.`status` = '1'
+            AND pci.`status` = '1'
+    </select>
+
+    <select id = "queryCertificateAddress" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT
+        ph.certificate_address as certificateAddress
+        FROM
+        plms_house ph
+        WHERE
+        ph.contract_code = #{contractCode}
+		and ph.`status` = '1'
+    </select>
+
+</mapper>

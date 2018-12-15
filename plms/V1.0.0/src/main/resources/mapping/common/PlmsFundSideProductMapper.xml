@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.PlmsFundSideProductDao">
+
+    <!--查询-->
+    <select id="queryFundSideProductByParms" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT
+            t.bms_code as bmsCode,
+        t.code,
+        t.company_code AS companyCode,
+        t.is_interest_instead as isInterestInstead,
+        t.is_principal_instead AS isPrincipalInstead,
+        t.product_name AS productName,
+        t.status
+        FROM
+            plms_fund_side_product t
+        WHERE t. STATUS != '0'
+        <if test="bmsCode != null">
+            AND t.bms_code = #{bmsCode}
+        </if>
+        <if test="productName != null">
+            AND t.product_name = #{productName}
+        </if>
+    </select>
+
+</mapper>

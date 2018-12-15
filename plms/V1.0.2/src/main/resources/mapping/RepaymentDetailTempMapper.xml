@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.RepaymentDetailTempDao">
+    <insert id = "insert" parameterType="java.util.List">
+        INSERT INTO plms_repayment_detail_temp(code,subject,amount,payment_method,detail_code,status,time_happened,batch_code,schedule_detail_code)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.code,jdbcType=VARCHAR},
+            #{item.subject,jdbcType=VARCHAR},
+            #{item.amount,jdbcType=DECIMAL},
+            #{item.paymentMethod,jdbcType=VARCHAR},
+            #{item.detailCode,jdbcType=VARCHAR},
+            #{item.status,jdbcType=VARCHAR},
+            #{item.timeHappened,jdbcType=DATE},
+            #{item.batchCode,jdbcType=VARCHAR},
+            #{item.scheduleDetailCode,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <select id = "qryScheduleDetailByBatchCodeHappenTimeAndPayMethod" parameterType="java.util.Map" resultType="java.util.Map">
+            SELECT
+                d.code as detailCode,
+                p.contract_code as contractCode,
+                ifnull(d.service_fee_penalty,0) as serviceFeePenalty,
+                ifnull(d.repaymented_service_fee_penalty,0) AS repaymentedServiceFeePenalty,
+                ifnull(d.overdue,0) as overdue,
+                ifnull(d.repaymented_overdue,0) AS repaymentedOverdue,
+                ifnull(d.service_fee,0) AS serviceFee,
+                ifnull(d.repaymented_service_fee,0) AS repaymentedServiceFee,
+                ifnull(d.interest,0) as interest,
+                ifnull(d.repaymented_interest,0) AS repaymentedInterest,
+                ifnull(d.principal,0) as principal,
+                ifnull(d.repaymented_principal,0) AS repaymentedPrincipal,
+                d.repayment_date as repaymentDate,
+                ifnull(ad.fund_side_balance,0) AS fundSideBalance,
+                ifnull(ad.honghuo_balance,0) AS honghuoBalance,
+                ad.CODE AS accountDetailCode,
+                p.paid_time AS paidTime,
+                i.principal_over_interest AS principalOverInterest,
+                i.interest_over_interest AS interestOverInterest,
+                i.default_interest_rate AS defaultInterestRate,
+                i.is_interest_Instead as isInterestInstead,
+                i.service_fee_interest_rate as serviceFeeInterestRate,
+                i.annualized_interest as annualizedInterest,
+                ifnull(d.bail,0) as bail,
+                ifnull(d.repaymented_bail,0) as repaymentedBail,
+                ifnull(d.bail_penalty,0) as bailPenalty,
+                ifnull(d.repaymented_bail_penalty,0) as repaymentedBailPenalty
+            FROM
+                plms_repayment_schedule_detail d,
+                plms_repayment_detail_temp b,
+                plms_paid_info p,
+                plms_apply_interesting i,
+                plms_account_detail ad
+          WHERE
+                b.batch_code = #{batchCode,jdbcType=VARCHAR}
+            AND date_format(b.time_happened,'%Y-%m-%d') = #{timeHappened,jdbcType=DATE}
+            AND b.payment_method = #{paymentMethod,jdbcType=VARCHAR}
+            AND b.schedule_detail_code = d.code
+            AND p.CODE = d.paid_code
+            AND p.contract_code = i.contract_code
+            AND ad.contract_code = p.contract_code
+            AND d.STATUS in ('02','03')
+            AND b.status != '0'
+            AND p.status != '00'
+            AND i.status != '0'
+            And ad.status != '0'
+    </select>
+
+    <select id = "findRepayDtlTmpByBatchCodeHappenTimeAndPayMethod" parameterType="java.util.Map" resultType="java.util.Map">
+            SELECT
+                b.subject,
+                b.amount,
+                b.detail_code detailCode,
+                b.status,
+                b.time_happened timeHappened
+            FROM
+                plms_repayment_detail_temp b
+            WHERE
+                b.batch_code = #{batchCode,jdbcType=VARCHAR}
+            AND date_format(b.time_happened,'%Y-%m-%d') = #{timeHappened,jdbcType=DATE}
+            AND b.payment_method = #{paymentMethod,jdbcType=VARCHAR}
+            AND b.status != '0'
+    </select>
+</mapper>

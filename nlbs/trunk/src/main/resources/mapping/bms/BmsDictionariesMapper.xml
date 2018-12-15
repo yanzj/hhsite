@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.nlbs.bms.dao.BmsDictionariesDao">
+
+
+    <select id="queryDictionariesByType" parameterType="java.lang.String" resultType="java.util.HashMap">
+        SELECT
+            d.type,
+            d.code,
+            d.title
+        FROM
+          dictionaries d
+        WHERE
+          d.type = #{type}
+    </select>
+
+</mapper>

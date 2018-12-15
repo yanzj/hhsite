@@ -1,0 +1,43 @@
+<!--"还款计划修改"的"利息不代收代付修改"start-->
+<div class="popup dataInfoPersonPopup">
+  <header class="header">
+    <h4 class="header-title">修改还款计划</h4>
+    <span class="close-btn" (click)="popupCloseBtn()">X</span>
+  </header>
+  <div class="popup-main">
+    <div class="row">
+      <div class="filed-name col-3">还款日期：</div>
+      <div class="col-3 filed-text">
+        {{this.modifyData.repaymentDate | date:'yyyy-MM-dd'}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">应还本金：</div>
+      <div class="col-3 white-space-nowrap">
+        <input type="text" class="msg-input width-120" id="principal" value={{this.modifyData.principal}}>
+        <div class="uinit">元</div>
+      </div>
+      <div class="filed-name col-3">应还利息：</div>
+      <div class="col-3 white-space-nowrap">
+        <input type="text" class="msg-input width-120" id="accruals" value={{this.modifyData.interest}}>
+        <div class="uinit">元</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">应还服务费：</div>
+      <div class="col-3 white-space-nowrap">
+        <input type="text" class="msg-input width-120" id="serviceCharge" value={{this.modifyData.serviceFee}}>
+        <div class="uinit">元</div>
+      </div>
+      <div class="filed-name col-3">应还保证金：</div>
+      <div class="col-3 white-space-nowrap">
+        <input type="text" class="msg-input width-120" id="guarantee" value={{this.modifyData.bail}}>
+        <div class="uinit">元</div>
+      </div>
+    </div>
+  </div>
+
+  <button class="orange-button margin-top-40 margin-bottom-0" (click)="confirmBtn()">确定</button>
+  <button class="gray-button margin-top-40 margin-bottom-0 margin-left-20" (click)="popupCloseBtn()">取消</button>
+</div>
+<!--"还款计划修改"的"利息不代收代付修改"end-->

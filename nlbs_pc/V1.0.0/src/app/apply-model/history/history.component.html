@@ -1,0 +1,46 @@
+
+<div class="row">
+  <ol class="breadcrumbNav col-12" [ngStyle]="{'display':isdisplayqueryLink?'none':'block'}">
+    <li><a (click)="querySection()">进件申请查询</a><i>></i></li>
+    <li><a (click)="itemDetails()">查看进件申请</a><i>|</i></li>
+    <li class="active">历史</li>
+  </ol>
+    <ol class="breadcrumbNav col-12" [ngStyle]="{'display':isdisplayqueryLink?'block':'none'}">
+    <li><a (click)="querySection()">进件申请查询</a><i>></i></li>
+    <li><a (click)="querysubLink()">进件申请提交</a><i>|</i></li>
+    <li class="active">历史</li>
+  </ol>
+</div>
+  <div class="row">
+    <div class="col-12">
+      <hr class="breadcrumbNavLine">
+    </div>
+  </div>
+  <div class="row">
+  <table class="table col-10 " border="0" cellpadding="0" cellspacing="0">
+    <thead>
+    <tr>
+      <th class="col-2">时间</th>
+      <th class="col-4">公司</th>
+      <th class="col-2">用户</th>
+      <th class="col-2">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of operationList">
+      <td class="col-2">{{item.operationTime}}</td>
+      <td class="col-4">{{item.distributorName}}</td>
+      <td class="col-2">{{item.operationUser}}</td>
+      <td class="col-2 operation">{{item.operationType}}</td>
+    </tr>
+
+    </tbody>
+  </table>
+  </div>
+  <div class="row">
+    <div class="col-2"><button class="orange-button float-right" (click)="itemDetails()" >返回查看进件</button></div>
+    <div class="col-2"><button class="gray-button histroryBtn" (click)="querySection()" >返回进件查询</button></div>
+  </div>
+
+
+

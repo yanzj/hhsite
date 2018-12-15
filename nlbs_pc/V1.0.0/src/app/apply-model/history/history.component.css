@@ -1,0 +1,30 @@
+
+/*列表项*/
+.table{
+  table-layout: fixed;
+  margin: 40px 0;
+}
+.table tr{
+  height: 40px;
+}
+.table thead tr th{
+  border-top:1px solid #ccc;
+  border-bottom:1px solid #ccc;
+  padding: 0 8px;
+  text-align: left;
+  vertical-align: middle;
+  font-weight: bold;
+  height:40px;
+  line-height: 40px;
+}
+.table tbody tr td{
+  height:40px;
+  line-height: 40px;
+  vertical-align: middle;
+  text-align: left;
+  border-bottom:1px solid #ccc;
+  padding: 0 8px;
+}
+.table tbody tr:nth-child(odd) td{
+  background-color:#F5F5F5 ;
+}

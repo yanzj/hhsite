@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.nlbs.commonMapper.dao.NlbsLoginNumMapper" >
+  <resultMap id="BaseResultMap" type="com.vilio.nlbs.commonMapper.pojo.NlbsLoginNum" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="user_no" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="error_num" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="hasLock" jdbcType="BIT" javaType="java.lang.Boolean" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_no, error_num, hasLock
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from nlbs_login_num
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from nlbs_login_num
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsLoginNum" >
+    insert into nlbs_login_num (id, user_no, error_num,
+      hasLock)
+    values (#{id,jdbcType=INTEGER}, #{userNo,jdbcType=VARCHAR}, #{errorNum,jdbcType=INTEGER},
+      #{haslock,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsLoginNum" >
+    insert into nlbs_login_num
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userNo != null" >
+        user_no,
+      </if>
+      <if test="errorNum != null" >
+        error_num,
+      </if>
+      <if test="haslock != null" >
+        hasLock,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userNo != null" >
+        #{userNo,jdbcType=VARCHAR},
+      </if>
+      <if test="errorNum != null" >
+        #{errorNum,jdbcType=INTEGER},
+      </if>
+      <if test="haslock != null" >
+        #{haslock,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsLoginNum" >
+    update nlbs_login_num
+    <set >
+      <if test="userNo != null" >
+        user_no = #{userNo,jdbcType=VARCHAR},
+      </if>
+      <if test="errorNum != null" >
+        error_num = #{errorNum,jdbcType=INTEGER},
+      </if>
+      <if test="haslock != null" >
+        hasLock = #{haslock,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsLoginNum" >
+    update nlbs_login_num
+    set user_no = #{userNo,jdbcType=VARCHAR},
+      error_num = #{errorNum,jdbcType=INTEGER},
+      hasLock = #{haslock,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

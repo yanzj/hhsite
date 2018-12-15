@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.pcfs.dao.VerifyDao">
+
+    <!--插入用户表-->
+    <insert id="insertVerify" parameterType="com.vilio.pcfs.pojo.Verify">
+        INSERT INTO pcfs_verify_info(verify_serno,
+                mobile_no,
+                verify_code,
+                verify_type,
+                effective_time,
+                sign_no,
+                template_no,
+                status)
+        VALUES(#{verifySerno,jdbcType=VARCHAR},#{mobileNo,jdbcType=VARCHAR},#{verifyCode,jdbcType=VARCHAR}
+        ,#{verifyType,jdbcType=VARCHAR},#{effectiveTime,jdbcType=VARCHAR},#{signNo,jdbcType=VARCHAR}
+        ,#{templateNo,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateVerifyStatus" parameterType="java.util.Map">
+        update pcfs_verify_info SET status=#{newStatus} WHERE verify_type=#{transType}  and
+        mobile_no=#{mobileNo}
+        <choose>
+            <when test="oldStatus !=null and oldStatus != '' and succStatus !=null and succStatus != ''">
+                and status in (#{oldStatus},#{succStatus})
+            </when>
+            <when test="oldStatus !=null and oldStatus != ''">
+                and status=#{oldStatus}
+            </when>
+            <when test="succStatus !=null and succStatus != ''">
+                and status=#{succStatus}
+            </when>
+        </choose>
+    </update>
+
+
+    <!--根据手机号和验证码查询最近一条验证码流水-->
+    <select id="queryVerifyByMobileAndVerify" resultType="com.vilio.pcfs.pojo.Verify"
+            parameterType="com.vilio.pcfs.pojo.Verify">
+        SELECT
+            id,
+            verify_serno as verifySerno,
+            mobile_no as mobileNo,
+            verify_code as verifyCode,
+            verify_type as verifyType,
+            effective_time as effectiveTime,
+            sign_no as signNo,
+            template_no as templateNo,
+            `status`,
+            DATE_FORMAT(create_time,'%Y%m%d%H%i%s') as createTime,
+            DATE_FORMAT(update_time,'%Y%m%d%H%i%s') as updateTime,
+            remark1,
+            remartk2
+        FROM
+            pcfs_verify_info
+        WHERE
+            mobile_no = #{mobileNo}
+        AND verify_code = #{verifyCode}
+        and verify_type = #{verifyType}
+        ORDER BY
+            create_time DESC LIMIT 1
+    </select>
+
+
+    <update id="updateVerifyStatusById" parameterType="com.vilio.pcfs.pojo.Verify">
+        update pcfs_verify_info SET status=#{status} WHERE verify_serno = #{verifySerno}
+    </update>
+
+
+    <select id="checkVerifySecond" resultType="java.lang.Integer" parameterType="java.util.Map">
+          select COUNT(1) from pcfs_verify_info
+          WHERE verify_type=#{verifyType} and mobile_no=#{mobileNo}
+          and create_time > date_add(NOW(), interval -#{smsSecondTimeOut} second);
+    </select>
+</mapper>

@@ -1,0 +1,7 @@
+
+.action:hover .icon-add-gray {
+  background-position: 14px -44px;
+}
+.table tbody tr:nth-child(odd) td {
+  background-color: #F5F5F5;
+}

@@ -1,0 +1,82 @@
+<!--授信信息组件-->
+<div>
+  <div class="row" *ngFor="let item of loanInfo">
+    <div class="filed-name col-2">授信时间：</div>
+    <div class="filed-text col-2">{{item.loanTime | dealDate}}</div>
+    <div class="filed-name col-2">授信金额：</div>
+    <div class="filed-text col-2">{{item.loanAmount|keepTwoDecimal|permil}}元</div>
+  </div>
+</div>
+<!--&lt;!&ndash;收款账户信息&ndash;&gt;-->
+<!--<div class="row margin-top-40 margin-bottom-20">-->
+  <!--<div class="col-12">-->
+    <!--<div class="message-title-line"></div>-->
+    <!--<div class="message-title-name">收款账户信息</div>-->
+    <!--<div class="label_hr">-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
+
+<!--<div class="row" >-->
+  <!--<div class="filed-name col-2">户名：</div>-->
+  <!--<div class="filed-text col-2">{{loanInfo.loanAccountInfo.loanAccount}}</div>-->
+  <!--<div class="filed-name col-2">账户：</div>-->
+  <!--<div class="filed-text col-2">{{loanInfo.loanAccountInfo.loanAccount}}</div>-->
+<!--</div>-->
+<!--<div class="row">-->
+  <!--<div class="filed-name col-2">开户行：</div>-->
+  <!--<div class="filed-text col-2">{{loanInfo.loanAccountInfo.loanAccountBank}}</div>-->
+<!--</div>-->
+<!--<div class="row">-->
+  <!--<div class="filed-name col-2">备注：</div>-->
+  <!--<div class="filed-text col-10">{{loanInfo.loanAccountInfo.remark}}</div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash;利息归还账户信息&ndash;&gt;-->
+<!--<div class="row margin-top-40 margin-bottom-20">-->
+  <!--<div class="col-12">-->
+    <!--<div class="message-title-line"></div>-->
+    <!--<div class="message-title-name">利息归还账户信息</div>-->
+    <!--<div class="label_hr">-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
+<!--<div class="row">-->
+  <!--<div class="filed-name col-2">户名：</div>-->
+  <!--<div class="filed-text col-2">{{loanInfo.principalAccountInfo.principalAccountName}}</div>-->
+  <!--<div class="filed-name col-2">账户：</div>-->
+  <!--<div class="filed-text col-2">{{loanInfo.principalAccountInfo.principalAccount}}</div>-->
+<!--</div>-->
+<!--<div class="row">-->
+  <!--<div class="filed-name col-2">开户行：</div>-->
+  <!--<div class="filed-text col-10">{{loanInfo.principalAccountInfo.principalAccountBank}}</div>-->
+<!--</div>-->
+
+
+<!--&lt;!&ndash;本金归还账户信息&ndash;&gt;-->
+<!--<div class="row margin-top-40 margin-bottom-20">-->
+  <!--<div class="col-12">-->
+    <!--<div class="message-title-line"></div>-->
+    <!--<div class="message-title-name">本金归还账户信息</div>-->
+    <!--<div class="label_hr">-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
+<!--<div class="row">-->
+  <!--<div class="filed-name col-2">户名：</div>-->
+  <!--<div class="filed-text col-2">{{loanInfo.interestAccountInfo.interestAccountName}}</div>-->
+  <!--<div class="filed-name col-2">账户：</div>-->
+  <!--<div class="filed-text col-2">{{loanInfo.interestAccountInfo.interestAccount}}</div>-->
+<!--</div>-->
+<!--<div class="row">-->
+  <!--<div class="filed-name col-2">开户行：</div>-->
+  <!--<div class="filed-text col-10">{{loanInfo.interestAccountInfo.interestAccountBank}}</div>-->
+<!--</div>-->
+
+<div class="row margin-top-40">
+  <div class="col-2">
+    <button class="orange-button float-right" id="pre_btn" (click)="querySection()">返回进件查询</button>
+  </div>
+
+</div>
+

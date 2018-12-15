@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.PlmsInvestQueryDao">
+
+    <insert id="saveInvestQuery" parameterType="com.vilio.plms.pojo.PlmsInvestQuery">
+        INSERT INTO plms_invest_query (
+            code,
+            invest_query_time,
+            invest_query_result,
+            remark,
+            contract_code,
+            status,
+            create_time,
+            modify_time
+        )
+        VALUES
+            (   #{code},
+                #{investQueryTime},
+                #{investQueryResult},
+                #{remark},
+                #{contractCode},
+                #{status},
+                #{createTime},
+                #{modifyTime}
+            )
+    </insert>
+</mapper>

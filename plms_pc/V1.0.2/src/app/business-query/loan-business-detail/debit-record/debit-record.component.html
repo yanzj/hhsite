@@ -1,0 +1,40 @@
+
+<!--扣款记录的tab 组件 start-->
+<div class="row">
+  <div class="col-12">
+    <table class="table width-100per" border="0" cellpadding="0" cellspacing="0">
+      <thead>
+      <tr>
+
+        <th class="width-160">扣款时间</th>
+        <th class="width-160">扣款金额（元）</th>
+        <th class="width-120">科目</th>
+        <th>扣款账户</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of currentItemLists">
+        <td class="width-160">{{item.timeHappened}}</td>
+        <td class="width-160">{{item.amount |dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}</td>
+        <td class="width-120">{{item.subject}}</td>
+        <td >{{item.accountTypeName}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="table_footer col-12">
+    <div class="table_ll">
+      共{{totalListsCount}}条，显示第{{startListIndex}}至{{endListIndex}}条
+    </div>
+    <div class="table_rr">
+      <div class="tablePageCode"></div>
+    </div>
+  </div>
+</div>
+
+<!--<div class="orange-button col-2 padding-right-0" (click)="querySection()">返回贷款查询</div>-->
+
+<!--扣款记录的tab 组件 end-->

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.nlbs.bms.dao.BmsChannelsDao">
+
+
+    <select id="queryChannelById" parameterType="java.lang.String" resultType="java.util.HashMap">
+        SELECT
+            c.id AS distributorCode,
+            c.channel_short_name AS distributorName
+        FROM
+          channels c
+        WHERE
+          c.id = #{distributorCode}
+    </select>
+    <select id="queryChannelByAgentId" parameterType="java.lang.String" resultType="java.util.HashMap">
+        SELECT
+            c.id AS distributorCode,
+            c.channel_short_name AS distributorName
+        FROM
+            channels c
+        JOIN channel_members cm ON c.id = cm.channel_id
+        WHERE
+            c.is_enabled = '1'
+        AND cm.id = #{agentId}
+    </select>
+
+    <select id="queryAllChannels" resultType="java.util.HashMap">
+        SELECT
+            c.id AS distributorCode,
+            c.channel_short_name AS distributorName
+        FROM
+            channels c
+        WHERE
+            c.is_enabled = '1'
+    </select>
+
+    <select id="queryChildrenChannels" parameterType="java.lang.String" resultType="java.util.HashMap">
+        SELECT
+            c.id AS distributorCode,
+            c.channel_short_name AS distributorName
+        FROM
+            channels c
+        WHERE
+            c.is_enabled = '1'
+        AND c.parent_id = #{distributorCode}
+    </select>
+
+</mapper>

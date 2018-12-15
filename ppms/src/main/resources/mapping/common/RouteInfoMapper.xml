@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.ppms.dao.common.RouteInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.vilio.ppms.pojo.common.RouteInfo" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="english_abbr" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="route_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="pub_key_file" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="pub_key" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="batch_flag" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="cut_time" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sign_check_flag" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="status" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="remark1" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="updator" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, english_abbr, route_name, pub_key_file, pub_key, batch_flag, cut_time, 
+    sign_check_flag, status, create_time, update_time, remark1, updator
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from ppms_route_info
+    where code = #{code,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ppms_route_info
+    where code = #{code,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.vilio.ppms.pojo.common.RouteInfo" >
+    insert into ppms_route_info (id, code, english_abbr, 
+      route_name, pub_key_file, pub_key, 
+      batch_flag, cut_time, sign_check_flag, 
+      status, create_time, update_time, 
+      remark1, updator)
+    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{englishAbbr,jdbcType=VARCHAR}, 
+      #{routeName,jdbcType=VARCHAR}, #{pubKeyFile,jdbcType=VARCHAR}, #{pubKey,jdbcType=VARCHAR}, 
+      #{batchFlag,jdbcType=VARCHAR}, #{cutTime,jdbcType=VARCHAR}, #{signCheckFlag,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{remark1,jdbcType=VARCHAR}, #{updator,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.vilio.ppms.pojo.common.RouteInfo" >
+    insert into ppms_route_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="englishAbbr != null" >
+        english_abbr,
+      </if>
+      <if test="routeName != null" >
+        route_name,
+      </if>
+      <if test="pubKeyFile != null" >
+        pub_key_file,
+      </if>
+      <if test="pubKey != null" >
+        pub_key,
+      </if>
+      <if test="batchFlag != null" >
+        batch_flag,
+      </if>
+      <if test="cutTime != null" >
+        cut_time,
+      </if>
+      <if test="signCheckFlag != null" >
+        sign_check_flag,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="remark1 != null" >
+        remark1,
+      </if>
+      <if test="updator != null" >
+        updator,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="englishAbbr != null" >
+        #{englishAbbr,jdbcType=VARCHAR},
+      </if>
+      <if test="routeName != null" >
+        #{routeName,jdbcType=VARCHAR},
+      </if>
+      <if test="pubKeyFile != null" >
+        #{pubKeyFile,jdbcType=VARCHAR},
+      </if>
+      <if test="pubKey != null" >
+        #{pubKey,jdbcType=VARCHAR},
+      </if>
+      <if test="batchFlag != null" >
+        #{batchFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="cutTime != null" >
+        #{cutTime,jdbcType=VARCHAR},
+      </if>
+      <if test="signCheckFlag != null" >
+        #{signCheckFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark1 != null" >
+        #{remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="updator != null" >
+        #{updator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vilio.ppms.pojo.common.RouteInfo" >
+    update ppms_route_info
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="englishAbbr != null" >
+        english_abbr = #{englishAbbr,jdbcType=VARCHAR},
+      </if>
+      <if test="routeName != null" >
+        route_name = #{routeName,jdbcType=VARCHAR},
+      </if>
+      <if test="pubKeyFile != null" >
+        pub_key_file = #{pubKeyFile,jdbcType=VARCHAR},
+      </if>
+      <if test="pubKey != null" >
+        pub_key = #{pubKey,jdbcType=VARCHAR},
+      </if>
+      <if test="batchFlag != null" >
+        batch_flag = #{batchFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="cutTime != null" >
+        cut_time = #{cutTime,jdbcType=VARCHAR},
+      </if>
+      <if test="signCheckFlag != null" >
+        sign_check_flag = #{signCheckFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark1 != null" >
+        remark1 = #{remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="updator != null" >
+        updator = #{updator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vilio.ppms.pojo.common.RouteInfo" >
+    update ppms_route_info
+    set code = #{code,jdbcType=VARCHAR},
+      english_abbr = #{englishAbbr,jdbcType=VARCHAR},
+      route_name = #{routeName,jdbcType=VARCHAR},
+      pub_key_file = #{pubKeyFile,jdbcType=VARCHAR},
+      pub_key = #{pubKey,jdbcType=VARCHAR},
+      batch_flag = #{batchFlag,jdbcType=VARCHAR},
+      cut_time = #{cutTime,jdbcType=VARCHAR},
+      sign_check_flag = #{signCheckFlag,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      remark1 = #{remark1,jdbcType=VARCHAR},
+      updator = #{updator,jdbcType=VARCHAR}
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+</mapper>

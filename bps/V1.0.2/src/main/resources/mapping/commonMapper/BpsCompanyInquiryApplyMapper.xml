@@ -1,0 +1,1250 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!--
+******************************************************************************
+* 数据库表：BPS_COMPANY_INQUIRY_APPLY
+* 表的名称：各询价公司询价请求表
+* 对应实体：com.vilio.bps.commonMapper.pojo.BpsCompanyInquiryApply
+* 开发日期：2017-06-13
+* 技术服务：www.fwjava.com
+******************************************************************************
+-->
+<mapper namespace="com.vilio.bps.commonMapper.dao.IBpsCompanyInquiryApplyMapper">
+
+    <!--
+    **************************************************************************
+    * 1.新增一条数据
+    * 注: 根据Bean实体执行新增操作.
+    **************************************************************************
+    -->
+    <insert id="getInsert"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsCompanyInquiryApply"
+            useGeneratedKeys="true"
+            keyProperty="id">
+    
+            INSERT   /* getInsert+@com.vilio.bps.commonMapper.sql.BpsCompanyInquiryApplyMapper.xml */ 
+              INTO   BPS_COMPANY_INQUIRY_APPLY         /* 各询价公司询价请求表 */ 
+                    (
+                     CODE                              /*  */ 
+                    ,DATE_CREATED                      /*  */ 
+                    ,CITY_CODE                         /*  */ 
+                    ,HOUSE_TYPE                        /* 房屋类型(别墅，公寓) */ 
+                    ,PLOTS_CODE                        /* 小区id(同询价公司一致) */ 
+                    ,PLOTS_NAME                        /* 小区名 */ 
+                    ,UNIT_CODE                         /* 楼栋id(同询价公司一致) */ 
+                    ,UNIT_NO                           /* 楼栋号 */ 
+                    ,ROOM_CODE                         /* 房间id(同询价公司一致) */ 
+                    ,ROOM_NO                           /* 房号 */ 
+                    ,AREA                              /* 房屋面积 */ 
+                    ,TOTAL_FLOOR                       /* 总楼层 */ 
+                    ,CURRENT_FLOOR                     /* 所在层 */ 
+                    ,TOWARDS                           /* 房屋朝向(东:1南:2西:3北:4) */ 
+                    ,COMPLETED_YEAR                    /* 竣工日期 */ 
+                    ,COMPANY_CODE                      /* 询价公司编号 */ 
+                    ,PRICE                             /* 询价公司估值 */ 
+                    ,PRICE_TIME                        /* 获取价格事件 */
+                    ,AUTO_PRICE
+                    ,STATUS
+                    ,DEADLINE
+                    )
+            VALUES  (
+                     #{code}                           /*  */ 
+                    ,#{dateCreated}                    /*  */ 
+                    ,#{cityCode}                       /*  */ 
+                    ,#{houseType}                      /* 房屋类型(别墅，公寓) */ 
+                    ,#{plotsCode}                      /* 小区id(同询价公司一致) */ 
+                    ,#{plotsName}                      /* 小区名 */ 
+                    ,#{unitCode}                       /* 楼栋id(同询价公司一致) */ 
+                    ,#{unitNo}                         /* 楼栋号 */ 
+                    ,#{houseCode}                       /* 房间id(同询价公司一致) */
+                    ,#{houseName}                         /* 房号 */ 
+                    ,#{area}                           /* 房屋面积 */ 
+                    ,#{totalFloor}                     /* 总楼层 */ 
+                    ,#{currentFloor}                   /* 所在层 */ 
+                    ,#{towards}                        /* 房屋朝向(东:1南:2西:3北:4) */ 
+                    ,#{yearBuilt}                  /* 竣工日期 */ 
+                    ,#{companyCode}                    /* 询价公司编号 */ 
+                    ,#{price}                          /* 询价公司估值 */ 
+                    ,#{priceTime}                      /* 获取价格事件 */ 
+                    ,#{autoPrice}
+                    ,#{status}
+                     ,#{deadline}
+                    )
+         
+    </insert>
+    
+    <insert id="getInsertPrmMap"
+            parameterType="java.util.HashMap"
+            useGeneratedKeys="true"
+            keyProperty="id">
+    
+            INSERT   /* getInsertPrmMap+@com.vilio.bps.commonMapper.sql.BpsCompanyInquiryApplyMapper.xml */ 
+              INTO   BPS_COMPANY_INQUIRY_APPLY         /* 各询价公司询价请求表 */ 
+                    (
+                     CODE                              /*  */ 
+                    ,DATE_CREATED                      /*  */ 
+                    ,CITY_CODE                         /*  */ 
+                    ,HOUSE_TYPE                        /* 房屋类型(别墅，公寓) */ 
+                    ,PLOTS_CODE                        /* 小区id(同询价公司一致) */ 
+                    ,PLOTS_NAME                        /* 小区名 */ 
+                    ,UNIT_CODE                         /* 楼栋id(同询价公司一致) */ 
+                    ,UNIT_NO                           /* 楼栋号 */ 
+                    ,ROOM_CODE                         /* 房间id(同询价公司一致) */ 
+                    ,ROOM_NO                           /* 房号 */ 
+                    ,AREA                              /* 房屋面积 */ 
+                    ,TOTAL_FLOOR                       /* 总楼层 */ 
+                    ,CURRENT_FLOOR                     /* 所在层 */ 
+                    ,TOWARDS                           /* 房屋朝向(东:1南:2西:3北:4) */ 
+                    ,COMPLETED_YEAR                    /* 竣工日期 */ 
+                    ,COMPANY_CODE                      /* 询价公司编号 */ 
+                    ,PRICE                             /* 询价公司估值 */ 
+                    ,PRICE_TIME                        /* 获取价格事件 */
+                    ,AUTO_PRICE
+                    ,STATUS
+                    ,DEADLINE
+                    )
+            VALUES  (
+                     #{code}                           /*  */ 
+                    ,#{dateCreated}                    /*  */ 
+                    ,#{cityCode}                       /*  */ 
+                    ,#{houseType}                      /* 房屋类型(别墅，公寓) */ 
+                    ,#{plotsCode}                      /* 小区id(同询价公司一致) */ 
+                    ,#{plotsName}                      /* 小区名 */ 
+                    ,#{unitCode}                       /* 楼栋id(同询价公司一致) */ 
+                    ,#{unitName}                         /* 楼栋号 */
+                    ,#{houseCode}                       /* 房间id(同询价公司一致) */
+                    ,#{houseName}                         /* 房号 */ 
+                    ,#{area}                           /* 房屋面积 */ 
+                    ,#{totalFloor}                     /* 总楼层 */ 
+                    ,#{currentFloor}                   /* 所在层 */ 
+                    ,#{towards}                        /* 房屋朝向(东:1南:2西:3北:4) */ 
+                    ,#{yearBuilt}                  /* 竣工日期 */ 
+                    ,#{companyCode}                    /* 询价公司编号 */ 
+                    ,#{price}                          /* 询价公司估值 */ 
+                    ,#{priceTime}                      /* 获取价格事件 */
+                      ,#{autoPrice}
+                      ,#{status}
+                     ,#{deadline}
+                    )
+         
+    </insert>
+
+
+    <!--
+    **************************************************************************
+    * 2.删除一条数据
+    * 注: 根据Bean实体的主键ID执行删除操作.
+    **************************************************************************
+    -->
+    <delete id="getDelete"
+            parameterType="java.lang.Integer">
+    
+            DELETE   /* getDelete+@com.vilio.bps.commonMapper.sql.BpsCompanyInquiryApplyMapper.xml */ 
+              FROM   BPS_COMPANY_INQUIRY_APPLY    /* 各询价公司询价请求表 */ 
+             WHERE   ID = #{_parameter}           /*  */ 
+         
+    </delete>
+
+
+    <!--
+    **************************************************************************
+    * 3.变更一条数据
+    * 注: 根据Bean实体的主键ID执行变更操作.
+    **************************************************************************
+    -->
+    <update id="getUpdate"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsCompanyInquiryApply">
+    
+            UPDATE   /* getUpdate+@com.vilio.bps.commonMapper.sql.BpsCompanyInquiryApplyMapper.xml */ 
+                     BPS_COMPANY_INQUIRY_APPLY                          /* 各询价公司询价请求表 */ 
+               SET   CODE                         = #{code}             /*  */ 
+                    ,DATE_CREATED                 = #{dateCreated}      /*  */ 
+                    ,CITY_CODE                    = #{cityCode}         /*  */ 
+                    ,HOUSE_TYPE                   = #{houseType}        /* 房屋类型(别墅，公寓) */ 
+                    ,PLOTS_CODE                   = #{plotsCode}        /* 小区id(同询价公司一致) */ 
+                    ,PLOTS_NAME                   = #{plotsName}        /* 小区名 */ 
+                    ,UNIT_CODE                    = #{unitCode}         /* 楼栋id(同询价公司一致) */ 
+                    ,UNIT_NO                      = #{unitName}           /* 楼栋号 */
+                    ,ROOM_CODE                    = #{houseCode}         /* 房间id(同询价公司一致) */
+                    ,ROOM_NO                      = #{houseName}           /* 房号 */ 
+                    ,AREA                         = #{area}             /* 房屋面积 */ 
+                    ,TOTAL_FLOOR                  = #{totalFloor}       /* 总楼层 */ 
+                    ,CURRENT_FLOOR                = #{currentFloor}     /* 所在层 */ 
+                    ,TOWARDS                      = #{towards}          /* 房屋朝向(东:1南:2西:3北:4) */ 
+                    ,COMPLETED_YEAR               = #{yearBuilt}    /* 竣工日期 */ 
+                    ,COMPANY_CODE                 = #{companyCode}      /* 询价公司编号 */ 
+                    ,PRICE                        = #{price}            /* 询价公司估值 */ 
+                    ,PRICE_TIME                   = #{priceTime}        /* 获取价格事件 */
+                     ,AUTO_PRICE          =#{autoPrice}
+                    ,STATUS              = #{status}
+                    ,DEADLINE          = #{deadline}
+             WHERE   ID                           = #{id}               /*  */ 
+         
+    </update>
+    
+    <update id="getUpdatePrmMap"
+            parameterType="java.util.HashMap">
+    
+            UPDATE   /* getUpdatePrmMap+@com.vilio.bps.commonMapper.sql.BpsCompanyInquiryApplyMapper.xml */ 
+                     BPS_COMPANY_INQUIRY_APPLY                          /* 各询价公司询价请求表 */ 
+               SET   CODE                         = #{code}             /*  */ 
+                    ,DATE_CREATED                 = #{dateCreated}      /*  */ 
+                    ,CITY_CODE                    = #{cityCode}         /*  */ 
+                    ,HOUSE_TYPE                   = #{houseType}        /* 房屋类型(别墅，公寓) */ 
+                    ,PLOTS_CODE                   = #{plotsCode}        /* 小区id(同询价公司一致) */ 
+                    ,PLOTS_NAME                   = #{plotsName}        /* 小区名 */ 
+                    ,UNIT_CODE                    = #{unitCode}         /* 楼栋id(同询价公司一致) */ 
+                    ,UNIT_NO                      = #{unitName}           /* 楼栋号 */
+                    ,ROOM_CODE                    = #{houseCode}         /* 房间id(同询价公司一致) */
+                    ,ROOM_NO                      = #{houseName}           /* 房号 */ 
+                    ,AREA                         = #{area}             /* 房屋面积 */ 
+                    ,TOTAL_FLOOR                  = #{totalFloor}       /* 总楼层 */ 
+                    ,CURRENT_FLOOR                = #{currentFloor}     /* 所在层 */ 
+                    ,TOWARDS                      = #{towards}          /* 房屋朝向(东:1南:2西:3北:4) */ 
+                    ,COMPLETED_YEAR               = #{yearBuilt}    /* 竣工日期 */ 
+                    ,COMPANY_CODE                 = #{companyCode}      /* 询价公司编号 */ 
+                    ,PRICE                        = #{price}            /* 询价公司估值 */ 
+                    ,PRICE_TIME                   = #{priceTime}        /* 获取价格事件 */
+                    ,AUTO_PRICE           =#{autoPrice}
+                    ,STATUS              = #{status}
+                    ,DEADLINE          = #{deadline}
+             WHERE   ID                           = #{id}               /*  */ 
+         
+    </update>
+
+
+    <!--
+    **************************************************************************
+    * 4.获取一个Bean实体
+    * 注: 根据Bean实体的主键ID获取一个Bean实体.
+    **************************************************************************
+    -->
+    <select id="getBean"
+            parameterType="java.lang.Integer"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsCompanyInquiryApply">
+    
+            SELECT   /* getBean+@com.vilio.bps.commonMapper.sql.BpsCompanyInquiryApplyMapper.xml */ 
+                     bcia.ID                            AS id               /*  */ 
+                    ,bcia.CODE                          AS code             /*  */ 
+                    ,bcia.DATE_CREATED                  AS dateCreated      /*  */ 
+                    ,bcia.CITY_CODE                     AS cityCode         /*  */ 
+                    ,bcia.HOUSE_TYPE                    AS houseType        /* 房屋类型(别墅，公寓) */ 
+                    ,bcia.PLOTS_CODE                    AS plotsCode        /* 小区id(同询价公司一致) */ 
+                    ,bcia.PLOTS_NAME                    AS plotsName        /* 小区名 */ 
+                    ,bcia.UNIT_CODE                     AS unitCode         /* 楼栋id(同询价公司一致) */ 
+                    ,bcia.UNIT_NO                       AS unitName           /* 楼栋号 */
+                    ,bcia.ROOM_CODE                     AS houseCode         /* 房间id(同询价公司一致) */
+                    ,bcia.ROOM_NO                       AS houseName           /* 房号 */ 
+                    ,bcia.AREA                          AS area             /* 房屋面积 */ 
+                    ,bcia.TOTAL_FLOOR                   AS totalFloor       /* 总楼层 */ 
+                    ,bcia.CURRENT_FLOOR                 AS currentFloor     /* 所在层 */ 
+                    ,bcia.TOWARDS                       AS towards          /* 房屋朝向(东:1南:2西:3北:4) */ 
+                    ,bcia.COMPLETED_YEAR                AS yearBuilt    /* 竣工日期 */ 
+                    ,bcia.COMPANY_CODE                  AS companyCode      /* 询价公司编号 */ 
+                    ,bcia.PRICE                         AS price            /* 询价公司估值 */ 
+                    ,bcia.PRICE_TIME                    AS priceTime        /* 获取价格事件 */
+                    ,bcia.AUTO_PRICE           AS autoPrice
+                    ,bcia.STATUS               AS status
+                   ,bcia.DEADLINE          AS deadline
+              FROM   BPS_COMPANY_INQUIRY_APPLY             bcia             /* 各询价公司询价请求表 */ 
+             WHERE   bcia.ID = #{_parameter}                                /*  */ 
+         
+    </select>
+    
+    <select id="getBeanRtnMap"
+            parameterType="java.lang.Integer"
+            resultType="java.util.HashMap">
+    
+            SELECT   /* getBeanRtnMap+@com.vilio.bps.commonMapper.sql.BpsCompanyInquiryApplyMapper.xml */ 
+                     bcia.ID                            AS id               /*  */ 
+                    ,bcia.CODE                          AS code             /*  */ 
+                    ,bcia.DATE_CREATED                  AS dateCreated      /*  */ 
+                    ,bcia.CITY_CODE                     AS cityCode         /*  */ 
+                    ,bcia.HOUSE_TYPE                    AS houseType        /* 房屋类型(别墅，公寓) */ 
+                    ,bcia.PLOTS_CODE                    AS plotsCode        /* 小区id(同询价公司一致) */ 
+                    ,bcia.PLOTS_NAME                    AS plotsName        /* 小区名 */ 
+                    ,bcia.UNIT_CODE                     AS unitCode         /* 楼栋id(同询价公司一致) */ 
+                    ,bcia.UNIT_NO                       AS unitName           /* 楼栋号 */
+                    ,bcia.ROOM_CODE                     AS houseCode         /* 房间id(同询价公司一致) */
+                    ,bcia.ROOM_NO                       AS houseName           /* 房号 */ 
+                    ,bcia.AREA                          AS area             /* 房屋面积 */ 
+                    ,bcia.TOTAL_FLOOR                   AS totalFloor       /* 总楼层 */ 
+                    ,bcia.CURRENT_FLOOR                 AS currentFloor     /* 所在层 */ 
+                    ,bcia.TOWARDS                       AS towards          /* 房屋朝向(东:1南:2西:3北:4) */ 
+                    ,bcia.COMPLETED_YEAR                AS yearBuilt    /* 竣工日期 */ 
+                    ,bcia.COMPANY_CODE                  AS companyCode      /* 询价公司编号 */ 
+                    ,bcia.PRICE                         AS price            /* 询价公司估值 */ 
+                   ,bcia.PRICE_TIME                    AS priceTime        /* 获取价格事件 */
+                   ,bcia.AUTO_PRICE           AS autoPrice
+                    ,bcia.STATUS               AS status
+                   ,bcia.DEADLINE          AS deadline
+
+           FROM   BPS_COMPANY_INQUIRY_APPLY             bcia             /* 各询价公司询价请求表 */
+             WHERE   bcia.ID = #{_parameter}                                /*  */ 
+         
+    </select>
+
+
+    <!--
+    **************************************************************************
+    * 5.条件查询
+    * 注: 支持多条件查询、模糊查询、日期比较查询等操作.
+    **************************************************************************
+    -->
+    <select id="getList"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsCompanyInquiryApply"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsCompanyInquiryApply">
+    
+            SELECT   /* getList+@com.vilio.bps.commonMapper.sql.BpsCompanyInquiryApplyMapper.xml */ 
+                     bcia.ID                            AS id               /*  */ 
+                    ,bcia.CODE                          AS code             /*  */ 
+                    ,bcia.DATE_CREATED                  AS dateCreated      /*  */ 
+                    ,bcia.CITY_CODE                     AS cityCode         /*  */ 
+                    ,bcia.HOUSE_TYPE                    AS houseType        /* 房屋类型(别墅，公寓) */ 
+                    ,bcia.PLOTS_CODE                    AS plotsCode        /* 小区id(同询价公司一致) */ 
+                    ,bcia.PLOTS_NAME                    AS plotsName        /* 小区名 */ 
+                    ,bcia.UNIT_CODE                     AS unitCode         /* 楼栋id(同询价公司一致) */ 
+                    ,bcia.UNIT_NO                       AS unitName           /* 楼栋号 */
+                    ,bcia.ROOM_CODE                     AS houseCode         /* 房间id(同询价公司一致) */
+                    ,bcia.ROOM_NO                       AS houseName           /* 房号 */ 
+                    ,bcia.AREA                          AS area             /* 房屋面积 */ 
+                    ,bcia.TOTAL_FLOOR                   AS totalFloor       /* 总楼层 */ 
+                    ,bcia.CURRENT_FLOOR                 AS currentFloor     /* 所在层 */ 
+                    ,bcia.TOWARDS                       AS towards          /* 房屋朝向(东:1南:2西:3北:4) */ 
+                    ,bcia.COMPLETED_YEAR                AS yearBuilt    /* 竣工日期 */ 
+                    ,bcia.COMPANY_CODE                  AS companyCode      /* 询价公司编号 */ 
+                    ,bcia.PRICE                         AS price            /* 询价公司估值 */ 
+                    ,bcia.STATUS               AS status
+                    ,bcia.AUTO_PRICE           AS autoPrice
+                    ,bcia.PRICE_TIME                    AS priceTime        /* 获取价格时间 */
+                    ,bcia.DEADLINE                      AS deadline         /* 失效时间 */
+              FROM   BPS_COMPANY_INQUIRY_APPLY             bcia             /* 各询价公司询价请求表 */
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   bcia.ID = #{id} /*  */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   bcia.CODE = #{code} /*  */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(bcia.DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /*  */ 
+             </if>
+        
+             <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+               AND   bcia.CITY_CODE = #{cityCode} /*  */ 
+             </if>
+        
+             <if test='houseType != null and houseType != "" and houseType != "null" and houseType != "undefined"'>
+               AND   bcia.HOUSE_TYPE = #{houseType} /* 房屋类型(别墅，公寓) */ 
+             </if>
+        
+             <if test='plotsCode != null and plotsCode != "" and plotsCode != "null" and plotsCode != "undefined"'>
+               AND   bcia.PLOTS_CODE = #{plotsCode} /* 小区id(同询价公司一致) */ 
+             </if>
+        
+             <if test='plotsName != null and plotsName != "" and plotsName != "null" and plotsName != "undefined"'>
+               AND   bcia.PLOTS_NAME = #{plotsName} /* 小区名 */ 
+             </if>
+        
+             <if test='unitCode != null and unitCode != "" and unitCode != "null" and unitCode != "undefined"'>
+               AND   bcia.UNIT_CODE = #{unitCode} /* 楼栋id(同询价公司一致) */ 
+             </if>
+        
+             <if test='unitName != null and unitName != "" and unitName != "null" and unitName != "undefined"'>
+               AND   bcia.UNIT_NO = #{unitName} /* 楼栋号 */
+             </if>
+        
+             <if test='houseCode != null and houseCode != "" and houseCode != "null" and houseCode != "undefined"'>
+               AND   bcia.ROOM_CODE = #{houseCode} /* 房间id(同询价公司一致) */
+             </if>
+        
+             <if test='houseName != null and houseName != "" and houseName != "null" and houseName != "undefined"'>
+               AND   bcia.ROOM_NO = #{houseName} /* 房号 */ 
+             </if>
+        
+             <if test='area != null'>
+               AND   bcia.AREA = #{area} /* 房屋面积 */ 
+             </if>
+        
+             <if test='totalFloor != null'>
+               AND   bcia.TOTAL_FLOOR = #{totalFloor} /* 总楼层 */ 
+             </if>
+        
+             <if test='currentFloor != null'>
+               AND   bcia.CURRENT_FLOOR = #{currentFloor} /* 所在层 */ 
+             </if>
+        
+             <if test='towards != null and towards != "" and towards != "null" and towards != "undefined"'>
+               AND   bcia.TOWARDS = #{towards} /* 房屋朝向(东:1南:2西:3北:4) */ 
+             </if>
+        
+             <if test='yearBuilt != null and yearBuilt != "" and yearBuilt != "null" and yearBuilt != "undefined"'>
+               AND   bcia.COMPLETED_YEAR = #{yearBuilt} /* 竣工日期 */ 
+             </if>
+        
+             <if test='companyCode != null and companyCode != "" and companyCode != "null" and companyCode != "undefined"'>
+               AND   bcia.COMPANY_CODE = #{companyCode} /* 询价公司编号 */ 
+             </if>
+        
+             <if test='price != null'>
+               AND   bcia.PRICE = #{price} /* 询价公司估值 */ 
+             </if>
+        
+             <if test='priceTime != null'>
+               AND   date_format(bcia.PRICE_TIME ,'%Y-%m-%d') = #{priceTimeChar} /* 获取价格时间 */ 
+             </if>
+
+        <if test='autoPrice != null and autoPrice != "" and autoPrice != "null" and autoPrice != "undefined"'>
+            AND   bcia.AUTO_PRICE = #{autoPrice}
+        </if>
+
+             <if test='deadline != null'>
+               AND   date_format(bcia.DEADLINE ,'%Y-%m-%d') = #{deadlineChar} /* 失效时间 */ 
+             </if>
+            <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+                AND   bcia.STATUS = #{status}
+            </if>
+
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+    
+    <select id="getListPrmMapRtnBean"
+            parameterType="java.util.HashMap"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsCompanyInquiryApply">
+    
+            SELECT   /* getListPrmMapRtnBean+@com.vilio.bps.commonMapper.sql.BpsCompanyInquiryApplyMapper.xml */ 
+                     bcia.ID                            AS id               /*  */ 
+                    ,bcia.CODE                          AS code             /*  */ 
+                    ,bcia.DATE_CREATED                  AS dateCreated      /*  */ 
+                    ,bcia.CITY_CODE                     AS cityCode         /*  */ 
+                    ,bcia.HOUSE_TYPE                    AS houseType        /* 房屋类型(别墅，公寓) */ 
+                    ,bcia.PLOTS_CODE                    AS plotsCode        /* 小区id(同询价公司一致) */ 
+                    ,bcia.PLOTS_NAME                    AS plotsName        /* 小区名 */ 
+                    ,bcia.UNIT_CODE                     AS unitCode         /* 楼栋id(同询价公司一致) */ 
+                    ,bcia.UNIT_NO                       AS unitName           /* 楼栋号 */
+                    ,bcia.ROOM_CODE                     AS houseCode         /* 房间id(同询价公司一致) */
+                    ,bcia.ROOM_NO                       AS houseName           /* 房号 */ 
+                    ,bcia.AREA                          AS area             /* 房屋面积 */ 
+                    ,bcia.TOTAL_FLOOR                   AS totalFloor       /* 总楼层 */ 
+                    ,bcia.CURRENT_FLOOR                 AS currentFloor     /* 所在层 */ 
+                    ,bcia.TOWARDS                       AS towards          /* 房屋朝向(东:1南:2西:3北:4) */ 
+                    ,bcia.COMPLETED_YEAR                AS yearBuilt    /* 竣工日期 */ 
+                    ,bcia.COMPANY_CODE                  AS companyCode      /* 询价公司编号 */ 
+                    ,bcia.PRICE                         AS price            /* 询价公司估值 */ 
+                    ,bcia.PRICE_TIME                    AS priceTime        /* 获取价格事件 */ 
+                    ,bcia.AUTO_PRICE               AS autoPrice
+                    ,bcia.STATUS               AS status
+                    ,bcia.DEADLINE          AS deadline
+              FROM   BPS_COMPANY_INQUIRY_APPLY             bcia             /* 各询价公司询价请求表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   bcia.ID = #{id} /*  */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   bcia.CODE = #{code} /*  */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(bcia.DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /*  */ 
+             </if>
+        
+             <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+               AND   bcia.CITY_CODE = #{cityCode} /*  */ 
+             </if>
+        
+             <if test='houseType != null and houseType != "" and houseType != "null" and houseType != "undefined"'>
+               AND   bcia.HOUSE_TYPE = #{houseType} /* 房屋类型(别墅，公寓) */ 
+             </if>
+        
+             <if test='plotsCode != null and plotsCode != "" and plotsCode != "null" and plotsCode != "undefined"'>
+               AND   bcia.PLOTS_CODE = #{plotsCode} /* 小区id(同询价公司一致) */ 
+             </if>
+        
+             <if test='plotsName != null and plotsName != "" and plotsName != "null" and plotsName != "undefined"'>
+               AND   bcia.PLOTS_NAME = #{plotsName} /* 小区名 */ 
+             </if>
+        
+             <if test='unitCode != null and unitCode != "" and unitCode != "null" and unitCode != "undefined"'>
+               AND   bcia.UNIT_CODE = #{unitCode} /* 楼栋id(同询价公司一致) */ 
+             </if>
+        
+             <if test='unitName != null and unitName != "" and unitName != "null" and unitName != "undefined"'>
+               AND   bcia.UNIT_NO = #{unitName} /* 楼栋号 */
+             </if>
+        
+             <if test='houseCode != null and houseCode != "" and houseCode != "null" and houseCode != "undefined"'>
+               AND   bcia.ROOM_CODE = #{houseCode} /* 房间id(同询价公司一致) */
+             </if>
+        
+             <if test='houseName != null and houseName != "" and houseName != "null" and houseName != "undefined"'>
+               AND   bcia.ROOM_NO = #{houseName} /* 房号 */ 
+             </if>
+        
+             <if test='area != null'>
+               AND   bcia.AREA = #{area} /* 房屋面积 */ 
+             </if>
+        
+             <if test='totalFloor != null'>
+               AND   bcia.TOTAL_FLOOR = #{totalFloor} /* 总楼层 */ 
+             </if>
+        
+             <if test='currentFloor != null'>
+               AND   bcia.CURRENT_FLOOR = #{currentFloor} /* 所在层 */ 
+             </if>
+        
+             <if test='towards != null and towards != "" and towards != "null" and towards != "undefined"'>
+               AND   bcia.TOWARDS = #{towards} /* 房屋朝向(东:1南:2西:3北:4) */ 
+             </if>
+        
+             <if test='yearBuilt != null and yearBuilt != "" and yearBuilt != "null" and yearBuilt != "undefined"'>
+               AND   bcia.COMPLETED_YEAR = #{yearBuilt} /* 竣工日期 */ 
+             </if>
+        
+             <if test='companyCode != null and companyCode != "" and companyCode != "null" and companyCode != "undefined"'>
+               AND   bcia.COMPANY_CODE = #{companyCode} /* 询价公司编号 */ 
+             </if>
+        
+             <if test='price != null'>
+               AND   bcia.PRICE = #{price} /* 询价公司估值 */ 
+             </if>
+        
+             <if test='priceTime != null'>
+               AND   date_format(bcia.PRICE_TIME ,'%Y-%m-%d') = #{priceTimeChar} /* 获取价格时间 */ 
+             </if>
+        
+             <if test='deadline != null'>
+               AND   date_format(bcia.DEADLINE ,'%Y-%m-%d') = #{deadlineChar} /* 失效时间 */ 
+             </if>
+
+            <if test='autoPrice != null and autoPrice != "" and autoPrice != "null" and autoPrice != "undefined"'>
+                AND   bcia.AUTO_PRICE = #{autoPrice}
+            </if>
+            <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+                AND   bcia.STATUS = #{status}
+            </if>
+
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+    
+    <select id="getListPrmMapRtnMap"
+            parameterType="java.util.HashMap"
+            resultType="java.util.HashMap">
+    
+            SELECT   /* getListPrmMapRtnMap+@com.vilio.bps.commonMapper.sql.BpsCompanyInquiryApplyMapper.xml */ 
+                     bcia.ID                            AS id               /*  */ 
+                    ,bcia.CODE                          AS code             /*  */ 
+                    ,bcia.DATE_CREATED                  AS dateCreated      /*  */ 
+                    ,bcia.CITY_CODE                     AS cityCode         /*  */ 
+                    ,bcia.HOUSE_TYPE                    AS houseType        /* 房屋类型(别墅，公寓) */ 
+                    ,bcia.PLOTS_CODE                    AS plotsCode        /* 小区id(同询价公司一致) */ 
+                    ,bcia.PLOTS_NAME                    AS plotsName        /* 小区名 */ 
+                    ,bcia.UNIT_CODE                     AS unitCode         /* 楼栋id(同询价公司一致) */ 
+                    ,bcia.UNIT_NO                       AS unitName           /* 楼栋号 */
+                    ,bcia.ROOM_CODE                     AS houseCode         /* 房间id(同询价公司一致) */
+                    ,bcia.ROOM_NO                       AS houseName           /* 房号 */ 
+                    ,bcia.AREA                          AS area             /* 房屋面积 */ 
+                    ,bcia.TOTAL_FLOOR                   AS totalFloor       /* 总楼层 */ 
+                    ,bcia.CURRENT_FLOOR                 AS currentFloor     /* 所在层 */ 
+                    ,bcia.TOWARDS                       AS towards          /* 房屋朝向(东:1南:2西:3北:4) */ 
+                    ,bcia.COMPLETED_YEAR                AS yearBuilt    /* 竣工日期 */ 
+                    ,bcia.COMPANY_CODE                  AS companyCode      /* 询价公司编号 */ 
+                    ,bcia.PRICE                         AS price            /* 询价公司估值 */ 
+                    ,bcia.PRICE_TIME                    AS priceTime        /* 获取价格事件 */
+                    ,bcia.AUTO_PRICE               AS autoPrice
+                    ,bcia.STATUS               AS status
+                    ,bcia.DEADLINE          AS deadline
+              FROM   BPS_COMPANY_INQUIRY_APPLY             bcia             /* 各询价公司询价请求表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   bcia.ID = #{id} /*  */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   bcia.CODE = #{code} /*  */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(bcia.DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /*  */ 
+             </if>
+        
+             <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+               AND   bcia.CITY_CODE = #{cityCode} /*  */ 
+             </if>
+        
+             <if test='houseType != null and houseType != "" and houseType != "null" and houseType != "undefined"'>
+               AND   bcia.HOUSE_TYPE = #{houseType} /* 房屋类型(别墅，公寓) */ 
+             </if>
+        
+             <if test='plotsCode != null and plotsCode != "" and plotsCode != "null" and plotsCode != "undefined"'>
+               AND   bcia.PLOTS_CODE = #{plotsCode} /* 小区id(同询价公司一致) */ 
+             </if>
+        
+             <if test='plotsName != null and plotsName != "" and plotsName != "null" and plotsName != "undefined"'>
+               AND   bcia.PLOTS_NAME = #{plotsName} /* 小区名 */ 
+             </if>
+        
+             <if test='unitCode != null and unitCode != "" and unitCode != "null" and unitCode != "undefined"'>
+               AND   bcia.UNIT_CODE = #{unitCode} /* 楼栋id(同询价公司一致) */ 
+             </if>
+        
+             <if test='unitName != null and unitName != "" and unitName != "null" and unitName != "undefined"'>
+               AND   bcia.UNIT_NO = #{unitName} /* 楼栋号 */
+             </if>
+        
+             <if test='houseCode != null and houseCode != "" and houseCode != "null" and houseCode != "undefined"'>
+               AND   bcia.ROOM_CODE = #{houseCode} /* 房间id(同询价公司一致) */
+             </if>
+        
+             <if test='houseName != null and houseName != "" and houseName != "null" and houseName != "undefined"'>
+               AND   bcia.ROOM_NO = #{houseName} /* 房号 */ 
+             </if>
+        
+             <if test='area != null'>
+               AND   bcia.AREA = #{area} /* 房屋面积 */ 
+             </if>
+        
+             <if test='totalFloor != null'>
+               AND   bcia.TOTAL_FLOOR = #{totalFloor} /* 总楼层 */ 
+             </if>
+        
+             <if test='currentFloor != null'>
+               AND   bcia.CURRENT_FLOOR = #{currentFloor} /* 所在层 */ 
+             </if>
+        
+             <if test='towards != null and towards != "" and towards != "null" and towards != "undefined"'>
+               AND   bcia.TOWARDS = #{towards} /* 房屋朝向(东:1南:2西:3北:4) */ 
+             </if>
+        
+             <if test='yearBuilt != null and yearBuilt != "" and yearBuilt != "null" and yearBuilt != "undefined"'>
+               AND   bcia.COMPLETED_YEAR = #{yearBuilt} /* 竣工日期 */ 
+             </if>
+        
+             <if test='companyCode != null and companyCode != "" and companyCode != "null" and companyCode != "undefined"'>
+               AND   bcia.COMPANY_CODE = #{companyCode} /* 询价公司编号 */ 
+             </if>
+        
+             <if test='price != null'>
+               AND   bcia.PRICE = #{price} /* 询价公司估值 */ 
+             </if>
+        
+             <if test='priceTime != null'>
+               AND   date_format(bcia.PRICE_TIME ,'%Y-%m-%d') = #{priceTimeChar} /* 获取价格时间 */ 
+             </if>
+        
+             <if test='deadline != null'>
+               AND   date_format(bcia.DEADLINE ,'%Y-%m-%d') = #{deadlineChar} /* 失效时间 */ 
+             </if>
+
+            <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+                AND   bcia.STATUS = #{status}
+            </if>
+            <if test='autoPrice != null and autoPrice != "" and autoPrice != "null" and autoPrice != "undefined"'>
+                AND   bcia.AUTO_PRICE = #{autoPrice}
+            </if>
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+
+
+    <!--
+    **************************************************************************
+    * 6.验证多条件数据是否存在
+    * 注: 根据多条件验证该数据是否存在 ,并返回数据量.
+    **************************************************************************
+    -->
+    <select id="getCheckBy"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsCompanyInquiryApply"
+            resultType="java.lang.Integer">
+    
+            SELECT   /* getCheckBy+@com.vilio.bps.commonMapper.sql.BpsCompanyInquiryApplyMapper.xml */ 
+                     count(1)
+              FROM   BPS_COMPANY_INQUIRY_APPLY  /* 各询价公司询价请求表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   ID = #{id} /*  */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   CODE = #{code} /*  */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /*  */ 
+             </if>
+        
+             <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+               AND   CITY_CODE = #{cityCode} /*  */ 
+             </if>
+        
+             <if test='houseType != null and houseType != "" and houseType != "null" and houseType != "undefined"'>
+               AND   HOUSE_TYPE = #{houseType} /* 房屋类型(别墅，公寓) */ 
+             </if>
+        
+             <if test='plotsCode != null and plotsCode != "" and plotsCode != "null" and plotsCode != "undefined"'>
+               AND   PLOTS_CODE = #{plotsCode} /* 小区id(同询价公司一致) */ 
+             </if>
+        
+             <if test='plotsName != null and plotsName != "" and plotsName != "null" and plotsName != "undefined"'>
+               AND   PLOTS_NAME = #{plotsName} /* 小区名 */ 
+             </if>
+        
+             <if test='unitCode != null and unitCode != "" and unitCode != "null" and unitCode != "undefined"'>
+               AND   UNIT_CODE = #{unitCode} /* 楼栋id(同询价公司一致) */ 
+             </if>
+        
+             <if test='unitName != null and unitName != "" and unitName != "null" and unitName != "undefined"'>
+               AND   UNIT_NO = #{unitName} /* 楼栋号 */
+             </if>
+        
+             <if test='houseCode != null and houseCode != "" and houseCode != "null" and houseCode != "undefined"'>
+               AND   ROOM_CODE = #{houseCode} /* 房间id(同询价公司一致) */
+             </if>
+        
+             <if test='houseName != null and houseName != "" and houseName != "null" and houseName != "undefined"'>
+               AND   ROOM_NO = #{houseName} /* 房号 */ 
+             </if>
+        
+             <if test='area != null'>
+               AND   AREA = #{area} /* 房屋面积 */ 
+             </if>
+        
+             <if test='totalFloor != null'>
+               AND   TOTAL_FLOOR = #{totalFloor} /* 总楼层 */ 
+             </if>
+        
+             <if test='currentFloor != null'>
+               AND   CURRENT_FLOOR = #{currentFloor} /* 所在层 */ 
+             </if>
+        
+             <if test='towards != null and towards != "" and towards != "null" and towards != "undefined"'>
+               AND   TOWARDS = #{towards} /* 房屋朝向(东:1南:2西:3北:4) */ 
+             </if>
+        
+             <if test='yearBuilt != null and yearBuilt != "" and yearBuilt != "null" and yearBuilt != "undefined"'>
+               AND   COMPLETED_YEAR = #{yearBuilt} /* 竣工日期 */ 
+             </if>
+        
+             <if test='companyCode != null and companyCode != "" and companyCode != "null" and companyCode != "undefined"'>
+               AND   COMPANY_CODE = #{companyCode} /* 询价公司编号 */ 
+             </if>
+        
+             <if test='price != null'>
+               AND   PRICE = #{price} /* 询价公司估值 */ 
+             </if>
+        
+             <if test='priceTime != null'>
+               AND   date_format(PRICE_TIME ,'%Y-%m-%d') = #{priceTimeChar} /* 获取价格时间 */ 
+             </if>
+        
+             <if test='deadline != null'>
+               AND   date_format(DEADLINE ,'%Y-%m-%d') = #{deadlineChar} /* 失效时间 */ 
+             </if>
+
+            <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+                AND   STATUS = #{status}
+            </if>
+            <if test='autoPrice != null and autoPrice != "" and autoPrice != "null" and autoPrice != "undefined"'>
+                AND   AUTO_PRICE = #{autoPrice}
+            </if>
+
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+    </select>
+    
+    <select id="getCheckByPrmMap"
+            parameterType="java.util.HashMap"
+            resultType="java.lang.Integer">
+    
+            SELECT   /* getCheckByPrmMap+@com.vilio.bps.commonMapper.sql.BpsCompanyInquiryApplyMapper.xml */ 
+                     count(1)
+              FROM   BPS_COMPANY_INQUIRY_APPLY  /* 各询价公司询价请求表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   ID = #{id} /*  */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   CODE = #{code} /*  */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /*  */ 
+             </if>
+        
+             <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+               AND   CITY_CODE = #{cityCode} /*  */ 
+             </if>
+        
+             <if test='houseType != null and houseType != "" and houseType != "null" and houseType != "undefined"'>
+               AND   HOUSE_TYPE = #{houseType} /* 房屋类型(别墅，公寓) */ 
+             </if>
+        
+             <if test='plotsCode != null and plotsCode != "" and plotsCode != "null" and plotsCode != "undefined"'>
+               AND   PLOTS_CODE = #{plotsCode} /* 小区id(同询价公司一致) */ 
+             </if>
+        
+             <if test='plotsName != null and plotsName != "" and plotsName != "null" and plotsName != "undefined"'>
+               AND   PLOTS_NAME = #{plotsName} /* 小区名 */ 
+             </if>
+        
+             <if test='unitCode != null and unitCode != "" and unitCode != "null" and unitCode != "undefined"'>
+               AND   UNIT_CODE = #{unitCode} /* 楼栋id(同询价公司一致) */ 
+             </if>
+        
+             <if test='unitName != null and unitName != "" and unitName != "null" and unitName != "undefined"'>
+               AND   UNIT_NO = #{unitName} /* 楼栋号 */
+             </if>
+        
+             <if test='houseCode != null and houseCode != "" and houseCode != "null" and houseCode != "undefined"'>
+               AND   ROOM_CODE = #{houseCode} /* 房间id(同询价公司一致) */
+             </if>
+        
+             <if test='houseName != null and houseName != "" and houseName != "null" and houseName != "undefined"'>
+               AND   ROOM_NO = #{houseName} /* 房号 */ 
+             </if>
+        
+             <if test='area != null'>
+               AND   AREA = #{area} /* 房屋面积 */ 
+             </if>
+        
+             <if test='totalFloor != null'>
+               AND   TOTAL_FLOOR = #{totalFloor} /* 总楼层 */ 
+             </if>
+        
+             <if test='currentFloor != null'>
+               AND   CURRENT_FLOOR = #{currentFloor} /* 所在层 */ 
+             </if>
+        
+             <if test='towards != null and towards != "" and towards != "null" and towards != "undefined"'>
+               AND   TOWARDS = #{towards} /* 房屋朝向(东:1南:2西:3北:4) */ 
+             </if>
+        
+             <if test='yearBuilt != null and yearBuilt != "" and yearBuilt != "null" and yearBuilt != "undefined"'>
+               AND   COMPLETED_YEAR = #{yearBuilt} /* 竣工日期 */ 
+             </if>
+        
+             <if test='companyCode != null and companyCode != "" and companyCode != "null" and companyCode != "undefined"'>
+               AND   COMPANY_CODE = #{companyCode} /* 询价公司编号 */ 
+             </if>
+        
+             <if test='price != null'>
+               AND   PRICE = #{price} /* 询价公司估值 */ 
+             </if>
+        
+             <if test='priceTime != null'>
+               AND   date_format(PRICE_TIME ,'%Y-%m-%d') = #{priceTimeChar} /* 获取价格时间 */ 
+             </if>
+        
+             <if test='deadline != null'>
+               AND   date_format(DEADLINE ,'%Y-%m-%d') = #{deadlineChar} /* 失效时间 */ 
+             </if>
+
+            <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+                AND   STATUS = #{status}
+            </if>
+
+        <if test='autoPrice != null and autoPrice != "" and autoPrice != "null" and autoPrice != "undefined"'>
+            AND   AUTO_PRICE = #{autoPrice}
+        </if>
+
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+    </select>
+
+    <select id="queryInquiryApplyByResultCode" parameterType="java.lang.String" resultType="com.vilio.bps.commonMapper.pojo.BpsCompanyInquiryApply">
+        SELECT
+        cia.company_code AS companyCode,
+        cia.plots_code AS plotsCode,
+        cia.unit_code as unitCode,
+        cia.unit_no AS unitName,
+        cia.room_code AS houseCode,
+        cia.room_no AS houseName,
+        cia.area,
+        cia.total_floor AS totalFloor,
+        cia.current_floor AS currentFloor
+        FROM
+        bps_company_inquiry_apply cia
+        JOIN bps_result_apply_relation re ON cia.code = re.apply_code
+        WHERE
+        re.result_code=#{resultCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryInquiryApplyByApplyParam" parameterType="com.vilio.bps.commonMapper.pojo.BpsCompanyInquiryApply" resultType="com.vilio.bps.commonMapper.pojo.BpsCompanyInquiryApply">
+        SELECT
+        cia.code,
+        cia.price_time as priceTime ,
+        cia.price,
+        cia.company_code as companyCode,
+        cia.status
+        FROM
+        bps_company_inquiry_apply cia
+        WHERE cia.price_time  > #{priceTime,jdbcType=TIMESTAMP}
+        and cia.company_code = #{companyCode,jdbcType=VARCHAR}
+        and cia.city_code = #{cityCode,jdbcType=VARCHAR}
+        <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+            AND   cia.status = #{status,jdbcType=VARCHAR}
+        </if>
+        <choose>
+            <when test="plotsCode != null">
+                AND cia.plots_code = #{plotsCode,jdbcType=VARCHAR}
+            </when>
+            <otherwise>
+                AND cia.plots_code is null
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="unitCode != null">
+                AND cia.unit_code = #{unitCode,jdbcType=VARCHAR}
+            </when>
+            <otherwise>
+                AND cia.unit_code is null
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="houseCode != null">
+                AND cia.room_code = #{houseCode,jdbcType=VARCHAR}
+            </when>
+            <otherwise>
+                AND cia.room_code is null
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="area != null">
+                AND cia.area = #{area,jdbcType=VARCHAR}
+            </when>
+            <otherwise>
+                AND cia.area  is null
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="totalFloor != null">
+                AND cia.total_floor =#{totalFloor,jdbcType=VARCHAR}
+            </when>
+            <otherwise>
+                AND cia.total_floor is null
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="currentFloor != null">
+                AND cia.current_floor = #{currentFloor,jdbcType=VARCHAR}
+            </when>
+            <otherwise>
+                AND cia.current_floor is null
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="areaCode != null">
+                AND cia.area_code = #{areaCode,jdbcType=VARCHAR}
+            </when>
+            <otherwise>
+                AND cia.area_code is null
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="address != null">
+                AND cia.address = #{address,jdbcType=VARCHAR}
+            </when>
+            <otherwise>
+                AND cia.address  is null
+            </otherwise>
+        </choose>
+        ORDER BY
+        cia.date_created DESC
+    </select>
+
+    <insert id="saveApply"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsCompanyInquiryApply">
+
+        INSERT
+        INTO   BPS_COMPANY_INQUIRY_APPLY
+        (
+        CODE
+        ,CITY_CODE
+        ,HOUSE_TYPE
+        ,PLOTS_CODE
+        ,PLOTS_NAME
+        ,UNIT_CODE
+        ,UNIT_NO
+        ,ROOM_CODE
+        ,ROOM_NO
+        ,AREA
+        ,TOTAL_FLOOR
+        ,CURRENT_FLOOR
+        ,TOWARDS
+        ,COMPLETED_YEAR
+        ,COMPANY_CODE
+        ,address
+        ,area_code
+        <if test='autoPrice != null and autoPrice != "" '>
+            ,auto_price
+        </if>
+        ,area_name
+        ,price_time
+        ,price
+        ,status
+        )
+        VALUES  (
+        #{code, jdbcType=VARCHAR}
+        ,#{cityCode, jdbcType=VARCHAR}
+        ,#{houseType,jdbcType=VARCHAR}
+        ,#{plotsCode,jdbcType=VARCHAR}
+        ,#{plotsName,jdbcType=VARCHAR}
+        ,#{unitCode,jdbcType=VARCHAR}
+        ,#{unitName,jdbcType=VARCHAR}
+        ,#{houseCode,jdbcType=VARCHAR}
+        ,#{houseName,jdbcType=VARCHAR}
+        ,#{area,jdbcType=DECIMAL}
+        ,#{totalFloor,jdbcType=INTEGER}
+        ,#{currentFloor,jdbcType=INTEGER}
+        ,#{towards,jdbcType=VARCHAR}
+        ,#{yearBuilt,jdbcType=VARCHAR}
+        ,#{companyCode,jdbcType=VARCHAR}
+        ,#{address,jdbcType=VARCHAR}
+        ,#{areaCode,jdbcType=VARCHAR}
+        <if test='autoPrice != null and autoPrice != "" '>
+            ,#{autoPrice,jdbcType=VARCHAR}
+        </if>
+        ,#{areaName,jdbcType=VARCHAR}
+        ,#{priceTime,jdbcType=TIMESTAMP}
+        ,#{price,jdbcType=VARCHAR}
+        ,#{status,jdbcType=VARCHAR}
+        )
+
+    </insert>
+
+    <update id="updateApplyByCode"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsCompanyInquiryApply">
+        UPDATE
+        BPS_COMPANY_INQUIRY_APPLY
+        SET  CITY_CODE                    = #{cityCode,jdbcType=VARCHAR}
+        ,HOUSE_TYPE                   = #{houseType,jdbcType=VARCHAR}
+        ,PLOTS_CODE                   = #{plotsCode,jdbcType=VARCHAR}
+        ,PLOTS_NAME                   = #{plotsName,jdbcType=VARCHAR}
+        ,UNIT_CODE                    = #{unitCode,jdbcType=VARCHAR}
+        ,UNIT_NO                      = #{unitName,jdbcType=VARCHAR}
+        ,ROOM_CODE                    = #{houseCode,jdbcType=VARCHAR}
+        ,ROOM_NO                      = #{houseName,jdbcType=VARCHAR}
+        ,AREA                         = #{area,jdbcType=DECIMAL}
+        ,TOTAL_FLOOR                  = #{totalFloor,jdbcType=INTEGER}
+        ,CURRENT_FLOOR                = #{currentFloor,jdbcType=INTEGER}
+        ,TOWARDS                      = #{towards,jdbcType=VARCHAR}
+        ,COMPLETED_YEAR               = #{yearBuilt,jdbcType=VARCHAR}
+        ,COMPANY_CODE                 = #{companyCode,jdbcType=VARCHAR}
+        ,PRICE                        = #{price,jdbcType=DECIMAL}
+        ,unit_price                    = #{unitPrice,jdbcType=DECIMAL}
+        ,PRICE_TIME                   = #{priceTime,jdbcType=TIMESTAMP}
+        ,STATUS              = #{status,jdbcType=VARCHAR}
+        ,DEADLINE          = #{deadline,jdbcType=TIMESTAMP}
+        WHERE   CODE    = #{code,jdbcType=VARCHAR}
+
+    </update>
+
+    <select id="queryInquiryApplyByParams" parameterType="java.util.HashMap" resultType="com.vilio.bps.commonMapper.pojo.BpsCompanyInquiryApply">
+        SELECT
+        cia.code,
+        cia.price_time as priceTime ,
+        cia.price,
+        cia.status
+        FROM
+        bps_company_inquiry_apply cia
+        WHERE cia.price_time  > #{priceTime,jdbcType=TIMESTAMP}
+        and cia.company_code = #{companyCode,jdbcType=VARCHAR}
+        and cia.city_code = #{cityCode,jdbcType=VARCHAR}
+        <choose>
+            <when test="plotsCode != null">
+                AND cia.plots_code = #{plotsCode,jdbcType=VARCHAR}
+            </when>
+            <otherwise>
+                AND cia.plots_code is null
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="unitCode != null">
+                AND cia.unit_code = #{unitCode,jdbcType=VARCHAR}
+            </when>
+            <otherwise>
+                AND cia.unit_code is null
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="houseCode != null">
+                AND cia.room_code = #{houseCode,jdbcType=VARCHAR}
+            </when>
+            <otherwise>
+                AND cia.room_code is null
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="area != null">
+                AND cia.area = #{area,jdbcType=VARCHAR}
+            </when>
+            <otherwise>
+                AND cia.area  is null
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="totalFloor != null">
+                AND cia.total_floor =#{totalFloor,jdbcType=VARCHAR}
+            </when>
+            <otherwise>
+                AND cia.total_floor is null
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="currentFloor != null">
+                AND cia.current_floor = #{currentFloor,jdbcType=VARCHAR}
+            </when>
+            <otherwise>
+                AND cia.current_floor is null
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="areaCode != null">
+                AND cia.area_code = #{areaCode,jdbcType=VARCHAR}
+            </when>
+            <otherwise>
+                AND cia.area_code is null
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="address != null">
+                AND cia.address = #{address,jdbcType=VARCHAR}
+            </when>
+            <otherwise>
+                AND cia.address  is null
+            </otherwise>
+        </choose>
+        ORDER BY
+        cia.date_created DESC
+    </select>
+
+    <select id="getInquiryInfoBySerialNo" parameterType="java.lang.String" resultType="com.vilio.bps.commonMapper.pojo.BpsCompanyInquiryApply">
+      select * from(
+        SELECT
+        a.city_code as cityCode,
+        a.company_code AS companyCode,
+        a.plots_code AS plotsCode,
+        a.plots_name AS plotsName,
+        a.unit_code AS unitCode,
+        a.unit_no AS unitName,
+        a.room_code AS houseCode,
+        a.room_no AS houseName,
+        a.area,
+        a.total_floor AS totalFloor,
+        a.current_floor AS currentFloor,
+        a.address,
+        a.status,
+        a.area_code as areaCode,
+        a.area_name as areaName,
+        a.auto_price as autoPrice,
+        a.price,
+        a.unit_price as unitPrice,
+        t.order_no
+        FROM
+        bps_inquiry_apply_relation ar
+        JOIN bps_company_inquiry_apply a ON ar.apply_code = a.CODE
+        join bps_company_city t on t.company_code = a.company_code and t.city_code = a.city_code
+        WHERE
+        ar.serial_no =  #{serialNo,jdbcType=VARCHAR}
+      )m order by m.order_no
+    </select>
+
+    <update id="updateApplyByInquirySerialNoAndCompanyCode" parameterType="java.util.Map">
+        UPDATE bps_company_inquiry_apply t
+        SET t.price = #{price,jdbcType=DECIMAL},
+         t.status =  #{status,jdbcType=VARCHAR},
+         t.deadline = #{deadline,jdbcType=TIMESTAMP},
+         t.price_time = #{priceTime,jdbcType=TIMESTAMP}
+        WHERE
+            t.company_code = #{companyCode,jdbcType=VARCHAR}
+            and t.status != '02'
+        AND t.CODE IN (
+            SELECT
+                ar.apply_code
+            FROM
+                bps_inquiry_apply_relation ar
+            WHERE
+                ar.serial_no = #{serialNo,jdbcType=VARCHAR}
+            )
+    </update>
+    
+    <select id="queryInquiryApplyNeedRepeatRequest" resultType="com.vilio.bps.commonMapper.pojo.BpsCompanyInquiryApply">
+        SELECT
+            t.address,
+            t.area,
+            t.area_code AS areaCode,
+            t.auto_price AS autoPrice,
+            t.city_code AS cityCode,
+            t.code,
+            t.company_code AS companyCode,
+            t.completed_year AS yearBuilt,
+            t.current_floor AS currentFloor,
+            t.total_floor as totalFloor,
+            t.deadline,
+            t.house_type AS houseType,
+            t.plots_code AS plotsCode,
+            t.plots_name AS plotsName,
+            t.price,
+            t.price_time AS priceTime,
+            t.room_code AS houseCode,
+            t.room_no AS houseName,
+            t.status,
+            t.towards,
+            t.unit_code AS unitCode,
+            t.unit_no AS unitNo,
+            t.date_created AS dateCreated
+        FROM
+            bps_company_inquiry_apply t
+        WHERE
+            t. STATUS = '01'
+    </select>
+
+    <update id="updateApplyPriceByCode"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsCompanyInquiryApply">
+        UPDATE
+        BPS_COMPANY_INQUIRY_APPLY
+        SET
+        STATUS   = #{status,jdbcType=VARCHAR}
+        <if test='price != null'>
+            ,PRICE  = #{price,jdbcType=DECIMAL}
+        </if>
+        <if test='unitPrice != null'>
+            ,unit_price  = #{unitPrice,jdbcType=DECIMAL}
+        </if>
+        <if test='priceTime != null'>
+            ,PRICE_TIME = #{priceTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test='deadline != null'>
+            ,DEADLINE = #{deadline,jdbcType=TIMESTAMP}
+        </if>
+        WHERE   CODE    = #{code,jdbcType=VARCHAR}
+    </update>
+</mapper>

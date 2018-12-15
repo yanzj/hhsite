@@ -1,0 +1,61 @@
+<div class="row">
+  <ol class="breadcrumbNav col-12">
+    <li class="active">修改密码</li>
+  </ol>
+</div>
+<div class="row margin-bottom-40">
+  <div class="col-12">
+    <hr class="breadcrumbNavLine">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-2 filed-name">手机号：</div>
+  <div class="col-10 filed-text">
+    {{mobile}}
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-2 filed-name">姓名：</div>
+  <div class="col-10 filed-text">{{fullName}}</div>
+</div>
+
+<div class="row">
+  <div class="col-2 filed-name">公司：</div>
+  <div class="col-10 filed-text">{{distributorName}}</div>
+</div>
+
+<div class="row">
+  <div class="col-2 filed-name"><span>*</span>原密码：</div>
+  <div class="col-2 white-space-nowrap">
+    <input type="text" class="msg-input width-100per" id="primaryPsw" onfocus="this.type='password'" [(ngModel)]="primaryPswValue">
+  </div>
+  <div class="col-8"></div>
+</div>
+
+<div class="row">
+  <div class="col-2 filed-name"><span>*</span>新密码：</div>
+  <div class="col-2 white-space-nowrap">
+    <input type="text" class="msg-input width-100per" id="newPsw" [(ngModel)]="newPswValue" onfocus="this.type='password'">
+  </div>
+  <div class="col-6 filed-text">至少6位字符</div>
+</div>
+
+<div class="row">
+  <div class="col-2 filed-name"><span>*</span>确认新密码：</div>
+  <div class="col-2 white-space-nowrap">
+    <input type="text" class="msg-input width-100per" id="confirmPsw" [(ngModel)]="confirmPswValue" onfocus="this.type='password'">
+  </div>
+  <div class="col-8"></div>
+</div>
+
+  <div class="row margin-top-40">
+    <div class="col-2">
+      <button class="orange-button float-right" (click)="conserve()" id="conserve">保存</button>
+    </div>
+    <div class="col-10">
+      <button class="gray-button float-left" (click)="back()" id="back">取消</button>
+    </div>
+  </div>
+

@@ -1,0 +1,782 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!--
+******************************************************************************
+* 数据库表：NLBS_MESSAGE_RECEIVE
+* 表的名称：
+* 对应实体：com.vilio.nlbs.commonMapper.pojo.NlbsMessageReceive
+* 开发日期：2017-06-21
+* 技术服务：www.fwjava.com
+******************************************************************************
+-->
+<mapper namespace="com.vilio.nlbs.commonMapper.dao.NlbsMessageReceiveMapper">
+
+    <!--
+    **************************************************************************
+    * 1.新增一条数据
+    * 注: 根据Bean实体执行新增操作.
+    **************************************************************************
+    -->
+    <insert id="getInsert"
+            parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsMessageReceive"
+            useGeneratedKeys="true"
+            keyProperty="id">
+    
+            INSERT   /* getInsert+@com.vilio.nlbs.commonMapper.sql.NlbsMessageReceiveMapper.xml */ 
+              INTO   NLBS_MESSAGE_RECEIVE           /*  */ 
+                    (
+                     code
+                     SERIAL_NO                      /* 消息序列号(消息平台序号) */
+                    ,TITLE                          /* 消息标题 */
+                    ,CONTENT                        /* 消息内容 */ 
+                    ,SENDER_COMPANY_CODE            /* 发送方公司编号 */ 
+                    ,SENDER_COMPANY_NAME            /*  */ 
+                    ,SENDER_DEPARTMENT_CODE         /* 发送方所在部门编号 */ 
+                    ,SENDER_DEPARTMENT_NAME         /* 发送方所在部门名称 */ 
+                    ,SENDER_IDENTITY_ID             /* 发送用户编号 */ 
+                    ,SENDER_NAME                    /* 发送用户名 */ 
+                    ,RECEIVER_IDENTITY_ID           /* 接收用户编号 */ 
+                    ,CREATE_TIME                    /*  */ 
+                    ,INTERNAL_PARAM                 /*  */ 
+                    ,STATUS                         /* 状态(0未读1已读) */ 
+                    )
+            VALUES  (
+                     #{code}
+                     #{serialNo}                    /* 消息序列号(消息平台序号) */
+                    ,#{title}                       /* 消息标题 */
+                    ,#{content}                     /* 消息内容 */ 
+                    ,#{senderCompanyCode}           /* 发送方公司编号 */ 
+                    ,#{senderCompanyName}           /*  */ 
+                    ,#{senderDepartmentCode}        /* 发送方所在部门编号 */ 
+                    ,#{senderDepartmentName}        /* 发送方所在部门名称 */ 
+                    ,#{senderIdentityId}            /* 发送用户编号 */ 
+                    ,#{senderName}                  /* 发送用户名 */ 
+                    ,#{receiverIdentityId}          /* 接收用户编号 */ 
+                    ,#{createTime}                  /*  */ 
+                    ,#{internalParam}               /*  */ 
+                    ,#{status}                      /* 状态(0未读1已读) */ 
+                    )
+         
+    </insert>
+
+    <insert id="getInsertPrmMap"
+            parameterType="java.util.HashMap"
+            useGeneratedKeys="true"
+            keyProperty="id">
+    
+            INSERT   /* getInsertPrmMap+@com.vilio.nlbs.commonMapper.sql.NlbsMessageReceiveMapper.xml */ 
+              INTO   NLBS_MESSAGE_RECEIVE           /*  */ 
+                    (
+                     code
+                    ,SERIAL_NO                      /* 消息序列号(消息平台序号) */
+                    ,TITLE                          /* 消息标题 */
+                    ,CONTENT                        /* 消息内容 */ 
+                    ,SENDER_COMPANY_CODE            /* 发送方公司编号 */ 
+                    ,SENDER_COMPANY_NAME            /*  */ 
+                    ,SENDER_DEPARTMENT_CODE         /* 发送方所在部门编号 */ 
+                    ,SENDER_DEPARTMENT_NAME         /* 发送方所在部门名称 */ 
+                    ,SENDER_IDENTITY_ID             /* 发送用户编号 */ 
+                    ,SENDER_NAME                    /* 发送用户名 */ 
+                    ,RECEIVER_IDENTITY_ID           /* 接收用户编号 */ 
+                    ,CREATE_TIME                    /*  */ 
+                    ,INTERNAL_PARAM                 /*  */ 
+                    ,STATUS                         /* 状态(0未读1已读) */ 
+                    )
+            VALUES  (
+                     #{code}
+                    ,#{serialNo}                    /* 消息序列号(消息平台序号) */
+                    ,#{title}                       /* 消息标题 */
+                    ,#{content}                     /* 消息内容 */ 
+                    ,#{senderCompanyCode}           /* 发送方公司编号 */ 
+                    ,#{senderCompanyName}           /*  */ 
+                    ,#{senderDepartmentCode}        /* 发送方所在部门编号 */ 
+                    ,#{senderDepartmentName}        /* 发送方所在部门名称 */ 
+                    ,#{senderIdentityId}            /* 发送用户编号 */ 
+                    ,#{senderName}                  /* 发送用户名 */ 
+                    ,#{receiverIdentityId}          /* 接收用户编号 */ 
+                    ,#{createTime}                  /*  */ 
+                    ,#{internalParam}               /*  */ 
+                    ,#{status}                      /* 状态(0未读1已读) */ 
+                    )
+         
+    </insert>
+
+
+    <!--
+    **************************************************************************
+    * 2.删除一条数据
+    * 注: 根据Bean实体的主键ID执行删除操作.
+    **************************************************************************
+    -->
+    <delete id="getDelete"
+            parameterType="java.lang.Integer">
+    
+            DELETE   /* getDelete+@com.vilio.nlbs.commonMapper.sql.NlbsMessageReceiveMapper.xml */ 
+              FROM   NLBS_MESSAGE_RECEIVE    /*  */ 
+             WHERE   ID = #{_parameter}      /* 数据主键 */ 
+         
+    </delete>
+
+
+    <!--
+    **************************************************************************
+    * 3.变更一条数据
+    * 注: 根据Bean实体的主键ID执行变更操作.
+    **************************************************************************
+    -->
+    <update id="getUpdate"
+            parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsMessageReceive">
+    
+            UPDATE   /* getUpdate+@com.vilio.nlbs.commonMapper.sql.NlbsMessageReceiveMapper.xml */ 
+                     NLBS_MESSAGE_RECEIVE                                   /*  */ 
+               SET   SERIAL_NO                 = #{serialNo}                /* 消息序列号(消息平台序号) */ 
+                    ,code                     = #{code}
+                    ,TITLE                     = #{title}                   /* 消息标题 */
+                    ,CONTENT                   = #{content}                 /* 消息内容 */
+                    ,SENDER_COMPANY_CODE       = #{senderCompanyCode}       /* 发送方公司编号 */ 
+                    ,SENDER_COMPANY_NAME       = #{senderCompanyName}       /*  */ 
+                    ,SENDER_DEPARTMENT_CODE    = #{senderDepartmentCode}    /* 发送方所在部门编号 */ 
+                    ,SENDER_DEPARTMENT_NAME    = #{senderDepartmentName}    /* 发送方所在部门名称 */ 
+                    ,SENDER_IDENTITY_ID        = #{senderIdentityId}        /* 发送用户编号 */ 
+                    ,SENDER_NAME               = #{senderName}              /* 发送用户名 */ 
+                    ,RECEIVER_IDENTITY_ID      = #{receiverIdentityId}      /* 接收用户编号 */ 
+                    ,CREATE_TIME               = #{createTime}              /*  */ 
+                    ,INTERNAL_PARAM            = #{internalParam}           /*  */ 
+                    ,STATUS                    = #{status}                  /* 状态(0未读1已读) */ 
+             WHERE   ID                        = #{id}                      /* 数据主键 */ 
+         
+    </update>
+
+    <update id="getUpdatePrmMap"
+            parameterType="java.util.HashMap">
+    
+            UPDATE   /* getUpdatePrmMap+@com.vilio.nlbs.commonMapper.sql.NlbsMessageReceiveMapper.xml */ 
+                     NLBS_MESSAGE_RECEIVE                                   /*  */ 
+               SET   SERIAL_NO                 = #{serialNo}                /* 消息序列号(消息平台序号) */ 
+                    ,code                     = #{code}
+                    ,TITLE                     = #{title}                   /* 消息标题 */
+                    ,CONTENT                   = #{content}                 /* 消息内容 */
+                    ,SENDER_COMPANY_CODE       = #{senderCompanyCode}       /* 发送方公司编号 */ 
+                    ,SENDER_COMPANY_NAME       = #{senderCompanyName}       /*  */ 
+                    ,SENDER_DEPARTMENT_CODE    = #{senderDepartmentCode}    /* 发送方所在部门编号 */ 
+                    ,SENDER_DEPARTMENT_NAME    = #{senderDepartmentName}    /* 发送方所在部门名称 */ 
+                    ,SENDER_IDENTITY_ID        = #{senderIdentityId}        /* 发送用户编号 */ 
+                    ,SENDER_NAME               = #{senderName}              /* 发送用户名 */ 
+                    ,RECEIVER_IDENTITY_ID      = #{receiverIdentityId}      /* 接收用户编号 */ 
+                    ,CREATE_TIME               = #{createTime}              /*  */ 
+                    ,INTERNAL_PARAM            = #{internalParam}           /*  */ 
+                    ,STATUS                    = #{status}                  /* 状态(0未读1已读) */ 
+             WHERE   ID                        = #{id}                      /* 数据主键 */ 
+         
+    </update>
+
+
+    <!--
+    **************************************************************************
+    * 4.获取一个Bean实体
+    * 注: 根据Bean实体的主键ID获取一个Bean实体.
+    **************************************************************************
+    -->
+    <select id="getBean"
+            parameterType="java.lang.Integer"
+            resultType="com.vilio.nlbs.commonMapper.pojo.NlbsMessageReceive">
+    
+            SELECT   /* getBean+@com.vilio.nlbs.commonMapper.sql.NlbsMessageReceiveMapper.xml */ 
+                     nmr.ID                         AS id                      /* 数据主键 */ 
+                    ,nmr.code                  AS code
+                    ,nmr.SERIAL_NO                  AS serialNo                /* 消息序列号(消息平台序号) */
+                    ,nmr.TITLE                      AS title                   /* 消息标题 */
+                    ,nmr.CONTENT                    AS content                 /* 消息内容 */ 
+                    ,nmr.SENDER_COMPANY_CODE        AS senderCompanyCode       /* 发送方公司编号 */ 
+                    ,nmr.SENDER_COMPANY_NAME        AS senderCompanyName       /*  */ 
+                    ,nmr.SENDER_DEPARTMENT_CODE     AS senderDepartmentCode    /* 发送方所在部门编号 */ 
+                    ,nmr.SENDER_DEPARTMENT_NAME     AS senderDepartmentName    /* 发送方所在部门名称 */ 
+                    ,nmr.SENDER_IDENTITY_ID         AS senderIdentityId        /* 发送用户编号 */ 
+                    ,nmr.SENDER_NAME                AS senderName              /* 发送用户名 */ 
+                    ,nmr.RECEIVER_IDENTITY_ID       AS receiverIdentityId      /* 接收用户编号 */ 
+                    ,nmr.CREATE_TIME                AS createTime              /*  */ 
+                    ,nmr.INTERNAL_PARAM             AS internalParam           /*  */ 
+                    ,nmr.STATUS                     AS status                  /* 状态(0未读1已读) */ 
+              FROM   NLBS_MESSAGE_RECEIVE              nmr                     /*  */ 
+             WHERE   nmr.ID = #{_parameter}                                    /* 数据主键 */ 
+         
+    </select>
+
+    <select id="getBeanRtnMap"
+            parameterType="java.lang.Integer"
+            resultType="java.util.HashMap">
+    
+            SELECT   /* getBeanRtnMap+@com.vilio.nlbs.commonMapper.sql.NlbsMessageReceiveMapper.xml */ 
+                     nmr.ID                         AS id                      /* 数据主键 */ 
+                    ,nmr.SERIAL_NO                  AS serialNo                /* 消息序列号(消息平台序号) */ 
+                    ,nmr.code                  AS code
+                    ,nmr.TITLE                      AS title                   /* 消息标题 */
+                    ,nmr.CONTENT                    AS content                 /* 消息内容 */ 
+                    ,nmr.SENDER_COMPANY_CODE        AS senderCompanyCode       /* 发送方公司编号 */ 
+                    ,nmr.SENDER_COMPANY_NAME        AS senderCompanyName       /*  */ 
+                    ,nmr.SENDER_DEPARTMENT_CODE     AS senderDepartmentCode    /* 发送方所在部门编号 */ 
+                    ,nmr.SENDER_DEPARTMENT_NAME     AS senderDepartmentName    /* 发送方所在部门名称 */ 
+                    ,nmr.SENDER_IDENTITY_ID         AS senderIdentityId        /* 发送用户编号 */ 
+                    ,nmr.SENDER_NAME                AS senderName              /* 发送用户名 */ 
+                    ,nmr.RECEIVER_IDENTITY_ID       AS receiverIdentityId      /* 接收用户编号 */ 
+                    ,nmr.CREATE_TIME                AS createTime              /*  */ 
+                    ,nmr.INTERNAL_PARAM             AS internalParam           /*  */ 
+                    ,nmr.STATUS                     AS status                  /* 状态(0未读1已读) */ 
+              FROM   NLBS_MESSAGE_RECEIVE              nmr                     /*  */ 
+             WHERE   nmr.ID = #{_parameter}                                    /* 数据主键 */ 
+         
+    </select>
+
+
+    <!--
+    **************************************************************************
+    * 5.条件查询
+    * 注: 支持多条件查询、模糊查询、日期比较查询等操作.
+    **************************************************************************
+    -->
+    <select id="getList"
+            parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsMessageReceive"
+            resultType="com.vilio.nlbs.commonMapper.pojo.NlbsMessageReceive">
+
+        SELECT   /* getList+@com.vilio.nlbs.commonMapper.sql.NlbsMessageReceiveMapper.xml */
+        nmr.ID                         AS id                      /* 数据主键 */
+        ,nmr.SERIAL_NO                  AS serialNo                /* 消息序列号(消息平台序号) */
+        ,nmr.code                  AS code
+        ,nmr.TITLE                      AS title                   /* 消息标题 */
+        ,nmr.CONTENT                    AS content                 /* 消息内容 */
+        ,nmr.SENDER_COMPANY_CODE        AS senderCompanyCode       /* 发送方公司编号 */
+        ,nmr.SENDER_COMPANY_NAME        AS senderCompanyName       /*  */
+        ,nmr.SENDER_DEPARTMENT_CODE     AS senderDepartmentCode    /* 发送方所在部门编号 */
+        ,nmr.SENDER_DEPARTMENT_NAME     AS senderDepartmentName    /* 发送方所在部门名称 */
+        ,nmr.SENDER_IDENTITY_ID         AS senderIdentityId        /* 发送用户编号 */
+        ,nmr.SENDER_NAME                AS senderName              /* 发送用户名 */
+        ,nmr.RECEIVER_IDENTITY_ID       AS receiverIdentityId      /* 接收用户编号 */
+        ,nmr.CREATE_TIME                AS createTime              /*  */
+        ,nmr.INTERNAL_PARAM             AS internalParam           /*  */
+        ,nmr.STATUS                     AS status                  /* 状态(0未读1已读) */
+        FROM   NLBS_MESSAGE_RECEIVE              nmr                     /*  */
+        WHERE   1 = 1
+
+        <if test='id != null'>
+            AND   nmr.ID = #{id} /* 数据主键 */
+        </if>
+
+        <if test='serialNo != null and serialNo != "" and serialNo != "null" and serialNo != "undefined"'>
+            AND   nmr.SERIAL_NO = #{serialNo} /* 消息序列号(消息平台序号) */
+        </if>
+        <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+            AND   nmr.code = #{code}
+        </if>
+
+        <if test='title != null and title != "" and title != "null" and title != "undefined"'>
+            AND   nmr.TITLE = #{title} /* 消息标题 */
+        </if>
+
+        <if test='content != null and content != "" and content != "null" and content != "undefined"'>
+            AND   nmr.CONTENT = #{content} /* 消息内容 */
+        </if>
+
+        <if test='senderCompanyCode != null and senderCompanyCode != "" and senderCompanyCode != "null" and senderCompanyCode != "undefined"'>
+            AND   nmr.SENDER_COMPANY_CODE = #{senderCompanyCode} /* 发送方公司编号 */
+        </if>
+
+        <if test='senderCompanyName != null and senderCompanyName != "" and senderCompanyName != "null" and senderCompanyName != "undefined"'>
+            AND   nmr.SENDER_COMPANY_NAME = #{senderCompanyName} /*  */
+        </if>
+
+        <if test='senderDepartmentCode != null and senderDepartmentCode != "" and senderDepartmentCode != "null" and senderDepartmentCode != "undefined"'>
+            AND   nmr.SENDER_DEPARTMENT_CODE = #{senderDepartmentCode} /* 发送方所在部门编号 */
+        </if>
+
+        <if test='senderDepartmentName != null and senderDepartmentName != "" and senderDepartmentName != "null" and senderDepartmentName != "undefined"'>
+            AND   nmr.SENDER_DEPARTMENT_NAME = #{senderDepartmentName} /* 发送方所在部门名称 */
+        </if>
+
+        <if test='senderIdentityId != null and senderIdentityId != "" and senderIdentityId != "null" and senderIdentityId != "undefined"'>
+            AND   nmr.SENDER_IDENTITY_ID = #{senderIdentityId} /* 发送用户编号 */
+        </if>
+
+        <if test='senderName != null and senderName != "" and senderName != "null" and senderName != "undefined"'>
+            AND   nmr.SENDER_NAME = #{senderName} /* 发送用户名 */
+        </if>
+
+        <if test='receiverIdentityId != null and receiverIdentityId != "" and receiverIdentityId != "null" and receiverIdentityId != "undefined"'>
+            AND   nmr.RECEIVER_IDENTITY_ID = #{receiverIdentityId} /* 接收用户编号 */
+        </if>
+
+        <if test='createTime != null'>
+            AND   date_format(nmr.CREATE_TIME ,'%Y-%m-%d') = #{createTimeChar} /*  */
+        </if>
+
+        <if test='internalParam != null and internalParam != "" and internalParam != "null" and internalParam != "undefined"'>
+            AND   nmr.INTERNAL_PARAM = #{internalParam} /*  */
+        </if>
+
+        <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+            AND   nmr.STATUS = #{status} /* 状态(0未读1已读) */
+        </if>
+
+
+
+        <!-- 常用自定义字段 -->
+        <!-- /常用自定义字段 -->
+
+        <if test='orderBy != null and orderBy != ""'>
+            ORDER BY   ${orderBy}  /* 排序 */
+        </if>
+
+    </select>
+    <select id="selectMessageList"
+            parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsMessageReceive"
+            resultType="com.vilio.nlbs.commonMapper.pojo.NlbsMessageReceive">
+
+        (SELECT   /* getList+@com.vilio.nlbs.commonMapper.sql.NlbsMessageReceiveMapper.xml */
+        nmr.ID                         AS id                      /* 数据主键 */
+        ,nmr.SERIAL_NO                  AS serialNo                /* 消息序列号(消息平台序号) */
+        ,nmr.code                  AS code
+        ,nmr.TITLE                      AS title                   /* 消息标题 */
+        ,nmr.CONTENT                    AS content                 /* 消息内容 */
+        ,nmr.SENDER_COMPANY_CODE        AS senderCompanyCode       /* 发送方公司编号 */
+        ,nmr.SENDER_COMPANY_NAME        AS senderCompanyName       /*  */
+        ,nmr.SENDER_DEPARTMENT_CODE     AS senderDepartmentCode    /* 发送方所在部门编号 */
+        ,nmr.SENDER_DEPARTMENT_NAME     AS senderDepartmentName    /* 发送方所在部门名称 */
+        ,nmr.SENDER_IDENTITY_ID         AS senderIdentityId        /* 发送用户编号 */
+        ,nmr.SENDER_NAME                AS senderName              /* 发送用户名 */
+        ,nmr.RECEIVER_IDENTITY_ID       AS receiverIdentityId      /* 接收用户编号 */
+        ,nmr.CREATE_TIME                AS createTime              /*  */
+        ,nmr.INTERNAL_PARAM             AS internalParam           /*  */
+        ,nmr.STATUS                     AS status                  /* 状态(0未读1已读) */
+        FROM   NLBS_MESSAGE_RECEIVE              nmr                     /*  */
+        WHERE   nmr.STATUS = '0' /* 状态(0未读1已读) */
+
+        <if test='receiverIdentityId != null and receiverIdentityId != "" and receiverIdentityId != "null" and receiverIdentityId != "undefined"'>
+            AND   nmr.RECEIVER_IDENTITY_ID = #{receiverIdentityId} /* 接收用户编号 */
+        </if>
+
+        <if test='content != null and content != "" and content != "null" and content != "undefined"'>
+            AND   (nmr.TITLE LIKE concat('%', #{content}, '%') /* 消息标题 */
+            or   nmr.CONTENT LIKE concat('%', #{content}, '%')) /* 消息内容 */
+        </if>
+        ORDER BY   nmr.CREATE_TIME)  /* 排序 */
+
+        UNION ALL
+
+        (SELECT   /* getList+@com.vilio.nlbs.commonMapper.sql.NlbsMessageReceiveMapper.xml */
+        nmr.ID                         AS id                      /* 数据主键 */
+        ,nmr.SERIAL_NO                  AS serialNo                /* 消息序列号(消息平台序号) */
+        ,nmr.code                  AS code
+        ,nmr.TITLE                      AS title                   /* 消息标题 */
+        ,nmr.CONTENT                    AS content                 /* 消息内容 */
+        ,nmr.SENDER_COMPANY_CODE        AS senderCompanyCode       /* 发送方公司编号 */
+        ,nmr.SENDER_COMPANY_NAME        AS senderCompanyName       /*  */
+        ,nmr.SENDER_DEPARTMENT_CODE     AS senderDepartmentCode    /* 发送方所在部门编号 */
+        ,nmr.SENDER_DEPARTMENT_NAME     AS senderDepartmentName    /* 发送方所在部门名称 */
+        ,nmr.SENDER_IDENTITY_ID         AS senderIdentityId        /* 发送用户编号 */
+        ,nmr.SENDER_NAME                AS senderName              /* 发送用户名 */
+        ,nmr.RECEIVER_IDENTITY_ID       AS receiverIdentityId      /* 接收用户编号 */
+        ,nmr.CREATE_TIME                AS createTime              /*  */
+        ,nmr.INTERNAL_PARAM             AS internalParam           /*  */
+        ,nmr.STATUS                     AS status                  /* 状态(0未读1已读) */
+        FROM   NLBS_MESSAGE_RECEIVE              nmr                     /*  */
+        WHERE   nmr.STATUS = '1' /* 状态(0未读1已读) */
+
+        <if test='receiverIdentityId != null and receiverIdentityId != "" and receiverIdentityId != "null" and receiverIdentityId != "undefined"'>
+            AND   nmr.RECEIVER_IDENTITY_ID = #{receiverIdentityId} /* 接收用户编号 */
+        </if>
+
+        <if test='content != null and content != "" and content != "null" and content != "undefined"'>
+            AND   (nmr.TITLE LIKE concat('%', #{content}, '%') /* 消息标题 */
+            or   nmr.CONTENT LIKE concat('%', #{content}, '%')) /* 消息内容 */
+        </if>
+        ORDER BY   nmr.CREATE_TIME)  /* 排序 */
+
+    </select>
+
+    <select id="getListPrmMapRtnBean"
+            parameterType="java.util.HashMap"
+            resultType="com.vilio.nlbs.commonMapper.pojo.NlbsMessageReceive">
+
+        SELECT   /* getListPrmMapRtnBean+@com.vilio.nlbs.commonMapper.sql.NlbsMessageReceiveMapper.xml */
+        nmr.ID                         AS id                      /* 数据主键 */
+        ,nmr.SERIAL_NO                  AS serialNo                /* 消息序列号(消息平台序号) */
+        ,nmr.code                  AS code
+        ,nmr.TITLE                      AS title                   /* 消息标题 */
+        ,nmr.CONTENT                    AS content                 /* 消息内容 */
+        ,nmr.SENDER_COMPANY_CODE        AS senderCompanyCode       /* 发送方公司编号 */
+        ,nmr.SENDER_COMPANY_NAME        AS senderCompanyName       /*  */
+        ,nmr.SENDER_DEPARTMENT_CODE     AS senderDepartmentCode    /* 发送方所在部门编号 */
+        ,nmr.SENDER_DEPARTMENT_NAME     AS senderDepartmentName    /* 发送方所在部门名称 */
+        ,nmr.SENDER_IDENTITY_ID         AS senderIdentityId        /* 发送用户编号 */
+        ,nmr.SENDER_NAME                AS senderName              /* 发送用户名 */
+        ,nmr.RECEIVER_IDENTITY_ID       AS receiverIdentityId      /* 接收用户编号 */
+        ,nmr.CREATE_TIME                AS createTime              /*  */
+        ,nmr.INTERNAL_PARAM             AS internalParam           /*  */
+        ,nmr.STATUS                     AS status                  /* 状态(0未读1已读) */
+        FROM   NLBS_MESSAGE_RECEIVE              nmr                     /*  */
+        WHERE   1 = 1
+
+        <if test='id != null'>
+            AND   nmr.ID = #{id} /* 数据主键 */
+        </if>
+
+        <if test='serialNo != null and serialNo != "" and serialNo != "null" and serialNo != "undefined"'>
+            AND   nmr.SERIAL_NO = #{serialNo} /* 消息序列号(消息平台序号) */
+        </if>
+        <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+            AND   nmr.code = #{code} /* 消息序列号(消息平台序号) */
+        </if>
+
+        <if test='title != null and title != "" and title != "null" and title != "undefined"'>
+            AND   nmr.TITLE = #{title} /* 消息标题 */
+        </if>
+
+        <if test='content != null and content != "" and content != "null" and content != "undefined"'>
+            AND   nmr.CONTENT = #{content} /* 消息内容 */
+        </if>
+
+        <if test='senderCompanyCode != null and senderCompanyCode != "" and senderCompanyCode != "null" and senderCompanyCode != "undefined"'>
+            AND   nmr.SENDER_COMPANY_CODE = #{senderCompanyCode} /* 发送方公司编号 */
+        </if>
+
+        <if test='senderCompanyName != null and senderCompanyName != "" and senderCompanyName != "null" and senderCompanyName != "undefined"'>
+            AND   nmr.SENDER_COMPANY_NAME = #{senderCompanyName} /*  */
+        </if>
+
+        <if test='senderDepartmentCode != null and senderDepartmentCode != "" and senderDepartmentCode != "null" and senderDepartmentCode != "undefined"'>
+            AND   nmr.SENDER_DEPARTMENT_CODE = #{senderDepartmentCode} /* 发送方所在部门编号 */
+        </if>
+
+        <if test='senderDepartmentName != null and senderDepartmentName != "" and senderDepartmentName != "null" and senderDepartmentName != "undefined"'>
+            AND   nmr.SENDER_DEPARTMENT_NAME = #{senderDepartmentName} /* 发送方所在部门名称 */
+        </if>
+
+        <if test='senderIdentityId != null and senderIdentityId != "" and senderIdentityId != "null" and senderIdentityId != "undefined"'>
+            AND   nmr.SENDER_IDENTITY_ID = #{senderIdentityId} /* 发送用户编号 */
+        </if>
+
+        <if test='senderName != null and senderName != "" and senderName != "null" and senderName != "undefined"'>
+            AND   nmr.SENDER_NAME = #{senderName} /* 发送用户名 */
+        </if>
+
+        <if test='receiverIdentityId != null and receiverIdentityId != "" and receiverIdentityId != "null" and receiverIdentityId != "undefined"'>
+            AND   nmr.RECEIVER_IDENTITY_ID = #{receiverIdentityId} /* 接收用户编号 */
+        </if>
+
+        <if test='createTime != null'>
+            AND   date_format(nmr.CREATE_TIME ,'%Y-%m-%d') = #{createTimeChar} /*  */
+        </if>
+
+        <if test='internalParam != null and internalParam != "" and internalParam != "null" and internalParam != "undefined"'>
+            AND   nmr.INTERNAL_PARAM = #{internalParam} /*  */
+        </if>
+
+        <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+            AND   nmr.STATUS = #{status} /* 状态(0未读1已读) */
+        </if>
+
+
+
+        <!-- 常用自定义字段 -->
+        <!-- /常用自定义字段 -->
+
+        <if test='orderBy != null and orderBy != ""'>
+            ORDER BY   ${orderBy}  /* 排序 */
+        </if>
+
+    </select>
+
+    <select id="getListPrmMapRtnMap"
+            parameterType="java.util.HashMap"
+            resultType="java.util.HashMap">
+
+        SELECT   /* getListPrmMapRtnMap+@com.vilio.nlbs.commonMapper.sql.NlbsMessageReceiveMapper.xml */
+        nmr.ID                         AS id                      /* 数据主键 */
+        ,nmr.SERIAL_NO                  AS serialNo                /* 消息序列号(消息平台序号) */
+        ,nmr.code                  AS code
+        ,nmr.TITLE                      AS title                   /* 消息标题 */
+        ,nmr.CONTENT                    AS content                 /* 消息内容 */
+        ,nmr.SENDER_COMPANY_CODE        AS senderCompanyCode       /* 发送方公司编号 */
+        ,nmr.SENDER_COMPANY_NAME        AS senderCompanyName       /*  */
+        ,nmr.SENDER_DEPARTMENT_CODE     AS senderDepartmentCode    /* 发送方所在部门编号 */
+        ,nmr.SENDER_DEPARTMENT_NAME     AS senderDepartmentName    /* 发送方所在部门名称 */
+        ,nmr.SENDER_IDENTITY_ID         AS senderIdentityId        /* 发送用户编号 */
+        ,nmr.SENDER_NAME                AS senderName              /* 发送用户名 */
+        ,nmr.RECEIVER_IDENTITY_ID       AS receiverIdentityId      /* 接收用户编号 */
+        ,nmr.CREATE_TIME                AS createTime              /*  */
+        ,nmr.INTERNAL_PARAM             AS internalParam           /*  */
+        ,nmr.STATUS                     AS status                  /* 状态(0未读1已读) */
+        FROM   NLBS_MESSAGE_RECEIVE              nmr                     /*  */
+        WHERE   1 = 1
+
+        <if test='id != null'>
+            AND   nmr.ID = #{id} /* 数据主键 */
+        </if>
+
+        <if test='serialNo != null and serialNo != "" and serialNo != "null" and serialNo != "undefined"'>
+            AND   nmr.SERIAL_NO = #{serialNo} /* 消息序列号(消息平台序号) */
+        </if>
+        <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+            AND   nmr.code = #{code}
+        </if>
+
+        <if test='title != null and title != "" and title != "null" and title != "undefined"'>
+            AND   nmr.TITLE = #{title} /* 消息标题 */
+        </if>
+
+        <if test='content != null and content != "" and content != "null" and content != "undefined"'>
+            AND   nmr.CONTENT = #{content} /* 消息内容 */
+        </if>
+
+        <if test='senderCompanyCode != null and senderCompanyCode != "" and senderCompanyCode != "null" and senderCompanyCode != "undefined"'>
+            AND   nmr.SENDER_COMPANY_CODE = #{senderCompanyCode} /* 发送方公司编号 */
+        </if>
+
+        <if test='senderCompanyName != null and senderCompanyName != "" and senderCompanyName != "null" and senderCompanyName != "undefined"'>
+            AND   nmr.SENDER_COMPANY_NAME = #{senderCompanyName} /*  */
+        </if>
+
+        <if test='senderDepartmentCode != null and senderDepartmentCode != "" and senderDepartmentCode != "null" and senderDepartmentCode != "undefined"'>
+            AND   nmr.SENDER_DEPARTMENT_CODE = #{senderDepartmentCode} /* 发送方所在部门编号 */
+        </if>
+
+        <if test='senderDepartmentName != null and senderDepartmentName != "" and senderDepartmentName != "null" and senderDepartmentName != "undefined"'>
+            AND   nmr.SENDER_DEPARTMENT_NAME = #{senderDepartmentName} /* 发送方所在部门名称 */
+        </if>
+
+        <if test='senderIdentityId != null and senderIdentityId != "" and senderIdentityId != "null" and senderIdentityId != "undefined"'>
+            AND   nmr.SENDER_IDENTITY_ID = #{senderIdentityId} /* 发送用户编号 */
+        </if>
+
+        <if test='senderName != null and senderName != "" and senderName != "null" and senderName != "undefined"'>
+            AND   nmr.SENDER_NAME = #{senderName} /* 发送用户名 */
+        </if>
+
+        <if test='receiverIdentityId != null and receiverIdentityId != "" and receiverIdentityId != "null" and receiverIdentityId != "undefined"'>
+            AND   nmr.RECEIVER_IDENTITY_ID = #{receiverIdentityId} /* 接收用户编号 */
+        </if>
+
+        <if test='createTime != null'>
+            AND   date_format(nmr.CREATE_TIME ,'%Y-%m-%d') = #{createTimeChar} /*  */
+        </if>
+
+        <if test='internalParam != null and internalParam != "" and internalParam != "null" and internalParam != "undefined"'>
+            AND   nmr.INTERNAL_PARAM = #{internalParam} /*  */
+        </if>
+
+        <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+            AND   nmr.STATUS = #{status} /* 状态(0未读1已读) */
+        </if>
+
+
+
+        <!-- 常用自定义字段 -->
+        <!-- /常用自定义字段 -->
+
+        <if test='orderBy != null and orderBy != ""'>
+            ORDER BY   ${orderBy}  /* 排序 */
+        </if>
+
+    </select>
+
+
+    <!--
+    **************************************************************************
+    * 6.验证多条件数据是否存在
+    * 注: 根据多条件验证该数据是否存在 ,并返回数据量.
+    **************************************************************************
+    -->
+    <select id="getCheckBy"
+            parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsMessageReceive"
+            resultType="java.lang.Integer">
+
+        SELECT   /* getCheckBy+@com.vilio.nlbs.commonMapper.sql.NlbsMessageReceiveMapper.xml */
+        count(1)
+        FROM   NLBS_MESSAGE_RECEIVE  /*  */
+        WHERE   1 = 1
+
+        <if test='id != null'>
+            AND   ID = #{id} /* 数据主键 */
+        </if>
+
+        <if test='serialNo != null and serialNo != "" and serialNo != "null" and serialNo != "undefined"'>
+            AND   SERIAL_NO = #{serialNo} /* 消息序列号(消息平台序号) */
+        </if>
+        <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+            AND   code = #{code}
+        </if>
+
+        <if test='title != null and title != "" and title != "null" and title != "undefined"'>
+            AND   TITLE = #{title} /* 消息标题 */
+        </if>
+
+        <if test='content != null and content != "" and content != "null" and content != "undefined"'>
+            AND   CONTENT = #{content} /* 消息内容 */
+        </if>
+
+        <if test='senderCompanyCode != null and senderCompanyCode != "" and senderCompanyCode != "null" and senderCompanyCode != "undefined"'>
+            AND   SENDER_COMPANY_CODE = #{senderCompanyCode} /* 发送方公司编号 */
+        </if>
+
+        <if test='senderCompanyName != null and senderCompanyName != "" and senderCompanyName != "null" and senderCompanyName != "undefined"'>
+            AND   SENDER_COMPANY_NAME = #{senderCompanyName} /*  */
+        </if>
+
+        <if test='senderDepartmentCode != null and senderDepartmentCode != "" and senderDepartmentCode != "null" and senderDepartmentCode != "undefined"'>
+            AND   SENDER_DEPARTMENT_CODE = #{senderDepartmentCode} /* 发送方所在部门编号 */
+        </if>
+
+        <if test='senderDepartmentName != null and senderDepartmentName != "" and senderDepartmentName != "null" and senderDepartmentName != "undefined"'>
+            AND   SENDER_DEPARTMENT_NAME = #{senderDepartmentName} /* 发送方所在部门名称 */
+        </if>
+
+        <if test='senderIdentityId != null and senderIdentityId != "" and senderIdentityId != "null" and senderIdentityId != "undefined"'>
+            AND   SENDER_IDENTITY_ID = #{senderIdentityId} /* 发送用户编号 */
+        </if>
+
+        <if test='senderName != null and senderName != "" and senderName != "null" and senderName != "undefined"'>
+            AND   SENDER_NAME = #{senderName} /* 发送用户名 */
+        </if>
+
+        <if test='receiverIdentityId != null and receiverIdentityId != "" and receiverIdentityId != "null" and receiverIdentityId != "undefined"'>
+            AND   RECEIVER_IDENTITY_ID = #{receiverIdentityId} /* 接收用户编号 */
+        </if>
+
+        <if test='createTime != null'>
+            AND   date_format(CREATE_TIME ,'%Y-%m-%d') = #{createTimeChar} /*  */
+        </if>
+
+        <if test='internalParam != null and internalParam != "" and internalParam != "null" and internalParam != "undefined"'>
+            AND   INTERNAL_PARAM = #{internalParam} /*  */
+        </if>
+
+        <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+            AND   STATUS = #{status} /* 状态(0未读1已读) */
+        </if>
+
+
+
+        <!-- 常用自定义字段 -->
+        <!-- /常用自定义字段 -->
+
+    </select>
+
+    <select id="getCheckByPrmMap"
+            parameterType="java.util.HashMap"
+            resultType="java.lang.Integer">
+
+        SELECT   /* getCheckByPrmMap+@com.vilio.nlbs.commonMapper.sql.NlbsMessageReceiveMapper.xml */
+        count(1)
+        FROM   NLBS_MESSAGE_RECEIVE  /*  */
+        WHERE   1 = 1
+
+        <if test='id != null'>
+            AND   ID = #{id} /* 数据主键 */
+        </if>
+
+        <if test='serialNo != null and serialNo != "" and serialNo != "null" and serialNo != "undefined"'>
+            AND   SERIAL_NO = #{serialNo} /* 消息序列号(消息平台序号) */
+        </if>
+        <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+            AND   code = #{code}
+        </if>
+
+        <if test='title != null and title != "" and title != "null" and title != "undefined"'>
+            AND   TITLE = #{title} /* 消息标题 */
+        </if>
+
+        <if test='content != null and content != "" and content != "null" and content != "undefined"'>
+            AND   CONTENT = #{content} /* 消息内容 */
+        </if>
+
+        <if test='senderCompanyCode != null and senderCompanyCode != "" and senderCompanyCode != "null" and senderCompanyCode != "undefined"'>
+            AND   SENDER_COMPANY_CODE = #{senderCompanyCode} /* 发送方公司编号 */
+        </if>
+
+        <if test='senderCompanyName != null and senderCompanyName != "" and senderCompanyName != "null" and senderCompanyName != "undefined"'>
+            AND   SENDER_COMPANY_NAME = #{senderCompanyName} /*  */
+        </if>
+
+        <if test='senderDepartmentCode != null and senderDepartmentCode != "" and senderDepartmentCode != "null" and senderDepartmentCode != "undefined"'>
+            AND   SENDER_DEPARTMENT_CODE = #{senderDepartmentCode} /* 发送方所在部门编号 */
+        </if>
+
+        <if test='senderDepartmentName != null and senderDepartmentName != "" and senderDepartmentName != "null" and senderDepartmentName != "undefined"'>
+            AND   SENDER_DEPARTMENT_NAME = #{senderDepartmentName} /* 发送方所在部门名称 */
+        </if>
+
+        <if test='senderIdentityId != null and senderIdentityId != "" and senderIdentityId != "null" and senderIdentityId != "undefined"'>
+            AND   SENDER_IDENTITY_ID = #{senderIdentityId} /* 发送用户编号 */
+        </if>
+
+        <if test='senderName != null and senderName != "" and senderName != "null" and senderName != "undefined"'>
+            AND   SENDER_NAME = #{senderName} /* 发送用户名 */
+        </if>
+
+        <if test='receiverIdentityId != null and receiverIdentityId != "" and receiverIdentityId != "null" and receiverIdentityId != "undefined"'>
+            AND   RECEIVER_IDENTITY_ID = #{receiverIdentityId} /* 接收用户编号 */
+        </if>
+
+        <if test='createTime != null'>
+            AND   date_format(CREATE_TIME ,'%Y-%m-%d') = #{createTimeChar} /*  */
+        </if>
+
+        <if test='internalParam != null and internalParam != "" and internalParam != "null" and internalParam != "undefined"'>
+            AND   INTERNAL_PARAM = #{internalParam} /*  */
+        </if>
+
+        <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+            AND   STATUS = #{status} /* 状态(0未读1已读) */
+        </if>
+
+
+
+        <!-- 常用自定义字段 -->
+        <!-- /常用自定义字段 -->
+
+    </select>
+
+    <insert id="saveNlbsMessageReceive"
+            parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsMessageReceive">
+
+        INSERT
+        INTO   NLBS_MESSAGE_RECEIVE
+        (
+        code
+        ,SERIAL_NO
+        ,TITLE
+        ,CONTENT
+        ,SENDER_COMPANY_CODE
+        ,SENDER_COMPANY_NAME
+        ,SENDER_DEPARTMENT_CODE
+        ,SENDER_DEPARTMENT_NAME
+        ,SENDER_IDENTITY_ID
+        ,SENDER_NAME
+        ,RECEIVER_IDENTITY_ID
+        ,INTERNAL_PARAM
+        )
+        VALUES  (
+        #{code ,jdbcType=VARCHAR}
+        ,#{serialNo ,jdbcType=VARCHAR}
+        ,#{title,jdbcType=VARCHAR}
+        ,#{content,jdbcType=VARCHAR}
+        ,#{senderCompanyCode,jdbcType=VARCHAR}
+        ,#{senderCompanyName,jdbcType=VARCHAR}
+        ,#{senderDepartmentCode,jdbcType=VARCHAR}
+        ,#{senderDepartmentName,jdbcType=VARCHAR}
+        ,#{senderIdentityId,jdbcType=VARCHAR}
+        ,#{senderName,jdbcType=VARCHAR}
+        ,#{receiverIdentityId,jdbcType=VARCHAR}
+        ,#{internalParam,jdbcType=VARCHAR}
+        )
+
+    </insert>
+
+    <update id="updateStatusAndChannelBySerialNo" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsMessageReceive">
+        UPDATE nlbs_message_receive t
+        SET t.read_time = #{readTime ,jdbcType=TIMESTAMP},
+         t.read_channel = #{readChannel ,jdbcType=VARCHAR}
+        WHERE
+            t.serial_no = #{serialNo ,jdbcType=VARCHAR}
+    </update>
+</mapper>

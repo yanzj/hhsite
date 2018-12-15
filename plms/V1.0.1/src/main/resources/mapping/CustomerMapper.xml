@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.CustomerDao">
+
+    <!--查询借款人信息-->
+    <select id="qryCustomer" resultType="com.vilio.plms.pojo.Customer" parameterType="com.vilio.plms.pojo.Customer">
+        SELECT
+            id,
+            `code`,
+            `name`,
+            um_id as umId,
+            old_name as oldName,
+            id_type as idType,
+            id_no as idNo,
+            DATE_FORMAT(start_time,'%Y%m%d%H%i%s') as startTime,
+            DATE_FORMAT(end_time,'%Y%m%d%H%i%s') as endTime,
+            age,
+            mobile,
+            organization,
+            titile,
+            annual_income as annualIncome,
+            address,
+            marriage,
+            marriage_history as marriageHistory,
+            is_main as isMain,
+            apply_code as applyCode,
+            `status`,
+            create_date as createDate,
+            modify_date as modifyDate
+        FROM
+            plms_customer
+        WHERE
+          um_id = #{umId}
+          and status != '0'
+    </select>
+
+    <insert id="insert" parameterType="java.util.HashMap">
+        INSERT INTO plms_customer (
+            CODE,
+            name,
+            old_name,
+            id_type,
+            id_no,
+            start_time,
+            end_time,
+            age,
+            mobile,
+            organization,
+            titile,
+            annual_income,
+            address,
+            marriage,
+            marriage_history,
+            is_main,
+            apply_code,
+            STATUS
+        )
+        VALUES
+        (
+            #{code,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{oldName,jdbcType=VARCHAR},#{idType,jdbcType=VARCHAR},
+            #{idNo,jdbcType=VARCHAR},#{startTime,jdbcType=VARCHAR},#{endTime,jdbcType=VARCHAR},#{age,jdbcType=VARCHAR},
+            #{mobile,jdbcType=VARCHAR},#{organization,jdbcType=VARCHAR},#{titile,jdbcType=VARCHAR},#{annualIncome,jdbcType=VARCHAR},
+            #{address,jdbcType=VARCHAR},#{marriage,jdbcType=VARCHAR},#{marriageHistory,jdbcType=VARCHAR},#{isMain,jdbcType=VARCHAR},
+            #{applyCode,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <!--根据状态值和还款日获取对应的还款计划列表-->
+    <select id="getCustomerInfoByApplyCode" resultType="java.util.Map"
+            parameterType="java.util.Map">
+        SELECT
+        `code`,
+        name,
+        old_name AS oldName,
+        id_type AS idType,
+        id_no AS idNo,
+        DATE_FORMAT(start_time, '%Y%m%d%H%i%s') AS startTime,
+        DATE_FORMAT(end_time, '%Y%m%d%H%i%s') AS endTime,
+        age,
+        mobile,
+        organization,
+        titile,
+        annual_income AS annualIncome,
+        address,
+        marriage,
+        marriage_history AS marriageHistory,
+        is_main AS isMain,
+        apply_code AS applyCode,
+        `status`,
+        create_date AS createDate,
+        modify_date AS modifyDate
+        FROM
+        plms_customer c
+        WHERE
+        status = '1'
+        AND apply_code = #{applyCode}
+        <if test="isMain != null">
+            and is_main = #{isMain}
+        </if>
+
+    </select>
+
+</mapper>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+    <!--定时任务暂时注释，因为登录信息不清除，要保存起来-->
+    <!-- Quartz配置 -->
+    <!-- quartz持久化存储 -->
+    <bean id="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="dataSource">
+            <ref bean="pcfsDataSource"/>
+        </property>
+        <property name="startupDelay" value="20"/>
+        <property name="autoStartup" value="true"/>
+        <property name="overwriteExistingJobs" value="true"/>
+        <property name="applicationContextSchedulerContextKey" value="applicationContextKey"/>
+        <property name="configLocation" value="classpath:quartz.properties"/>
+        <property name="schedulerContextAsMap">
+            <map>
+                <!-- spring 管理的service需要放到这里，才能够注入成功 -->
+                <description>schedulerContextAsMap</description>
+                <!--<entry key="loginComn" value-ref="loginComn"/>-->
+                <!--超过1小时未登录的登录信息全部清空-->
+                <entry key="clearLoginTimestamp" value="3600000"/>
+            </map>
+        </property>
+        <property name="triggers">
+            <list>
+                <!--<ref bean="clearLoginNumJobTrigger"/>-->
+                <ref bean="pushMsgJobTrigger"/>
+                <ref bean="filterCreateMsgJobTrigger"/>
+            </list>
+        </property>
+
+    </bean>
+
+    <!--<bean id="clearLoginNumJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.vilio.pcfs.service.quartz.ClearLoginNum"/>
+        <property name="name" value="clearLoginNumJob"/>
+        <property name="durability" value="true"/>
+    </bean>
+
+    <bean id="clearLoginNumJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="clearLoginNumJob"/>
+        <property name="cronExpression" value="${clearLoginNumJobTriggerCronExpression}"/>
+    </bean>-->
+
+    <bean id="pushMsgJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.vilio.pcfs.service.quartz.PushMsgJob"/>
+        <property name="name" value="pushMsgJob"/>
+        <property name="durability" value="true"/>
+    </bean>
+
+    <bean id="pushMsgJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="pushMsgJob"/>
+        <property name="cronExpression" value="${pushMsgJobTriggerCronExpression}"/>
+    </bean>
+
+    <bean id="filterCreateMsgJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.vilio.pcfs.service.quartz.FilterCreateMsgJob"/>
+        <property name="name" value="filterCreateMsgJob"/>
+        <property name="durability" value="true"/>
+    </bean>
+
+    <bean id="filterCreateMsgJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="filterCreateMsgJob"/>
+        <property name="cronExpression" value="${filterCreateMsgJobTriggerCronExpression}"/>
+    </bean>
+
+</beans>

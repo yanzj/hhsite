@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.CreditInfoDao">
+    <insert id="insert" parameterType="java.util.HashMap">
+        INSERT INTO plms_credit_investigation (
+        code,
+        name,
+        id_type,
+        id_no,
+        report_time,
+        apply_code,
+        remark,
+        STATUS
+    )
+    VALUES
+        (
+          #{code,jdbcType=VARCHAR},
+          #{name,jdbcType=VARCHAR},
+          #{idType,jdbcType=VARCHAR},
+          #{idNo,jdbcType=VARCHAR},
+          #{reportTime,jdbcType=DATE},
+          #{applyCode,jdbcType=VARCHAR},
+          #{remark,jdbcType=VARCHAR},
+          #{status,jdbcType=TINYINT})
+    </insert>
+
+    <insert id="insertLoanUnSettle" parameterType="java.util.HashMap">
+        INSERT INTO plms_loan_unsettle (
+        CODE,
+        loan_times,
+        contract_amount,
+        balance,
+        six_month_repayment,
+        credit_code,
+        status
+        )
+        VALUES
+        (
+        #{code,jdbcType=VARCHAR},
+        #{loanTimes,jdbcType=INTEGER},
+        #{contractAmount,jdbcType=DECIMAL},
+        #{balance,jdbcType=DECIMAL},
+        #{sixMonthRepayment,jdbcType=DECIMAL},
+        #{creditCode,jdbcType=VARCHAR},
+        #{status,jdbcType=TINYINT})
+    </insert>
+
+    <insert id="insertUnclosingCard" parameterType="java.util.HashMap">
+        INSERT INTO plms_unclosing_card (
+        CODE,
+        account_number,
+        total_credit,
+        contract_amount,
+        six_month_loan_amount,
+        credit_code,
+        status
+        )
+        VALUES
+        (
+        #{code,jdbcType=VARCHAR},
+        #{accountNumber,jdbcType=INTEGER},
+        #{totalCredit,jdbcType=DECIMAL},
+        #{contractAmount,jdbcType=DECIMAL},
+        #{sixMonthLoanAmount,jdbcType=DECIMAL},
+        #{creditCode,jdbcType=VARCHAR},
+        #{status,jdbcType=TINYINT})
+    </insert>
+
+    <insert id="insertQueryRecord" parameterType="java.util.HashMap">
+        INSERT INTO plms_query_record (
+        CODE,
+        query_num,
+        manage_num,
+        check_num,
+        credit_code,
+        status
+        )
+        VALUES
+        (
+        #{code,jdbcType=VARCHAR},
+        #{queryNum,jdbcType=INTEGER},
+        #{manageNum,jdbcType=INTEGER},
+        #{checkNum,jdbcType=INTEGER},
+        #{creditCode,jdbcType=VARCHAR},
+        #{status,jdbcType=TINYINT})
+    </insert>
+
+    <insert id="insertLoanInfo" parameterType="java.util.HashMap">
+        INSERT INTO plms_loaned_info (
+        CODE,
+        loan_no,
+        overdue_amount,
+        loan_status,
+		overdue_num,
+		period,
+		type,
+        credit_code,
+        status
+        )
+        VALUES
+        (
+        #{code,jdbcType=VARCHAR},
+        #{loanNo,jdbcType=VARCHAR},
+        #{overdueAmount,jdbcType=DECIMAL},
+        #{loanStatus,jdbcType=VARCHAR},
+		#{overdueNum,jdbcType=INTEGER},
+		#{period,jdbcType=INTEGER},
+		#{type,jdbcType=VARCHAR},
+        #{creditCode,jdbcType=VARCHAR},
+        #{status,jdbcType=TINYINT})
+    </insert>
+
+    <insert id="insertCreaditCard" parameterType="java.util.HashMap">
+        INSERT INTO plms_creadit_card (
+        CODE,
+        card_no,
+        overdue_amount,
+        card_status,
+		overdue_num,
+  		period,
+		type,
+        credit_code,
+        status
+        )
+        VALUES
+        (
+        #{code,jdbcType=VARCHAR},
+        #{cardNo,jdbcType=VARCHAR},
+        #{overdueAmount,jdbcType=DECIMAL},
+        #{cardStatus,jdbcType=VARCHAR},
+		#{overdueNum,jdbcType=INTEGER},
+		#{period,jdbcType=INTEGER},
+		#{type,jdbcType=VARCHAR},
+        #{creditCode,jdbcType=VARCHAR},
+        #{status,jdbcType=TINYINT})
+    </insert>
+
+    <insert id="insertLoanGuaranteeInfo" parameterType="java.util.HashMap">
+        INSERT INTO plms_guarantee_info (
+        CODE,
+        guarantee_status,
+        guarantee_amount,
+        guarantee_balance,
+        credit_code,
+        status
+        )
+        VALUES
+        (
+        #{code,jdbcType=VARCHAR},
+        #{guaranteeStatus,jdbcType=VARCHAR},
+        #{guaranteeAmount,jdbcType=DECIMAL},
+        #{guaranteeBalance,jdbcType=DECIMAL},
+        #{creditCode,jdbcType=VARCHAR},
+        #{status,jdbcType=TINYINT})
+    </insert>
+
+
+</mapper>

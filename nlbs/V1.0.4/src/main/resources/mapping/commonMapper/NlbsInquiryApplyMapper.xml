@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!--
+******************************************************************************
+* 数据库表：NLBS_INQUIRY_APPLY
+* 表的名称：用户申请房屋询价记录表
+* 对应实体：com.vilio.nlbs.commonMapper.pojo.NlbsInquiryApply
+* 开发日期：2017-06-15
+* 技术服务：www.fwjava.com
+******************************************************************************
+-->
+<mapper namespace="com.vilio.nlbs.commonMapper.dao.NlbsInquiryApplyMapper">
+
+    <!--
+    **************************************************************************
+    * 1.新增一条数据
+    * 注: 根据Bean实体执行新增操作.
+    **************************************************************************
+    -->
+    <insert id="getInsert"
+            parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsInquiryApply"
+            useGeneratedKeys="true"
+            keyProperty="id">
+    
+            INSERT   /* getInsert+@com.vilio.nlbs.commonMapper.sql.NlbsInquiryApplyMapper.xml */ 
+              INTO   NLBS_INQUIRY_APPLY         /* 用户申请房屋询价记录表 */ 
+                    (
+                     CODE                       /* 请求编号 */ 
+                    ,BPS_CODE                   /* 询价系统序列号 */ 
+                    ,USER_NO                    /* 询价用户 */
+                    ,PENDING_USER_NO            /* 待处理人 */ 
+                    ,CITY_CODE                  /* 询价的房子所在城市 */ 
+                    ,HOUSE_TYPE                 /* 房屋类型 */ 
+                    ,ADDRESS                    /* 房屋地址 */ 
+                    ,AREA                       /* 房屋面积 */ 
+                    ,PRICE                      /* 评估价格 */ 
+                    ,PRICE_TIME                 /* 评估时间 */ 
+                    ,AUTO_PRICE                 /* 是否自动询价 */ 
+                    ,DEAD_LINE                  /* 失效时间 */ 
+                    ,STATUS                     /* 状态(00待评估，01评估中，02已评估，99失效) */ 
+                    ,user_full_name
+                    ,pending_user_name
+                    ,distributor_code
+                    )
+            VALUES  (
+                     #{code}                    /* 请求编号 */ 
+                    ,#{bpsCode}                 /* 询价系统序列号 */ 
+                    ,#{userNo}                  /* 询价用户 */
+                    ,#{pendingUserNo}           /* 待处理人 */ 
+                    ,#{cityCode}                /* 询价的房子所在城市 */ 
+                    ,#{houseType}               /* 房屋类型 */ 
+                    ,#{address}                 /* 房屋地址 */ 
+                    ,#{area}                    /* 房屋面积 */ 
+                    ,#{price}                   /* 评估价格 */ 
+                    ,#{priceTime}               /* 评估时间 */ 
+                    ,#{autoPrice}               /* 是否自动询价 */ 
+                    ,#{deadLine}                /* 失效时间 */ 
+                    ,#{status}                  /* 状态(00待评估，01评估中，02已评估，99失效) */ 
+                    ,#{userFullName}
+                    ,#{pendingUserName}
+                    ,#{distributorCode}
+                    )
+         
+    </insert>
+    
+
+
+    <!--
+    **************************************************************************
+    * 3.变更一条数据
+    * 注: 根据Bean实体的主键ID执行变更操作.
+    **************************************************************************
+    -->
+    <update id="getUpdate"
+            parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsInquiryApply">
+    
+            UPDATE   /* getUpdate+@com.vilio.nlbs.commonMapper.sql.NlbsInquiryApplyMapper.xml */ 
+                     NLBS_INQUIRY_APPLY                          /* 用户申请房屋询价记录表 */
+                <set>
+                    <if test="code != null">
+                        code = #{code,jdbcType=VARCHAR},
+                    </if>
+                    <if test="bpsCode != null">
+                        bps_code = #{bpsCode,jdbcType=VARCHAR},
+                    </if>
+                    <if test="userNo != null">
+                        user_no = #{userNo,jdbcType=VARCHAR},
+                    </if>
+                    <if test="pendingUserNo != null">
+                        pending_user_no = #{pendingUserNo,jdbcType=VARCHAR},
+                    </if>
+                    <if test="cityCode != null">
+                        city_code = #{cityCode,jdbcType=VARCHAR},
+                    </if>
+                    <if test="houseType != null">
+                        house_type = #{houseType,jdbcType=VARCHAR},
+                    </if>
+                    <if test="address != null">
+                        address = #{address,jdbcType=VARCHAR},
+                    </if>
+                    <if test="area != null">
+                        area = #{area,jdbcType=DECIMAL},
+                    </if>
+                    <if test="price != null">
+                        price = #{price,jdbcType=DECIMAL},
+                    </if>
+                    <if test="priceTime != null">
+                        price_time = #{priceTime,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="autoPrice != null">
+                        auto_price = #{autoPrice,jdbcType=VARCHAR},
+                    </if>
+                    <if test="deadLine != null">
+                        dead_line = #{deadLine,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="status != null">
+                        status = #{status,jdbcType=VARCHAR},
+                    </if>
+                    <if test="userFullName != null">
+                        user_full_name = #{userFullName,jdbcType=VARCHAR},
+                    </if>
+                    <if test="pendingUserName != null">
+                        pending_user_name = #{pendingUserName,jdbcType=VARCHAR},
+                    </if>
+                    <if test="distributorCode != null">
+                        distributor_code = #{distributorCode,jdbcType=VARCHAR},
+                    </if>
+                </set>
+             WHERE   code                    = #{code}
+         
+    </update>
+    <update id="getUpdateByBPSCode"
+            parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsInquiryApply">
+
+            UPDATE   /* getUpdate+@com.vilio.nlbs.commonMapper.sql.NlbsInquiryApplyMapper.xml */
+                     NLBS_INQUIRY_APPLY                          /* 用户申请房屋询价记录表 */
+                <set>
+                    <if test="code != null">
+                        code = #{code,jdbcType=VARCHAR},
+                    </if>
+                    <if test="bpsCode != null">
+                        bps_code = #{bpsCode,jdbcType=VARCHAR},
+                    </if>
+                    <if test="userNo != null">
+                        user_no = #{userNo,jdbcType=VARCHAR},
+                    </if>
+                    <if test="pendingUserNo != null">
+                        pending_user_no = #{pendingUserNo,jdbcType=VARCHAR},
+                    </if>
+                    <if test="cityCode != null">
+                        city_code = #{cityCode,jdbcType=VARCHAR},
+                    </if>
+                    <if test="houseType != null">
+                        house_type = #{houseType,jdbcType=VARCHAR},
+                    </if>
+                    <if test="address != null">
+                        address = #{address,jdbcType=VARCHAR},
+                    </if>
+                    <if test="area != null">
+                        area = #{area,jdbcType=DECIMAL},
+                    </if>
+                    <if test="price != null">
+                        price = #{price,jdbcType=DECIMAL},
+                    </if>
+                    <if test="priceTime != null">
+                        price_time = #{priceTime,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="autoPrice != null">
+                        auto_price = #{autoPrice,jdbcType=VARCHAR},
+                    </if>
+                    <if test="deadLine != null">
+                        dead_line = #{deadLine,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="status != null">
+                        status = #{status,jdbcType=VARCHAR},
+                    </if>
+                    <if test="userFullName != null">
+                        user_full_name = #{userFullName,jdbcType=VARCHAR},
+                    </if>
+                    <if test="pendingUserName != null">
+                        pending_user_name = #{pendingUserName,jdbcType=VARCHAR},
+                    </if>
+                    <if test="distributorCode != null">
+                        distributor_code = #{distributorCode,jdbcType=VARCHAR},
+                    </if>
+                </set>
+             WHERE   BPS_CODE                    = #{bpsCode}
+
+    </update>
+
+    <update id="getUpdateForClaim"
+            parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsInquiryApply">
+
+            UPDATE
+                     NLBS_INQUIRY_APPLY                          /* 用户申请房屋询价记录表 */
+               SET
+                    PENDING_USER_NO       = #{pendingUserNo}    /* 待处理人 */
+                  ,PENDING_USER_NAME       = #{pendingUserName}    /* 待处理人 */
+             WHERE   BPS_CODE                    = #{bpsCode}
+              AND    (PENDING_USER_NO is NULL or PENDING_USER_NO = '')
+
+    </update>
+
+    <!--
+    **************************************************************************
+    * 4.获取一个Bean实体
+    * 注: 根据Bean实体的主键ID获取一个Bean实体.
+    **************************************************************************
+    -->
+    <select id="getBeanBySerialNo"
+            parameterType="java.lang.String"
+            resultType="com.vilio.nlbs.commonMapper.pojo.NlbsInquiryApply">
+
+            SELECT   /* getBean+@com.vilio.nlbs.commonMapper.sql.NlbsInquiryApplyMapper.xml */
+                     nia.ID                     AS id               /* 数据主键 */
+                    ,nia.CODE                   AS code             /* 请求编号 */
+                    ,nia.BPS_CODE               AS bpsCode          /* 询价系统序列号 */
+                    ,nia.DATE_CREATED           AS dateCreated      /* 申请询价时间 */
+                    ,nia.DATE_MODIFIED           AS dateModified      /* 数据修改时间 */
+                    ,nia.USER_NO                AS userNo           /* 询价用户 */
+                    ,nia.PENDING_USER_NO        AS pendingUserNo    /* 待处理人 */
+                    ,nia.CITY_CODE              AS cityCode         /* 询价的房子所在城市 */
+                    ,nia.HOUSE_TYPE             AS houseType        /* 房屋类型 */
+                    ,nia.ADDRESS                AS address          /* 房屋地址 */
+                    ,nia.AREA                   AS area             /* 房屋面积 */
+                    ,nia.PRICE                  AS price            /* 评估价格 */
+                    ,nia.PRICE_TIME             AS priceTime        /* 评估时间 */
+                    ,nia.AUTO_PRICE             AS autoPrice        /* 是否自动询价 */
+                    ,nia.DEAD_LINE              AS deadLine         /* 失效时间 */
+                    ,nia.STATUS                 AS status           /* 状态(00待评估，01评估中，02已评估，99失效) */
+                    ,nia.user_full_name                 AS userFullName
+                    ,nia.pending_user_name                 AS pendingUserName
+                    ,nia.distributor_code                 AS distributorCode
+              FROM   NLBS_INQUIRY_APPLY            nia              /* 用户申请房屋询价记录表 */
+             WHERE   nia.BPS_CODE = #{serialNo}                         /* 数据主键 */
+
+    </select>
+    <!--
+    **************************************************************************
+    * 5.条件查询
+    * 注: 支持多条件查询、模糊查询、日期比较查询等操作.
+    **************************************************************************
+    -->
+
+    <select id="getAllList"
+            parameterType="java.util.HashMap"
+            resultType="java.util.HashMap">
+
+        SELECT   /* getList+@com.vilio.nlbs.commonMapper.sql.NlbsInquiryApplyMapper.xml */
+        nia.BPS_CODE               AS serialNo          /* 询价系统序列号 */
+        ,nia.DATE_CREATED           AS dateCreated      /* 申请询价时间 */
+        ,nia.DATE_MODIFIED           AS dateModified      /* 数据修改时间 */
+        ,nia.USER_NO                AS userNo           /* 询价用户 */
+        ,nia.user_full_name               AS userName
+        ,nia.PENDING_USER_NO        AS pendingUserNo    /* 待处理人 */
+        ,nia.pending_user_name              AS pendingUserName
+        ,nia.CITY_CODE              AS cityCode         /* 询价的房子所在城市 */
+        ,nc.abbr_name              AS cityName
+        ,nia.ADDRESS                AS address          /* 房屋地址 */
+        ,nia.PRICE                  AS price            /* 评估价格 */
+        ,nia.PRICE_TIME             AS priceTime        /* 评估时间 */
+        ,nia.STATUS                 AS status           /* 状态(00待评估，01评估中，02已评估，99失效) */
+        ,nia.user_full_name                 AS userName
+        ,nia.pending_user_name                 AS pendingUserName
+        ,nia.distributor_code                 AS distributorCode
+        FROM   NLBS_INQUIRY_APPLY            nia              /* 用户申请房屋询价记录表 */
+        JOIN nlbs_city nc ON nia.city_code = nc.code
+
+        WHERE   1 = 1
+
+        AND (nia.bps_code IS NOT NULL OR nia.bps_code != '')
+
+        <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+            AND   nia.city_code = #{cityCode} /* 询价的房子所在城市 */
+        </if>
+
+        <if test='address != null and address != "" and address != "null" and address != "undefined"'>
+            AND   nia.ADDRESS LIKE concat('%', #{address}, '%') /* 房屋地址 */
+        </if>
+        <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+            AND   nia.status = #{status} /* 状态(00待评估，01评估中，02已评估，99失效) */
+        </if>
+        <if test='startDate != null and startDate != "" and startDate != "null" and startDate != "undefined"'>
+            AND   nia.price_time > concat(#{startDate} , ' 00:00:00')
+        </if>
+        <if test='endDate != null and endDate != "" and endDate != "null" and endDate != "undefined"'>
+            AND   concat(#{endDate} , ' 23:59:59') > nia.price_time
+        </if>
+
+            ORDER BY   nia.DATE_MODIFIED DESC  /* 排序 */
+
+    </select>
+    
+    <select id="getInquiryApplyList"
+            parameterType="java.util.HashMap"
+            resultType="java.util.HashMap">
+
+        SELECT DISTINCT
+        x.bpsCode AS serialNo,
+        x.userName AS userName,
+        x.pendingUserNo AS pendingUserNo,
+        x.pendingUserName AS pendingUserName,
+        nc.abbr_name AS cityName,
+        x.ADDRESS AS address,
+        x.PRICE AS price,
+        x.priceTime AS priceTime,
+        x.status AS status
+        FROM
+        (
+            SELECT
+            nia.BPS_CODE AS bpsCode,
+            nia.PENDING_USER_NO AS pendingUserNo,
+            nia.PENDING_USER_NAME AS pendingUserName,
+            nia.user_no,
+            nia.user_full_name AS userName,
+            nia.ADDRESS AS address,
+            nia.PRICE AS price,
+            nia.PRICE_TIME AS priceTime,
+            nia.status AS status,
+            nia.city_code AS cityCode,
+            nia.date_modified AS dateModified
+            FROM
+            NLBS_INQUIRY_APPLY nia
+            WHERE
+                nia.user_no = #{userNo, jdbcType=VARCHAR}
+                OR nia.pending_user_no = #{userNo, jdbcType=VARCHAR}
+                OR (
+                    nia.pending_user_no IS NULL
+                    AND nia.user_no IN (
+                        SELECT DISTINCT
+                        npud.user_no
+                        FROM
+                        nlbs_pending_user_distributor npud
+                        JOIN NLBS_INQUIRY_APPLY niaa ON npud.distributor_code = niaa.distributor_code
+                        WHERE niaa.user_no = #{userNo, jdbcType=VARCHAR}
+                        )
+                    )
+                OR nia.user_no IN
+                <foreach item="item" index="index" collection="userList" open="(" separator="," close=")" >
+                               #{item}
+                </foreach >
+        ) x
+        JOIN nlbs_city nc ON x.cityCode = nc. CODE
+        WHERE 1=1
+
+        AND (x.bpsCode IS NOT NULL OR x.bpsCode != '')
+
+        <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+            AND   x.cityCode = #{cityCode} /* 询价的房子所在城市 */
+        </if>
+
+        <if test='address != null and address != "" and address != "null" and address != "undefined"'>
+            AND   x.ADDRESS LIKE concat('%', #{address}, '%') /* 房屋地址 */
+        </if>
+        <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+            AND   x.status = #{status} /* 状态(00待评估，01评估中，02已评估，99失效) */
+        </if>
+        <if test='startDate != null and startDate != "" and startDate != "null" and startDate != "undefined"'>
+            AND   x.priceTime > concat(#{startDate} , ' 00:00:00')
+        </if>
+        <if test='endDate != null and endDate != "" and endDate != "null" and endDate != "undefined"'>
+            AND   concat(#{endDate} , ' 23:59:59') > x.priceTime
+        </if>
+
+            ORDER BY   x.dateModified DESC  /* 排序 */
+
+    </select>
+
+</mapper>

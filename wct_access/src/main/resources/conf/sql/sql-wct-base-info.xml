@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlinfos>
+	<sqlinfo>
+		<sqlid>QUERY0001</sqlid>
+		<sqlname>查询接入信息表</sqlname>
+		<sql><![CDATA[
+			SELECT
+				app_id,
+				app_secret,
+				token,
+				menu_id,
+				app_status,
+				app_user,
+				create_time,
+				update_time,
+				remark1,
+				remark2
+			FROM
+				wct_base_info
+		]]></sql>
+	</sqlinfo>
+
+	<sqlinfo>
+		<sqlid>QUERY0002</sqlid>
+		<sqlname>查询接入信息表(根据状态查询)</sqlname>
+		<sql><![CDATA[
+			SELECT
+				app_id,
+				app_secret,
+				token,
+				menu_id,
+				app_status,
+				app_user,
+				create_time,
+				update_time,
+				remark1,
+				remark2
+			FROM
+				wct_base_info
+			where
+				app_status = '${app_status}'
+		]]></sql>
+	</sqlinfo>
+
+
+	<sqlinfo>
+		<sqlid>UPDATE0001</sqlid>
+		<sqlname>更新接入信息表中的接入状态</sqlname>
+		<sql><![CDATA[
+			UPDATE wct_base_info SET app_status = '${app_status}' WHERE app_id='${app_id}'
+		]]></sql>
+	</sqlinfo>
+
+
+
+</sqlinfos>
+

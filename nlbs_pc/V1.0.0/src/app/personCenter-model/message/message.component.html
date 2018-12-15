@@ -1,0 +1,49 @@
+<div class="row">
+  <ol class="breadcrumbNav col-12">
+    <li class="active">消息通知</li>
+  </ol>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <hr class="breadcrumbNavLine">
+  </div>
+</div>
+
+<div class="row">
+    <div class="condition-search">
+      <div class="queryName">内容：</div>
+      <input class="msg-input width-340" type="text" id="content" placeholder="消息标题、正文等"/>
+
+      <button class="search-btn margin-left-20"  (click)="onSearchBtnClick()">搜索</button>
+
+    </div>
+  </div>
+  <!-- 材料上载-->
+  <div class="row margin-top-40">
+    <div class="col-12">
+      <div class="message-title-line"></div>
+      <div class="message-title-name">全部消息<span class="news-notes">（共{{totalListsCount}}条，显示第{{startListIndex}}至{{endListIndex}}条）</span></div>
+      <div class="label_hr">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <ul class="col-12">
+      <li class="message-list" *ngFor="let item of currentItemLists">
+        <h4 class="message-heading">{{item.title}}</h4>
+        <p class="message-infomation" [ngClass]="{'font-weight-bold':0==item.status}" [innerHtml]="item.content"></p>
+        <span class="info-date">{{item.createTime}}</span>
+      </li>
+
+    </ul>
+
+  </div>
+  <!--分页-->
+  <div class="row">
+    <div class="table_footer col-12">
+      <div class="table_rr">
+        <div class="tablePageCode"></div>
+      </div>
+    </div>
+  </div>

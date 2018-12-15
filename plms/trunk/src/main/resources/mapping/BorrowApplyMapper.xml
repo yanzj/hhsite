@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.BorrowApplyDao">
+
+    <!--查询还款申请表-->
+    <select id="queryBorrowApply" resultType="com.vilio.plms.pojo.BorrowApply"
+            parameterType="com.vilio.plms.pojo.BorrowApply">
+        SELECT
+        a.id,
+        a.code,
+        a.amount,
+        date_format(a.apply_time, '%Y-%m-%d %H:%i:%s') as applyTime,
+        a.apply_status as applyStatus,
+        a.business_code as businessCode,
+        a.apply_code as applyCode,
+        date_format(a.create_date, '%Y-%m-%d %H:%i:%s') as createDate,
+        date_format(a.modify_date, '%Y-%m-%d %H:%i:%s') as modifyDate,
+        b.paid_amount as paidAmount,
+        date_format(b.paid_time, '%Y-%m-%d %H:%i:%s') as paidTime
+        FROM
+        plms_borrow_apply a LEFT JOIN plms_paid_info b on a.code=b.borrow_code
+        <where>
+            <if test="applyStatus!=null and applyStatus!=''">
+                and a.apply_status = #{applyStatus}
+            </if>
+            <if test="customerCode!=null and customerCode!=''">
+                /*关联用户*/
+                a.customer_code = #{customerCode}
+            </if>
+        </where>
+        order by applyTime desc
+    </select>
+    <!--插入借款申请表-->
+    <insert id="insertBorrowApply" parameterType="com.vilio.plms.pojo.BorrowApply">
+        <![CDATA[
+
+
+           insert into plms_borrow_apply(code,amount,apply_time,apply_status,business_code,contract_code,borrow_period,apply_code,
+           create_date,modify_date,borrow_end_date)
+           VALUES (#{code,jdbcType=VARCHAR},#{amount,jdbcType=VARCHAR},#{applyTime,jdbcType=VARCHAR}
+           ,#{applyStatus,jdbcType=VARCHAR},#{businessCode,jdbcType=VARCHAR},#{contractCode,jdbcType=VARCHAR}
+           ,#{borrowPeriod,jdbcType=VARCHAR},#{applyCode,jdbcType=VARCHAR},#{createDate,jdbcType=VARCHAR}
+           ,#{modifyDate,jdbcType=VARCHAR},#{borrowEndDate,jdbcType=VARCHAR})
+
+
+        ]]>
+    </insert>
+
+    <!--修改订单状态-->
+    <update id="updateBorrowApplyForStatus" parameterType="com.vilio.plms.pojo.BorrowApply">
+        update plms_borrow_apply set apply_status = #{applyStatus},modify_date=#{modifyDate}
+        <if test="applyStatus!=null and applyStatus!=''">
+            ,comments=#{comments,jdbcType=VARCHAR}
+        </if>
+         WHERE code = #{code}
+    </update>
+
+    <!--查询还款申请表-->
+    <select id="queryBorrowApplyByCode" resultType="com.vilio.plms.pojo.BorrowApply"
+            parameterType="com.vilio.plms.pojo.BorrowApply">
+        SELECT
+        id,
+        `code`,
+        amount,
+        apply_time as applyTime,
+        apply_status as applyStatus,
+        business_code as businessCode,
+        contract_code as contractCode,
+        borrow_period as borrowPeriod,
+        apply_code as applyCode,
+        DATE_FORMAT(borrow_end_date,'%Y-%m-%d') as borrowEndDate,
+        create_date as createDate,
+        modify_date as modifyDate
+        FROM
+        plms_borrow_apply
+        WHERE code = #{code}
+    </select>
+
+
+</mapper>

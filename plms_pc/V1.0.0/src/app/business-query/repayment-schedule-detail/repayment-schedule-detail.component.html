@@ -1,0 +1,99 @@
+<div class="row">
+  <ol class="breadcrumbNav col-12" >
+    <li><a>还款计划查询</a><i>></i></li>
+    <li class="active">查看还款计划</li>
+  </ol>
+</div>
+
+<div class="row margin-bottom-20">
+  <div class="col-12">
+    <hr class="breadcrumbNavLine">
+  </div>
+</div>
+
+<app-professional-serial [professionalData]="professionalData"></app-professional-serial>
+
+<div class="row">
+  <div class="filed-name col-2">城市：</div>
+  <div class="filed-text col-2">{{currentItemLists.cityName}}</div>
+  <div class="filed-name col-2">渠道：</div>
+  <div class="filed-text col-2">{{currentItemLists.distributorName}}</div>
+  <div class="filed-name col-2">业务经理：</div>
+  <div class="filed-text col-2">{{currentItemLists.agentName}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">主借款人：</div>
+  <div class="filed-text col-2">{{currentItemLists.customerName}}</div>
+  <div class="filed-name col-2">资方：</div>
+  <div class="filed-text col-2">{{currentItemLists.fundSideName}}</div>
+  <div class="filed-name col-2">利息是否代收代付：</div>
+  <div class="filed-text col-2">{{currentItemLists.isInterestInstead==1?'是':'否'}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">还款日期：</div>
+  <div class="filed-text col-2">{{currentItemLists.repaymentDate|date:'yyyy-MM-dd'}}</div>
+  <div class="filed-name col-2">应还总额：</div>
+  <div class="filed-text col-2">{{currentItemLists.repaymentAmount|dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">应还本金：</div>
+  <div class="filed-text col-2">{{currentItemLists.principal|dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}元</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">应还利息：</div>
+  <div class="filed-text col-2">{{currentItemLists.interest|dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">应还服务费：</div>
+  <div class="filed-text col-2">{{currentItemLists.serviceFee|dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">应还保证金：</div>
+  <div class="filed-text col-2">{{currentItemLists.bail|dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}元</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">应还罚息：</div>
+  <div class="filed-text col-2">{{currentItemLists.overdue|dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">应还服务费违约金：</div>
+  <div class="filed-text col-2">{{currentItemLists.serviceFeePenalty|dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">应还保证金违约金：</div>
+  <div class="filed-text col-2">{{currentItemLists.bailPenalty|dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}元</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">宏获还款账户余额：</div>
+  <div class="filed-text col-2">{{currentItemLists.honghuoBalance |dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">宏获保证金账户余额：</div>
+  <div class="filed-text col-2">{{currentItemLists.honghuoBailBalance |dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">资方还款账户余额：</div>
+  <div class="filed-text col-2">{{currentItemLists.fundSideBalance |dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}元</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">状态：</div>
+  <div class="filed-text col-2">{{currentItemLists.loanStatusName}}</div>
+</div>
+
+<!--渠道利息不代收还款计划-->
+<app-channel-interest-non-collection [repaymentSchedule]="repaymentDetailInfoList" *ngIf="(currentItemLists.isInterestInstead=='0')"></app-channel-interest-non-collection>
+
+<!--渠道利息代收还款计划-->
+<app-channel-interest-collection     [repaymentSchedule]="repaymentDetailInfoList" *ngIf="(currentItemLists.isInterestInstead=='1')"></app-channel-interest-collection>
+
+
+<div class="row" *ngIf="this.repaymentDetailInfoList">
+  <div class="table_footer col-12">
+    <div class="table_ll">
+      共{{totalListsCount}}条，显示第{{startListIndex}}至{{endListIndex}}条
+    </div>
+    <div class="table_rr">
+      <div class="tablePageCode"></div>
+    </div>
+  </div>
+</div>
+
+
+<div class="row margin-top-40">
+  <div class="col-2">
+    <button class="orange-button float-right padding-right-0" (click)="querySection()">返回还款计划查询</button>
+  </div>
+
+</div>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.custom.dao.CustomUserDao">
+
+
+    <!--查询用户信息表-->
+    <select id="queryUser" resultType="com.vilio.custom.pojo.CustomUser" parameterType="com.vilio.custom.pojo.CustomUser">
+        SELECT
+        id,
+        user_id as userId,
+        user_name as userName,
+        mobile,
+        password,
+        email,
+        status,
+        first_login as firstLogin,
+        full_name as fullName,
+        sex,
+        birthday,
+        birth_addr as birthAddr,
+        nick,
+        head_img as headImg,
+        register_chl as registerChl,
+        login_error as loginError,
+        hash_lock as hashLock,
+        DATE_FORMAT(create_time,'%Y%m%d%H%i%s') as createTime,
+        lock_time as lockTime,
+        system_id as systemId
+        FROM
+        custom_user_info u
+        WHERE 1=1
+        <if test="userName!=null and userName!=''">
+            and u.user_name = #{userName}
+        </if>
+        <if test="mobile!=null and mobile!=''">
+            and u.mobile = #{mobile}
+        </if>
+        <if test="userId!=null and userId!=''">
+            and u.user_id = #{userId}
+        </if>
+        <if test="email!=null and email!=''">
+            and u.email = #{email}
+        </if>
+        <if test="systemId!=null and systemId!=''">
+            and u.system_id = #{systemId}
+        </if>
+    </select>
+
+    <!--更新用户信息表登录错误次数-->
+    <update id="updateLoginErrorByUserId" parameterType="com.vilio.custom.pojo.CustomUser">
+        UPDATE custom_user_info u set u.login_error = #{loginError}
+        WHERE u.user_id = #{userId}
+    </update>
+
+    <!--用户锁定或解锁-->
+    <update id="updateHashLockByUserId" parameterType="com.vilio.custom.pojo.CustomUser">
+        UPDATE custom_user_info u set u.hash_lock = #{hashLock},lock_time = #{lockTime}
+        WHERE u.user_id = #{userId}
+    </update>
+
+
+    <!--用户解锁-->
+    <update id="updateUnLock" parameterType="java.util.HashMap">
+        UPDATE custom_user_info u set u.hash_lock = #{unHashLock},login_error = #{loginError}
+        WHERE u.hash_lock = #{hashLock} and #{systemTimestamp}-lock_time>#{unLockTime}
+    </update>
+
+    <!--更新用户密码-->
+    <update id="updatePassword" parameterType="java.util.HashMap">
+        UPDATE custom_user_info u set u.password = #{newPassword}
+        WHERE u.user_id = #{userId} and u.password = #{oldPassword} and u.status = ${status}
+    </update>
+
+    <!--插入用户表-->
+    <insert id="insertUser" parameterType="com.vilio.custom.pojo.CustomUser" >
+        INSERT INTO custom_user_info (
+            user_id,
+            user_name,
+            mobile,
+            password,
+            email,
+            status,
+            first_login,
+            full_name,
+            sex,
+            birthday,
+            birth_addr,
+            nick,
+            head_img,
+            register_chl,
+            login_error,
+            hash_lock,
+            system_id,
+            lock_time
+        )
+        VALUES
+            (#{userId,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{mobile,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},
+            #{email,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},#{firstLogin,jdbcType=VARCHAR},#{fullName,jdbcType=VARCHAR},
+            #{sex,jdbcType=VARCHAR},DATE_FORMAT(#{birthday,jdbcType=VARCHAR},'%Y%m%d'),#{birthAddr,jdbcType=VARCHAR},#{nick,jdbcType=VARCHAR},
+            #{headImg,jdbcType=VARCHAR},#{registerChl,jdbcType=VARCHAR},#{loginError,jdbcType=VARCHAR},#{hashLock,jdbcType=VARCHAR},
+            #{systemId,jdbcType=VARCHAR},#{lockTime,jdbcType=VARCHAR})
+    </insert>
+
+
+
+    <!--查询用户信息表-->
+    <select id="batchQryUser" resultType="com.vilio.custom.pojo.CustomUser" parameterType="com.vilio.custom.pojo.CustomUser">
+        SELECT
+        id,
+        user_id as userId,
+        user_name as userName,
+        mobile,
+        password,
+        email,
+        status,
+        first_login as firstLogin,
+        full_name as fullName,
+        sex,
+        birthday,
+        birth_addr as birthAddr,
+        nick,
+        head_img as headImg,
+        register_chl as registerChl,
+        login_error as loginError,
+        hash_lock as hashLock,
+        DATE_FORMAT(create_time,'%Y%m%d%H%i%s') as createTime,
+        lock_time as lockTime,
+        system_id as systemId
+        FROM
+        custom_user_info u
+        WHERE 1=1
+        <if test="userName!=null and userName!=''">
+            and u.user_name = #{userName}
+        </if>
+        <if test="mobile!=null and mobile!=''">
+            and u.mobile = #{mobile}
+        </if>
+        <if test="userId!=null and userId!=''">
+            and u.user_id = #{userId}
+        </if>
+        <if test="email!=null and email!=''">
+            and u.email = #{email}
+        </if>
+        <if test="status!=null and status!=''">
+            and u.status = #{status}
+        </if>
+        <if test="firstLogin!=null and firstLogin!=''">
+            and u.first_login = #{firstLogin}
+        </if>
+        <if test="fullName!=null and fullName!=''">
+            and u.full_name = #{fullName}
+        </if>
+        <if test="sex!=null and sex!=''">
+            and u.sex = #{sex}
+        </if>
+        <if test="birthday!=null and birthday!=''">
+            and DATE_FORMAT(u.birthday,'%Y%m%d') = DATE_FORMAT(#{birthday},'%Y%m%d')
+        </if>
+        <if test="birthAddr!=null and birthAddr!=''">
+            and u.birth_addr = #{birthAddr}
+        </if>
+        <if test="nick!=null and nick!=''">
+            and u.nick = #{nick}
+        </if>
+        <if test="hashLock!=null and hashLock!=''">
+            and u.hash_lock = #{hashLock}
+        </if>
+        <if test="systemId!=null and systemId!=''">
+            and u.system_id = #{systemId}
+        </if>
+    </select>
+
+    <!--更新用户基本信息-->
+    <update id="updateUserInfo" parameterType="com.vilio.custom.pojo.CustomUser">
+        UPDATE custom_user_info u set u.user_name = #{userName,jdbcType=VARCHAR},u.mobile = #{mobile,jdbcType=VARCHAR},u.email = #{email,jdbcType=VARCHAR},
+        u.full_name = #{fullName,jdbcType=VARCHAR},u.sex = #{sex,jdbcType=VARCHAR},u.birthday = DATE_FORMAT(#{birthday,jdbcType=VARCHAR},'%Y%m%d'),u.birth_addr = #{birthAddr,jdbcType=VARCHAR},
+        u.nick = #{nick,jdbcType=VARCHAR},u.head_img = #{headImg,jdbcType=VARCHAR}
+        WHERE u.user_id = #{userId}
+    </update>
+
+</mapper>

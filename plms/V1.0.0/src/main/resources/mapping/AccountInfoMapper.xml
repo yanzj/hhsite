@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.AccountInfoDao">
+
+    <!--银行账户表-->
+    <select id="qryAccountInfo" resultType="com.vilio.plms.pojo.AccountInfo" parameterType="com.vilio.plms.pojo.AccountInfo">
+      SELECT
+            id,
+            `code`,
+            `name`,
+            bank,
+            province,
+            city,
+            account_no as accountNo,
+            `status`,
+            create_date as createDate,
+            modify_date as modifyDate
+        FROM
+            plms_account_info
+        WHERE code = #{code} and status != '0'
+    </select>
+    <insert id="saveAccountInfo" parameterType="com.vilio.plms.pojo.AccountInfo">
+        INSERT INTO plms_account_info (
+            code,
+            name,
+            bank,
+            province,
+            city,
+            account_no,
+            status,
+            create_date,
+            modify_date
+        )
+        VALUES
+            (
+               #{code,jdbcType=VARCHAR},
+               #{name,jdbcType=VARCHAR},
+               #{bank,jdbcType=VARCHAR},
+               #{province,jdbcType=VARCHAR},
+               #{city,jdbcType=VARCHAR},
+               #{accountNo,jdbcType=VARCHAR},
+               #{status,jdbcType=VARCHAR},
+               #{createDate,jdbcType=TIMESTAMP},
+               #{modifyDate,jdbcType=TIMESTAMP}
+            )
+    </insert>
+
+    <!--银行账户表-->
+    <insert id="insert" parameterType="java.util.HashMap">
+        insert into plms_account_info (code,name,bank,account_no,status)
+             values (#{code,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{bank,jdbcType=VARCHAR}
+                     ,#{accountNo,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR})
+    </insert>
+
+</mapper>

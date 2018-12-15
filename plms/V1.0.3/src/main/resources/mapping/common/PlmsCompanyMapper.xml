@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.PlmsCompanyDao">
+
+    <insert id="saveCompanyInfo" parameterType="com.vilio.plms.pojo.PlmsCompany">
+        INSERT INTO plms_company (
+            code,
+            company_name,
+            company_type,
+            status,
+            create_date,
+            modify_date,
+            abbr_name,
+            bms_code
+        )
+        VALUES
+            (
+                #{code},
+                #{companyName},
+                #{companyType},
+                #{status},
+                #{createDate},
+                #{modifyDate},
+                #{abbrName},
+                #{bmsCode}
+            )
+    </insert>
+    
+    <select id="getCompanyByBmsCode" parameterType="com.vilio.plms.pojo.PlmsCompany" resultType="com.vilio.plms.pojo.PlmsCompany">
+        SELECT
+            t.code,
+            t.bms_code as bmsCode,
+            t.company_name AS companyName,
+            t.company_type AS companyType,
+            t.create_date AS createDate,
+            t.modify_date AS modifyDate
+        FROM
+            plms_company t
+        WHERE
+            t. STATUS = '1'
+        AND t.bms_code = #{bmsCode}
+        and t.company_type =  #{companyType}
+    </select>
+</mapper>

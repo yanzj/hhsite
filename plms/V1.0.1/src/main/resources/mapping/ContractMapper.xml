@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.ContractDao">
+
+    <!--查询合同信息-->
+    <select id="qryContract" resultType="com.vilio.plms.pojo.Contract" parameterType="com.vilio.plms.pojo.Contract">
+        <![CDATA[
+            SELECT
+                id,
+                `code`,
+                apply_code as applyCode,
+                `status`,
+                create_date as createDate,
+                modify_date as modifyDate,
+                contract_no as contractNo,
+                credit_period as creditPeriod,
+                DATE_FORMAT(credit_start_date,'%Y%m%d%H%i%s') as creditStartDate,
+                DATE_FORMAT(credit_end_date,'%Y%m%d%H%i%s') as creditEndDate
+            FROM
+                plms_contract_info
+            WHERE status != '0' and code = #{code}
+        ]]>
+    </select>
+    <!--查询合同信息-->
+    <select id="qryContractByContractNo" parameterType="java.lang.String" resultType="java.util.Map">
+        <![CDATA[
+            SELECT
+                id,
+                `code`,
+                apply_code as applyCode,
+                `status`,
+                create_date as createDate,
+                modify_date as modifyDate,
+                contract_no as contractNo,
+                DATE_FORMAT(credit_start_date,'%Y%m%d%H%i%s') as creditStartDate,
+                DATE_FORMAT(credit_end_date,'%Y%m%d%H%i%s') as creditEndDate,
+                credit_period as creditPeriod
+            FROM
+                plms_contract_info
+            WHERE status != '0' and contract_no = #{contractNo}
+        ]]>
+    </select>
+
+    <!--查询合同明细信息-->
+    <select id="qryContractDetail" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT
+            DATE_FORMAT(
+                b.credit_end_date,
+                '%Y-%m-%d'
+            ) AS creditEndDate,
+            b.principal AS principal,
+            b.total_quota AS totalQuota,
+            b.remaining_quota AS remainingQuota,
+            c.annualized_interest AS annualizedInterest,
+            c.principal_over_interest AS principalOverInterest,
+            g.repayment_methods AS repaymentMethods,
+            g.is_period_select AS isPeriodSelect,
+            g.loan_minimum_unit AS loanMinimumUnit,
+            g.loan_minimum_amount AS loanMinimumAmount,
+            g.is_first_max AS isFirstMax,
+            b.first_amount AS firstAmount,
+            a. CODE AS contractCode,
+            date_format(
+                b.principal_date,
+                '%Y-%m-%d'
+            ) AS principalDate,
+            b. CODE AS accountDetailCode,
+        acc.account_no as accountNo,
+        f.account_code,
+        b.code as detailCode,
+        g.paid_days_computational_rule as paidDaysComputationalRule,
+        g.principal_repayment_period as principalRepaymentPeriod
+        FROM
+            plms_contract_info a,
+            plms_account_detail b,
+            plms_apply_interesting c,
+            plms_account d,
+            plms_user_info e,
+            plms_apply_info f,
+            plms_product g,
+            plms_account_info acc
+        WHERE
+            a. CODE = b.contract_code
+        AND c.contract_code = a. CODE
+        AND d.CODE = b.account_code
+        AND e.CODE = d.user_code
+        AND f.CODE = a.apply_code
+        AND g.apply_code = f. CODE
+        and acc.code = f.account_code
+        AND e.um_id = #{umId}
+        and a.code=#{contractCode}
+
+    </select>
+    <insert id="saveContractInfo" parameterType="com.vilio.plms.pojo.Contract">
+        INSERT INTO plms_contract_info (
+            code,
+            apply_code,
+            status,
+            create_date,
+            modify_date,
+            contract_no,
+            credit_start_date,
+            credit_end_date,
+            credit_period
+        )
+        VALUES
+            (
+                #{code},
+                #{applyCode},
+                #{status},
+                #{createDate, jdbcType=TIMESTAMP},
+                #{modifyDate, jdbcType=TIMESTAMP},
+                #{contractNo},
+                #{creditStartDate, jdbcType=TIMESTAMP},
+                #{creditEndDate, jdbcType=TIMESTAMP},
+                #{creditPeriod, jdbcType=INTEGER}
+            )
+    </insert>
+
+
+
+</mapper>

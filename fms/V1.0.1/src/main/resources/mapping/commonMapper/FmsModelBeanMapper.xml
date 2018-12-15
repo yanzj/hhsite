@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.vilio.fms.generator.dao.FmsModelBeanMapper">
+
+    <insert id="insertModel" parameterType="java.util.HashMap" >
+        INSERT INTO  fms_model_bean
+                    (
+                     model_code
+                    ,partner_group_code
+                    ,partner_group_name
+                    ,partner_group_type
+                    ,partner_code
+                    ,partner_name
+                    ,mail_receiver_address
+                    ,mail_cc_address
+                    ,short_msg_receiver
+                    ,wechat_receiver
+                    ,model_file_code
+                    ,model_file_name
+                    ,model_name
+                    ,file_suffix
+                    ,need_out_send
+                    ,loan_contract_flag
+                    ,relate_to_mortgage_type
+                    ,relate_to_customer
+                    ,service_function_no
+                    ,email_model
+                    ,msg_model
+                    ,wechat_model
+                    )
+            VALUES  (
+                     #{modelCode}
+                    ,#{partnerGroupCode}
+                    ,#{partnerGroupName}
+                    ,#{partnerGroupType}
+                    ,#{partnerCode}
+                    ,#{partnerName}
+                    ,#{mailReceiverAddress}
+                    ,#{mailCcAddress}
+                    ,#{shortMsgReceiver}
+                    ,#{wechatReceiver}
+                    ,#{modelFileCode}
+                    ,#{modelFileName}
+                    ,#{modelName}
+                    ,#{fileSuffix}
+                    ,#{needOutSend}
+                    ,#{loanContractFlag}
+                    ,#{relateToMortgageType}
+                    ,#{relateToCustomer}
+                    ,#{serviceFunctionNo}
+                    ,#{emailModel}
+                    ,#{msgModel}
+                    ,#{wechatModel}
+                    )
+    </insert>
+
+
+    <select id="queryModelByModelCode"
+            parameterType="java.lang.String"
+            resultType="com.vilio.fms.generator.pojo.FmsModelBean">
+
+        SELECT
+         fmb.id                        AS id
+        ,fmb.model_code                AS modelCode
+        ,fmb.partner_group_code        AS partnerGroupCode
+        ,fmb.partner_group_name        AS partnerGroupName
+        ,fmb.partner_group_type        AS partnerGroupType
+        ,fmb.partner_code              AS partnerCode
+        ,fmb.partner_name              AS partnerName
+        ,fmb.mail_receiver_address     AS mailReceiverAddress
+        ,fmb.mail_cc_address           AS mailCcAddress
+        ,fmb.short_msg_receiver        AS shortMsgReceiver
+        ,fmb.wechat_receiver           AS wechatReceiver
+        ,fmb.model_file_code           AS modelFileCode
+        ,fmb.model_file_name           AS modelFileName
+        ,fmb.model_name                AS modelName
+        ,fmb.file_suffix               AS fileSuffix
+        ,fmb.need_out_send             AS needOutSend
+        ,fmb.loan_contract_flag        AS loanContractFlag
+        ,fmb.relate_to_mortgage_type   AS relateToMortgageType
+        ,fmb.relate_to_customer        AS relateToCustomer
+        ,fmb.service_function_no       AS serviceFunctionNo
+        ,fmb.email_model               AS emailModel
+        ,fmb.msg_model                 AS msgModel
+        ,fmb.wechat_model               AS wechatModel
+        FROM   fms_model_bean     fmb
+        WHERE   fmb.model_code = #{modelCode}
+
+    </select>
+
+
+    <select id="queryModelsWithGroup"
+            resultType="com.vilio.fms.generator.pojo.FmsModelBean">
+
+        SELECT
+        fmb.id                        AS id
+        ,fmb.model_code               AS modelCode
+        ,fmb.partner_group_code       AS partnerGroupCode
+        ,fmb.partner_group_name       AS partnerGroupName
+        ,fmb.partner_group_type       AS partnerGroupType
+        ,fmb.partner_code             AS partnerCode
+        ,fmb.partner_name             AS partnerName
+        ,fmb.mail_receiver_address    AS mailReceiverAddress
+        ,fmb.mail_cc_address          AS mailCcAddress
+        ,fmb.short_msg_receiver       AS shortMsgReceiver
+        ,fmb.wechat_receiver          AS wechatReceiver
+        ,fmb.model_file_code          AS modelFileCode
+        ,fmb.model_file_name          AS modelFileName
+        ,fmb.model_name               AS modelName
+        ,fmb.file_suffix              AS fileSuffix
+        ,fmb.need_out_send            AS needOutSend
+        ,fmb.loan_contract_flag       AS loanContractFlag
+        ,fmb.relate_to_mortgage_type  AS relateToMortgageType
+        ,fmb.relate_to_customer       AS relateToCustomer
+        ,fmb.service_function_no      AS serviceFunctionNo
+        ,fmb.email_model              AS emailModel
+        ,fmb.msg_model                AS msgModel
+        ,fmb.wechat_model              AS wechatModel
+        FROM   fms_model_bean     fmb
+        GROUP BY fmb.partner_group_code
+
+    </select>
+
+    <select id="queryModelFiles"
+            parameterType="com.vilio.fms.generator.pojo.FmsModelBean"
+            resultType="com.vilio.fms.generator.pojo.FmsModelBean">
+
+        SELECT
+        fmb.id                        AS id
+        ,fmb.model_code               AS modelCode
+        ,fmb.partner_group_code       AS partnerGroupCode
+        ,fmb.partner_group_name       AS partnerGroupName
+        ,fmb.partner_group_type       AS partnerGroupType
+        ,fmb.partner_code             AS partnerCode
+        ,fmb.partner_name             AS partnerName
+        ,fmb.mail_receiver_address    AS mailReceiverAddress
+        ,fmb.mail_cc_address          AS mailCcAddress
+        ,fmb.short_msg_receiver       AS shortMsgReceiver
+        ,fmb.wechat_receiver          AS wechatReceiver
+        ,fmb.model_file_code          AS modelFileCode
+        ,fmb.model_file_name          AS modelFileName
+        ,fmb.model_name               AS modelName
+        ,fmb.file_suffix              AS fileSuffix
+        ,fmb.need_out_send            AS needOutSend
+        ,fmb.loan_contract_flag       AS loanContractFlag
+        ,fmb.relate_to_mortgage_type  AS relateToMortgageType
+        ,fmb.relate_to_customer       AS relateToCustomer
+        ,fmb.service_function_no      AS serviceFunctionNo
+        ,fmb.email_model              AS emailModel
+        ,fmb.msg_model                AS msgModel
+        ,fmb.wechat_model              AS wechatModel
+        FROM   fms_model_bean     fmb
+        WHERE 1=1
+            <if test='partnerGroupCode != null and partnerGroupCode != "" and partnerGroupCode != "null" and partnerGroupCode != "undefined"'>
+                AND   fmb.partner_group_code = #{partnerGroupCode}
+            </if>
+            <if test='partnerName != null and partnerName != "" and partnerName != "null" and partnerName != "undefined"'>
+                AND   fmb.partner_name = #{partnerName}
+            </if>
+    </select>
+
+</mapper>

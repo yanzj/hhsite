@@ -1,0 +1,45 @@
+
+<!--还款记录的tab 组件 start-->
+<div class="row" *ngIf="!paymentDetailPageShow">
+  <div class="col-12">
+    <table class="table width-100per" border="0" cellpadding="0" cellspacing="0">
+      <thead>
+      <tr>
+        <th class="width-100">还款日期</th>
+        <th class="width-120">还款金额（元）</th>
+        <th class="width-120">收款账户</th>
+        <th class="width-120">资金来源</th>
+        <th class="width-80">还款详情</th>
+        <th>备注</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of currentItemLists">
+        <td class="width-100">{{item.receiptsDate   | date:'yyyy-MM-dd'}}</td>
+        <td class="width-120">{{item.receiptsAmount |dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}</td>
+        <td class="width-120">{{item.accountTypeName}}</td>
+        <td class="width-120">{{item.fundSource}}</td>
+        <td class="width-80" (click)="readDetail(item)"><a class="text-link">查看</a></td>
+        <td >{{item.remark}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row" *ngIf="!paymentDetailPageShow">
+  <div class="table_footer col-12">
+    <div class="table_ll">
+      共{{totalListsCount}}条，显示第{{startListIndex}}至{{endListIndex}}条
+    </div>
+    <div class="table_rr">
+      <div class="tablePageCode"></div>
+    </div>
+  </div>
+</div>
+
+<!--还款记录的tab 组件 end-->
+
+<app-payment-history-check  (event)="getData($event)" *ngIf="paymentDetailPageShow" [receiptsRecordList]="paidInfoDetail" [paymentDetailPageShow]="paymentDetailPageShow" >
+<!--[meterialNumber]="meterialNumber" [selectFileList]="selectFileList"-->
+</app-payment-history-check>

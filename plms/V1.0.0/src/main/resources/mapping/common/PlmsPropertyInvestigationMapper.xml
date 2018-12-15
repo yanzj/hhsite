@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.PlmsPropertyInvestigationDao">
+
+    <insert id="savePlmsPropertyInvestigationInfo" parameterType="com.vilio.plms.pojo.PlmsPropertyInvestigation">
+        INSERT INTO plms_property_investigation (
+            code,
+            investigation_time,
+            in_case_information,
+            house_code,
+            create_date,
+            modify_date,
+            status
+        )
+        VALUES
+            (
+                #{code, jdbcType=VARCHAR},
+                #{investigationTime, jdbcType=TIMESTAMP},
+                #{inCaseInformation, jdbcType=VARCHAR},
+                #{houseCode, jdbcType=VARCHAR},
+                #{createDate, jdbcType=TIMESTAMP},
+                #{modifyDate, jdbcType=TIMESTAMP},
+                #{status, jdbcType=VARCHAR}
+            )
+    </insert>
+</mapper>

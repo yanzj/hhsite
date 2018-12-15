@@ -1,0 +1,182 @@
+<div class="row">
+  <ol class="breadcrumbNav col-12">
+    <li class="active" *ngIf="enquireStatus=='01'">自动询价</li>
+    <li class="active" *ngIf="enquireStatus=='02'">人工询价</li>
+    <ol *ngIf="enquireStatus=='03'">
+      <li><a (click)="enquireSearch()">询价查询</a><i>></i></li>
+      <li class="active">查看询价<i>|</i></li>
+      <li><a (click)="history()">历史</a></li>
+    </ol>
+  </ol>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <hr class="breadcrumbNavLine">
+  </div>
+</div>
+
+<div>
+  <div class="progress-box">
+    <div class="progress-com">
+      <div class="progress-line">
+        <div *ngFor=" let item of itemStatusLists; let i=index ">
+                <span class="progress-circle circle{{i+1}} active title_cur"
+                      [ngClass]="{'title_cur':i<=itemSelectIndex}">
+                  <!--<i class="bigCircle" *ngIf=" itemSelectStatus == item ? true:false "></i>-->
+                  <i [ngClass]="{'bigCircle':i==itemSelectIndex}"></i>
+                  <ins [ngClass]="{'ins_line':i<itemSelectIndex}"></ins>
+                  <em [ngStyle]="{'color':i<=itemSelectIndex ? '#333' : '#999' }"
+                      [ngClass]="{'ProSeleceted':i==itemSelectIndex}">{{item}}</em>
+                </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">城市：</div>
+  <div class="filed-text col-2">{{cityName}}</div>
+</div>
+
+<div class="row" *ngIf="isPersonEnquiry!='3'">
+  <div class="filed-name col-2">房屋类型：</div>
+  <div class="filed-text col-2">{{houseName}}</div>
+</div>
+
+<div class="row" *ngIf="isPersonEnquiry=='3'">
+  <div class="filed-name col-2">房屋地址：</div>
+  <div class="filed-text col-2">{{address}}</div>
+</div>
+<!-- 公寓评估的结果 -->
+<div class="row">
+  <div class="col-6">
+    <div class="row">
+      <div class="col-12 company-title">{{lValue}}</div>
+    </div>
+    <div id="leftDetailDIV" *ngFor=" let item of leftDisplayTitleList; let i = index " class="row">
+      <!-- 世联评估 -->
+      <div class="filed-name col-4">{{item}}：</div>
+      <div class="filed-text col-8">{{leftValueList[i]}}
+        <div *ngIf="i==leftDisplayTitleList.length-1&&(isGotoPerson[0] == '待评估' || isGotoPerson[0] == '评估失败')"
+             class="goto-person">
+          <div class="goto-person-title">需人工评价，请前往询价结果查询页面输入评估结果</div>
+        </div>
+        <!-- </div>-->
+      </div>
+    </div>
+    <div class="container-up-success margin-top-40" *ngIf="isShow">
+            <span>
+              <img src="{{imgSrc}}" alt="" class="upload-img">
+            </span>
+      <div class="width-160">
+        <p class="image-name">{{fileName}}</p>
+        <p class="upload-time">{{uploadTime}}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 城市评估 -->
+
+
+  <!-- 如果是别墅的话 并且是从评估直接进来的话  则显示 -->
+  <div class="col-6" *ngIf="isR!='2'&&isPersonEnquiry =='2'&&!pathStatus">
+    <div class="row">
+      <div class="col-12 company-title">{{rValue}}</div>
+    </div>
+    <div class="row">
+      <div class="col-12 font-weight-bold">不支持别墅自动询价，请前往询价结果查询页面输入评估结果</div>
+    </div>
+  </div>
+
+  <!-- 如果是别墅的话 并且是从查询列表直接进来的话  则显示 -->
+  <div class="col-6" *ngIf="isR!='2'&&isPersonEnquiry =='2'&&pathStatus">
+    <div class="row">
+      <div class="col-12 company-title">{{rValue}}</div>
+    </div>
+    <div id="rightDetailDIV" *ngFor=" let item of rightDisplayTitleList; let i = index " class="row">
+      <div class="filed-name col-4">{{item}}：</div>
+      <div class="filed-text col-8">{{rightValueList[i]}}
+        <div *ngIf="i==rightDisplayTitleList.length-1&&(isGotoPerson[1] == '待评估' || isGotoPerson[1] == '评估失败')"
+             class="goto-person">
+          <div class="goto-person-title">需人工评价，请前往询价结果查询页面输入评估结果</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-up-success margin-top-40" *ngIf="isShow2">
+      <span>
+        <img src="{{imgSrc2}}" alt="" class="upload-img">
+      </span>
+      <div class="width-160">
+        <p class="image-name">{{fileName2}}</p>
+        <p class="upload-time">{{uploadTime2}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-6" *ngIf="isR!='2'&&isPersonEnquiry!='2'">
+    <div class="row">
+      <div class="col-12 company-title">{{rValue}}</div>
+    </div>
+    <div id="rightDetailDIV" *ngFor=" let item of rightDisplayTitleList; let i = index " class="row">
+      <div class="filed-name col-4">{{item}}：</div>
+      <div class="filed-text col-8">{{rightValueList[i]}}
+        <div *ngIf="i==rightDisplayTitleList.length-1&&(isGotoPerson[1] == '待评估' || isGotoPerson[1] == '评估失败')"
+             class="goto-person">
+          <div class="goto-person-title">需人工评价，请前往询价结果查询页面输入评估结果</div>
+        </div>
+      </div>
+    </div>
+    <div class="container-up-success margin-top-40" *ngIf="isShow2">
+      <span>
+        <img src="{{imgSrc2}}" alt="" class="upload-img">
+      </span>
+      <div class="width-160">
+        <p class="image-name">{{fileName2}}</p>
+        <p class="upload-time">{{uploadTime2}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <!--<div class="orange-button float-right mt40" (click)="submit()">提交</div>-->
+    </div>
+  </div>
+
+  <div class="row margin-top-40 margin-bottom-20">
+    <div class="col-12">
+      <div class="message-title-line"></div>
+      <div class="message-title-name">综合评估结果</div>
+      <div class="label_hr">
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="filed-name col-2">评估时间：</div>
+    <div class="filed-text col-10">{{assessmentTime}}</div>
+  </div>
+
+  <div class="row">
+    <div class="filed-name col-2">评估价：</div>
+    <div class="col-10">
+      <div *ngIf="!PriceStatus" class="filed-text enquire-result">{{assessmentStatus}}</div>
+      <div *ngIf="PriceStatus" class="filed-text enquire-result">{{assessmentStatus/10000|number:'1.2-2'}}<span
+        class="uinit">万元</span></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-2">
+      <div class="orange-button float-right margin-top-40 q_orange" (click)="onBackEnquiryBtnClick()"
+           *ngIf="pathStatus">返回询价查询
+      </div>
+      <div class="orange-button float-right margin-top-40 q_orange" (click)="onBackEnquiryBtnClick()"
+           *ngIf="!pathStatus">继续询价
+      </div>
+    </div>
+  </div>
+</div>

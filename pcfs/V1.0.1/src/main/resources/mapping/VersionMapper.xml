@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.pcfs.dao.VersionDao">
+
+    <!--查询安卓版本信息-->
+    <select id="searchAnroidVersionInfo" resultType="java.util.Map" >
+        select
+        pav.version ,
+        pav.version_detail AS versionDetail,
+        pav.title,
+        pav.detail,
+        pav.force,
+        pav.download_url AS downloadUrl ,
+        pav.apk_size AS apkSize
+        FROM pcfs_android_version pav
+       ORDER BY pav.version desc limit 1
+    </select>
+
+
+
+
+
+</mapper>

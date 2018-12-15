@@ -1,0 +1,12 @@
+.table tbody tr:nth-child(odd) td {
+  background-color: #F5F5F5;
+}
+.digit{
+  width:15px;
+  text-align: right;
+  display: block;
+}
+.table tbody tr .txtc{text-align: center}
+
+
+

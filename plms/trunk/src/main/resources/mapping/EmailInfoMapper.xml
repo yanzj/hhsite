@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.EmailInfoDao">
+
+    <!--插入历史流水表记录-->
+    <insert id="insertEmailInfoLog" parameterType="com.vilio.plms.pojo.EmailInfo">
+        insert into plms_email_info_log(code,system_no,display_name,user_name,to_user_list,to_cc_list,subject,content,url_file_list,email_type,send_method,send_status)
+        VALUES (#{code,jdbcType=VARCHAR},#{systemNo,jdbcType=VARCHAR},#{displayName,jdbcType=VARCHAR}
+        ,#{userName,jdbcType=VARCHAR},#{toUserList,jdbcType=VARCHAR},#{toCcList,jdbcType=VARCHAR},#{subject,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR}
+        ,#{urlFileList,jdbcType=VARCHAR},#{emailType,jdbcType=VARCHAR},#{sendMethod,jdbcType=VARCHAR},#{sendStatus,jdbcType=VARCHAR})
+    </insert>
+
+
+    <!--修改返回信息-->
+    <update id="updateEmailInfoSendStatus" parameterType="com.vilio.plms.pojo.EmailInfo">
+        update plms_email_info_log set send_status=#{sendStatus},send_time=#{sendTime},ret_code=#{retCode},ret_msg=#{retMsg}
+        WHERE  code=#{code}
+    </update>
+
+</mapper>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.ProductDao">
+
+    <!--查询产品信息-->
+    <select id="qryProduct" resultType="com.vilio.plms.pojo.Product" parameterType="com.vilio.plms.pojo.Product">
+        SELECT
+            id,
+            `code`,
+            apply_code as applyCode,
+            product_name as productName,
+            circle,
+            interest_cycle as interestCycle,
+            year_period as yearPeriod,
+            repayment_methods as repaymentMethods,
+            loan_minimum_unit as loanMinimumUnit,
+            loan_minimum_amount as loanMinimumAmount,
+            repayment_minimum_unit as repaymentMinimumUnit,
+            repayment_minimum_amount as repaymentMinimumAmount,
+            part_repayment as partRepayment,
+            borrow_closed_period as borrowClosedPeriod,
+            repayment_closed_period as repaymentClosedPeriod,
+            is_penalty as isPenalty,
+            penalty_period as penaltyPeriod,
+            is_first_max as isFirstMax,
+            interest_collection_method as interestCollectionMethod,
+            interest_repayment_day as interestRepaymentDay,
+            mortgage_interest_period as mortgageInterestPeriod,
+            grace_days as graceDays,
+            principal_repayment_period as principalRepaymentPeriod,
+            principal_repayment_method as principalRepaymentMethod,
+            is_period_select as isPeriodSelect,
+            `status`,
+            create_date as createDate,
+            modify_date as modifyDate,
+            paid_days_computational_rule as paidDaysComputationalRule
+        FROM
+            plms_product
+        WHERE
+            apply_code = #{applyCode} and status != '0'
+    </select>
+
+    <insert id="insert" parameterType="java.util.HashMap">
+            insert into plms_product(code,apply_code,product_name,circle,interest_cycle,year_period,
+            repayment_methods,loan_minimum_unit,loan_minimum_amount,repayment_minimum_unit,repayment_minimum_amount,
+            part_repayment,borrow_closed_period,repayment_closed_period,is_penalty,penalty_period,is_first_max,
+            interest_collection_method,interest_repayment_day,mortgage_interest_period,grace_days,principal_repayment_period,
+            principal_repayment_method,is_period_select,status,overdue_method,service_fee_method,
+            is_spread_one_time,paid_date_grace_days,max_loan_num,paid_days_computational_rule)
+            values(#{code,jdbcType=VARCHAR},#{applyCode,jdbcType=VARCHAR},#{productName,jdbcType=VARCHAR},#{circle,jdbcType=VARCHAR}
+            ,#{interestCycle,jdbcType=VARCHAR},#{yearPeriod,jdbcType=VARCHAR},#{repaymentMethods,jdbcType=VARCHAR},#{loanMinimumUnit,jdbcType=DECIMAL},#{loanMinimumAmount,jdbcType=DECIMAL}
+            ,#{repaymentMinimumUnit,jdbcType=DECIMAL},#{repaymentMinimumAmount,jdbcType=DECIMAL},#{partRepayment,jdbcType=VARCHAR},#{borrowClosedPeriod,jdbcType=VARCHAR},#{repaymentClosedPeriod,jdbcType=VARCHAR}
+            ,#{isPenalty,jdbcType=TINYINT},#{penaltyPeriod,jdbcType=TINYINT},#{isFirstMax,jdbcType=TINYINT},#{interestCollectionMethod,jdbcType=VARCHAR}
+            ,#{interestRepaymentDay,jdbcType=VARCHAR},#{mortgageInterestPeriod,jdbcType=VARCHAR},#{graceDays,jdbcType=VARCHAR},#{principalRepaymentPeriod,jdbcType=VARCHAR}
+            ,#{principalRepaymentMethod,jdbcType=VARCHAR},#{isPeriodSelect,jdbcType=TINYINT},#{status,jdbcType=VARCHAR}
+            ,#{overdueMethod,jdbcType=VARCHAR},#{serviceFeeMethod,jdbcType=VARCHAR},#{isSpreadOneTime,jdbcType=VARCHAR},#{paidDateGraceDays,jdbcType=INTEGER}
+            ,#{maxLoanNum,jdbcType=VARCHAR},#{paidDaysComputationalRule,jdbcType=VARCHAR})
+    </insert>
+
+
+</mapper>

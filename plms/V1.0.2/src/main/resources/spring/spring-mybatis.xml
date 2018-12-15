@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context-3.1.xsd
+                        http://www.springframework.org/schema/tx
+                        http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!-- 线程池配置 -->
+    <bean id="poolTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <!-- 核心线程数  -->
+        <property name="corePoolSize" value="10"/>
+        <!-- 最大线程数 -->
+        <property name="maxPoolSize" value="20"/>
+        <!-- 队列最大长度 -->
+        <property name="queueCapacity" value="100"/>
+        <!-- 线程池维护线程所允许的空闲时间 -->
+        <property name="keepAliveSeconds" value="300"/>
+        <!-- 线程池对拒绝任务(无线程可用)的处理策略 -->
+        <property name="rejectedExecutionHandler">
+            <bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy"/>
+        </property>
+    </bean>
+
+    <!-- 自动扫描 -->
+    <context:component-scan base-package="com.vilio.plms">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <!-- 第一种方式：加载一个properties文件
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:jdbc.properties"/>
+    </bean>
+    -->
+    <bean id="errorCodeProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="locations">
+            <list>
+                <value>classpath:error-code.properties</value>
+            </list>
+        </property>
+        <property name="fileEncoding" value="UTF-8"/>
+    </bean>
+
+    <!-- 第二种方式：加载多个properties文件-->
+    <bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="locations">
+            <list>
+                <value>classpath*:jdbc.properties</value>
+                <value>classpath*:quartz.properties</value>
+                <value>classpath*:log4j.properties</value>
+                <value>classpath*:plms.properties</value>
+            </list>
+        </property>
+        <property name="fileEncoding" value="UTF-8"/>
+    </bean>
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+        <property name="properties" ref="configProperties"/>
+    </bean>
+
+    <!--统一的dataSource-->
+    <bean id="dynamicDataSource" class="com.vilio.plms.dynamicdatasource.DynamicDataSource">
+        <property name="targetDataSources">
+            <map key-type="java.lang.String">
+                <!--通过不同的key决定用哪个dataSource-->
+                <entry value-ref="plmsDataSource" key="plmsDataSource"></entry>
+                <entry value-ref="bmsDataSource" key="bmsDataSource"></entry>
+            </map>
+        </property>
+        <!--设置默认的dataSource-->
+        <property name="defaultTargetDataSource" ref="plmsDataSource">
+        </property>
+    </bean>
+
+    <!-- 配置数据源 -->
+    <bean id="plmsDataSource" class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="${driver}"/>
+        <property name="url" value="${url}"/>
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+        <!-- 初始化连接大小 -->
+        <property name="initialSize" value="${initialSize}"></property>
+        <!-- 连接池最大数量 -->
+        <property name="maxActive" value="${maxActive}"></property>
+        <!-- 连接池最大空闲 -->
+        <property name="maxIdle" value="${maxIdle}"></property>
+        <!-- 连接池最小空闲 -->
+        <property name="minIdle" value="${minIdle}"></property>
+        <!-- 获取连接最大等待时间 -->
+        <property name="maxWait" value="${maxWait}"></property>
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="${timeBetweenEvictionRunsMillis}"></property>
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="${minEvictableIdleTimeMillis}"></property>
+    </bean>
+
+    <!--核心系统数据库，单独的数据库，配置如下-->
+    <bean id="bmsDataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="${bms.driver}"/>
+        <property name="url" value="${bms.url}"/>
+        <property name="username" value="${bms.username}"/>
+        <property name="password" value="${bms.password}"/>
+        <!-- 初始化连接大小 -->
+        <property name="initialSize" value="${bms.initialSize}"></property>
+        <!-- 连接池最大数量 -->
+        <property name="maxActive" value="${bms.maxActive}"></property>
+        <!-- 连接池最大空闲 -->
+        <property name="maxIdle" value="${bms.maxIdle}"></property>
+        <!-- 连接池最小空闲 -->
+        <property name="minIdle" value="${bms.minIdle}"></property>
+        <!-- 获取连接最大等待时间 -->
+        <property name="maxWait" value="${bms.maxWait}"></property>
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="${bms.timeBetweenEvictionRunsMillis}"></property>
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="${bms.minEvictableIdleTimeMillis}"></property>
+    </bean>
+
+    <!-- mybatis和spring完美整合，不需要mybatis的配置映射文件 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dynamicDataSource"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+        <!-- 自动扫描mapping.xml文件 -->
+        <property name="mapperLocations">
+            <array>
+                <value>classpath*:mapping/*.xml</value>
+                <value>classpath*:mapping/*/*.xml</value>
+            </array>
+        </property>
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageHelper">
+                    <property name="properties">
+                        <value>
+                            dialect=mysql
+                        </value>
+                    </property>
+                </bean>
+
+            </array>
+        </property>
+    </bean>
+
+    <!-- DAO接口所在包名，Spring会自动查找其下的类 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.vilio.plms.dao"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+    </bean>
+
+
+    <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dynamicDataSource"/>
+    </bean>
+
+
+    <context:annotation-config/>
+    <!--<aop:aspectj-autoproxy proxy-target-class="true" expose-proxy="true"/>-->
+
+    <aop:config proxy-target-class="true" expose-proxy="true">
+        <!--入账定时任务-->
+        <aop:pointcut id="receiptsServiceExecute"
+                      expression="execution(* com.vilio.plms.service.quartz.ReceiptsService.execute())"/>
+        <aop:pointcut id="receiptsServiceReceiptsSingle"
+                      expression="execution(* com.vilio.plms.service.quartz.ReceiptsService.receiptsSingle(..)) and args(rollBachDate,contractCode,batchCode,..)"/>
+        <!--入账删除定时任务-->
+        <aop:pointcut id="receiptsDeleteServiceExecute"
+                      expression="execution(* com.vilio.plms.service.quartz.ReceiptsDeleteService.execute())"/>
+        <aop:pointcut id="receiptsDeleteServiceReceiptsDeteleSingle"
+                      expression="execution(* com.vilio.plms.service.quartz.ReceiptsDeleteService.receiptsDeteleSingle(..)) and args(rollBachDate,contractCode,batchCode,..)"/>
+        <!--扣款定时任务-->
+        <aop:pointcut id="payRepaymentScheduleDetailServiceExecute"
+                      expression="execution(* com.vilio.plms.service.quartz.impl.PayRepaymentScheduleDetailServiceImpl.execute())"/>
+        <!--逾期定时任务-->
+        <aop:pointcut id="overdueServiceExecute"
+                      expression="execution(* com.vilio.plms.service.quartz.impl.OverdueServiceImpl.execute())"/>
+        <!--还款计划修改-->
+        <aop:pointcut id="operationManagerServiceUpdateRepaymentDetailList"
+                      expression="execution(* com.vilio.plms.service.opertaion.OperationManagerService.updateRepaymentDetailList(..)) and args(rollBachDate,contractCode,batchCode,..)"/>
+        <!--放款删除定时任务-->
+        <aop:pointcut id="paidInfoDeleteServiceImplExecute"
+                      expression="execution(* com.vilio.plms.service.quartz.impl.PaidInfoDeleteServiceImpl.execute())"/>
+        <aop:aspect ref="rollbackAndRecomputationProxy">
+            <!--入账定时任务：账务类操作锁定与解锁切面-->
+            <aop:before method="updateAccountLock" pointcut-ref="receiptsServiceExecute"/>
+            <aop:after-throwing method="updateAccountUnLock" pointcut-ref="receiptsServiceExecute"/>
+            <aop:after-returning method="updateAccountUnLock" pointcut-ref="receiptsServiceExecute"/>
+            <!--入账定时任务：回滚和重新计算切面-->
+            <aop:before method="rollBackPaymentAndOverdue" pointcut-ref="receiptsServiceReceiptsSingle"
+                        arg-names="rollBachDate,contractCode,batchCode"/>
+            <aop:after-returning method="recomputationPaymentAndOverdue" pointcut-ref="receiptsServiceReceiptsSingle"
+                                 arg-names="rollBachDate,contractCode,batchCode"/>
+            <!--入账删除定时任务：账务类操作锁定与解锁切面-->
+            <aop:before method="updateAccountLock" pointcut-ref="receiptsDeleteServiceExecute"/>
+            <aop:after-throwing method="updateAccountUnLock" pointcut-ref="receiptsDeleteServiceExecute"/>
+            <aop:after-returning method="updateAccountUnLock" pointcut-ref="receiptsDeleteServiceExecute"/>
+            <!--入账删除定时任务：回滚和重新计算切面-->
+            <aop:before method="rollBackPaymentAndOverdue" pointcut-ref="receiptsDeleteServiceReceiptsDeteleSingle"
+                        arg-names="rollBachDate,contractCode,batchCode"/>
+            <aop:after-returning method="recomputationPaymentAndOverdue"
+                                 pointcut-ref="receiptsDeleteServiceReceiptsDeteleSingle"
+                                 arg-names="rollBachDate,contractCode,batchCode"/>
+            <!--扣款定时任务：账务类操作锁定与解锁切面-->
+            <aop:before method="updateAccountLockNoCheck" pointcut-ref="payRepaymentScheduleDetailServiceExecute"/>
+            <aop:after-throwing method="updateAccountUnLock" pointcut-ref="payRepaymentScheduleDetailServiceExecute"/>
+            <aop:after-returning method="updateAccountUnLock" pointcut-ref="payRepaymentScheduleDetailServiceExecute"/>
+            <!--逾期定时任务：账务类操作锁定与解锁切面-->
+            <aop:before method="updateAccountLockNoCheck" pointcut-ref="overdueServiceExecute"/>
+            <aop:after-throwing method="updateAccountUnLock" pointcut-ref="overdueServiceExecute"/>
+            <aop:after-returning method="updateAccountUnLock" pointcut-ref="overdueServiceExecute"/>
+            <!--修改还款计划表：账务类操作锁定解锁、回滚扣款和逾期、重新计算扣款和预期-->
+            <aop:before method="accountLockRollBackPaymentAndOverdue"
+                        pointcut-ref="operationManagerServiceUpdateRepaymentDetailList"
+                        arg-names="rollBachDate,contractCode,batchCode"/>
+            <aop:after-throwing method="updateAccountUnLockForParam"
+                                pointcut-ref="operationManagerServiceUpdateRepaymentDetailList"
+                                arg-names="rollBachDate,contractCode,batchCode"/>
+            <aop:after-returning method="accountUnLockRecomputationPaymentAndOverdue"
+                                 pointcut-ref="operationManagerServiceUpdateRepaymentDetailList"
+                                 arg-names="rollBachDate,contractCode,batchCode"/>
+            <!--放款删除定时任务：账务类操作锁定与解锁切面-->
+            <aop:before method="updateAccountLock" pointcut-ref="paidInfoDeleteServiceImplExecute"/>
+            <aop:after-throwing method="updateAccountUnLock" pointcut-ref="paidInfoDeleteServiceImplExecute"/>
+            <aop:after-returning method="updateAccountUnLock" pointcut-ref="paidInfoDeleteServiceImplExecute"/>
+        </aop:aspect>
+    </aop:config>
+
+    <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+
+    <!-- 用SpringAOP方式配置数据库事务管理 -->
+    <!--
+    <tx:advice transaction-manager="transactionManager" id="tx">
+        <tx:attributes>
+            <tx:method name="save*" propagation="REQUIRED" isolation="READ_COMMITTED" read-only="false"/>
+            <tx:method name="delete*"  propagation="REQUIRED" isolation="READ_COMMITTED" read-only="false"/>
+            <tx:method name="update*"  propagation="REQUIRED" isolation="READ_COMMITTED" read-only="false"/>
+            <tx:method name="*" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <aop:pointcut expression="execution(* cn.s2sh.demo.service.impl.*.*(..))" id="perform"/>
+        <aop:advisor advice-ref="tx" pointcut-ref="perform"/>
+    </aop:config>
+    -->
+
+    <!-- Quartz配置 -->
+    <import resource="classpath:spring/spring-quartz.xml"/>
+</beans>

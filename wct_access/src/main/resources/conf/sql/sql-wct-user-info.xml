@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlinfos>
+	<sqlinfo>
+		<sqlid>QUERY0003</sqlid>
+		<sqlname>查询用户表</sqlname>
+		<sql><![CDATA[
+			SELECT
+				open_id,
+				app_id,
+				subscribe,
+				nick_name,
+				sex,
+				city,
+				country,
+				province,
+				language,
+				head_img_url,
+				subscribe_time,
+				unionid,
+				remark,
+				group_id,
+				tagid_list,
+				create_time,
+				update_time,
+				remark1,
+				remark2
+			FROM
+				wct_user_info
+			where
+				open_id = '${open_id}'
+				and app_id = '${app_id}'
+		]]></sql>
+	</sqlinfo>
+
+	<sqlinfo>
+		<sqlid>UPDATE0002</sqlid>
+		<sqlname>插入用户表</sqlname>
+		<sql><![CDATA[
+			INSERT INTO wct_user_info(open_id,app_id,subscribe) VALUES('${open_id}','${app_id}','${subscribe}')
+		]]></sql>
+	</sqlinfo>
+
+	<sqlinfo>
+		<sqlid>UPDATE0003</sqlid>
+		<sqlname>修改用户表</sqlname>
+		<sql><![CDATA[
+			UPDATE wct_user_info
+			SET subscribe = '${subscribe}',
+				 nick_name = '${nick_name}',
+				 sex = '${sex}',
+				 city = '${city}',
+				 country = '${country}',
+				 province = '${province}',
+				 language = '${language}',
+				 head_img_url = '${head_img_url}',
+				 subscribe_time = '${subscribe_time}',
+				 unionid = '${unionid}',
+				 remark = '${remark}',
+				 group_id = '${group_id}',
+				 tagid_list = '${tagid_list}'
+			WHERE
+				app_id = '${app_id}' and
+				open_id = '${open_id}'
+		]]></sql>
+	</sqlinfo>
+
+	<sqlinfo>
+		<sqlid>UPDATE0003</sqlid>
+		<sqlname>修改用户表</sqlname>
+		<sql><![CDATA[
+			UPDATE wct_user_info
+			SET subscribe = '${subscribe}',
+				 nick_name = '${nick_name}',
+				 sex = '${sex}',
+				 city = '${city}',
+				 country = '${country}',
+				 province = '${province}',
+				 language = '${language}',
+				 head_img_url = '${head_img_url}',
+				 subscribe_time = '${subscribe_time}',
+				 unionid = '${unionid}',
+				 remark = '${remark}',
+				 group_id = '${group_id}',
+				 tagid_list = '${tagid_list}'
+			WHERE
+				app_id = '${app_id}' and
+				open_id = '${open_id}'
+		]]></sql>
+	</sqlinfo>
+	<sqlinfo>
+		<sqlid>UPDATE0004</sqlid>
+		<sqlname>修改用户表</sqlname>
+		<sql><![CDATA[
+			UPDATE wct_user_info
+			SET subscribe = '${subscribe}'
+			WHERE
+				app_id = '${app_id}' and
+				open_id = '${open_id}'
+		]]></sql>
+	</sqlinfo>
+	
+
+</sqlinfos>
+

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.ppms.dao.common.SequenceMapper" >
+  <resultMap id="BaseResultMap" type="com.vilio.ppms.pojo.common.Sequence" >
+    <constructor >
+      <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="current_value" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="increment" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <insert id="insert" parameterType="com.vilio.ppms.pojo.common.Sequence" >
+    insert into sequence (name, current_value, increment
+      )
+    values (#{name,jdbcType=VARCHAR}, #{currentValue,jdbcType=INTEGER}, #{increment,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.vilio.ppms.pojo.common.Sequence" >
+    insert into sequence
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="currentValue != null" >
+        current_value,
+      </if>
+      <if test="increment != null" >
+        increment,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="currentValue != null" >
+        #{currentValue,jdbcType=INTEGER},
+      </if>
+      <if test="increment != null" >
+        #{increment,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context-3.1.xsd
+                        http://www.springframework.org/schema/tx
+                        http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+        <property name="properties" ref="configProperties"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true" />
+    </bean>
+
+    <!-- Quartz配置 -->
+    <!-- quartz持久化存储 -->
+    <bean id="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+        <property name="startupDelay" value="20"/>
+        <property name="autoStartup" value="true"/>
+        <property name="overwriteExistingJobs" value="true"/>
+        <property name="applicationContextSchedulerContextKey" value="applicationContextKey"/>
+        <property name="configLocation" value="classpath:quartz.properties"/>
+        <property name="schedulerContextAsMap">
+            <map>
+                <!-- spring 管理的service需要放到这里，才能够注入成功 -->
+                <description>schedulerContextAsMap</description>
+                <entry key="autoGetCompanyPriceService" value-ref="autoGetCompanyPriceService" />
+                <entry key="checkApplyStatusService" value-ref="checkApplyStatusService" />
+                <entry key="wULoginImpl" value-ref="wULoginImpl" />
+            </map>
+        </property>
+        <property name="jobDetails">
+            <list>
+                <ref bean="getPriceForCompanyApplyJob"/>
+                <ref bean="checkApplyStatusServiceJob"/>
+                <ref bean="regularCatchWUTokenTaskJob"/>
+            </list>
+        </property>
+        <property name="triggers">
+            <list>
+                <ref bean="getPriceForCompanyApplyJobTrigger"/>
+                <ref bean="checkApplyStatusServiceJobTrigger"/>
+                <ref bean="regularCatchWUTokenTaskJobTrigger"/>
+            </list>
+        </property>
+
+    </bean>
+    <!--去询价公司获取值-->
+    <bean id="getPriceForCompanyApplyJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.vilio.bps.quartz.service.GetPriceForCompanyApply"/>
+        <property name="name" value="getPriceForCompanyApplyJob"/>
+        <property name="durability" value="true"/>
+    </bean>
+    <bean id="getPriceForCompanyApplyJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="getPriceForCompanyApplyJob"/>
+        <property name="cronExpression" value="${getPriceForCompanyApplyJobTriggerCronExpression}"/>
+    </bean>
+    <!--查看询价状态-->
+    <bean id="checkApplyStatusServiceJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.vilio.bps.quartz.service.CheckApplyStatusTask"/>
+        <property name="name" value="checkApplyStatusServiceJob"/>
+        <property name="durability" value="true"/>
+    </bean>
+    <bean id="checkApplyStatusServiceJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="checkApplyStatusServiceJob"/>
+        <property name="cronExpression" value="${checkApplyStatusServiceJobTriggerCronExpression}"/>
+    </bean>
+    <!--获取世联token-->
+    <bean id="regularCatchWUTokenTaskJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.vilio.bps.quartz.service.RegularCatchWUTokenTask"/>
+        <property name="name" value="regularCatchWUTokenTaskJob"/>
+        <property name="durability" value="true"/>
+    </bean>
+    <bean id="regularCatchWUTokenTaskJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="regularCatchWUTokenTaskJob"/>
+        <property name="cronExpression" value="${regularCatchWUTokenTaskJobTriggerCronExpression}"/>
+    </bean>
+
+</beans>

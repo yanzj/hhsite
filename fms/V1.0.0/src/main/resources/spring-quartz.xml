@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context-3.1.xsd
+                        http://www.springframework.org/schema/tx
+                        http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+
+    <!-- Quartz配置 -->
+    <!-- quartz持久化存储 -->
+    <bean id="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+        <property name="startupDelay" value="20"/>
+        <property name="autoStartup" value="true"/>
+        <property name="overwriteExistingJobs" value="true"/>
+        <property name="applicationContextSchedulerContextKey" value="applicationContextKey"/>
+        <property name="configLocation" value="classpath:quartz.properties"/>
+        <property name="schedulerContextAsMap">
+            <map>
+                <!-- spring 管理的service需要放到这里，才能够注入成功 -->
+                <description>schedulerContextAsMap</description>
+                <entry key="buildFileByModelService" value-ref="buildFileByModelService"/>
+            </map>
+        </property>
+        <property name="jobDetails">
+            <list>
+                <ref bean="buildFileByModelServiceJob"/>
+            </list>
+        </property>
+        <property name="triggers">
+            <list>
+                <ref bean="buildFileByModelServiceJobTrigger"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="buildFileByModelServiceJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.vilio.fms.quartz.task.BuildFileByModelTask"/>
+        <property name="name" value="buildFileByModelServiceJob"/>
+        <property name="durability" value="true"/>
+    </bean>
+    <bean id="buildFileByModelServiceJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="buildFileByModelServiceJob"/>
+        <property name="cronExpression" value="${buildFileByModelServiceJobTriggerCronExpression}"/>
+    </bean>
+
+</beans>

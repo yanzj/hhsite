@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.FundManagerDao" >
+
+    <select id="queryReceiptsRecordList" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        select distinct prr.code as "receiptsRecordCode", /* 资金入账编码 */
+                            pci.contract_no as "contractNo", /* 借款合同编号 */
+                            pc.abbr_name as "cityName", /* 城市 */
+                            pd.abbr_name as "distributorName", /* 渠道 */
+                            (select name from plms_customer t where t.apply_code = pai.code and t.is_main = '1' and t.status != '0') as "customerName", /* 借款人 */
+                            (select t2.abbr_name
+                       from plms_fund_side t1, plms_company t2
+                      where t1.contract_code = pci.code
+                        and t1.status != '0'
+                        and t2.status != '0'
+                        and t1.company_code = t2.code) as "fundSideName",/* 资方 */
+                            pad.total_quota as "totalQuota", /* 授信金额 */
+                            (case when (prr.account_type = '00' ) then '宏获还款'
+                                 when (prr.account_type = '01' ) then '资方还款'
+                                 when (prr.account_type = '02' ) then '宏获保证金'
+                            end) as "accountTypeName",/*收款方*/
+                            (case when (prr.fund_source = '01' ) then '客户'
+                                    when (prr.fund_source = '02' ) then '宏获'
+                                    when (prr.fund_source = '03' ) then '担保'
+                                    end) as "fundSource",/*资金来源*/
+                            date_format(prr.receipts_date,'%Y-%m-%d %H:%i:%s') as "receiptsDate",/*到账日期*/
+                            prr.receipts_amount as "receiptsAmount",/*还款金额*/
+                            prr.deal_status as "receiptsRecordStatusCode",/*状态编码*/
+                            (case when (prr.deal_status = '00' ) then '待处理'
+                                 when (prr.deal_status = '01' ) then '处理中'
+                                 when (prr.deal_status = '02' ) then '处理成功'
+                                 when (prr.deal_status = '03' ) then '处理失败'
+                            end) as "receiptsRecordStatusName"/*状态名称*/
+              from plms_contract_info pci,
+                   plms_apply_info pai,
+                   plms_distributor pd,
+                   plms_city pc,
+                   plms_account_detail pad,
+                   plms_receipts_record prr
+             where pci.apply_code = pai.code
+               and pai.distribute_code = pd.code
+               and pd.city_no = pc.code
+               and pci.code = pad.contract_code
+               and pci.code = prr.contract_code
+               and pci.status != '0'
+               and pai.status != '0'
+               and pd.status != '0'
+               and pc.status != '0'
+               and pad.status != '0'
+               and prr.status != '0'
+           <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+           and pc.code=#{cityCode,jdbcType=VARCHAR}
+           </if>
+            <if test='distributorList != null'>
+                AND pd.code IN
+                <foreach item="item" index="index" collection="distributorList" open="(" separator="," close=")" >
+                    #{item.distributorCode}
+                </foreach >
+            </if>
+           <if test='distributorCode != null and distributorCode != "" and distributorCode != "null" and distributorCode != "undefined"'>
+           and pd.code=#{distributorCode,jdbcType=VARCHAR}
+           </if>
+           <if test='customerName != null and customerName != "" and customerName != "null" and customerName != "undefined"'>
+           and exists (select name from plms_customer t where t.apply_code = pai.code and t.name like concat('%', #{customerName,jdbcType=VARCHAR}, '%') )
+           </if>
+           <if test='receiptsStartDate != null and receiptsStartDate != "" and receiptsStartDate != "null" and receiptsStartDate != "undefined"'>
+           and prr.receipts_date &gt;= date_format(#{receiptsStartDate,jdbcType=VARCHAR}, '%Y/%m/%d')
+           </if>
+           <if test='receiptsEndDate != null and receiptsEndDate != "" and receiptsEndDate != "null" and receiptsEndDate != "undefined"'>
+           and prr.receipts_date &lt; date_add(date_format(#{receiptsEndDate,jdbcType=VARCHAR}, '%Y/%m/%d'),INTERVAL 1 DAY)
+           </if>
+           <if test='accountTypeCode != null and accountTypeCode != "" and accountTypeCode != "null" and accountTypeCode != "undefined"'>
+           and prr.account_type = #{accountTypeCode,jdbcType=VARCHAR}
+           </if>
+           <if test='receiptsRecordStatusCode != null and receiptsRecordStatusCode != "" and receiptsRecordStatusCode != "null" and receiptsRecordStatusCode != "undefined"'>
+           and prr.deal_status = #{receiptsRecordStatusCode,jdbcType=VARCHAR}
+           </if>
+           <if test='fundSourceCode != null and fundSourceCode != "" and fundSourceCode != "null" and fundSourceCode != "undefined"'>
+           and prr.fund_source = #{fundSourceCode,jdbcType=VARCHAR}
+           </if>
+        order by prr.receipts_date desc
+    </select>
+
+    <select id="queryContractList" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        select pci.code as "contractCode",/*借款合同编码*/
+                     pci.contract_no as "contractNo",/*借款合同编号*/
+                     pc.abbr_name as "cityName",/*城市*/
+                     pd.abbr_name as "distributorName",/*渠道*/
+                     (select name from plms_customer t where t.apply_code = pai.code and t.is_main = '1' and t.status != '0') as "customerName",/*借款人*/
+                     date_format(pci.credit_start_date,'%Y-%m-%d %H:%i:%s') as "creditStartDate",/*授信日期*/
+                     pad.total_quota as "totalQuota",/*授信金额*/
+                     pci.credit_period as "creditPeriod",/*授信期限*/
+                     pad.fund_side_balance as "fundSideBalance",/*资方账户余额*/
+                     pad.honghuo_bail_account_balance as "honghuoBailBalance",/*宏获保证金账户余额*/
+                     pad.honghuo_balance as "honghuoBalance"/*宏获账户余额*/
+          from plms_contract_info pci,
+               plms_apply_info pai,
+               plms_distributor pd,
+               plms_city pc,
+               plms_account_detail pad
+         where pci.apply_code = pai.code
+           and pai.distribute_code = pd.code
+           and pd.city_no = pc.code
+           and pci.code = pad.contract_code
+           and pci.status != '0'
+           and pai.status != '0'
+           and pd.status != '0'
+           and pc.status != '0'
+           and pad.status != '0'
+           <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+           and pc.code=#{cityCode,jdbcType=VARCHAR}
+           </if>
+
+            <if test='distributorList != null'>
+                AND pd.code IN
+                <foreach item="item" index="index" collection="distributorList" open="(" separator="," close=")" >
+                    #{item.distributorCode}
+                </foreach >
+            </if>
+           <if test='distributorCode != null and distributorCode != "" and distributorCode != "null" and distributorCode != "undefined"'>
+           and pd.code=#{distributorCode,jdbcType=VARCHAR}
+           </if>
+           <if test='customerName != null and customerName != "" and customerName != "null" and customerName != "undefined"'>
+           and exists (select name from plms_customer t where t.apply_code = pai.code and t.name like concat('%', #{customerName,jdbcType=VARCHAR}, '%') )
+           </if>
+           <if test='contractNo != null and contractNo != "" and contractNo != "null" and contractNo != "undefined"'>
+           and pci.contract_no like concat('%', #{contractNo,jdbcType=VARCHAR}, '%')
+           </if>
+        order by pci.credit_start_date desc
+    </select>
+
+    <select id="queryContractInfoForManualReceipts" resultType="java.util.HashMap" parameterType="java.lang.String">
+        select distinct pci.code as "contractCode", /* 借款合同编码 */
+                            pci.contract_no as "contractNo", /* 借款合同编号 */
+                            pc.abbr_name as "cityName", /* 城市 */
+                            pd.abbr_name as "distributorName", /* 渠道 */
+                            (select name from plms_agent t where t.code = pai.agent_code and t.status != '0') "agentName", /* 业务经理 */
+                            (select name from plms_customer t where t.apply_code = pai.code and t.is_main = '1' and t.status != '0') as "customerName", /* 借款人 */
+                            (select t2.abbr_name
+                       from plms_fund_side t1, plms_company t2
+                      where t1.contract_code = pci.code
+                        and t1.status != '0'
+                        and t2.status != '0'
+                        and t1.company_code = t2.code) as "fundSideName",/* 资方 */
+                            (case when (pain.is_interest_Instead = '0' ) then '否'
+                                 when (pain.is_interest_Instead = '1' ) then '是'
+                            end) as "isInterestInstead", /* 利息是否代收代付 */
+                         date_format(pci.credit_start_date,'%Y-%m-%d %H:%i:%s') as "creditStartDate",/*授信日期*/
+                         pad.total_quota as "totalQuota",/*授信金额*/
+                         pci.credit_period as "creditPeriod",/*授信期限*/
+                         (select name from plms_account_info where status != '0' and code = pain.fund_side_code) as "fundSideAcountName",/*资方收款账户名*/
+                         (select account_no from plms_account_info where status != '0' and code = pain.fund_side_code)  as "fundSideAccountNo",/*资方收款账户开户行*/
+                         (select bank from plms_account_info where status != '0' and code = pain.fund_side_code)  as "fundSideBank",/*资方收款账户账号*/
+                         (select name from plms_account_info where status != '0' and code = pain.honghuo_code) as "hongHuoAcountName",/*宏获收款账户名*/
+                         (select account_no from plms_account_info where status != '0' and code = pain.honghuo_code)  as "hongHuoAccountNo",/*宏获收款账户开户行*/
+                         (select bank from plms_account_info where status != '0' and code = pain.honghuo_code)  as "hongHuoBank"/*宏获收款账户账号*/
+              from plms_contract_info pci,
+                   plms_apply_info pai,
+                   plms_distributor pd,
+                   plms_city pc,
+                   plms_account_detail pad,
+                   plms_apply_interesting pain
+             where pci.apply_code = pai.code
+               and pai.distribute_code = pd.code
+               and pd.city_no = pc.code
+               and pci.code = pad.contract_code
+               and pain.contract_code = pci.code
+               and pci.status != '0'
+               and pai.status != '0'
+               and pd.status != '0'
+               and pc.status != '0'
+               and pad.status != '0'
+               and pain.status != '0'
+               and pci.code=#{contractCode,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insertReceiptsRecordUpload" parameterType="java.util.HashMap" >
+      insert into plms_receipts_record_upload
+        (
+        id,
+        code,
+        upload_user,
+        upload_time,
+        status,
+        file_code,
+        file_name,
+        error_file_code,
+        error_file_name,
+        error_file_created_time
+        )
+        VALUES
+        (
+        null,
+        #{code,jdbcType=VARCHAR},
+        #{uploadUser,jdbcType=VARCHAR},
+        #{uploadTime,jdbcType=TIMESTAMP},
+        #{status,jdbcType=VARCHAR},
+        #{fileCode,jdbcType=VARCHAR},
+        #{fileName,jdbcType=VARCHAR},
+        #{errorFileCode,jdbcType=VARCHAR},
+        #{errorFileName,jdbcType=VARCHAR},
+        #{errorFileCreatedTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="updateReceiptsRecordUpload" parameterType="java.util.HashMap">
+        UPDATE plms_receipts_record_upload
+        <set>
+            <if test="uploadUser != null">
+                upload_user = #{uploadUser},
+            </if>
+            <if test="uploadTime != null">
+                upload_time = #{uploadTime},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="fileCode != null">
+                file_code = #{fileCode},
+            </if>
+            <if test="fileName != null">
+                file_name = #{fileName},
+            </if>
+            <if test="errorFileCode != null">
+                error_file_code = #{errorFileCode},
+            </if>
+            <if test="errorFileName != null">
+                error_file_name = #{errorFileName},
+            </if>
+            <if test="errorFileCreatedTime != null">
+                error_file_created_time = #{errorFileCreatedTime},
+            </if>
+        </set>
+        WHERE
+        CODE = #{code}
+    </update>
+
+    <update id="updateReceiptsVoucherStatus" parameterType="java.util.HashMap">
+        UPDATE plms_receipts_voucher
+        set
+                status = #{status}
+        WHERE 1=1
+
+        <if test="fileCode != null">
+            AND file_code = #{fileCode}
+        </if>
+        <if test="receiptsRecordCode != null">
+            AND receipts_record_code = #{receiptsRecordCode}
+        </if>
+    </update>
+
+    <select id="queryReceiptsRecordUploadList" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+            select
+                    pbu.name as "uploadUser",
+                    date_format(prru.upload_time,'%Y-%m-%d %H:%i:%s') as "uploadTime",
+                    prru.status as "recordUploadStatusCode",
+                    (case when (prru.status = '01' ) then '校验中'
+                             when (prru.status = '02' ) then '校验成功'
+                             when (prru.status = '03' ) then '校验失败'
+                    end)  as "recordUploadStatusName",
+                    (case when (prru.status = '01' ) then prru.file_code
+                             when (prru.status = '02' ) then prru.file_code
+                             when (prru.status = '03' ) then prru.error_file_code
+                    end)  as "fileCode",
+                    (case when (prru.status = '01' ) then prru.file_name
+                             when (prru.status = '02' ) then prru.file_name
+                             when (prru.status = '03' ) then prru.error_file_name
+                    end)   as "fileName"
+
+             from plms_backend_user pbu,
+                  plms_receipts_record_upload prru
+            where pbu.status != '0'
+              and prru.status != '00'
+              and pbu.code = prru.upload_user
+            <if test='users != null and users != "" and users != "null" and users != "undefined"'>
+              and prru.upload_user IN
+                <foreach item="item" index="index" collection="users" open="(" separator="," close=")" >
+                    #{item.code}
+                </foreach >
+            </if>
+           <if test='uploadUser != null and uploadUser != "" and uploadUser != "null" and uploadUser != "undefined"'>
+           and prru.upload_user=#{uploadUser,jdbcType=VARCHAR}
+           </if>
+           <if test='uploadTimeStart != null and uploadTimeStart != "" and uploadTimeStart != "null" and uploadTimeStart != "undefined"'>
+           and prru.upload_time &gt;= date_format(#{uploadTimeStart,jdbcType=VARCHAR}, '%Y/%m/%d')
+           </if>
+           <if test='uploadTimeEnd != null and uploadTimeEnd != "" and uploadTimeEnd != "null" and uploadTimeEnd != "undefined"'>
+           and prru.upload_time &lt; date_add(date_format(#{uploadTimeEnd,jdbcType=VARCHAR}, '%Y/%m/%d'),INTERVAL 1 DAY)
+           </if>
+           <if test='statusCode != null and statusCode != "" and statusCode != "null" and statusCode != "undefined"'>
+           and prru.status = #{statusCode,jdbcType=VARCHAR}
+           </if>
+        order by prru.upload_time desc
+    </select>
+
+
+    <insert id="createReceiptsVoucher" parameterType="java.util.HashMap" >
+      insert into plms_receipts_voucher (
+        id,
+        code,
+        file_code,
+        status,
+        create_date,
+        modify_date,
+        receipts_record_code,
+        file_name,
+        file_suffix,
+        upload_time)
+        values(
+        null,
+        uuid(),
+        #{fileCode,jdbcType=VARCHAR},
+        #{status,jdbcType=VARCHAR},
+        sysdate(),
+        sysdate(),
+        #{receiptsRecordCode,jdbcType=VARCHAR},
+        #{fileName,jdbcType=VARCHAR},
+        #{fileSuffix,jdbcType=VARCHAR},
+        #{uploadTime,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <select id="checkContractNoForUser" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+            select pc.`name` as "name",
+                   pci.code as "contractCode",
+                   date_format(pci.credit_start_date, '%Y-%m-%d') as "creditStartDate"
+              from plms_apply_info pai,
+                   plms_contract_info pci,
+                   plms_user_distributor pud,
+                   plms_customer pc
+             where pai.`code` = pci.apply_code
+               and pai.distribute_code = pud.distributor_code
+               and pc.apply_code = pai.`code`
+               and pai.`status` != '0'
+               and pci.`status` != '0'
+               and pud.`status` != '0'
+               and pc.`status` != '0'
+               and pc.is_main = '1'
+               and pci.contract_no = #{contractNo,jdbcType=VARCHAR}
+               and pud.user_id = #{userId,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

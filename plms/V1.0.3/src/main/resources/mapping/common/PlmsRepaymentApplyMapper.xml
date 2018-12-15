@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.PlmsRepaymentApplyDao">
+
+    <select id="queryRepaymentApplyInfo" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            businessCode,
+            applayAmount,
+            DATE_FORMAT(applayTime,'%Y-%m-%d') as applayTime,
+            DATE_FORMAT(repaymentTime,'%Y-%m-%d') as repaymentTime,
+            repaymentAmount
+        FROM
+            (
+                SELECT
+                    pra.apply_status AS STATUS,
+                    pra.business_code AS businessCode,
+                    pra.amount AS applayAmount,
+                    pra.apply_time AS applayTime,
+                    r.repayment_date AS repaymentTime,
+                    r.repayment_amount AS repaymentAmount
+                FROM
+                    plms_user_info i
+                JOIN plms_repayment_apply pra ON i. CODE = pra.user_code
+                LEFT JOIN plms_repayment_info r ON r.repayment_apply_code = pra. CODE
+                WHERE
+                    i.um_id = #{userId}
+                UNION ALL
+                    SELECT
+                        '01' AS STATUS,
+                        p. CODE AS businessCode,
+                        p.repayment_amount AS applayAmount,
+                        p.repayment_date AS applayTime,
+                        p.repayment_date AS repaymentTime,
+                        p.repayment_amount AS repaymentAmount
+                    FROM
+                        plms_user_info i
+                    JOIN plms_repayment_info p ON p.user_code = i. CODE
+                    WHERE
+                        NOT EXISTS (
+                            SELECT
+                                *
+                            FROM
+                                plms_repayment_apply a
+                            WHERE
+                                p.repayment_apply_code = a. CODE
+                        )
+                    AND i.um_id = #{userId}
+            ) m
+        WHERE
+            m.STATUS = #{applyStatus}
+            order by applayTime desc
+    </select>
+
+
+    <insert id="saveRepaymentApplyInfo" parameterType="com.vilio.plms.pojo.RepaymentApply">
+        INSERT INTO plms_repayment_apply (
+            code,
+            amount,
+            apply_time,
+            apply_status,
+            business_code,
+            contract_code,
+            create_date,
+            modify_date,
+            user_code
+        )
+        VALUES
+            (
+                #{code,jdbcType=VARCHAR},
+                #{amount,jdbcType=DECIMAL},
+                #{applyTime,jdbcType=TIMESTAMP},
+                #{applyStatus,jdbcType=VARCHAR},
+                #{businessCode,jdbcType=VARCHAR},
+                #{contractCode,jdbcType=VARCHAR},
+                #{createDate,jdbcType=TIMESTAMP},
+                #{modifyDate,jdbcType=TIMESTAMP},
+                #{userCode,jdbcType=VARCHAR}
+            )
+    </insert>
+
+
+</mapper>

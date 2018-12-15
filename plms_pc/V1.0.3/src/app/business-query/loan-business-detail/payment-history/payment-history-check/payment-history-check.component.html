@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="filed-name col-2">还款日期：</div>
+  <div class="filed-text col-2">{{receiptsRecordList.receiptsDate | date:'yyyy-MM-dd'}}</div>
+  <div class="filed-name col-2">还款金额：</div>
+  <div class="filed-text col-2">{{receiptsRecordList.receiptsAmount |dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">收款账户：</div>
+  <div class="filed-text col-2">{{receiptsRecordList.accountTypeName}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">还款来源：</div>
+  <div class="filed-text col-2">{{receiptsRecordList.fundSource}}</div>
+  <div class="filed-name col-2">收款账户户号：</div>
+  <div class="filed-text col-6">{{receiptsRecordList.name}}</div>
+</div>
+<div class="row">
+  <div class="filed-name col-2">收款账户开户行：</div>
+  <div class="filed-text col-2">{{receiptsRecordList.accountNo}}</div>
+  <div class="filed-name col-2">收款账户账号：</div>
+  <div class="filed-text col-6">{{receiptsRecordList.bank}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">备注：</div>
+  <div class="filed-text col-10">{{receiptsRecordList.remark}}</div>
+</div>
+
+<div class="row margin-top-40">
+  <div class="col-12">
+    <div class="img-list col-2" *ngFor="let item of receiptsRecordList.fileList let i=index">
+      <a class="img-box" (click)="downloadFile(item)"><img style="width:160px;height:160px;" src={{selectFileList[i]}}></a>
+      <p class="upload-file-name margin-top-10">{{item.fileName}}</p>
+      <!--<div class="upload-file-time">{{item.uploadTime}}</div>-->
+    </div>
+
+  </div>
+</div>
+<div class="orange-button col-2 padding-right-0  margin-top-40" (click)="setDetailPageShow()" *ngIf="paymentDetailPageShow">返回</div>

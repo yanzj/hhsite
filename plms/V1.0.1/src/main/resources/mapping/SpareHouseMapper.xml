@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.SpareHouseInfoDao">
+
+    <insert id="insert" parameterType="java.util.HashMap">
+        insert into plms_spare_house (code,property_person,property_address,apply_code,status)
+             values(#{code,jdbcType=VARCHAR},#{propertyPerson,jdbcType=VARCHAR},#{propertyAddress,jdbcType=VARCHAR},#{applyCode,jdbcType=VARCHAR},
+                    #{status,jdbcType=VARCHAR})
+    </insert>
+
+</mapper>

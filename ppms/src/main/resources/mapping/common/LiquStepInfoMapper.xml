@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.ppms.dao.common.LiquStepInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.vilio.ppms.pojo.common.LiquStepInfo" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="clear_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="route_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="step_type" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="total_flag" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="pre_liqu_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="is_repeat" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="deal_status" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="deal_msg" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="status" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="remark1" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, clear_date, route_code, step_type, total_flag, pre_liqu_code, is_repeat, 
+    deal_status, deal_msg, status, create_time, update_time, remark1
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from ppms_liqu_step_info
+    where code = #{code,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ppms_liqu_step_info
+    where code = #{code,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.vilio.ppms.pojo.common.LiquStepInfo" >
+    insert into ppms_liqu_step_info (id, code, clear_date, 
+      route_code, step_type, total_flag, 
+      pre_liqu_code, is_repeat, deal_status, 
+      deal_msg, status, create_time, 
+      update_time, remark1)
+    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{clearDate,jdbcType=TIMESTAMP}, 
+      #{routeCode,jdbcType=VARCHAR}, #{stepType,jdbcType=VARCHAR}, #{totalFlag,jdbcType=VARCHAR}, 
+      #{preLiquCode,jdbcType=VARCHAR}, #{isRepeat,jdbcType=VARCHAR}, #{dealStatus,jdbcType=VARCHAR}, 
+      #{dealMsg,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{remark1,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.vilio.ppms.pojo.common.LiquStepInfo" >
+    insert into ppms_liqu_step_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="clearDate != null" >
+        clear_date,
+      </if>
+      <if test="routeCode != null" >
+        route_code,
+      </if>
+      <if test="stepType != null" >
+        step_type,
+      </if>
+      <if test="totalFlag != null" >
+        total_flag,
+      </if>
+      <if test="preLiquCode != null" >
+        pre_liqu_code,
+      </if>
+      <if test="isRepeat != null" >
+        is_repeat,
+      </if>
+      <if test="dealStatus != null" >
+        deal_status,
+      </if>
+      <if test="dealMsg != null" >
+        deal_msg,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="remark1 != null" >
+        remark1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="clearDate != null" >
+        #{clearDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="routeCode != null" >
+        #{routeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="stepType != null" >
+        #{stepType,jdbcType=VARCHAR},
+      </if>
+      <if test="totalFlag != null" >
+        #{totalFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="preLiquCode != null" >
+        #{preLiquCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isRepeat != null" >
+        #{isRepeat,jdbcType=VARCHAR},
+      </if>
+      <if test="dealStatus != null" >
+        #{dealStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="dealMsg != null" >
+        #{dealMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark1 != null" >
+        #{remark1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vilio.ppms.pojo.common.LiquStepInfo" >
+    update ppms_liqu_step_info
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="clearDate != null" >
+        clear_date = #{clearDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="routeCode != null" >
+        route_code = #{routeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="stepType != null" >
+        step_type = #{stepType,jdbcType=VARCHAR},
+      </if>
+      <if test="totalFlag != null" >
+        total_flag = #{totalFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="preLiquCode != null" >
+        pre_liqu_code = #{preLiquCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isRepeat != null" >
+        is_repeat = #{isRepeat,jdbcType=VARCHAR},
+      </if>
+      <if test="dealStatus != null" >
+        deal_status = #{dealStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="dealMsg != null" >
+        deal_msg = #{dealMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark1 != null" >
+        remark1 = #{remark1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vilio.ppms.pojo.common.LiquStepInfo" >
+    update ppms_liqu_step_info
+    set code = #{code,jdbcType=VARCHAR},
+      clear_date = #{clearDate,jdbcType=TIMESTAMP},
+      route_code = #{routeCode,jdbcType=VARCHAR},
+      step_type = #{stepType,jdbcType=VARCHAR},
+      total_flag = #{totalFlag,jdbcType=VARCHAR},
+      pre_liqu_code = #{preLiquCode,jdbcType=VARCHAR},
+      is_repeat = #{isRepeat,jdbcType=VARCHAR},
+      deal_status = #{dealStatus,jdbcType=VARCHAR},
+      deal_msg = #{dealMsg,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      remark1 = #{remark1,jdbcType=VARCHAR}
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+</mapper>

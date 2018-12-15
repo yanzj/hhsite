@@ -1,0 +1,708 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!--
+******************************************************************************
+* 数据库表：NLBS_MESSAGE_SEND
+* 表的名称：
+* 对应实体：com.vilio.nlbs.commonMapper.pojo.NlbsMessageSend
+* 开发日期：2017-06-21
+* 技术服务：www.fwjava.com
+******************************************************************************
+-->
+<mapper namespace="com.vilio.nlbs.commonMapper.dao.NlbsMessageSendMapper">
+
+    <!--
+    **************************************************************************
+    * 1.新增一条数据
+    * 注: 根据Bean实体执行新增操作.
+    **************************************************************************
+    -->
+    <insert id="getInsert"
+            parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsMessageSend"
+            useGeneratedKeys="true"
+            keyProperty="id">
+    
+            INSERT   /* getInsert+@com.vilio.nlbs.commonMapper.sql.NlbsMessageSendMapper.xml */ 
+              INTO   NLBS_MESSAGE_SEND              /*  */ 
+                    (
+                     SERIAL_NO                      /* 消息序列号(消息平台序号) */ 
+                    ,CODE
+                    ,TITLE                          /* 消息标题 */
+                    ,CONTENT                        /* 消息内容 */ 
+                    ,SENDER_COMPANY_CODE            /* 发送方公司编号 */ 
+                    ,SENDER_COMPANY_NAME            /* 发送方公司名称 */ 
+                    ,SENDER_DEPARTMENT_CODE         /* 发送方所在部门编号 */ 
+                    ,SENDER_DEPARTMENT_NAME         /* 发送方所在部门名称 */ 
+                    ,SENDER_IDENTITY_ID             /* 发送用户编号 */ 
+                    ,SENDER_NAME                    /* 发送用户名 */ 
+                    ,RECEIVER_IDENTITY_ID           /* 接收用户编号 */ 
+                    ,RECEIVER_NAME                  /*  */ 
+                    ,CREATE_TIME                    /*  */ 
+                    ,INTERNAL_PARAM                 /*  */ 
+                    ,STATUS                         /* 状态(0未发送1已发送2发送失败) */ 
+                    )
+            VALUES  (
+                     #{serialNo}                    /* 消息序列号(消息平台序号) */ 
+                    ,#{code}
+                    ,#{title}                       /* 消息标题 */
+                    ,#{content}                     /* 消息内容 */
+                    ,#{senderCompanyCode}           /* 发送方公司编号 */ 
+                    ,#{senderCompanyName}           /* 发送方公司名称 */ 
+                    ,#{senderDepartmentCode}        /* 发送方所在部门编号 */ 
+                    ,#{senderDepartmentName}        /* 发送方所在部门名称 */ 
+                    ,#{senderIdentityId}            /* 发送用户编号 */ 
+                    ,#{senderName}                  /* 发送用户名 */ 
+                    ,#{receiverIdentityId}          /* 接收用户编号 */ 
+                    ,#{receiverName}                /*  */ 
+                    ,#{createTime}                  /*  */ 
+                    ,#{internalParam}               /*  */ 
+                    ,#{status}                      /* 状态(0未发送1已发送2发送失败) */ 
+                    )
+         
+    </insert>
+    
+    <insert id="getInsertPrmMap"
+            parameterType="java.util.HashMap"
+            useGeneratedKeys="true"
+            keyProperty="id">
+    
+            INSERT   /* getInsertPrmMap+@com.vilio.nlbs.commonMapper.sql.NlbsMessageSendMapper.xml */ 
+              INTO   NLBS_MESSAGE_SEND              /*  */ 
+                    (
+                     CODE
+                    ,TITLE                          /* 消息标题 */
+                    ,CONTENT                        /* 消息内容 */
+                    ,SENDER_IDENTITY_ID             /* 发送用户编号 */
+                    ,SENDER_NAME                    /* 发送用户名 */ 
+                    ,SENDER_COMPANY_CODE
+                    ,SENDER_COMPANY_NAME
+                    ,RECEIVER_IDENTITY_ID           /* 接收用户编号 */
+                    ,RECEIVER_NAME                  /*  */ 
+                    ,INTERNAL_PARAM                 /*  */
+                    ,STATUS                         /* 状态(0未发送1已发送2发送失败) */ 
+                    )
+            VALUES
+                    <foreach collection="receiverUserList" index="index" item="item" separator=",">
+                        <trim prefix="(" suffix=")" suffixOverrides=",">
+                            <if test="item.code != null">#{item.code},</if>
+                            <if test="title !=null">#{title},</if>
+                            <if test="content">#{content},</if>
+                            <if test="userNo !=null">#{userNo},</if>
+                            <if test="userName !=null">#{userName},</if>
+                            <if test="senderCompanyCode !=null">#{senderCompanyCode},</if>
+                            <if test="senderCompanyName !=null">#{senderCompanyName},</if>
+                            <if test="item.userNo !=null">#{item.userNo},</if>
+                            <if test="item.userName !=null">#{item.userName},</if>
+                            <if test="internalParam !=null">#{internalParam},</if>
+                            <if test="status !=null">#{status},</if>
+                        </trim>
+                    </foreach>
+         
+    </insert>
+
+
+    <!--
+    **************************************************************************
+    * 2.删除一条数据
+    * 注: 根据Bean实体的主键ID执行删除操作.
+    **************************************************************************
+    -->
+    <delete id="getDelete"
+            parameterType="java.lang.Integer">
+    
+            DELETE   /* getDelete+@com.vilio.nlbs.commonMapper.sql.NlbsMessageSendMapper.xml */ 
+              FROM   NLBS_MESSAGE_SEND    /*  */ 
+             WHERE   ID = #{_parameter}   /* 数据主键 */ 
+         
+    </delete>
+
+
+    <!--
+    **************************************************************************
+    * 3.变更一条数据
+    * 注: 根据Bean实体的主键ID执行变更操作.
+    **************************************************************************
+    -->
+    <update id="getUpdate"
+            parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsMessageSend">
+    
+            UPDATE   /* getUpdate+@com.vilio.nlbs.commonMapper.sql.NlbsMessageSendMapper.xml */ 
+                     NLBS_MESSAGE_SEND                                      /*  */ 
+               SET   SERIAL_NO                 = #{serialNo}                /* 消息序列号(消息平台序号) */ 
+                    ,CODE                     = #{code}
+                    ,TITLE                     = #{title}                   /* 消息标题 */
+                    ,CONTENT                   = #{content}                 /* 消息内容 */
+                    ,SENDER_COMPANY_CODE       = #{senderCompanyCode}       /* 发送方公司编号 */ 
+                    ,SENDER_COMPANY_NAME       = #{senderCompanyName}       /* 发送方公司名称 */ 
+                    ,SENDER_DEPARTMENT_CODE    = #{senderDepartmentCode}    /* 发送方所在部门编号 */ 
+                    ,SENDER_DEPARTMENT_NAME    = #{senderDepartmentName}    /* 发送方所在部门名称 */ 
+                    ,SENDER_IDENTITY_ID        = #{senderIdentityId}        /* 发送用户编号 */ 
+                    ,SENDER_NAME               = #{senderName}              /* 发送用户名 */ 
+                    ,RECEIVER_IDENTITY_ID      = #{receiverIdentityId}      /* 接收用户编号 */ 
+                    ,RECEIVER_NAME             = #{receiverName}            /*  */ 
+                    ,CREATE_TIME               = #{createTime}              /*  */ 
+                    ,INTERNAL_PARAM            = #{internalParam}           /*  */ 
+                    ,STATUS                    = #{status}                  /* 状态(0未发送1已发送2发送失败) */ 
+             WHERE   ID                        = #{id}                      /* 数据主键 */ 
+         
+    </update>
+    
+    <update id="getUpdatePrmMap"
+            parameterType="java.util.HashMap">
+    
+            UPDATE   /* getUpdatePrmMap+@com.vilio.nlbs.commonMapper.sql.NlbsMessageSendMapper.xml */ 
+                     NLBS_MESSAGE_SEND                                      /*  */ 
+               SET   SERIAL_NO                 = #{serialNo}                /* 消息序列号(消息平台序号) */ 
+                    ,CODE                     = #{code}
+                    ,TITLE                     = #{title}                   /* 消息标题 */
+                    ,CONTENT                   = #{content}                 /* 消息内容 */
+                    ,SENDER_COMPANY_CODE       = #{senderCompanyCode}       /* 发送方公司编号 */ 
+                    ,SENDER_COMPANY_NAME       = #{senderCompanyName}       /* 发送方公司名称 */ 
+                    ,SENDER_DEPARTMENT_CODE    = #{senderDepartmentCode}    /* 发送方所在部门编号 */ 
+                    ,SENDER_DEPARTMENT_NAME    = #{senderDepartmentName}    /* 发送方所在部门名称 */ 
+                    ,SENDER_IDENTITY_ID        = #{senderIdentityId}        /* 发送用户编号 */ 
+                    ,SENDER_NAME               = #{senderName}              /* 发送用户名 */ 
+                    ,RECEIVER_IDENTITY_ID      = #{receiverIdentityId}      /* 接收用户编号 */ 
+                    ,RECEIVER_NAME             = #{receiverName}            /*  */ 
+                    ,CREATE_TIME               = #{createTime}              /*  */ 
+                    ,INTERNAL_PARAM            = #{internalParam}           /*  */ 
+                    ,STATUS                    = #{status}                  /* 状态(0未发送1已发送2发送失败) */ 
+             WHERE   ID                        = #{id}                      /* 数据主键 */ 
+         
+    </update>
+
+
+    <!--
+    **************************************************************************
+    * 4.获取一个Bean实体
+    * 注: 根据Bean实体的主键ID获取一个Bean实体.
+    **************************************************************************
+    -->
+    <select id="getBean"
+            parameterType="java.lang.Integer"
+            resultType="com.vilio.nlbs.commonMapper.pojo.NlbsMessageSend">
+    
+            SELECT   /* getBean+@com.vilio.nlbs.commonMapper.sql.NlbsMessageSendMapper.xml */ 
+                     nms.ID                         AS id                      /* 数据主键 */ 
+                    ,nms.code                  AS code
+                    ,nms.SERIAL_NO                  AS serialNo                /* 消息序列号(消息平台序号) */
+                    ,nms.TITLE                      AS title                   /* 消息标题 */
+                    ,nms.CONTENT                    AS content                 /* 消息内容 */ 
+                    ,nms.SENDER_COMPANY_CODE        AS senderCompanyCode       /* 发送方公司编号 */ 
+                    ,nms.SENDER_COMPANY_NAME        AS senderCompanyName       /* 发送方公司名称 */ 
+                    ,nms.SENDER_DEPARTMENT_CODE     AS senderDepartmentCode    /* 发送方所在部门编号 */ 
+                    ,nms.SENDER_DEPARTMENT_NAME     AS senderDepartmentName    /* 发送方所在部门名称 */ 
+                    ,nms.SENDER_IDENTITY_ID         AS senderIdentityId        /* 发送用户编号 */ 
+                    ,nms.SENDER_NAME                AS senderName              /* 发送用户名 */ 
+                    ,nms.RECEIVER_IDENTITY_ID       AS receiverIdentityId      /* 接收用户编号 */ 
+                    ,nms.RECEIVER_NAME              AS receiverName            /*  */ 
+                    ,nms.CREATE_TIME                AS createTime              /*  */ 
+                    ,nms.INTERNAL_PARAM             AS internalParam           /*  */ 
+                    ,nms.STATUS                     AS status                  /* 状态(0未发送1已发送2发送失败) */ 
+              FROM   NLBS_MESSAGE_SEND                 nms                     /*  */ 
+             WHERE   nms.ID = #{_parameter}                                    /* 数据主键 */ 
+         
+    </select>
+    
+    <select id="getBeanRtnMap"
+            parameterType="java.lang.Integer"
+            resultType="java.util.HashMap">
+    
+            SELECT   /* getBeanRtnMap+@com.vilio.nlbs.commonMapper.sql.NlbsMessageSendMapper.xml */ 
+                     nms.ID                         AS id                      /* 数据主键 */ 
+                    ,nms.code                  AS code
+                    ,nms.SERIAL_NO                  AS serialNo                /* 消息序列号(消息平台序号) */
+                    ,nms.TITLE                      AS title                   /* 消息标题 */
+                    ,nms.CONTENT                    AS content                 /* 消息内容 */ 
+                    ,nms.SENDER_COMPANY_CODE        AS senderCompanyCode       /* 发送方公司编号 */ 
+                    ,nms.SENDER_COMPANY_NAME        AS senderCompanyName       /* 发送方公司名称 */ 
+                    ,nms.SENDER_DEPARTMENT_CODE     AS senderDepartmentCode    /* 发送方所在部门编号 */ 
+                    ,nms.SENDER_DEPARTMENT_NAME     AS senderDepartmentName    /* 发送方所在部门名称 */ 
+                    ,nms.SENDER_IDENTITY_ID         AS senderIdentityId        /* 发送用户编号 */ 
+                    ,nms.SENDER_NAME                AS senderName              /* 发送用户名 */ 
+                    ,nms.RECEIVER_IDENTITY_ID       AS receiverIdentityId      /* 接收用户编号 */ 
+                    ,nms.RECEIVER_NAME              AS receiverName            /*  */ 
+                    ,nms.CREATE_TIME                AS createTime              /*  */ 
+                    ,nms.INTERNAL_PARAM             AS internalParam           /*  */ 
+                    ,nms.STATUS                     AS status                  /* 状态(0未发送1已发送2发送失败) */ 
+              FROM   NLBS_MESSAGE_SEND                 nms                     /*  */ 
+             WHERE   nms.ID = #{_parameter}                                    /* 数据主键 */ 
+         
+    </select>
+
+
+    <!--
+    **************************************************************************
+    * 5.条件查询
+    * 注: 支持多条件查询、模糊查询、日期比较查询等操作.
+    **************************************************************************
+    -->
+    <select id="getList"
+            parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsMessageSend"
+            resultType="com.vilio.nlbs.commonMapper.pojo.NlbsMessageSend">
+    
+            SELECT   /* getList+@com.vilio.nlbs.commonMapper.sql.NlbsMessageSendMapper.xml */ 
+                     nms.ID                         AS id                      /* 数据主键 */ 
+                    ,nms.code                  AS code
+                    ,nms.SERIAL_NO                  AS serialNo                /* 消息序列号(消息平台序号) */
+                    ,nms.TITLE                      AS title                   /* 消息标题 */
+                    ,nms.CONTENT                    AS content                 /* 消息内容 */ 
+                    ,nms.SENDER_COMPANY_CODE        AS senderCompanyCode       /* 发送方公司编号 */ 
+                    ,nms.SENDER_COMPANY_NAME        AS senderCompanyName       /* 发送方公司名称 */ 
+                    ,nms.SENDER_DEPARTMENT_CODE     AS senderDepartmentCode    /* 发送方所在部门编号 */ 
+                    ,nms.SENDER_DEPARTMENT_NAME     AS senderDepartmentName    /* 发送方所在部门名称 */ 
+                    ,nms.SENDER_IDENTITY_ID         AS senderIdentityId        /* 发送用户编号 */ 
+                    ,nms.SENDER_NAME                AS senderName              /* 发送用户名 */ 
+                    ,nms.RECEIVER_IDENTITY_ID       AS receiverIdentityId      /* 接收用户编号 */ 
+                    ,nms.RECEIVER_NAME              AS receiverName            /*  */ 
+                    ,nms.CREATE_TIME                AS createTime              /*  */ 
+                    ,nms.INTERNAL_PARAM             AS internalParam           /*  */ 
+                    ,nms.STATUS                     AS status                  /* 状态(0未发送1已发送2发送失败) */ 
+              FROM   NLBS_MESSAGE_SEND                 nms                     /*  */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   nms.ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   nms.code = #{code}
+             </if>
+
+             <if test='serialNo != null and serialNo != "" and serialNo != "null" and serialNo != "undefined"'>
+               AND   nms.SERIAL_NO = #{serialNo} /* 消息序列号(消息平台序号) */
+             </if>
+
+             <if test='title != null and title != "" and title != "null" and title != "undefined"'>
+               AND   nms.TITLE = #{title} /* 消息标题 */ 
+             </if>
+        
+             <if test='content != null and content != "" and content != "null" and content != "undefined"'>
+               AND   nms.CONTENT = #{content} /* 消息内容 */ 
+             </if>
+        
+             <if test='senderCompanyCode != null and senderCompanyCode != "" and senderCompanyCode != "null" and senderCompanyCode != "undefined"'>
+               AND   nms.SENDER_COMPANY_CODE = #{senderCompanyCode} /* 发送方公司编号 */ 
+             </if>
+        
+             <if test='senderCompanyName != null and senderCompanyName != "" and senderCompanyName != "null" and senderCompanyName != "undefined"'>
+               AND   nms.SENDER_COMPANY_NAME = #{senderCompanyName} /* 发送方公司名称 */ 
+             </if>
+        
+             <if test='senderDepartmentCode != null and senderDepartmentCode != "" and senderDepartmentCode != "null" and senderDepartmentCode != "undefined"'>
+               AND   nms.SENDER_DEPARTMENT_CODE = #{senderDepartmentCode} /* 发送方所在部门编号 */ 
+             </if>
+        
+             <if test='senderDepartmentName != null and senderDepartmentName != "" and senderDepartmentName != "null" and senderDepartmentName != "undefined"'>
+               AND   nms.SENDER_DEPARTMENT_NAME = #{senderDepartmentName} /* 发送方所在部门名称 */ 
+             </if>
+        
+             <if test='senderIdentityId != null and senderIdentityId != "" and senderIdentityId != "null" and senderIdentityId != "undefined"'>
+               AND   nms.SENDER_IDENTITY_ID = #{senderIdentityId} /* 发送用户编号 */ 
+             </if>
+        
+             <if test='senderName != null and senderName != "" and senderName != "null" and senderName != "undefined"'>
+               AND   nms.SENDER_NAME = #{senderName} /* 发送用户名 */ 
+             </if>
+        
+             <if test='receiverIdentityId != null and receiverIdentityId != "" and receiverIdentityId != "null" and receiverIdentityId != "undefined"'>
+               AND   nms.RECEIVER_IDENTITY_ID = #{receiverIdentityId} /* 接收用户编号 */ 
+             </if>
+        
+             <if test='receiverName != null and receiverName != "" and receiverName != "null" and receiverName != "undefined"'>
+               AND   nms.RECEIVER_NAME = #{receiverName} /*  */ 
+             </if>
+        
+             <if test='createTime != null'>
+               AND   date_format(nms.CREATE_TIME ,'%Y-%m-%d') = #{createTimeChar} /*  */ 
+             </if>
+        
+             <if test='internalParam != null and internalParam != "" and internalParam != "null" and internalParam != "undefined"'>
+               AND   nms.INTERNAL_PARAM = #{internalParam} /*  */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   nms.STATUS = #{status} /* 状态(0未发送1已发送2发送失败) */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+    
+    <select id="getListPrmMapRtnBean"
+            parameterType="java.util.HashMap"
+            resultType="com.vilio.nlbs.commonMapper.pojo.NlbsMessageSend">
+    
+            SELECT   /* getListPrmMapRtnBean+@com.vilio.nlbs.commonMapper.sql.NlbsMessageSendMapper.xml */ 
+                     nms.ID                         AS id                      /* 数据主键 */ 
+                    ,nms.code                  AS code
+                    ,nms.SERIAL_NO                  AS serialNo                /* 消息序列号(消息平台序号) */
+                    ,nms.TITLE                      AS title                   /* 消息标题 */
+                    ,nms.CONTENT                    AS content                 /* 消息内容 */ 
+                    ,nms.SENDER_COMPANY_CODE        AS senderCompanyCode       /* 发送方公司编号 */ 
+                    ,nms.SENDER_COMPANY_NAME        AS senderCompanyName       /* 发送方公司名称 */ 
+                    ,nms.SENDER_DEPARTMENT_CODE     AS senderDepartmentCode    /* 发送方所在部门编号 */ 
+                    ,nms.SENDER_DEPARTMENT_NAME     AS senderDepartmentName    /* 发送方所在部门名称 */ 
+                    ,nms.SENDER_IDENTITY_ID         AS senderIdentityId        /* 发送用户编号 */ 
+                    ,nms.SENDER_NAME                AS senderName              /* 发送用户名 */ 
+                    ,nms.RECEIVER_IDENTITY_ID       AS receiverIdentityId      /* 接收用户编号 */ 
+                    ,nms.RECEIVER_NAME              AS receiverName            /*  */ 
+                    ,nms.CREATE_TIME                AS createTime              /*  */ 
+                    ,nms.INTERNAL_PARAM             AS internalParam           /*  */ 
+                    ,nms.STATUS                     AS status                  /* 状态(0未发送1已发送2发送失败) */ 
+              FROM   NLBS_MESSAGE_SEND                 nms                     /*  */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   nms.ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   nms.code = #{code}
+             </if>
+             <if test='serialNo != null and serialNo != "" and serialNo != "null" and serialNo != "undefined"'>
+               AND   nms.SERIAL_NO = #{serialNo} /* 消息序列号(消息平台序号) */
+             </if>
+
+             <if test='title != null and title != "" and title != "null" and title != "undefined"'>
+               AND   nms.TITLE = #{title} /* 消息标题 */ 
+             </if>
+        
+             <if test='content != null and content != "" and content != "null" and content != "undefined"'>
+               AND   nms.CONTENT = #{content} /* 消息内容 */ 
+             </if>
+        
+             <if test='senderCompanyCode != null and senderCompanyCode != "" and senderCompanyCode != "null" and senderCompanyCode != "undefined"'>
+               AND   nms.SENDER_COMPANY_CODE = #{senderCompanyCode} /* 发送方公司编号 */ 
+             </if>
+        
+             <if test='senderCompanyName != null and senderCompanyName != "" and senderCompanyName != "null" and senderCompanyName != "undefined"'>
+               AND   nms.SENDER_COMPANY_NAME = #{senderCompanyName} /* 发送方公司名称 */ 
+             </if>
+        
+             <if test='senderDepartmentCode != null and senderDepartmentCode != "" and senderDepartmentCode != "null" and senderDepartmentCode != "undefined"'>
+               AND   nms.SENDER_DEPARTMENT_CODE = #{senderDepartmentCode} /* 发送方所在部门编号 */ 
+             </if>
+        
+             <if test='senderDepartmentName != null and senderDepartmentName != "" and senderDepartmentName != "null" and senderDepartmentName != "undefined"'>
+               AND   nms.SENDER_DEPARTMENT_NAME = #{senderDepartmentName} /* 发送方所在部门名称 */ 
+             </if>
+        
+             <if test='senderIdentityId != null and senderIdentityId != "" and senderIdentityId != "null" and senderIdentityId != "undefined"'>
+               AND   nms.SENDER_IDENTITY_ID = #{senderIdentityId} /* 发送用户编号 */ 
+             </if>
+        
+             <if test='senderName != null and senderName != "" and senderName != "null" and senderName != "undefined"'>
+               AND   nms.SENDER_NAME = #{senderName} /* 发送用户名 */ 
+             </if>
+        
+             <if test='receiverIdentityId != null and receiverIdentityId != "" and receiverIdentityId != "null" and receiverIdentityId != "undefined"'>
+               AND   nms.RECEIVER_IDENTITY_ID = #{receiverIdentityId} /* 接收用户编号 */ 
+             </if>
+        
+             <if test='receiverName != null and receiverName != "" and receiverName != "null" and receiverName != "undefined"'>
+               AND   nms.RECEIVER_NAME = #{receiverName} /*  */ 
+             </if>
+        
+             <if test='createTime != null'>
+               AND   date_format(nms.CREATE_TIME ,'%Y-%m-%d') = #{createTimeChar} /*  */ 
+             </if>
+        
+             <if test='internalParam != null and internalParam != "" and internalParam != "null" and internalParam != "undefined"'>
+               AND   nms.INTERNAL_PARAM = #{internalParam} /*  */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   nms.STATUS = #{status} /* 状态(0未发送1已发送2发送失败) */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+    
+    <select id="getListPrmMapRtnMap"
+            parameterType="java.util.HashMap"
+            resultType="java.util.HashMap">
+    
+            SELECT   /* getListPrmMapRtnMap+@com.vilio.nlbs.commonMapper.sql.NlbsMessageSendMapper.xml */ 
+                     nms.ID                         AS id                      /* 数据主键 */ 
+                    ,nms.code                  AS code
+                    ,nms.SERIAL_NO                  AS serialNo                /* 消息序列号(消息平台序号) */
+                    ,nms.TITLE                      AS title                   /* 消息标题 */
+                    ,nms.CONTENT                    AS content                 /* 消息内容 */ 
+                    ,nms.SENDER_COMPANY_CODE        AS senderCompanyCode       /* 发送方公司编号 */ 
+                    ,nms.SENDER_COMPANY_NAME        AS senderCompanyName       /* 发送方公司名称 */ 
+                    ,nms.SENDER_DEPARTMENT_CODE     AS senderDepartmentCode    /* 发送方所在部门编号 */ 
+                    ,nms.SENDER_DEPARTMENT_NAME     AS senderDepartmentName    /* 发送方所在部门名称 */ 
+                    ,nms.SENDER_IDENTITY_ID         AS senderIdentityId        /* 发送用户编号 */ 
+                    ,nms.SENDER_NAME                AS senderName              /* 发送用户名 */ 
+                    ,nms.RECEIVER_IDENTITY_ID       AS receiverIdentityId      /* 接收用户编号 */ 
+                    ,nms.RECEIVER_NAME              AS receiverName            /*  */ 
+                    ,nms.CREATE_TIME                AS createTime              /*  */ 
+                    ,nms.INTERNAL_PARAM             AS internalParam           /*  */ 
+                    ,nms.STATUS                     AS status                  /* 状态(0未发送1已发送2发送失败) */ 
+              FROM   NLBS_MESSAGE_SEND                 nms                     /*  */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   nms.ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   nms.code = #{code}
+             </if>
+             <if test='serialNo != null and serialNo != "" and serialNo != "null" and serialNo != "undefined"'>
+               AND   nms.SERIAL_NO = #{serialNo} /* 消息序列号(消息平台序号) */
+             </if>
+
+             <if test='title != null and title != "" and title != "null" and title != "undefined"'>
+               AND   nms.TITLE = #{title} /* 消息标题 */ 
+             </if>
+        
+             <if test='content != null and content != "" and content != "null" and content != "undefined"'>
+               AND   nms.CONTENT = #{content} /* 消息内容 */ 
+             </if>
+        
+             <if test='senderCompanyCode != null and senderCompanyCode != "" and senderCompanyCode != "null" and senderCompanyCode != "undefined"'>
+               AND   nms.SENDER_COMPANY_CODE = #{senderCompanyCode} /* 发送方公司编号 */ 
+             </if>
+        
+             <if test='senderCompanyName != null and senderCompanyName != "" and senderCompanyName != "null" and senderCompanyName != "undefined"'>
+               AND   nms.SENDER_COMPANY_NAME = #{senderCompanyName} /* 发送方公司名称 */ 
+             </if>
+        
+             <if test='senderDepartmentCode != null and senderDepartmentCode != "" and senderDepartmentCode != "null" and senderDepartmentCode != "undefined"'>
+               AND   nms.SENDER_DEPARTMENT_CODE = #{senderDepartmentCode} /* 发送方所在部门编号 */ 
+             </if>
+        
+             <if test='senderDepartmentName != null and senderDepartmentName != "" and senderDepartmentName != "null" and senderDepartmentName != "undefined"'>
+               AND   nms.SENDER_DEPARTMENT_NAME = #{senderDepartmentName} /* 发送方所在部门名称 */ 
+             </if>
+        
+             <if test='senderIdentityId != null and senderIdentityId != "" and senderIdentityId != "null" and senderIdentityId != "undefined"'>
+               AND   nms.SENDER_IDENTITY_ID = #{senderIdentityId} /* 发送用户编号 */ 
+             </if>
+        
+             <if test='senderName != null and senderName != "" and senderName != "null" and senderName != "undefined"'>
+               AND   nms.SENDER_NAME = #{senderName} /* 发送用户名 */ 
+             </if>
+        
+             <if test='receiverIdentityId != null and receiverIdentityId != "" and receiverIdentityId != "null" and receiverIdentityId != "undefined"'>
+               AND   nms.RECEIVER_IDENTITY_ID = #{receiverIdentityId} /* 接收用户编号 */ 
+             </if>
+        
+             <if test='receiverName != null and receiverName != "" and receiverName != "null" and receiverName != "undefined"'>
+               AND   nms.RECEIVER_NAME = #{receiverName} /*  */ 
+             </if>
+        
+             <if test='createTime != null'>
+               AND   date_format(nms.CREATE_TIME ,'%Y-%m-%d') = #{createTimeChar} /*  */ 
+             </if>
+        
+             <if test='internalParam != null and internalParam != "" and internalParam != "null" and internalParam != "undefined"'>
+               AND   nms.INTERNAL_PARAM = #{internalParam} /*  */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   nms.STATUS = #{status} /* 状态(0未发送1已发送2发送失败) */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+
+
+    <!--
+    **************************************************************************
+    * 6.验证多条件数据是否存在
+    * 注: 根据多条件验证该数据是否存在 ,并返回数据量.
+    **************************************************************************
+    -->
+    <select id="getCheckBy"
+            parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsMessageSend"
+            resultType="java.lang.Integer">
+    
+            SELECT   /* getCheckBy+@com.vilio.nlbs.commonMapper.sql.NlbsMessageSendMapper.xml */ 
+                     count(1)
+              FROM   NLBS_MESSAGE_SEND  /*  */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   ID = #{id} /* 数据主键 */ 
+             </if>
+             <if test='code != null'>
+               AND   code = #{code}
+             </if>
+
+             <if test='serialNo != null and serialNo != "" and serialNo != "null" and serialNo != "undefined"'>
+               AND   SERIAL_NO = #{serialNo} /* 消息序列号(消息平台序号) */ 
+             </if>
+        
+             <if test='title != null and title != "" and title != "null" and title != "undefined"'>
+               AND   TITLE = #{title} /* 消息标题 */ 
+             </if>
+        
+             <if test='content != null and content != "" and content != "null" and content != "undefined"'>
+               AND   CONTENT = #{content} /* 消息内容 */ 
+             </if>
+        
+             <if test='senderCompanyCode != null and senderCompanyCode != "" and senderCompanyCode != "null" and senderCompanyCode != "undefined"'>
+               AND   SENDER_COMPANY_CODE = #{senderCompanyCode} /* 发送方公司编号 */ 
+             </if>
+        
+             <if test='senderCompanyName != null and senderCompanyName != "" and senderCompanyName != "null" and senderCompanyName != "undefined"'>
+               AND   SENDER_COMPANY_NAME = #{senderCompanyName} /* 发送方公司名称 */ 
+             </if>
+        
+             <if test='senderDepartmentCode != null and senderDepartmentCode != "" and senderDepartmentCode != "null" and senderDepartmentCode != "undefined"'>
+               AND   SENDER_DEPARTMENT_CODE = #{senderDepartmentCode} /* 发送方所在部门编号 */ 
+             </if>
+        
+             <if test='senderDepartmentName != null and senderDepartmentName != "" and senderDepartmentName != "null" and senderDepartmentName != "undefined"'>
+               AND   SENDER_DEPARTMENT_NAME = #{senderDepartmentName} /* 发送方所在部门名称 */ 
+             </if>
+        
+             <if test='senderIdentityId != null and senderIdentityId != "" and senderIdentityId != "null" and senderIdentityId != "undefined"'>
+               AND   SENDER_IDENTITY_ID = #{senderIdentityId} /* 发送用户编号 */ 
+             </if>
+        
+             <if test='senderName != null and senderName != "" and senderName != "null" and senderName != "undefined"'>
+               AND   SENDER_NAME = #{senderName} /* 发送用户名 */ 
+             </if>
+        
+             <if test='receiverIdentityId != null and receiverIdentityId != "" and receiverIdentityId != "null" and receiverIdentityId != "undefined"'>
+               AND   RECEIVER_IDENTITY_ID = #{receiverIdentityId} /* 接收用户编号 */ 
+             </if>
+        
+             <if test='receiverName != null and receiverName != "" and receiverName != "null" and receiverName != "undefined"'>
+               AND   RECEIVER_NAME = #{receiverName} /*  */ 
+             </if>
+        
+             <if test='createTime != null'>
+               AND   date_format(CREATE_TIME ,'%Y-%m-%d') = #{createTimeChar} /*  */ 
+             </if>
+        
+             <if test='internalParam != null and internalParam != "" and internalParam != "null" and internalParam != "undefined"'>
+               AND   INTERNAL_PARAM = #{internalParam} /*  */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   STATUS = #{status} /* 状态(0未发送1已发送2发送失败) */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+    </select>
+    
+    <select id="getCheckByPrmMap"
+            parameterType="java.util.HashMap"
+            resultType="java.lang.Integer">
+    
+            SELECT   /* getCheckByPrmMap+@com.vilio.nlbs.commonMapper.sql.NlbsMessageSendMapper.xml */ 
+                     count(1)
+              FROM   NLBS_MESSAGE_SEND  /*  */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   ID = #{id} /* 数据主键 */ 
+             </if>
+             <if test='code != null'>
+               AND   code = #{code}
+             </if>
+
+             <if test='serialNo != null and serialNo != "" and serialNo != "null" and serialNo != "undefined"'>
+               AND   SERIAL_NO = #{serialNo} /* 消息序列号(消息平台序号) */ 
+             </if>
+        
+             <if test='title != null and title != "" and title != "null" and title != "undefined"'>
+               AND   TITLE = #{title} /* 消息标题 */ 
+             </if>
+        
+             <if test='content != null and content != "" and content != "null" and content != "undefined"'>
+               AND   CONTENT = #{content} /* 消息内容 */ 
+             </if>
+        
+             <if test='senderCompanyCode != null and senderCompanyCode != "" and senderCompanyCode != "null" and senderCompanyCode != "undefined"'>
+               AND   SENDER_COMPANY_CODE = #{senderCompanyCode} /* 发送方公司编号 */ 
+             </if>
+        
+             <if test='senderCompanyName != null and senderCompanyName != "" and senderCompanyName != "null" and senderCompanyName != "undefined"'>
+               AND   SENDER_COMPANY_NAME = #{senderCompanyName} /* 发送方公司名称 */ 
+             </if>
+        
+             <if test='senderDepartmentCode != null and senderDepartmentCode != "" and senderDepartmentCode != "null" and senderDepartmentCode != "undefined"'>
+               AND   SENDER_DEPARTMENT_CODE = #{senderDepartmentCode} /* 发送方所在部门编号 */ 
+             </if>
+        
+             <if test='senderDepartmentName != null and senderDepartmentName != "" and senderDepartmentName != "null" and senderDepartmentName != "undefined"'>
+               AND   SENDER_DEPARTMENT_NAME = #{senderDepartmentName} /* 发送方所在部门名称 */ 
+             </if>
+        
+             <if test='senderIdentityId != null and senderIdentityId != "" and senderIdentityId != "null" and senderIdentityId != "undefined"'>
+               AND   SENDER_IDENTITY_ID = #{senderIdentityId} /* 发送用户编号 */ 
+             </if>
+        
+             <if test='senderName != null and senderName != "" and senderName != "null" and senderName != "undefined"'>
+               AND   SENDER_NAME = #{senderName} /* 发送用户名 */ 
+             </if>
+        
+             <if test='receiverIdentityId != null and receiverIdentityId != "" and receiverIdentityId != "null" and receiverIdentityId != "undefined"'>
+               AND   RECEIVER_IDENTITY_ID = #{receiverIdentityId} /* 接收用户编号 */ 
+             </if>
+        
+             <if test='receiverName != null and receiverName != "" and receiverName != "null" and receiverName != "undefined"'>
+               AND   RECEIVER_NAME = #{receiverName} /*  */ 
+             </if>
+        
+             <if test='createTime != null'>
+               AND   date_format(CREATE_TIME ,'%Y-%m-%d') = #{createTimeChar} /*  */ 
+             </if>
+        
+             <if test='internalParam != null and internalParam != "" and internalParam != "null" and internalParam != "undefined"'>
+               AND   INTERNAL_PARAM = #{internalParam} /*  */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   STATUS = #{status} /* 状态(0未发送1已发送2发送失败) */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+    </select>
+
+    <update id="updateStatusByCode" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsMessageSend">
+        UPDATE nlbs_message_send t
+        SET t.serial_no = #{serialNo ,jdbcType=VARCHAR}
+            ,t.status = #{status ,jdbcType=VARCHAR}
+        WHERE
+              t.code = #{code ,jdbcType=VARCHAR}
+    </update>
+</mapper>

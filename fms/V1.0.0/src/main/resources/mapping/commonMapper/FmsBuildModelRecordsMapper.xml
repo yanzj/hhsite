@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.vilio.fms.generator.dao.FmsBuildModelRecordsMapper">
+
+    <insert id="insertRecords" parameterType="java.util.HashMap" >
+        INSERT INTO  fms_build_model_records
+                    (
+                     serial_no
+                    ,builder_code
+                    ,builder_name
+                    ,builder_group_code
+                    ,builder_group_name
+                    ,builder_department_code
+                    ,builder_department_name
+                    ,source_system
+                    ,business_id
+                    ,mortgage_type
+                    ,model_list
+                    ,params
+                    ,send_status
+                    ,status
+                    )
+            VALUES  (
+                     #{serialNo}
+                    ,#{builderCode}
+                    ,#{builderName}
+                    ,#{builderGroupCode}
+                    ,#{builderGroupName}
+                    ,#{builderDepartmentCode}
+                    ,#{builderDepartmentNode}
+                    ,#{sourceSystem}
+                    ,#{businessId}
+                    ,#{mortgageType}
+                    ,#{modelList}
+                    ,#{params}
+                    ,#{sendStatus}
+                    ,#{status}
+                    )
+    </insert>
+
+    <update id="updateRecordsStatus"
+            parameterType="com.vilio.fms.generator.pojo.FmsBuildModelRecords">
+
+        UPDATE
+        fms_build_model_records
+        <set>
+            <if test="sendStatus != null">
+                send_status = #{sendStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE   serial_no                = #{serialNo}
+
+    </update>
+
+    <select id="queryRecordBySerialNo"
+            parameterType="java.lang.String"
+            resultType="com.vilio.fms.generator.pojo.FmsBuildModelRecords">
+        SELECT
+         fbmr.id                                                        AS id
+        ,DATE_FORMAT(fbmr.date_created ,'%Y-%m-%d %H:%i:%s')            AS dateCreated
+        ,DATE_FORMAT(fbmr.date_modified ,'%Y-%m-%d %H:%i:%s')           AS dateModified
+        ,fbmr.serial_no                                                 AS serialNo
+        ,fbmr.builder_code                                              AS builderCode
+        ,fbmr.builder_name                                              AS builderName
+        ,fbmr.builder_group_code                                        AS builderGroupCode
+        ,fbmr.builder_group_name                                        AS builderGroupName
+        ,fbmr.builder_department_code                                   AS builderDepartmentCode
+        ,fbmr.builder_department_name                                   AS builderDepartmentNode
+        ,fbmr.source_system                                             AS sourceSystem
+        ,fbmr.business_id                                               AS businessId
+        ,fbmr.mortgageType                                              AS mortgageType
+        ,fbmr.model_list                                                AS modelList
+        ,fbmr.params                                                    AS params
+        ,fbmr.send_status                                               AS sendStatus
+        ,fbmr.status                                                    AS status
+        FROM   fms_build_model_records     fbmr
+        WHERE   fbmr.serial_no = #{serialNo}
+
+    </select>
+
+
+    <select id="queryRecords"
+            parameterType="com.vilio.fms.generator.pojo.FmsBuildModelRecords"
+            resultType="com.vilio.fms.generator.pojo.FmsBuildModelRecords">
+        SELECT
+         fbmr.id                                                        AS id
+        ,DATE_FORMAT(fbmr.date_created ,'%Y-%m-%d %H:%i:%s')            AS dateCreated
+        ,DATE_FORMAT(fbmr.date_modified ,'%Y-%m-%d %H:%i:%s')           AS dateModified
+        ,fbmr.serial_no                                                 AS serialNo
+        ,fbmr.builder_code                                              AS builderCode
+        ,fbmr.builder_name                                              AS builderName
+        ,fbmr.builder_group_code                                        AS builderGroupCode
+        ,fbmr.builder_group_name                                        AS builderGroupName
+        ,fbmr.builder_department_code                                   AS builderDepartmentCode
+        ,fbmr.builder_department_name                                   AS builderDepartmentNode
+        ,fbmr.source_system                                             AS sourceSystem
+        ,fbmr.business_id                                               AS businessId
+        ,fbmr.mortgage_type                                              AS mortgageType
+        ,fbmr.model_list                                                AS modelList
+        ,fbmr.params                                                    AS params
+        ,fbmr.send_status                                               AS sendStatus
+        ,fbmr.status                                                    AS status
+        FROM   fms_build_model_records     fbmr
+        WHERE   1=1
+
+        <if test='serialNo != null and serialNo != "" and serialNo != "null" and serialNo != "undefined"'>
+            AND   fbmr.serial_no = #{serialNo}
+        </if>
+
+        <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+            AND   fbmr.status = #{status}
+        </if>
+
+
+    </select>
+
+</mapper>

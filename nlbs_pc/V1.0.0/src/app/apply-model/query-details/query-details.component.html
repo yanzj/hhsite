@@ -1,0 +1,748 @@
+
+  <div class="row">
+    <ol class="breadcrumbNav col-12">
+      <li><a (click)="querySection()">进件申请查询</a><i>></i></li>
+      <li class="active">查看进件申请<i>|</i></li>
+      <li><a (click)="history()">历史</a></li>
+    </ol>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <hr class="breadcrumbNavLine">
+    </div>
+  </div>
+
+  <div class="progress-box">
+    <div class="progress-com">
+
+      <div class="progress-line">
+        <div *ngFor=" let item of itemStatusLists; let i=index ">
+                <span class="progress-circle circle{{i+1}} active" [ngClass]="{'title_cur':i<=itemSelectIndex}">
+                    <i [ngClass]="{'bigCircle':i==itemSelectIndex}"></i>
+                    <ins [ngClass]="{'ins_line':i<itemSelectIndex}"></ins>
+                    <em [ngStyle]="{'color':i<=itemSelectIndex ? '#333' : '#999' }"
+                        [ngClass]="{'ProSeleceted':i==itemSelectIndex}">{{item}}</em>
+                </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="messagePanel">
+    <span class="message-title">业务编号：</span><em class="message-number">{{businessObj.bmsLoanCode}}</em>
+  </div>
+
+  <div class="row">
+      <div class="filed-name col-2">申请时间：</div>
+      <div class="filed-text col-2">{{businessObj.applyTime}}</div>
+      <div class="filed-name col-2">状态：</div>
+      <div class="filed-text col-2">{{businessStatusName}}</div>
+  </div>
+
+
+  <div class="margin-top-40">
+    <div class="tab-menu">
+      <ul class="tab-menu-ul">
+        <li [ngClass]="{'current':isdisplayqueryMateria?false:true}"><a href="javascript:;" >申请信息</a></li>
+        <li><a href="javascript:;" >录单信息</a></li>
+        <li [ngClass]="{'current':isdisplayqueryMateria?true:false}" ><a href="javascript:;" >进件材料</a></li>
+      </ul>
+      <div class="label_hr"></div>
+      <div class="tab_box margin-top-20">
+        <!-- 申请信息start-->
+        <div class="tab_content">
+            <div class="row">
+              <div class="filed-name col-2">进件公司：</div>
+              <div class="filed-text col-2">{{applayInfoValueLists[0]}}</div>
+              <div class="filed-name col-2">业务经理：</div>
+              <div class="filed-text col-2">{{applayInfoValueLists[1]}}</div>
+            </div>
+            <div class="row">
+              <div class="filed-name col-2">主借款人姓名：</div>
+              <div class="filed-text col-2">{{applayInfoValueLists[2]}}</div>
+              <div class="filed-name col-2">手机验证码：</div>
+              <div class="filed-text col-2">{{applayInfoValueLists[3]}}</div>
+            </div>
+            <div class="row">
+              <div class="filed-name col-2">产品名称：</div>
+              <div class="filed-text col-2">{{applayInfoValueLists[4]}}</div>
+              <div class="filed-name col-2">放款方式：</div>
+              <div class="filed-text col-2">{{applayInfoValueLists[5]}}</div>
+            </div>
+            <div class="row">
+              <div class="filed-name col-2">申请金额：</div>
+              <div class="filed-text col-2">{{applayInfoValueLists[6]}}</div>
+              <div class="filed-name col-2">借款期限：</div>
+              <div class="filed-text col-2">{{applayInfoValueLists[7]}}</div>
+            </div>
+            <div class="row">
+              <div class="filed-name col-2">意向金：</div>
+              <div class="filed-text col-2">{{applayInfoValueLists[8]}}</div>
+              <div class="filed-name col-2">备注：</div>
+              <div class="filed-text col-2">{{applayInfoValueLists[9]}}</div>
+            </div>
+
+
+            <!--抵押物信息-->
+            <div class="row margin-top-40 margin-bottom-20">
+              <div class="col-12">
+                <div class="message-title-line"></div>
+                <div class="message-title-name">抵押物信息</div>
+                <div class="label_hr"></div>
+              </div>
+            </div>
+            <div class="row" *ngFor="let item of businessObj.certificateList">
+                <div class="col-2 filed-name"><span>*</span>产证编号：</div>
+                <div class="filed-text col-4">{{item.certificateNumberFirst + item.certificateNumberSecond}}</div>
+                <div class="col-2 filed-name"><span>*</span>抵押物类型：</div>
+                <div class="filed-text col-2">{{item.mortgageTypeName}}</div>
+            </div>
+
+            <!--案件概括-->
+            <div class="row margin-top-40  margin-bottom-20">
+              <div class="col-12">
+                <div class="message-title-line"></div>
+                <div class="message-title-name">案件概括</div>
+                <div class="label_hr"></div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="filed-name col-2"><span>*</span>家庭主要资产：</div>
+              <div class="filed-text col-4">{{applayMainHouseholdLists[0]}}</div>
+              <div class="filed-name col-2"><span>*</span>家庭主要负债：</div>
+              <div class="filed-text col-4">{{applayMainHouseholdLists[1]}}</div>
+            </div>
+            <div class="row">
+                <div class="filed-name col-2"><span>*</span>家庭主要收入来源：</div>
+                <div class="filed-text col-4">{{applayMainHouseholdLists[2]}}</div>
+                <div class="filed-name col-2"><span>*</span>抵押物实地调研情况：</div>
+                <div class="filed-text col-4">{{applayMainHouseholdLists[3]}}</div>
+            </div>
+            <div class="row">
+                <div class="filed-name col-2"><span>*</span>借款用途：</div>
+                <div class="filed-text col-4">{{applayMainHouseholdLists[4]}}</div>
+                <div class="filed-name col-2"><span>*</span>还款来源：</div>
+                <div class="filed-text col-4">{{applayMainHouseholdLists[5]}}</div>
+            </div>
+
+            <!-- 材料上载-->
+            <div class="row margin-top-40">
+              <div class="col-12">
+                <div class="message-title-line"></div>
+                <div class="message-title-name">材料上载</div>
+                <div class="label_hr">
+                </div>
+              </div>
+            </div>
+            <!--下载-->
+            <div class="row margin-top-40">
+                <div class="col-2">
+                  <a class="file-list-download float-right"  (click)="queryload()" >
+                    <div class="file-list-download-pic">
+                    </div>
+                  </a>
+              </div>
+            </div>
+
+          <div class="row margin-top-40">
+            <div class="col-2">
+              <button class="orange-button float-right" (click)="querySection()">返回进件查询</button>
+            </div>
+          </div>
+
+        </div>
+        <!-- 申请信息 end-->
+
+        <!-- 录单信息start-->
+        <div class="tab_content">
+          <!--人员信息-->
+          <div class="row margin-top-40 margin-bottom-20">
+              <div class="col-12">
+                <div class="message-title-line"></div>
+                <div class="message-title-name">人员信息</div>
+                <div class="label_hr">
+                </div>
+              </div>
+          </div>
+          <div class="row">
+            <table class="table width-100per" border="0" cellpadding="0" cellspacing="0">
+              <thead>
+                <tr>
+                  <th class="col-2">姓名</th>
+                  <th class="col-2" >证件号码</th>
+                  <th class="col-2">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of applyInputPersionInfoLists;let i=index">
+                  <td class="col-2">{{item.name}}</td>
+                  <td class="col-2">{{item.idNo}}</td>
+                  <td class="col-2"><a href="javascript:;" (click)="dataInfoPersonPopup(i)">详情</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!--抵押物信息-->
+          <div class="row margin-top-40 margin-bottom-20">
+              <div class="col-12">
+                <div class="message-title-line"></div>
+                <div class="message-title-name">抵押物信息</div>
+                <div class="label_hr">
+                </div>
+              </div>
+          </div>
+          <div class="row">
+            <table class="table width-100per" border="0" cellpadding="0" cellspacing="0">
+              <thead>
+                <tr>
+                  <th class="col-2">产证编号</th>
+                  <th class="col-4" >地址</th>
+                  <th class="col-2" >评估价</th>
+                  <th class="col-2">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of mortgageList;let i=index">
+                  <td class="col-2">{{item.certificateNumber}}</td>
+                  <td class="col-4">{{item.propertyAddress}}</td>
+                  <td class="col-2">{{item.evalutionPrice+'万'}}</td>
+                  <td class="col-2"><a href="javascript:;" (click)="dataInfoPawnPopup(i)">详情</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!--备用房信息-->
+          <div class="row margin-top-40 margin-bottom-20">
+              <div class="col-12">
+                <div class="message-title-line"></div>
+                <div class="message-title-name">备用房信息</div>
+                <div class="label_hr"></div>
+              </div>
+          </div>
+          <div class="row">
+              <table class="table width-100per" border="0" cellpadding="0" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th class="col-2">产权人</th>
+                    <th class="col-4" >地址</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of spareHouseList">
+                    <td class="col-2">{{item.owner}}</td>
+                    <td class="col-4">{{item.address}}</td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+
+          <!--征信信息-->
+          <div class="row margin-top-40 margin-bottom-20">
+            <div class="col-12">
+              <div class="message-title-line"></div>
+              <div class="message-title-name">征信信息</div>
+              <div class="label_hr"></div>
+            </div>
+          </div>
+          <div class="row">
+            <table class="table width-100per" border="0" cellpadding="0" cellspacing="0">
+              <thead>
+                <tr>
+                  <th class="col-2">姓名</th>
+                  <th class="col-2" >征信报告时间</th>
+                  <th class="col-2">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of creditInfList; let i = index">
+                  <td class="col-2">{{item.name}}</td>
+                  <td class="col-2">{{item.reportTime}}</td>
+                  <td class="col-2"><a href="javascript:;" (click)="dataInfoCreditPopup(i)">详情</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!--司法信息-->
+          <div class="row margin-top-40 margin-bottom-20">
+            <div class="col-12">
+              <div class="message-title-line"></div>
+              <div class="message-title-name">司法信息</div>
+              <div class="label_hr"></div>
+            </div>
+          </div>
+          <div class="row">
+            <table class="table width-100per" border="0" cellpadding="0" cellspacing="0">
+              <thead>
+                <tr>
+                  <th class="col-2">姓名</th>
+                  <th class="col-2" >是否有司法诉讼</th>
+                  <th class="col-2">操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of judicialInfList; let i = index">
+                  <td class="col-2">{{item.judicialInfName}}</td>
+                  <td class="col-2">{{item.litigation}}</td>
+                  <td class="col-2"><a href="javascript:;" (click)="dataInfoJudicialPopup(i)">详情</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+            <div class="row margin-top-40">
+              <div class="col-2">
+                 <button class="orange-button float-right" id="pre_btn"  (click)="querySection()">返回进件查询</button>
+              </div>
+
+            </div>
+
+
+        </div>
+        <!-- 录单信息end-->
+
+        <!-- 进件材料start-->
+        <div class="tab_content">
+          <div class="material_tab" id="material_tab1">
+            <div class="row">
+              <div class="col-6" id="messageTitle_classify">
+                <div class="row margin-bottom-20">
+                  <div class="message-title-line"></div>
+                  <div class="message-title-name" >材料分类</div>
+                </div>
+
+                <div class="material-panel" *ngFor="let materialObj of materialTypeListData let i=index" (click)="onSelectMaterial(materialObj)" [class.materialselected]="materialObj === selectedMaterial">
+                  <label class="material-label"><input type="radio" name="apply" class="material-input" value={{materialObj.code}} [checked]="materialObj.code==='01'" >{{materialObj.name}}<em>{{materialObj.displayFileNumStr}}</em></label>
+                </div>
+
+                <div class="row margin-top-40">
+                  <div class="col-4">
+                    <button class="orange-button float-right" id="backToapplyQuery2"  (click)="querySection()">返回进件查询</button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="row margin-bottom-20">
+                  <div class="message-title-line"></div>
+                  <div class="message-title-name">材料清单</div>
+                  <div class="orange-button material-btn" (click)="annexMaterialChange()">补充材料</div>
+                </div>
+                <div class="row">
+                    <div class="img-list" *ngFor="let item of selectedMaterialDisplayImages">
+                      <a class="img-box"><img src="{{item.FileImage}}" id="img-box"/></a>
+                      <p class="upload-file-name ">{{item.originalFileName}}</p>
+                      <div class="upload-file-time">2017-06-05 15:08:42</div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="material_tab"  style="display: none"  id="material_tab2">
+            <div class="row margin-bottom-20">
+              <div class="message-title-line"></div>
+              <div class="message-title-name">{{selectItemNameDisplay}}</div>
+            </div>
+            <div class="row">
+              <a class=" upload-into-pieces">
+                <div class="gray-button garyButton-gai">选择文件上传</div>
+                <!--将input中的multiple去掉设置为单个上传的文件-->
+                <input type="button"  class="gray-button uploadofMaterial upload-input"   type="file" ng2FileSelect
+                        [uploader]="uploader" (change)="selectedFileOnChanged($event)" multiple >
+
+              </a>
+              <span class="margin-left-20 hide" id="uploadedfileNumber"  >上传成功{{sucUploadFileNum}}个，上传失败{{failUploadFileNum}}个</span>
+              <span class="margin-left-20" id=uploadingfileNumber >正在上传：第{{sucUploadFileNum}}个（共{{uploader.queue.length}}个）</span>
+              <p style="margin:20px 0;color:#999">单次最多可选30个文件，单个文件大小不超过10M</p>
+              <div class="row">
+                <div id="uploader" class="wu-example">
+                  <div class="row">
+                    <div *ngFor="let item of uploader.queue;let i=index" id="uploadFileBox">
+                      <div class="upload-file-box">
+
+                        <!-- 上传成功后，展示对应图片 -->
+                        <div class="photo">
+                          <div *ngIf="item.isSuccess" class="success-uploadered-picture">
+                            <div class="picture-deletion"><a class="delete-icon" (click)="deleteFile(i,1)"></a></div>
+                            <div class="small-photo" id="smallPhoto" ><img src="{{selectFileList[i]}}" id="uploadImg{{i}}" /></div>
+                            <p [ngStyle]="{'margin-top':item.isError?0:'10px'}" class="upload-picture-name image-name">{{item.file.name}}</p>
+                          </div>
+                        </div>
+
+                        <!-- 上传失败后，展示错误提示 -->
+                        <div [ngClass]="{'upload-picture-styles-fail-style':item.isError}">
+                          <div *ngIf="item.isError"  class="fail-style" >
+                            <p class="upload-picture-fail-txt">上传失败</p>
+                            <p>
+                              <a (click)="upAgiain(i)">
+                                重新上传
+                              </a>
+                              <a (click)="deleteFile(i, 0)" class="upload-picture-faildel">刪除</a>
+                            </p>
+                            <p [ngStyle]="{'margin-top':item.isError?0:'10px'}" class="upload-picture-name">{{item.file.name}}</p>
+
+                          </div>
+
+
+                          <div class="progress" *ngIf="!item.isSuccess&&!item.isError">
+                            <div class="progress-bar progress-bar-warning progress-bar-striped active"
+                                 [style.width.%]=item.progress>
+                              <div class="progress-value"></div>
+
+
+                            </div>
+
+
+                        </div>
+
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <!--原地方-->
+              <div class="uploader-detail-information margin-top-40">
+                <button type="button"  class="disable-button" id="disableButton" disabled="disabled" [ngStyle]="{'display':issmallPhoto==false?'block':'none'}">提交</button>
+                <button type="button"  class="orange-button" style="display:none"   id="onSubmitButton" [ngStyle]="{'display':issmallPhoto==false?'none':'block'}" (click)="onSubmitUploadFileFunc()">提交</button>
+                <button type="button"  class="gray-button margin-left-20" (click)="cancelPopup()">取消</button>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- 进件材料end-->
+      </div>
+    </div>
+  </div>
+
+
+<!--人员信息弹窗start-->
+<div class="popup dataInfoPersonPopup" style="display: none">
+  <header class="header">
+    <h4 class="header-title">人员信息详情</h4>
+    <span class="close-btn" (click)="popupCloseBtn()">X</span>
+  </header>
+  <div class="popup-main">
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">姓名：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.name}}</div>
+      <div class="filed-name col-3">证件类型：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.idType}}</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">证件号码：</div>
+      <div class="filed-text col-3" style="text-align: left">{{selectItemPopViewObj.idNo}}</div>
+      <div class="filed-name col-3">证件有效期：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.periodOfValidity}}</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">移动电话：</div>
+      <div class="filed-text col-9">{{selectItemPopViewObj.mobilePhone}}</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">工作单位：</div>
+      <div class="filed-text  col-9">{{selectItemPopViewObj.organization}}</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">职位：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.position}}</div>
+      <div class="filed-name col-3">年收入：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.annual}}万元</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">家庭地址：</div>
+      <div class="filed-text col-9">{{selectItemPopViewObj.address}}</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">婚史：</div>
+      <div class="filed-text col-9">{{selectItemPopViewObj.marriage}}</div>
+    </div>
+  </div>
+
+  <button class="orange-button margin-top-40 margin-bottom-0" (click)="popupCloseBtn()" >返回</button>
+
+</div>
+<!--人员信息弹窗end-->
+
+<!--抵押物信息弹窗start-->
+<div class="popup dataInfoPawnPopup" style="display: none">
+  <header class="header">
+    <h4 class="header-title">抵押物信息详情</h4>
+    <span class="close-btn" (click)="popupCloseBtn()">X</span>
+  </header>
+  <div class="popup-main">
+    <div class="col-12 clearfix">
+      <div class="filed-name  col-3" style="text-align: left">产证编号：</div>
+      <div class="filed-text  col-9">{{selectItemPopViewObj.certificateNumber}}</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">评估价：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.evalutionPrice}}万元</div>
+      <div class="filed-name col-3">购买时间：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.buyingTime}}</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">产权人：</div>
+      <div class="filed-text col-9">{{selectItemPopViewObj.propertyOwners}}</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">产证地址：</div>
+      <div class="filed-text col-9">{{selectItemPopViewObj.propertyAddress}}</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">土地性质：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.LandCharacterisstics}}</div>
+      <div class="filed-name col-3">使用权取得方式：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.acquisitionMethod}}</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">房屋类型：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.buildingType}}</div>
+      <div class="filed-name col-3">建筑面积：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.structureArea}}</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">车库地址：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.garageAddress}}</div>
+      <div class="filed-name col-3">车库面积：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.garageArea}}</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">总层数：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.totalFloors}}</div>
+      <div class="filed-name col-3">竣工日期：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.endDate}}</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">共有类型：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.commonTypes}}</div>
+      <div class="filed-name col-3">未成年人份额：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.minorShare}}</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">附记：</div>
+      <div class="filed-text col-9">{{selectItemPopViewObj.remark}}</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">产调信息：</div>
+      <div class="filed-text col-9">
+        <div class="fl">产调时间：</div>
+        <div class="fl">{{mortgageListInvestObj.investTime}}</div>
+      </div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3"></div>
+      <div class="filed-text col-9">
+        <div class="fl">在办案件：</div>
+        <div class="fl">{{mortgageListInvestObj.dealingCase}}</div>
+      </div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="col-3"> <div class="filed-name"></div> </div>
+      <div class="col-9">
+        <div class="filed-text">
+          <div class="popup-info"><span>一抵债权人：</span><span>{{mortgageListInvestObj.firstMortgageCreditor}}</span></div>
+          <div class="popup-info"><span>一抵债权金额：</span><span>{{mortgageListInvestObj.firstMortgagePrice}}</span></div>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="col-3"> <div class="filed-name"></div> </div>
+      <div class="col-9">
+        <div class="filed-text">
+          <div class="popup-info"><span>二抵债权人：</span><span>{{mortgageListInvestObj.secondMortgageCreditor}}</span></div>
+          <div class="popup-info"><span>二抵债权金额：</span><span>{{mortgageListInvestObj.secondMortgagePrice}}</span></div>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-12  clearfix">
+      <div class="filed-name col-3">户口信息：</div>
+      <div class="col-9 width-100per" *ngFor=" let item of residenceInfList; let i=index">
+          <div class="col-3 padding-right-15"> <div class="filed-name"></div> </div>
+          <div class="col-9">
+              <div class="filed-text" style="margin-top: -37px;">
+                <div class="popup-info"><span>姓名：</span><span>某某某</span></div>
+                <div class="popup-info"><span>身份证号：</span><span>123456789012345678</span></div>
+
+              </div>
+            </div>
+      </div>
+    </div>
+
+
+  <button class="orange-button margin-top-40 margin-bottom-0" (click)="popupCloseBtn()" >返回</button>
+  </div>
+
+</div>
+<!--抵押物信息弹窗end-->
+
+<!--征信信息弹窗start-->
+<div class="popup dataInfoCreditPopup" style="display: none">
+  <header class="header">
+    <h4 class="header-title">征信信息详情</h4>
+    <span class="close-btn" (click)="popupCloseBtn()">X</span>
+  </header>
+  <div class="popup-main">
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">姓名：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.name}}</div>
+      <div class="filed-name col-3">征信报告时间：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.reportTime}}</div>
+    </div>
+    <div class="msgofPawn clearfix">
+      <div class="message-title-line"></div>
+      <div class="message-title-name">未结清贷款信息汇总</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">贷款笔数：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.loanCount}}</div>
+      <div class="filed-name col-3">合同总额：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.totalContract}}</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">余额：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.balance}}</div>
+      <div class="filed-name col-3">近6个月平均应还款：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.sixMonthAverageQuotaRepay}}</div>
+    </div>
+    <div class="msgofPawn clearfix">
+      <div class="message-title-line"></div>
+      <div class="message-title-name">未销户贷记卡信息汇总</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">账户数：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.accountNum}}</div>
+      <div class="filed-name col-3">授信总额：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.totalCredit}}</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">已用额度：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.quotaUsed}}</div>
+      <div class="filed-name col-3">近6个月平均使用额度：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.sixMonthAverageQuotaUsed}}</div>
+    </div>
+    <div class="msgofPawn clearfix">
+      <div class="message-title-line"></div>
+      <div class="message-title-customname">贷款信息</div>
+      <table class="table" border="0" cellpadding="0" cellspacing="0"  style="margin:0;border-bottom:0">
+        <thead>
+          <tr>
+            <th class="width-80">序号</th>
+            <th class="width-280">类型</th>
+            <th class="width-180">详情</th>
+          </tr>
+        </thead>
+        <tbody *ngFor=" let item of loanInfoList ">
+          <tr>
+            <td class="width-80">{{item.loanInfoSerialNo}}</td>
+            <td class="width-280">{{item.loanInfoType}}</td>
+            <td class="width-180">{{item.loanInfoDetails}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="msgofPawn clearfix">
+      <div class="message-title-line"></div>
+      <div class="message-title-customname">贷记卡信息</div>
+      <table class="table" border="0" cellpadding="0" cellspacing="0" style="margin:0;border-bottom:0">
+        <thead>
+          <tr>
+            <th class="width-80">序号</th>
+            <th class="width-280">类型</th>
+            <th class="width-180">详情</th>
+          </tr>
+        </thead>
+        <tbody  *ngFor=" let item of loanCardInfoList ">
+          <tr>
+            <td class="width-80">{{item.loanCardInfoSerialNo}}</td>
+            <td class="width-280">{{item.loanCardInfoType}}</td>
+            <td class="width-180">{{item.loanCardInfoDetails}}</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+    <div class="msgofPawn clear">
+      <div class="message-title-line"></div>
+      <div class="message-title-name">担保信息</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">担保状态：</div>
+      <div class="filed-text col-9">{{selectItemPopViewObj.securedStatus}}</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">担保金额：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.securedPrice}}</div>
+      <div class="filed-name col-3">担保余额：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.securedBalance}}</div>
+    </div>
+    <div class="msgofPawn clearfix">
+      <div class="message-title-line"></div>
+      <div class="message-title-name">查询记录</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">近三个月查询次数：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.threeMonthQueryCount}}</div>
+      <div class="filed-name col-3">贷后管理次数：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.AfterLoanManageCount}}</div>
+    </div>
+
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">担保资格审查次数：</div>
+      <div class="filed-text col-9">{{selectItemPopViewObj.securedCheckupCount}}</div>
+    </div>
+
+    <div class="msgofPawn clearfix">
+      <div class="message-title-line"></div>
+      <div class="message-title-name">备注</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="col-12"> <div class="filed-text">{{selectItemPopViewObj.creditInfoRemark}}</div></div>
+
+    </div>
+  </div>
+
+  <button class="orange-button margin-top-40 margin-bottom-0" (click)="popupCloseBtn()" >返回</button>
+
+</div>
+<!--征信信息弹窗end-->
+
+<!--司法信息弹窗start-->
+<div class="popup dataInfoJudicialPopup" style="display: none">
+  <header class="header">
+    <h4 class="header-title">司法信息详情</h4>
+    <span class="close-btn" (click)="popupCloseBtn()">X</span>
+  </header>
+  <div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">姓名：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.judicialInfName}}</div>
+      <div class="filed-name col-3">是否有司法诉讼：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.litigation}}</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">立案号：</div>
+      <div class="filed-text col-3" style="text-align: left">{{selectItemPopViewObj.registrationNo}}</div>
+      <div class="filed-name col-3">是否结案：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.isClosed}}</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">执行标的：</div>
+      <div class="filed-text col-9">{{selectItemPopViewObj.executeTarget}}</div>
+    </div>
+    <div class="col-12 clearfix">
+      <div class="filed-name col-3">情况说明：</div>
+      <div class="filed-text col-9">{{selectItemPopViewObj.statusStatement}}</div>
+
+    </div>
+  </div>
+
+  <button class="orange-button margin-top-40 margin-bottom-0" (click)="popupCloseBtn()">返回</button>
+
+</div>
+<!--司法信息弹窗end-->
+

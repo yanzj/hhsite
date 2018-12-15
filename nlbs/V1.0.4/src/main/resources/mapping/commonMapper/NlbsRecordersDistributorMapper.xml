@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.nlbs.commonMapper.dao.NlbsRecordersDistributorMapper" >
+
+  <select id="selectRecordersDistributorByUserNo" resultType="com.vilio.nlbs.commonMapper.pojo.NlbsRecordersDistributor" parameterType="java.lang.String" >
+    SELECT
+      t.distributor_code as distributorCode
+      ,t.user_no as userNo
+      ,t.status
+    FROM
+        nlbs_recorders_distributor t
+    WHERE
+        t.user_no = #{userNo,jdbcType=VARCHAR}
+  </select>
+
+    <select id="queryRecordsByDistributorCode" resultType="java.util.Map" parameterType="java.lang.String" >
+        SELECT
+        t.user_no as userNo
+        FROM
+        nlbs_recorders_distributor t
+        WHERE t.status = '1'
+        AND t.distributor_code = #{distributorCode,jdbcType=VARCHAR}
+    </select>
+</mapper>

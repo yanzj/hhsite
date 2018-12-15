@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.OperationManagerDao" >
+
+    <select id="queryContractList" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        select distinct pci.code as "contractCode", /* 借款编码 */
+                            pci.contract_no as "contractNo", /* 借款合同编号 */
+                            pc.abbr_name as "cityName", /* 城市 */
+                            pd.abbr_name as "distributorName", /* 渠道 */
+                            (select name from plms_agent t where t.code = pai.agent_code and t.status = '1') "agentName", /* 业务经理 */
+                            (select name from plms_customer t where t.apply_code = pai.code and t.is_main = '1' and t.status = '1') as "customerName", /* 借款人 */
+                            (select product_name from plms_product t where t.apply_code = pai.code and t.status = '1') "productName",/* 产品名称 */
+                            (case pai.lending_methods when '01' then '他证' when '02' then '收件收据' end) as "lendingMethodsName",/* 放款方式 */
+                            (select t2.abbr_name
+                       from plms_fund_side t1, plms_company t2
+                      where t1.contract_code = pci.code
+                        and t1.status = '1'
+                        and t2.status = '1'
+                        and t1.company_code = t2.code) as "fundSideName",/* 资方 */
+                            (select t2.abbr_name
+                       from plms_guarantee_corporation t1, plms_company t2
+                      where t1.contract_code = pci.code
+                        and t1.status = '1'
+                        and t2.status = '1'
+                        and t1.company_code = t2.code) as "guaranteeCorporationName",/* 担保公司 */
+                            (select t2.abbr_name
+                       from plms_guarantee_corporation t1, plms_company t2
+                      where t1.contract_code = pci.code
+                        and t1.status = '1'
+                        and t2.status = '1'
+                        and t1.company_code = t2.code) as "insuranceCompanyName",/* 保险公司 */
+                            pad.total_quota as "totalQuota", /* 授信金额 */
+                            pad.principal "principal",
+                            (ifnull(pad.principal,0) + ifnull(pad.interest,0) + ifnull(pad.service_fee,0) + ifnull(pad.bail,0)
+                             + ifnull(pad.overdue,0) + ifnull(pad.service_fee_penalty,0) + ifnull(pad.bail_penalty,0) ) as "repaymentAmount",  /* 应还总额 */
+                            pci.credit_start_date as "creditStartDate", /* 授信日期 */
+                            pci.credit_end_date as "creditEndDate", /* 授信截止日 */
+                            pci.credit_period as "creditPeriod", /* 授信期限 */
+                            datediff(pci.credit_end_date,pci.credit_start_date) "creditDays",/* 授信天数 */
+                            (select annualized_interest from plms_apply_interesting t where t.contract_code = pci.code and t.status = '1') as "annualizedInterest",/* 年化利率 */
+                                (case when (ifnull(pad.principal,0) &gt; 0 ) then
+                                    (case when ifnull((select count(*) from plms_repayment_schedule prs
+                                                            where prs.detail_code = pad.code
+                                                            and prs.status = '03'),0) &gt; 0 then '03'
+                                          else '02'
+                                    end)
+                                    else '01'
+                                end) as "loanStatusCode",
+                                (case when (ifnull(pad.principal,0) &gt; 0 ) then
+                                      (case when ifnull((select count(*) from plms_repayment_schedule prs
+                                                               where prs.detail_code = pad.code
+                                                                and prs.status = '03'),0) &gt; 0 then '逾期'
+                                          else '正常还款中'
+                                    end)
+                                    else '已结清'
+                                end)
+                                as "loanStatusName",
+                           (case when (pain.is_interest_Instead = 0 ) then '0'
+                                 when (pain.is_interest_Instead = 1 ) then '1'
+                        end)  as "isInterestInstead", /* 利息是否代收代付 */
+                    (case when (select count(1) from plms_repayment_schedule_detail_change_control t
+                      where t.contract_code = pci.code
+                        and t.status != '0'
+                        and t.change_status in ('00','01','02')) &gt; 0 then 'N'
+                     else 'Y'
+                     end) as "canModify" /* 是否可修改还款明细 */
+
+              from plms_contract_info pci,
+                   plms_apply_info pai,
+                   plms_distributor pd,
+                   plms_city pc,
+                   plms_account_detail pad,
+                   plms_repayment_schedule prs,
+                   plms_apply_interesting pain
+             where pci.apply_code = pai.code
+               and pai.distribute_code = pd.code
+               and pd.city_no = pc.code
+               and pci.code = pad.contract_code
+               and prs.detail_code = pad.code
+               and pain.contract_code = pci.code
+               and pci.status != '0'
+               and pai.status != '0'
+               and pd.status != '0'
+               and pc.status != '0'
+               and pad.status != '0'
+               and prs.status != '00'
+           <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+           and pc.code=#{cityCode,jdbcType=VARCHAR}
+           </if>
+           <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+           and pad.confirmed=#{confirmed,jdbcType=VARCHAR}
+           </if>
+
+            <if test='distributorList != null'>
+                AND pd.code IN
+                <foreach item="item" index="index" collection="distributorList" open="(" separator="," close=")" >
+                    #{item.distributorCode}
+                </foreach >
+            </if>
+           <if test='distributorCode != null and distributorCode != "" and distributorCode != "null" and distributorCode != "undefined"'>
+           and pd.code=#{distributorCode,jdbcType=VARCHAR}
+           </if>
+           <if test='customerName != null and customerName != "" and customerName != "null" and customerName != "undefined"'>
+           and exists (select name from plms_customer t where t.apply_code = pai.code and t.name like concat('%', #{customerName,jdbcType=VARCHAR}, '%') )
+           </if>
+           <if test='creditStartDate != null and creditStartDate != "" and creditStartDate != "null" and creditStartDate != "undefined"'>
+           and pci.credit_start_date &gt;= date_format(#{creditStartDate,jdbcType=VARCHAR}, '%Y/%m/%d')
+           </if>
+           <if test='creditEndDate != null and creditEndDate != "" and creditEndDate != "null" and creditEndDate != "undefined"'>
+           and pci.credit_start_date &lt; date_add(date_format(#{creditEndDate,jdbcType=VARCHAR}, '%Y/%m/%d'),INTERVAL 1 DAY)
+           </if>
+           <if test='agentName != null and agentName != "" and agentName != "null" and agentName != "undefined"'>
+           and exists (select name from plms_agent t where t.name like concat('%', #{agentName,jdbcType=VARCHAR}, '%') and t.distributor_code = pd.code)
+           </if>
+           <if test='contractCode != null and contractCode != "" and contractCode != "null" and contractCode != "undefined"'>
+           and pci.code = #{contractCode,jdbcType=VARCHAR}
+           </if>
+        order by pci.credit_start_date desc
+    </select>
+
+    <insert id="createRepaymentScheduleDetailTmpByContractCode" parameterType="java.lang.String" >
+      insert into plms_repayment_schedule_detail_tmp (
+        id,
+        code,
+        status,
+        create_date,
+        modify_date,
+        repayment_schedule_detail_code,
+        current_period,
+        total_period,
+        repayment_date,
+        amount,
+        principal,
+        interest,
+        service_fee,
+        overdue,
+        service_fee_penalty,
+        repaymented_principal,
+        repaymented_interest,
+        repaymented_service_fee,
+        repaymented_overdue,
+        repaymented_service_fee_penalty,
+        repayment_schedule_detail_status,
+        paid_code,
+        repayment_schedule_detail_create_date,
+        repayment_schedule_detail_modify_date,
+        schedule_code,
+        principal_account_code,
+        interest_account_code,
+        total_overdue_days,
+        service_fee_total_overdue_days,
+        bail,
+        bail_penalty,
+        repaymented_bail,
+        repaymented_bail_penalty)
+        select
+        null,
+        uuid(),
+        '1',
+        SYSDATE(),
+        SYSDATE(),
+        prsd.code,
+        prsd.current_period,
+        prsd.total_period,
+        prsd.repayment_date,
+        prsd.amount,
+        prsd.principal,
+        prsd.interest,
+        prsd.service_fee,
+        prsd.overdue,
+        prsd.service_fee_penalty,
+        prsd.repaymented_principal,
+        prsd.repaymented_interest,
+        prsd.repaymented_service_fee,
+        prsd.repaymented_overdue,
+        prsd.repaymented_service_fee_penalty,
+        prsd.status,
+        prsd.paid_code,
+        prsd.create_date,
+        prsd.modify_date,
+        prsd.schedule_code,
+        prsd.principal_account_code,
+        prsd.interest_account_code,
+        prsd.total_overdue_days,
+        prsd.service_fee_total_overdue_days,
+        prsd.bail,
+        prsd.bail_penalty,
+        prsd.repaymented_bail,
+        prsd.repaymented_bail_penalty
+        from plms_repayment_schedule_detail prsd, plms_paid_info ppi
+        where prsd.status != '00'
+          and ppi.status != '00'
+          and prsd.paid_code = ppi.code
+          and ppi.contract_code = #{contractCode,jdbcType=VARCHAR}
+    </insert>
+
+    <insert id="createRepaymentScheduleDetailChangeControl" parameterType="java.lang.String" >
+      insert into plms_repayment_schedule_detail_change_control (
+        id,
+        code,
+        status,
+        create_date,
+        modify_date,
+        contract_code,
+        change_status,
+        change_um_id)
+        values(
+        null,
+        uuid(),
+        '1',
+        SYSDATE(),
+        SYSDATE(),
+        #{contractCode,jdbcType=VARCHAR},
+        #{changeStatus,jdbcType=VARCHAR},
+        #{changeUmId,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="nullifyRepaymentScheduleDetailTmpByContractCode" parameterType="java.lang.String">
+        UPDATE plms_repayment_schedule_detail_tmp  prsd
+           SET prsd.status = '0'
+        WHERE prsd.status != '0'
+         and prsd.paid_code in (
+           select code from plms_paid_info ppi where ppi.contract_code = #{contractCode,jdbcType=VARCHAR} and ppi.status != '00')
+    </update>
+
+    <update id="nullifyRepaymentScheduleDetailChangeControlByContractCode" parameterType="java.lang.String">
+        UPDATE plms_repayment_schedule_detail_change_control  prsdcc
+           SET prsdcc.status = '0'
+        WHERE prsdcc.status != '0'
+         and prsdcc.contract_code = #{contractCode,jdbcType=VARCHAR}
+    </update>
+
+    <select id="queryRepaymentScheduleDetailTmpListByPaidCode" resultType="java.util.HashMap" parameterType="java.lang.String">
+        select
+            prsdt.code as "scheduleDetailTmpCode",
+            prsdt.current_period as "currentPeriod",
+            prsdt.repayment_date as "repaymentDate",
+            prsdt.principal as "principal",
+            prsdt.interest as "interest",
+            prsdt.overdue as "overdue",
+            prsdt.service_fee as "serviceFee",
+            prsdt.service_fee_penalty as "serviceFeePenalty",
+            prsdt.bail as "bail",
+            prsdt.bail_penalty as "bailPenalty",
+            prsdt.amount as "amount",
+            (case when (prsdt.repayment_schedule_detail_status = '02' ) then
+                            (case when (prsdt.overdue &lt;= 0 and prsdt.service_fee_penalty &lt;= 0) then '04'
+                                                    when (prsdt.overdue &gt; 0 or prsdt.service_fee_penalty &gt; 0) then '03'
+                            end)
+                            when (prsdt.repayment_schedule_detail_status = '01' ) then '01'
+             end)
+                                     as "statusCode",/*状态编码*/
+                                     (case when (prsdt.repayment_schedule_detail_status = '02' ) then
+                            (case when (prsdt.overdue &lt;= 0 and prsdt.service_fee_penalty &lt;= 0) then '正常'
+                                                    when (prsdt.overdue &gt; 0 or prsdt.service_fee_penalty &gt; 0) then '逾期中'
+                            end)
+                            when (prsdt.repayment_schedule_detail_status = '01' ) then '已结清'
+             end)
+                    as "statusName"/* 状态 */
+            from plms_repayment_schedule_detail_tmp prsdt
+            where prsdt.status != '0'
+              and prsdt.paid_code = #{paidCode,jdbcType=VARCHAR}
+        order by prsdt.repayment_date
+    </select>
+
+    <select id="countRepaymentScheduleDetailTmpByPaidCodeAndRepaymentDate" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+        select
+            count(*)
+            from plms_repayment_schedule_detail_tmp prsdt
+            where prsdt.status != '0'
+              and prsdt.paid_code = #{paidCode,jdbcType=VARCHAR}
+              and prsdt.repayment_date = #{repaymentDate,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="createOneRepaymentScheduleDetailTmpByPaidCode" parameterType="java.util.HashMap" >
+      insert into plms_repayment_schedule_detail_tmp (
+        id,
+        code,
+        status,
+        create_date,
+        modify_date,
+        repayment_schedule_detail_code,
+        current_period,
+        total_period,
+        repayment_date,
+        amount,
+        principal,
+        interest,
+        service_fee,
+        bail,
+        overdue,
+        service_fee_penalty,
+        bail_penalty,
+        repaymented_principal,
+        repaymented_interest,
+        repaymented_service_fee,
+        repaymented_overdue,
+        repaymented_service_fee_penalty,
+        repayment_schedule_detail_status,
+        paid_code,
+        repayment_schedule_detail_create_date,
+        repayment_schedule_detail_modify_date,
+        schedule_code,
+        principal_account_code,
+        interest_account_code,
+        total_overdue_days)
+        select
+        null,
+        uuid(),
+        '1',
+        SYSDATE(),
+        SYSDATE(),
+        uuid(),
+        prsd.current_period,
+        prsd.total_period,
+        #{repaymentDate,jdbcType=VARCHAR},
+        (IFNULL(#{principal,jdbcType=DECIMAL},0) + IFNULL(#{interest,jdbcType=DECIMAL},0) + IFNULL(#{serviceFee,jdbcType=DECIMAL},0) + IFNULL(#{bail,jdbcType=DECIMAL},0) ),
+        IFNULL(#{principal,jdbcType=DECIMAL},0),
+        IFNULL(#{interest,jdbcType=DECIMAL},0),
+        IFNULL(#{serviceFee,jdbcType=DECIMAL},0),
+        IFNULL(#{bail,jdbcType=DECIMAL},0),
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        '02',
+        prsd.paid_code,
+        SYSDATE(),
+        SYSDATE(),
+        null,
+        prsd.principal_account_code,
+        prsd.interest_account_code,
+        0
+        from plms_repayment_schedule_detail prsd
+        where prsd.status != '00'
+          and prsd.paid_code = #{paidCode,jdbcType=VARCHAR}
+        limit 1
+    </insert>
+
+    <update id="updatePeriodForRepaymentScheduleDetailTmp" parameterType="java.util.HashMap">
+        UPDATE plms_repayment_schedule_detail_tmp  prsd
+           SET prsd.total_period = #{totalPeriod,jdbcType=INTEGER} , prsd.current_period = #{currentPeriod,jdbcType=INTEGER}
+        WHERE prsd.status != '0'
+         and prsd.code = #{code,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateRepaymentScheduleDetailTmp" parameterType="java.util.HashMap">
+        UPDATE plms_repayment_schedule_detail_tmp  prsd
+             <set >
+              <if test="principal != null" >
+                prsd.principal = IFNULL(#{principal,jdbcType=DECIMAL},0),
+              </if>
+              <if test="interest != null" >
+                prsd.interest = IFNULL(#{interest,jdbcType=DECIMAL},0),
+              </if>
+              <if test="serviceFee != null" >
+                prsd.service_fee = IFNULL(#{serviceFee,jdbcType=DECIMAL},0),
+              </if>
+              <if test="bail != null" >
+                prsd.bail = IFNULL(#{bail,jdbcType=DECIMAL},0),
+              </if>
+              <if test="principal != null or interest != null or serviceFee != null" >
+                prsd.amount = (IFNULL(#{principal,jdbcType=DECIMAL},0) + IFNULL(#{interest,jdbcType=DECIMAL},0) + IFNULL(#{serviceFee,jdbcType=DECIMAL},0) )
+              </if>
+            </set>
+        WHERE prsd.status != '0'
+         and prsd.code = #{code,jdbcType=VARCHAR}
+    </update>
+
+    <update id="nullifyRepaymentScheduleDetailTmpByCode" parameterType="java.lang.String">
+        UPDATE plms_repayment_schedule_detail_tmp  prsd
+           SET prsd.status = '0'
+        WHERE prsd.status != '0'
+         and prsd.code = #{scheduleDetailTmpCode,jdbcType=VARCHAR}
+    </update>
+
+    <select id="queryDeletedRepaymentScheduleDetail" resultType="java.util.HashMap" parameterType="java.lang.String">
+        SELECT prsd.code                                     as  "code",
+                prsd.current_period                           as  "currentPeriod",
+                prsd.total_period                             as  "totalPeriod",
+                date_format(prsd.repayment_date, '%Y-%m-%d') as  "repaymentDate",
+                prsd.amount                                   as  "amount",
+                prsd.principal                                as  "principal",
+                prsd.interest                                 as  "interest",
+                prsd.service_fee                              as  "serviceFee",
+                prsd.overdue                                  as  "overdue",
+                prsd.service_fee_penalty                      as  "serviceFeePenalty",
+                prsd.repaymented_principal                    as  "repaymentedPrincipal",
+                prsd.repaymented_interest                     as  "repaymentedInterest",
+                prsd.repaymented_service_fee                  as  "repaymentedServiceFee",
+                prsd.repaymented_overdue                      as  "repaymentedOverdue",
+                prsd.repaymented_service_fee_penalty          as  "repaymentedServiceFeePenalty",
+                prsd.status                                   as  "status",
+                prsd.paid_code                                as  "paidCode",
+                prsd.create_date                              as  "createDate",
+                prsd.modify_date                              as  "modifyDate",
+                prsd.schedule_code                            as  "scheduleCode",
+                prsd.principal_account_code                   as  "principalAccountCode",
+                prsd.interest_account_code                    as  "interestAccountCode",
+                prsd.total_overdue_days                       as  "totalOverdueDays",
+                prsd.service_fee_total_overdue_days           as  "serviceFeeTotalOverdueDays",
+                prsd.bail                   as  "bail",
+                prsd.bail_penalty                    as  "bailPenalty",
+                prsd.repaymented_bail                       as  "repaymentedBail",
+                prsd.repaymented_bail_penalty           as  "repaymentedBailPenalty"
+          from plms_repayment_schedule_detail prsd,
+               plms_paid_info ppi
+        where prsd.status != '00'
+          and ppi.status != '00'
+          and prsd.paid_code = ppi.code
+          and not exists (select repayment_schedule_detail_code
+                 from plms_repayment_schedule_detail_tmp prsdt
+                where prsdt.status != '0'
+                  and prsdt.repayment_schedule_detail_status != '00'
+                  and prsdt.repayment_schedule_detail_code = prsd.code)
+          and ppi.contract_code = #{contractCode,jdbcType=VARCHAR}
+         order by prsd.repayment_date asc
+    </select>
+
+    <select id="queryUpdatedRepaymentScheduleDetail" resultType="java.util.HashMap" parameterType="java.lang.String">
+        SELECT prsdt.repayment_schedule_detail_code          as  "code",
+                prsdt.current_period                           as  "currentPeriod",
+                prsdt.total_period                             as  "totalPeriod",
+                date_format(prsdt.repayment_date, '%Y-%m-%d') as  "repaymentDate",
+                prsdt.amount                                   as  "amount",
+                prsdt.principal                                as  "principal",
+                prsdt.interest                                 as  "interest",
+                prsdt.service_fee                              as  "serviceFee",
+                prsdt.overdue                                  as  "overdue",
+                prsdt.service_fee_penalty                      as  "serviceFeePenalty",
+                prsdt.repaymented_principal                    as  "repaymentedPrincipal",
+                prsdt.repaymented_interest                     as  "repaymentedInterest",
+                prsdt.repaymented_service_fee                  as  "repaymentedServiceFee",
+                prsdt.repaymented_overdue                      as  "repaymentedOverdue",
+                prsdt.repaymented_service_fee_penalty          as  "repaymentedServiceFeePenalty",
+                prsdt.repayment_schedule_detail_status         as  "status",
+                prsdt.paid_code                                as  "paidCode",
+                prsdt.repayment_schedule_detail_create_date    as  "createDate",
+                prsdt.repayment_schedule_detail_modify_date    as  "modifyDate",
+                prsdt.schedule_code                            as  "scheduleCode",
+                prsdt.principal_account_code                   as  "principalAccountCode",
+                prsdt.interest_account_code                    as  "interestAccountCode",
+                prsdt.total_overdue_days                       as  "totalOverdueDays",
+                prsdt.service_fee_total_overdue_days           as  "serviceFeeTotalOverdueDays",
+                prsdt.bail                   as  "bail",
+                prsdt.bail_penalty                    as  "bailPenalty",
+                prsdt.repaymented_bail                       as  "repaymentedBail",
+                prsdt.repaymented_bail_penalty           as  "repaymentedBailPenalty"
+          from plms_repayment_schedule_detail_tmp prsdt,
+               plms_paid_info ppi
+        where prsdt.repayment_schedule_detail_status != '00'
+          and prsdt.status != '0'
+          and ppi.status != '00'
+          and prsdt.paid_code = ppi.code
+          and exists (select code
+                 from plms_repayment_schedule_detail prsd
+                where prsd.status != '00'
+                  and prsd.code = prsdt.repayment_schedule_detail_code
+                  and (prsdt.principal != prsd.principal or prsdt.interest != prsd.interest or prsdt.service_fee != prsd.service_fee))
+          and ppi.contract_code = #{contractCode,jdbcType=VARCHAR}
+         order by prsdt.repayment_date asc
+    </select>
+
+    <select id="queryInsertedRepaymentScheduleDetail" resultType="java.util.HashMap" parameterType="java.lang.String">
+        SELECT prsdt.repayment_schedule_detail_code          as  "code",
+                prsdt.current_period                           as  "currentPeriod",
+                prsdt.total_period                             as  "totalPeriod",
+                date_format(prsdt.repayment_date, '%Y-%m-%d') as  "repaymentDate",
+                prsdt.amount                                   as  "amount",
+                prsdt.principal                                as  "principal",
+                prsdt.interest                                 as  "interest",
+                prsdt.service_fee                              as  "serviceFee",
+                prsdt.overdue                                  as  "overdue",
+                prsdt.service_fee_penalty                      as  "serviceFeePenalty",
+                prsdt.repaymented_principal                    as  "repaymentedPrincipal",
+                prsdt.repaymented_interest                     as  "repaymentedInterest",
+                prsdt.repaymented_service_fee                  as  "repaymentedServiceFee",
+                prsdt.repaymented_overdue                      as  "repaymentedOverdue",
+                prsdt.repaymented_service_fee_penalty          as  "repaymentedServiceFeePenalty",
+                prsdt.repayment_schedule_detail_status         as  "status",
+                prsdt.paid_code                                as  "paidCode",
+                prsdt.repayment_schedule_detail_create_date    as  "createDate",
+                prsdt.repayment_schedule_detail_modify_date    as  "modifyDate",
+                prsdt.schedule_code                            as  "scheduleCode",
+                prsdt.principal_account_code                   as  "principalAccountCode",
+                prsdt.interest_account_code                    as  "interestAccountCode",
+                prsdt.total_overdue_days                       as  "totalOverdueDays",
+                prsdt.service_fee_total_overdue_days           as  "serviceFeeTotalOverdueDays",
+                prsdt.bail                   as  "bail",
+                prsdt.bail_penalty                    as  "bailPenalty",
+                prsdt.repaymented_bail                       as  "repaymentedBail",
+                prsdt.repaymented_bail_penalty           as  "repaymentedBailPenalty"
+          from plms_repayment_schedule_detail_tmp prsdt,
+               plms_paid_info ppi
+        where prsdt.repayment_schedule_detail_status != '00'
+          and prsdt.status != '0'
+          and ppi.status != '00'
+          and prsdt.paid_code = ppi.code
+          and not exists (select code
+                 from plms_repayment_schedule_detail prsd
+                where prsd.status != '00'
+                  and prsd.code = prsdt.repayment_schedule_detail_code)
+          and ppi.contract_code = #{contractCode,jdbcType=VARCHAR}
+         order by prsdt.repayment_date asc
+    </select>
+
+    <select id="queryRepaymentScheduleByPaidCodeAndRepaymentDate" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        SELECT prs.code                                     as "code",
+				prs.current_period                           as "currentPeriod",
+				prs.total_period                             as "totalPeriod",
+				prs.repayment_date                           as "repaymentDate",
+				prs.amount                                   as "amount",
+				prs.principal                                as "principal",
+				prs.interest                                 as "interest",
+				prs.service_fee                              as "serviceFee",
+				prs.overdue                                  as "overdue",
+				prs.service_fee_penalty                      as "serviceFeePenalty",
+				prs.status                                   as "status",
+				prs.detail_code                              as "detailCode",
+				prs.user_code                                as "userCode" ,
+				prs.create_date                              as "createDate",
+				prs.modify_date                              as "modifyDate",
+				prs.repaymented_principal                    as "repaymentedPrincipal",
+				prs.repaymented_interest                     as "repaymentedInterest",
+				prs.repaymented_service_fee                  as "repaymentedServiceFee",
+				prs.repaymented_overdue                      as "repaymentedOverdue",
+				prs.repaymented_service_fee_penalty          as "repaymentedServiceFeePenalty",
+                prs.bail                   as  "bail",
+                prs.bail_penalty                    as  "bailPenalty",
+                prs.repaymented_bail                       as  "repaymentedBail",
+                prs.repaymented_bail_penalty           as  "repaymentedBailPenalty"
+          from plms_repayment_schedule prs,
+               plms_paid_info ppi
+         where prs.status != '00'
+           and ppi.status != '00'
+           and ppi.code = #{paidCode,jdbcType=VARCHAR}
+           and prs.repayment_date = str_to_date(#{repaymentDate,jdbcType=VARCHAR},'%Y-%m-%d')
+    </select>
+
+</mapper>

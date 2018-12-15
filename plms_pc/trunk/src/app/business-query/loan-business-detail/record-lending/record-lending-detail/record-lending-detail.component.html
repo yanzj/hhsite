@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="filed-name col-2">放款时间：</div>
+  <div class="filed-text col-2">{{receiptsRecordList.paidTime |dealDate}}</div>
+  <div class="filed-name col-2">放款金额：</div>
+  <div class="filed-text col-2">{{receiptsRecordList.paidAmount|dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">户名：</div>
+  <div class="filed-text col-2">{{receiptsRecordList.name}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">账号：</div>
+  <div class="filed-text col-2">{{receiptsRecordList.accountNo}}</div>
+  <div class="filed-name col-2">开户行：</div>
+  <div class="filed-text col-6">{{receiptsRecordList.bank}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">备注：</div>
+  <div class="filed-text col-10">{{receiptsRecordList.remark}}</div>
+</div>
+
+<div class="row margin-top-40">
+  <div class="col-12" *ngIf="receiptsRecordList.fileList">
+    <div class="img-list col-2" *ngFor="let item of receiptsRecordList.fileList let i=index">
+      <a class="img-box" (click)="downloadFile(item)"><img src={{selectFileList[i]}}/></a>
+      <p class="upload-file-name ">{{item.fileName}}</p>
+      <div class="upload-file-time">{{item.uploadTime}}</div>
+    </div>
+
+  </div>
+</div>
+<div class="orange-button col-2 padding-right-0" (click)="setDetailPageShow()" *ngIf="recordDetailPageShow">返回</div>

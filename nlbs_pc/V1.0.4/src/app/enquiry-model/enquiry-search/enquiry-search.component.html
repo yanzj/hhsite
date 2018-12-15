@@ -1,0 +1,86 @@
+
+<div class="row">
+  <ol class="breadcrumbNav col-12">
+    <li class="active">询价查询</li>
+  </ol>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <hr class="breadcrumbNavLine">
+  </div>
+</div>
+
+<div class="condition-search">
+    <form id="conditionsearch">
+      <div class="citys" id="cityWraper">
+        <div class="queryName" >城市：</div>
+        <select class="width-100 float-left" id="cityList" name="cityCode" [(ngModel)]="cityValue">
+          <option></option>
+        </select>
+      </div>
+      <div class="queryName">地址：</div>
+      <input class="msg-input width-100 float-left " type="text" id="address"/>
+      <div class="queryName">评估日期：</div>
+
+      <!-- iDate full -->
+      <input class="msg-input width-100 datestart"  type="text" id="applyTimeBegin" name="applyTimeBegin" readonly/>
+         <div class="queryName" style="margin-left:0">至</div>
+         <input class="msg-input width-100 queryContent" type="text" id="applyTimeEnd" name="applyTimeEnd" readonly/>
+
+      <div class="queryName">状态：</div>
+      <select class="width-100 float-left" id="applyStatusList" name="applyStatus">
+        <option></option>
+      </select>
+
+     <button class="search-btn margin-left-20" id="search_btns" (click)="onSearchBtnClick()">搜索</button>
+
+
+    </form>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <table class="table width-100per" border="0" cellpadding="0" cellspacing="0">
+      <thead>
+      <tr>
+        <th class="width-16"></th>
+        <th class="width-80">城市</th>
+        <th class="width-250">地址</th>
+        <th class="width-100">评估价（万元）</th>
+        <th class="width-140">评估时间</th>
+        <th class="width-100">提交人</th>
+        <th class="width-100">待处理人</th>
+        <th class="width-100">状态</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of currentItemLists">
+        <td class="width-16"></td>
+        <td class="width-80">{{item.cityName}}</td>
+        <td class="width-250">{{item.address}}</td>
+        <td class="width-100">{{item.price == '' ? item.price : item.price|changeUnit|number:'1.2-2'}}</td>
+        <td class="width-140">{{item.priceTime}}</td>
+        <td class="width-100">{{item.userName}}</td>
+        <td class="width-100">{{item.pendingUserName}}</td>
+        <td class="width-100">{{item.status}}</td>
+        <td class="operation"><a class="text-link" href="javascript:;" (click)="onFirstOperationClick(item)">查看</a><span *ngIf =" item.displayInquiry == 'Y' ? true : false " ><i>|</i><a class="text-link" href="javascript:;" (click)="onSecondOperationClick(item)">评估</a></span>
+          </td>
+      </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+
+  <div class="row table_footer width-100per">
+      <div class="table_ll">
+        共{{totalListsCount}}条，显示第{{startListIndex}}至{{endListIndex}}条
+      </div>
+      <div class="table_rr">
+        <div class="tablePageCode"></div>
+      </div>
+  </div>
+
+

@@ -1,0 +1,334 @@
+
+
+.tab-menu {
+
+  padding-left: 1px;
+  padding-right: 0;
+}
+
+.tab-menu .tab-menu-ul a, .tab-menu .tab-menu-ul li {
+  background: #f5f5f5;
+  font-weight: bold;
+  width: 80px;
+  float: left;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  cursor: pointer;
+  color: #333;
+  text-decoration: none;
+  margin-left: -1px;
+}
+
+.tab-menu .tab-menu-ul a {
+  border: 1px solid #ccc
+}
+
+.tab-menu .tab-menu-ul li.current a {
+  background: #fff;
+  border-bottom: none;
+  border-top: 2px solid #FFA00A;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+.upload:hover, .upload-into-pieces:hover {
+  border-color: #FFA00A;
+  background: #FFE7DE;
+  color: #333333;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.upload p, .upload-into-pieces p {
+  color: #ccc;
+  margin-top: -10px;
+  cursor: pointer;
+}
+
+
+.upload-input {
+  position: absolute;
+
+  right: 0;
+  top: 0;
+  opacity: 0;
+  filter: alpha(opacity=1);
+  cursor: pointer;
+  width: 120px;
+}
+
+
+/*进件材料的上传样式*/
+.upload-into-pieces {
+  display: inline-block;
+  position: relative;
+  color: #999;
+  text-align: center;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.table {
+  table-layout: fixed;
+  margin: 20px 0 40px;
+  border-bottom: 1px solid #ccc;
+}
+
+.table tr {
+  height: 40px;
+}
+
+.table tr th{
+  height: 38px;
+  line-height:38px;;
+  padding: 0 8px;
+  text-align: left;
+  vertical-align: middle;
+  font-weight: bold;
+  background-color:#F5F5F5 ;
+  border-top:1px solid #ccc;
+  border-bottom:1px solid #ccc;
+}
+.table tbody tr td{
+  height:40px;
+  line-height:40px;
+  vertical-align: middle;
+  text-align: left;
+  padding: 0 8px;
+
+}
+.table tbody tr td a{
+  color:#666699
+}
+
+/*录单tab里的详情->弹窗*/
+.popup {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: #fff;
+  width: 740px;
+  box-shadow: 5px 5px 5px #ccc;
+  min-height: 451px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 15px 20px 30px;
+  position: fixed;
+  margin: 0 auto;
+  z-index: 200;
+  text-align: center;
+  margin-left: -360px;
+  left: 50%;
+  top: 50%;
+  margin-top: -225px;
+}
+
+.header {
+  border-bottom: 2px solid #ffa00a;
+  width: 100%;
+  height: 40px;
+  color: #ffa00a;
+  margin-bottom: 20px;
+
+}
+
+.header-title {
+  float: left;
+  font-size: 12px;
+  font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 0;
+  height: 40px;
+  line-height: 40px;
+}
+
+.close-btn {
+  float: right;
+  font-size: 12px;
+  font-weight: bold;
+  color: #ffa00a;
+  padding-top: 13px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+
+
+.popup-main {
+  height: 280px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+.popup-info{width:50%;text-align: left}
+
+.message-title-customname{
+  height: 40px;
+  line-height: 40px;
+  font-weight: bold;
+  text-align: left;
+}
+
+/*录单tab里的详情->弹窗 结束*/
+
+/*进件材料的长传图片ui*/
+.upload-picture-styles{
+  margin-top:40px;
+}
+.img-list {
+  position: relative;
+  width: 160px;
+  float: left;
+  margin-right: 20px;
+  height:260px;
+}
+
+.img-box {
+  width: 160px;
+  height: 160px;
+  display: block;
+}
+
+.img-box img {
+  width: 160px;
+  height: 160px;
+}
+
+.upload-file-name {
+  line-height: 20px;
+  margin: 15px 0 5px 0;
+  height: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.upload-file-time {
+  line-height: 20px;
+  margin-bottom: 40px;
+  height: 20px;
+}
+
+
+
+/*当文件上传失败  重新上传的样式*/
+.fail-style{width:160px;height:160px;  border: 1px dashed #ccc;padding-left: 15px;
+  padding-top: 30px;}
+.upload-picture-fail-txt{
+  color:#999;
+}
+
+.upload2 {
+  width: 80px;
+  margin-left:14px;
+}
+.upload2:hover{
+  cursor: pointer;
+}
+/*文件上传好的缩略图  和删除的小标签*/
+.success-uploadered-picture .picture-deletion{display: none}
+.success-uploadered-picture:hover .picture-deletion{display: block}
+.upload-file-box{
+  width: 160px;
+  float: left;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  position: relative;
+}
+.photo {
+  width: 160px;
+  height: 180px;
+  margin-right: 20px;
+  margin-bottom:20px;
+}
+
+.small-photo,.small-photo img{
+  width: 160px;
+  height: 160px;
+  display: block;
+}
+.upload-picture-styles-fail-style{
+  position: absolute;
+  top: 0px;
+  left:0px;
+  border: 1px dashed #ccc;
+
+}
+.upload-picture-styles-fail-style p{
+  line-height:28px;
+}
+.upload-picture-styles-fail-style a{
+  color: #669;
+}
+.garyButton-gai{line-height: 25px;}
+
+.upload-picture-faildel{margin-left:30px}
+.upload-picture-name{text-overflow:ellipsis;overflow:hidden;white-space:nowrap;width: 160px;}
+
+/*补充材料  按钮样式*/
+.material-btn{
+  margin-top: 10px;
+  margin-left:30px;
+  float: left;
+  width: 60px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  outline: none;
+}
+
+/*申请信息tab的“材料上载”块的样式*/
+.file-list-download{width:160px;height:160px;border:1px solid #ccc;display: inline-block;line-height: 160px;text-align: center;}
+.file-list-download-pic{width:70px;height:50px;background: url("./../../../assets/img/upload/main.png") -71px -86px no-repeat;margin:0 auto;    vertical-align: middle;
+  display: inline-block;}
+.uploader-detail-information button{float:left;}
+.picture-deletion{  width:100%;position: absolute;left:0;top:0;  background:rgba(0,0,0,0.5);height:30px;}
+.picture-deletion .delete-icon{width:14px;height:14px;position: absolute;right:14px;top:8px;background-image: url("./../../../assets/img/index_hh_icons.png");background-position: -91px -72px;background-repeat:no-repeat;display:inline-block}
+
+
+
+.materialselected {
+  background: #f5f5f5;
+}
+
+.materialselected .material-label {
+  font-weight: bold;
+}
+
+.material-input {
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+
+.material-panel{
+  height: 40px;
+  padding: 0px 8px;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+}
+.material-panel:hover{
+  background: #FFE7DE;
+}
+.material-panel em, .material-panel em i {
+  margin: auto 0 auto 0;
+  color: #FF500B;
+}
+.material-panel input {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.material-panel label {
+  margin-top: auto;
+  margin-bottom: auto;
+  word-break: break-all;
+}
+.material-panel_active{
+  font-weight: bold;
+  background-color: #f5f5f5;
+}
+.material-panel span{
+  margin: auto 0 auto 0;
+  color: #FF500B;
+}

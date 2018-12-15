@@ -1,0 +1,77 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "project": {
+    "name": "honghuo"
+  },
+  "apps": [
+    {
+      "root": "src",
+      "outDir": "dist",
+      "assets": [
+        "assets",
+        "favicon.ico"
+      ],
+      "index": "index.html",
+      "main": "main.ts",
+      "polyfills": "polyfills.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.app.json",
+      "testTsconfig": "tsconfig.spec.json",
+      "prefix": "app",
+      "styles": [
+        "assets/css/reset.css",
+        "styles.css",
+        "./assets/js/table/jquery.table.css",
+        "./assets/js/laydate/need/laydate.css",
+        "./assets/js/laydate/skins/default/laydate.css",
+        "./assets/js/tips/tips.css",
+        "./assets/js/modal/modal.css",
+        "./assets/js/select2/css/jquery.editable-select.min.css",
+        "./assets/js/select2/css/select2.css"
+
+      ],
+      "scripts": [
+        "../node_modules/jquery/dist/jquery.js",
+        "./assets/js/select2/js/jquery.editable-select.min.js",
+        "./assets/js/select2/js/select2.full.js",
+        "./assets/js/tips/jquery.ba-resize.js",
+        "./assets/js/tips/tips.js",
+        "./assets/js/table/jquery.table.js",
+        "./assets/js/md5.js",
+        "./assets/js/modal/modal.js"
+      ],
+
+
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+    }
+  ],
+  "e2e": {
+    "protractor": {
+      "config": "./protractor.conf.js"
+    }
+  },
+  "lint": [
+    {
+      "project": "src/tsconfig.app.json"
+    },
+    {
+      "project": "src/tsconfig.spec.json"
+    },
+    {
+      "project": "e2e/tsconfig.e2e.json"
+    }
+  ],
+  "test": {
+    "karma": {
+      "config": "./karma.conf.js"
+    }
+  },
+  "defaults": {
+    "styleExt": "css",
+    "component": {}
+  }
+}

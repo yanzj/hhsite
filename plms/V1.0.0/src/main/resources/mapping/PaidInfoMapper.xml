@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.PaidInfoDao">
+
+    <insert id="savePaidInfo" parameterType="com.vilio.plms.pojo.PaidInfo">
+        <![CDATA[
+          INSERT INTO plms_paid_info (
+            code,
+            paid_amount,
+            paid_time,
+            iou_code,
+            borrow_code,
+            interest,
+            overdue,
+            service_fee,
+            service_fee_penalty,
+            repaymented_principal,repaymented_interest,repaymented_service_fee,repaymented_service_fee_penalty,
+            status,
+            create_date,modify_date,
+            repaymented_overdue,
+            business_code,
+            user_code,
+            contract_code,
+            remark,
+            account_code,
+            repaymented_bail,
+            repaymented_bail_penalty,
+            repaymented_ahead_interest_penalty,
+            repaymented_ahead_service_fee_penalty,
+            bail,
+            bail_penalty
+        )
+        VALUES
+            (
+                #{code,jdbcType=VARCHAR},
+                #{paidAmount,jdbcType=DECIMAL},
+                str_to_date(#{paidTime},'%Y-%m-%d %H:%i:%s'),
+                #{iouCode,jdbcType=VARCHAR},
+                #{borrowCode,jdbcType=VARCHAR},
+                #{interest,jdbcType=DECIMAL},
+                #{overdue,jdbcType=DECIMAL},
+                #{serviceFee,jdbcType=DECIMAL},
+                #{serviceFeePenalty,jdbcType=DECIMAL},
+                #{repaymentedPrincipal,jdbcType=DECIMAL},#{repaymentedInterest,jdbcType=DECIMAL},#{repaymentedServiceFee,jdbcType=DECIMAL},#{repaymentedServiceFeePenalty,jdbcType=DECIMAL},
+                #{status,jdbcType=VARCHAR},
+                str_to_date(#{createDate},'%Y-%m-%d %H:%i:%s'),str_to_date(#{modifyDate},'%Y-%m-%d %H:%i:%s'),
+                #{repaymentedOverdue,jdbcType=DECIMAL},
+                #{businessCode,jdbcType=VARCHAR},
+                #{userCode,jdbcType=VARCHAR},
+                #{contractCode,jdbcType=VARCHAR},
+                #{remark,jdbcType=VARCHAR},
+                #{accountCode,jdbcType=VARCHAR},
+                #{repaymentedBail},
+                #{repaymentedBailPenalty},
+                #{repaymentedAheadInterestPenalty},
+                #{repaymentedAheadServiceFeePenalty},
+                #{bail},
+                #{bailPenalty}
+            )
+        ]]>
+    </insert>
+
+    <!--查询放款信息-->
+    <select id="queryPaidInfoByCode" resultType="com.vilio.plms.pojo.PaidInfo" parameterType="com.vilio.plms.pojo.PaidInfo">
+        SELECT
+            id,
+            `code`,
+            paid_amount as paidAmount,
+            paid_time as paidTime,
+            iou_code as iouCode,
+            borrow_code as borrowCode,
+            interest,
+            overdue,
+            service_fee as serviceFee,
+            service_fee_penalty as serviceFeePenalty,
+            repaymented_principal as repaymentedPrincipal,
+            repaymented_interest as repaymentedInterest,
+            repaymented_service_fee as repaymentedServiceFee,
+            repaymented_service_fee_penalty as repaymentedServiceFeePenalty,
+            bail                   as  bail,
+            bail_penalty                    as  bailPenalty,
+            repaymented_bail                       as  repaymentedBail,
+            repaymented_bail_penalty           as  repaymentedBailPenalty,
+            `status`,
+            create_date as createDate,
+            modify_date as modifyDate,
+            repaymented_overdue as repaymentedOverdue,
+            business_code as businessCode,
+            user_code as userCode,
+            contract_code as contractCode,
+            remark,
+            account_code as accountCode
+        FROM
+            plms_paid_info
+        WHERE code=#{code} and status != '00'
+
+    </select>
+
+    <!--根据合同编码查询放款信息-->
+    <select id="queryPaidInfoByContractCode" resultType="com.vilio.plms.pojo.PaidInfo" parameterType="java.lang.String">
+        SELECT
+            id,
+            `code`,
+            paid_amount as paidAmount,
+            paid_time as paidTime,
+            iou_code as iouCode,
+            borrow_code as borrowCode,
+            interest,
+            ifnull(overdue,0) as overdue,
+            ifnull(service_fee,0) as serviceFee,
+            ifnull(service_fee_penalty,0) as serviceFeePenalty,
+            ifnull(repaymented_principal,0) as repaymentedPrincipal,
+            ifnull(repaymented_interest,0) as repaymentedInterest,
+            ifnull(repaymented_service_fee,0) as repaymentedServiceFee,
+            ifnull(repaymented_service_fee_penalty,0) as repaymentedServiceFeePenalty,
+            `status`,
+            create_date as createDate,
+            modify_date as modifyDate,
+            ifnull(repaymented_overdue,0) as repaymentedOverdue,
+            business_code as businessCode,
+            user_code as userCode,
+            contract_code as contractCode,
+            remark,
+            account_code as accountCode,
+            ifnull(repaymented_bail,0) as repaymentedBail,
+            ifnull(repaymented_bail_penalty,0) as repaymentedBailPenalty,
+            ifnull(repaymented_ahead_interest_penalty,0) as repaymentedAheadInterestPenalty,
+            ifnull(repaymented_ahead_service_fee_penalty,0) as repaymentedAheadServiceFeePenalty,
+            ifnull(bail,0) as bail,
+            ifnull(bail_penalty,0) as bailPenalty,
+            concat(date_format(paid_time,'%Y-%m-%d'),' 放款',format(paid_amount,2),'元') as paidDesc
+        FROM
+            plms_paid_info
+        WHERE contract_code=#{contractCode} and status != '00'
+
+    </select>
+
+    <!--更新应还罚金和应还服务费违约金-->
+    <update id="updatePaidInfoOverdueAndServiceFeePenalty" parameterType="com.vilio.plms.pojo.PaidInfo">
+        UPDATE plms_paid_info SET overdue=#{overdue},service_fee_penalty=#{serviceFeePenalty},bail_penalty=#{bailPenalty}
+        WHERE code=#{code}
+    </update>
+
+
+    <!--更新已还本金、已还利息、已还服务费、已还罚息、已还服务费违约金、状态-->
+    <update id="updatePaidInfoToRepaymentedByCode" parameterType="com.vilio.plms.pojo.PaidInfo">
+        UPDATE plms_paid_info set repaymented_principal=#{repaymentedPrincipal},
+        repaymented_interest=#{repaymentedInterest},
+        repaymented_service_fee=#{repaymentedServiceFee},
+        repaymented_service_fee_penalty=#{repaymentedServiceFeePenalty},
+        repaymented_overdue=#{repaymentedOverdue},
+        status = #{status},
+        repaymented_bail = #{repaymentedBail},
+        repaymented_bail_penalty = #{repaymentedBailPenalty}
+        WHERE code = #{code}
+    </update>
+
+</mapper>

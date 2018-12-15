@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.pcfs.dao.LoginInfoDao">
+
+    <!--查询登录信息表-->
+    <select id="selectLoginInfo" resultType="com.vilio.pcfs.pojo.LoginInfo"
+            parameterType="com.vilio.pcfs.pojo.LoginInfo">
+        SELECT
+            id,
+            user_id as userId,
+            user_name as userName,
+            mobile,
+            email,
+            first_login as firstLogin,
+            full_name as fullName,
+            sex,
+            birthday,
+            birth_addr as birthAddr,
+            nick,
+            head_img as headImg,
+            system_timestamp as systemTimestamp,
+            token,
+            create_time as createTime,
+            overdue_set AS overdueSet,
+            payment_set AS paymentSet,
+            display_detail_set AS displayDetailSet,
+            login_status AS loginStatus,
+            device_token AS deviceToken,
+            channel AS channel
+        FROM
+          pcfs_login_info
+        WHERE
+          user_id = #{userId}
+        <if test="loginStatus!=null and loginStatus!=''">
+            and login_status = #{loginStatus}
+        </if>
+    </select>
+
+    <!--更新登录信息表-->
+    <update id="updateLoginInfo" parameterType="com.vilio.pcfs.pojo.LoginInfo">
+        update pcfs_login_info a
+        set a.login_status = #{loginStatus}
+        <if test="userName!=null and userName!=''">
+            ,a.user_name = #{userName}
+        </if>
+        <if test="mobile!=null and mobile!=''">
+            ,a.mobile = #{mobile}
+        </if>
+        <if test="email!=null and email!=''">
+            ,a.email = #{email}
+        </if>
+        <if test="firstLogin!=null and firstLogin!=''">
+            ,a.first_login = #{firstLogin}
+        </if>
+        <if test="fullName!=null and fullName!=''">
+            ,a.full_name = #{fullName}
+        </if>
+        <if test="sex!=null and sex!=''">
+            ,a.sex = #{sex}
+        </if>
+        <if test="birthday!=null and birthday!=''">
+            ,a.birthday = #{birthday}
+        </if>
+        <if test="birthAddr!=null and birthAddr!=''">
+            ,a.birth_addr = #{birthAddr}
+        </if>
+        <if test="nick!=null and nick!=''">
+            ,a.nick = #{nick}
+        </if>
+        <if test="headImg!=null and headImg!=''">
+            ,a.head_img = #{headImg}
+        </if>
+        <if test="token!=null and token!=''">
+            ,a.token = #{token}
+        </if>
+        <if test="systemTimestamp!=null and systemTimestamp!=''">
+            ,a.system_timestamp = #{systemTimestamp}
+        </if>
+        <if test="transPwdFlag!=null and transPwdFlag!=''">
+            ,a.trans_pwd_flag = #{transPwdFlag}
+        </if>
+        <if test="deviceToken!=null and deviceToken!=''">
+            ,a.device_token = #{deviceToken}
+        </if>
+        <if test="channel!=null and channel!=''">
+            ,a.channel = #{channel}
+        </if>
+        where a.user_id = #{userId}
+    </update>
+
+    <insert id="insert" parameterType="com.vilio.pcfs.pojo.LoginInfo">
+        insert into pcfs_login_info (user_id, user_name,mobile,email,first_login,full_name,sex,birthday,birth_addr,nick,head_img,token,
+        system_timestamp,trans_pwd_flag,login_status,device_token,channel)
+        values (#{userId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR},#{mobile,jdbcType=VARCHAR},
+        #{email,jdbcType=VARCHAR},#{firstLogin,jdbcType=VARCHAR},#{fullName,jdbcType=VARCHAR},
+        #{sex,jdbcType=VARCHAR},#{birthday,jdbcType=VARCHAR},#{birthAddr,jdbcType=VARCHAR},#{nick,jdbcType=VARCHAR},
+        #{headImg,jdbcType=VARCHAR},#{token,jdbcType=VARCHAR},
+        #{systemTimestamp,jdbcType=VARCHAR},#{transPwdFlag,jdbcType=VARCHAR},#{loginStatus,jdbcType=VARCHAR},#{deviceToken,jdbcType=VARCHAR},#{channel,jdbcType=VARCHAR})
+    </insert>
+
+    <delete id="deleteInvalidInfo" parameterType="java.util.HashMap">
+        delete from pcfs_login_info WHERE #{systemTimestamp}-system_timestamp>#{clearLoginTimestamp}
+    </delete>
+
+    <delete id="deleteInvalidInfoById" parameterType="java.util.HashMap">
+        delete from pcfs_login_info WHERE user_id = #{userId}
+    </delete>
+
+    <update id="updateUserMessageSet"  parameterType="java.util.Map" >
+
+        UPDATE  pcfs_login_info
+
+        SET overdue_set = #{overdueSet},
+            payment_set = #{paymentSet},
+            display_detail_set = #{displayDetailSet}
+        WHERE  user_id = #{userId}
+
+    </update>
+
+
+    <update id="updateLoginStatusInvalidById"  parameterType="java.util.Map" >
+        UPDATE  pcfs_login_info
+        SET login_status='0'
+        WHERE  user_id = #{userId}
+    </update>
+
+    <update id="updateUserLoginStatusByDeviceTokenAndUserId" parameterType="java.util.Map">
+        UPDATE  pcfs_login_info set login_status='0' WHERE device_token=#{deviceToken} and user_id!=#{userId}
+    </update>
+
+
+</mapper>

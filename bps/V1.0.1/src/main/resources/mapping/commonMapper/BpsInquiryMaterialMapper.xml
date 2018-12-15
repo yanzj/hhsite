@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!--
+******************************************************************************
+* 数据库表：BPS_INQUIRY_MATERIAL
+* 表的名称：询价上载材料表
+* 对应实体：com.vilio.bps.commonMapper.pojo.BpsInquiryMaterial
+* 开发日期：2017-06-12
+* 技术服务：www.fwjava.com
+******************************************************************************
+-->
+<mapper namespace="com.vilio.bps.commonMapper.dao.IBpsInquiryMaterialMapper">
+
+    <!--
+    **************************************************************************
+    * 1.新增一条数据
+    * 注: 根据Bean实体执行新增操作.
+    **************************************************************************
+    -->
+    <insert id="getInsert"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsInquiryMaterial"
+            useGeneratedKeys="true"
+            keyProperty="id">
+    
+            INSERT   /* getInsert+@com.vilio.bps.commonMapper.sql.BpsInquiryMaterialMapper.xml */ 
+              INTO   BPS_INQUIRY_MATERIAL         /* 询价上载材料表 */ 
+                    (
+                     CODE                         /*  */ 
+                    ,SERIAL_NO                    /* bps_user_inquiry表中serial_no */ 
+                    ,MATERIAL_TYPE_CODE           /* 材料类型 */ 
+                    ,FILE_NO                      /* 上载材料文件号(文件关联系统返回唯一编号) */ 
+                    ,FILE_NAME                    /* 上载文件名 */ 
+                    ,DATE_CREATED                 /*  */ 
+                    )
+            VALUES  (
+                     #{code}                      /*  */ 
+                    ,#{serialNo}                  /* bps_user_inquiry表中serial_no */ 
+                    ,#{materialTypeCode}          /* 材料类型 */ 
+                    ,#{fileNo}                    /* 上载材料文件号(文件关联系统返回唯一编号) */ 
+                    ,#{fileName}                  /* 上载文件名 */ 
+                    ,#{dateCreated}               /*  */ 
+                    )
+         
+    </insert>
+    
+    <insert id="getInsertPrmMap"
+            parameterType="java.util.HashMap"
+            useGeneratedKeys="true"
+            keyProperty="id">
+    
+            INSERT   /* getInsertPrmMap+@com.vilio.bps.commonMapper.sql.BpsInquiryMaterialMapper.xml */ 
+              INTO   BPS_INQUIRY_MATERIAL         /* 询价上载材料表 */ 
+                    (
+                     CODE                         /*  */ 
+                    ,SERIAL_NO                    /* bps_user_inquiry表中serial_no */ 
+                    ,MATERIAL_TYPE_CODE           /* 材料类型 */ 
+                    ,FILE_NO                      /* 上载材料文件号(文件关联系统返回唯一编号) */ 
+                    ,FILE_NAME                    /* 上载文件名 */ 
+                    ,DATE_CREATED                 /*  */ 
+                    )
+            VALUES  (
+                     #{code}                      /*  */ 
+                    ,#{serialNo}                  /* bps_user_inquiry表中serial_no */ 
+                    ,#{materialTypeCode}          /* 材料类型 */ 
+                    ,#{fileNo}                    /* 上载材料文件号(文件关联系统返回唯一编号) */ 
+                    ,#{fileName}                  /* 上载文件名 */ 
+                    ,#{dateCreated}               /*  */ 
+                    )
+         
+    </insert>
+
+
+    <!--
+    **************************************************************************
+    * 2.删除一条数据
+    * 注: 根据Bean实体的主键ID执行删除操作.
+    **************************************************************************
+    -->
+    <delete id="getDelete"
+            parameterType="java.lang.Integer">
+    
+            DELETE   /* getDelete+@com.vilio.bps.commonMapper.sql.BpsInquiryMaterialMapper.xml */ 
+              FROM   BPS_INQUIRY_MATERIAL    /* 询价上载材料表 */ 
+             WHERE   ID = #{_parameter}      /*  */ 
+         
+    </delete>
+
+
+    <!--
+    **************************************************************************
+    * 3.变更一条数据
+    * 注: 根据Bean实体的主键ID执行变更操作.
+    **************************************************************************
+    -->
+    <update id="getUpdate"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsInquiryMaterial">
+    
+            UPDATE   /* getUpdate+@com.vilio.bps.commonMapper.sql.BpsInquiryMaterialMapper.xml */ 
+                     BPS_INQUIRY_MATERIAL                             /* 询价上载材料表 */ 
+               SET   CODE                    = #{code}                /*  */ 
+                    ,SERIAL_NO               = #{serialNo}            /* bps_user_inquiry表中serial_no */ 
+                    ,MATERIAL_TYPE_CODE      = #{materialTypeCode}    /* 材料类型 */ 
+                    ,FILE_NO                 = #{fileNo}              /* 上载材料文件号(文件关联系统返回唯一编号) */ 
+                    ,FILE_NAME               = #{fileName}            /* 上载文件名 */ 
+                    ,DATE_CREATED            = #{dateCreated}         /*  */ 
+             WHERE   ID                      = #{id}                  /*  */ 
+         
+    </update>
+    
+    <update id="getUpdatePrmMap"
+            parameterType="java.util.HashMap">
+    
+            UPDATE   /* getUpdatePrmMap+@com.vilio.bps.commonMapper.sql.BpsInquiryMaterialMapper.xml */ 
+                     BPS_INQUIRY_MATERIAL                             /* 询价上载材料表 */ 
+               SET   CODE                    = #{code}                /*  */ 
+                    ,SERIAL_NO               = #{serialNo}            /* bps_user_inquiry表中serial_no */ 
+                    ,MATERIAL_TYPE_CODE      = #{materialTypeCode}    /* 材料类型 */ 
+                    ,FILE_NO                 = #{fileNo}              /* 上载材料文件号(文件关联系统返回唯一编号) */ 
+                    ,FILE_NAME               = #{fileName}            /* 上载文件名 */ 
+                    ,DATE_CREATED            = #{dateCreated}         /*  */ 
+             WHERE   ID                      = #{id}                  /*  */ 
+         
+    </update>
+
+
+    <!--
+    **************************************************************************
+    * 4.获取一个Bean实体
+    * 注: 根据Bean实体的主键ID获取一个Bean实体.
+    **************************************************************************
+    -->
+    <select id="getBean"
+            parameterType="java.lang.Integer"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsInquiryMaterial">
+    
+            SELECT   /* getBean+@com.vilio.bps.commonMapper.sql.BpsInquiryMaterialMapper.xml */ 
+                     bim.ID                       AS id                  /*  */ 
+                    ,bim.CODE                     AS code                /*  */ 
+                    ,bim.SERIAL_NO                AS serialNo            /* bps_user_inquiry表中serial_no */ 
+                    ,bim.MATERIAL_TYPE_CODE       AS materialTypeCode    /* 材料类型 */ 
+                    ,bim.FILE_NO                  AS fileNo              /* 上载材料文件号(文件关联系统返回唯一编号) */ 
+                    ,bim.FILE_NAME                AS fileName            /* 上载文件名 */ 
+                    ,bim.DATE_CREATED             AS dateCreated         /*  */ 
+              FROM   BPS_INQUIRY_MATERIAL            bim                 /* 询价上载材料表 */ 
+             WHERE   bim.ID = #{_parameter}                              /*  */ 
+         
+    </select>
+    
+    <select id="getBeanRtnMap"
+            parameterType="java.lang.Integer"
+            resultType="java.util.HashMap">
+    
+            SELECT   /* getBeanRtnMap+@com.vilio.bps.commonMapper.sql.BpsInquiryMaterialMapper.xml */ 
+                     bim.ID                       AS id                  /*  */ 
+                    ,bim.CODE                     AS code                /*  */ 
+                    ,bim.SERIAL_NO                AS serialNo            /* bps_user_inquiry表中serial_no */ 
+                    ,bim.MATERIAL_TYPE_CODE       AS materialTypeCode    /* 材料类型 */ 
+                    ,bim.FILE_NO                  AS fileNo              /* 上载材料文件号(文件关联系统返回唯一编号) */ 
+                    ,bim.FILE_NAME                AS fileName            /* 上载文件名 */ 
+                    ,bim.DATE_CREATED             AS dateCreated         /*  */ 
+              FROM   BPS_INQUIRY_MATERIAL            bim                 /* 询价上载材料表 */ 
+             WHERE   bim.ID = #{_parameter}                              /*  */ 
+         
+    </select>
+
+
+    <!--
+    **************************************************************************
+    * 5.条件查询
+    * 注: 支持多条件查询、模糊查询、日期比较查询等操作.
+    **************************************************************************
+    -->
+    <select id="getList"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsInquiryMaterial"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsInquiryMaterial">
+    
+            SELECT   /* getList+@com.vilio.bps.commonMapper.sql.BpsInquiryMaterialMapper.xml */ 
+                     bim.ID                       AS id                  /*  */ 
+                    ,bim.CODE                     AS code                /*  */ 
+                    ,bim.SERIAL_NO                AS serialNo            /* bps_user_inquiry表中serial_no */ 
+                    ,bim.MATERIAL_TYPE_CODE       AS materialTypeCode    /* 材料类型 */ 
+                    ,bim.FILE_NO                  AS fileNo              /* 上载材料文件号(文件关联系统返回唯一编号) */ 
+                    ,bim.FILE_NAME                AS fileName            /* 上载文件名 */ 
+                    ,bim.DATE_CREATED             AS dateCreated         /*  */ 
+              FROM   BPS_INQUIRY_MATERIAL            bim                 /* 询价上载材料表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   bim.ID = #{id} /*  */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   bim.CODE = #{code} /*  */ 
+             </if>
+        
+             <if test='serialNo != null and serialNo != "" and serialNo != "null" and serialNo != "undefined"'>
+               AND   bim.SERIAL_NO = #{serialNo} /* bps_user_inquiry表中serial_no */ 
+             </if>
+        
+             <if test='materialTypeCode != null and materialTypeCode != "" and materialTypeCode != "null" and materialTypeCode != "undefined"'>
+               AND   bim.MATERIAL_TYPE_CODE = #{materialTypeCode} /* 材料类型 */ 
+             </if>
+        
+             <if test='fileNo != null and fileNo != "" and fileNo != "null" and fileNo != "undefined"'>
+               AND   bim.FILE_NO = #{fileNo} /* 上载材料文件号(文件关联系统返回唯一编号) */ 
+             </if>
+        
+             <if test='fileName != null and fileName != "" and fileName != "null" and fileName != "undefined"'>
+               AND   bim.FILE_NAME = #{fileName} /* 上载文件名 */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(bim.DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /*  */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+    
+    <select id="getListPrmMapRtnBean"
+            parameterType="java.util.HashMap"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsInquiryMaterial">
+    
+            SELECT   /* getListPrmMapRtnBean+@com.vilio.bps.commonMapper.sql.BpsInquiryMaterialMapper.xml */ 
+                     bim.ID                       AS id                  /*  */ 
+                    ,bim.CODE                     AS code                /*  */ 
+                    ,bim.SERIAL_NO                AS serialNo            /* bps_user_inquiry表中serial_no */ 
+                    ,bim.MATERIAL_TYPE_CODE       AS materialTypeCode    /* 材料类型 */ 
+                    ,bim.FILE_NO                  AS fileNo              /* 上载材料文件号(文件关联系统返回唯一编号) */ 
+                    ,bim.FILE_NAME                AS fileName            /* 上载文件名 */ 
+                    ,bim.DATE_CREATED             AS dateCreated         /*  */ 
+              FROM   BPS_INQUIRY_MATERIAL            bim                 /* 询价上载材料表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   bim.ID = #{id} /*  */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   bim.CODE = #{code} /*  */ 
+             </if>
+        
+             <if test='serialNo != null and serialNo != "" and serialNo != "null" and serialNo != "undefined"'>
+               AND   bim.SERIAL_NO = #{serialNo} /* bps_user_inquiry表中serial_no */ 
+             </if>
+        
+             <if test='materialTypeCode != null and materialTypeCode != "" and materialTypeCode != "null" and materialTypeCode != "undefined"'>
+               AND   bim.MATERIAL_TYPE_CODE = #{materialTypeCode} /* 材料类型 */ 
+             </if>
+        
+             <if test='fileNo != null and fileNo != "" and fileNo != "null" and fileNo != "undefined"'>
+               AND   bim.FILE_NO = #{fileNo} /* 上载材料文件号(文件关联系统返回唯一编号) */ 
+             </if>
+        
+             <if test='fileName != null and fileName != "" and fileName != "null" and fileName != "undefined"'>
+               AND   bim.FILE_NAME = #{fileName} /* 上载文件名 */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(bim.DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /*  */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+    
+    <select id="getListPrmMapRtnMap"
+            parameterType="java.util.HashMap"
+            resultType="java.util.HashMap">
+    
+            SELECT   /* getListPrmMapRtnMap+@com.vilio.bps.commonMapper.sql.BpsInquiryMaterialMapper.xml */ 
+                     bim.ID                       AS id                  /*  */ 
+                    ,bim.CODE                     AS code                /*  */ 
+                    ,bim.SERIAL_NO                AS serialNo            /* bps_user_inquiry表中serial_no */ 
+                    ,bim.MATERIAL_TYPE_CODE       AS materialTypeCode    /* 材料类型 */ 
+                    ,bim.FILE_NO                  AS fileNo              /* 上载材料文件号(文件关联系统返回唯一编号) */ 
+                    ,bim.FILE_NAME                AS fileName            /* 上载文件名 */ 
+                    ,bim.DATE_CREATED             AS dateCreated         /*  */ 
+              FROM   BPS_INQUIRY_MATERIAL            bim                 /* 询价上载材料表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   bim.ID = #{id} /*  */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   bim.CODE = #{code} /*  */ 
+             </if>
+        
+             <if test='serialNo != null and serialNo != "" and serialNo != "null" and serialNo != "undefined"'>
+               AND   bim.SERIAL_NO = #{serialNo} /* bps_user_inquiry表中serial_no */ 
+             </if>
+        
+             <if test='materialTypeCode != null and materialTypeCode != "" and materialTypeCode != "null" and materialTypeCode != "undefined"'>
+               AND   bim.MATERIAL_TYPE_CODE = #{materialTypeCode} /* 材料类型 */ 
+             </if>
+        
+             <if test='fileNo != null and fileNo != "" and fileNo != "null" and fileNo != "undefined"'>
+               AND   bim.FILE_NO = #{fileNo} /* 上载材料文件号(文件关联系统返回唯一编号) */ 
+             </if>
+        
+             <if test='fileName != null and fileName != "" and fileName != "null" and fileName != "undefined"'>
+               AND   bim.FILE_NAME = #{fileName} /* 上载文件名 */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(bim.DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /*  */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+
+
+    <!--
+    **************************************************************************
+    * 6.验证多条件数据是否存在
+    * 注: 根据多条件验证该数据是否存在 ,并返回数据量.
+    **************************************************************************
+    -->
+    <select id="getCheckBy"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsInquiryMaterial"
+            resultType="java.lang.Integer">
+    
+            SELECT   /* getCheckBy+@com.vilio.bps.commonMapper.sql.BpsInquiryMaterialMapper.xml */ 
+                     count(1)
+              FROM   BPS_INQUIRY_MATERIAL  /* 询价上载材料表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   ID = #{id} /*  */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   CODE = #{code} /*  */ 
+             </if>
+        
+             <if test='serialNo != null and serialNo != "" and serialNo != "null" and serialNo != "undefined"'>
+               AND   SERIAL_NO = #{serialNo} /* bps_user_inquiry表中serial_no */ 
+             </if>
+        
+             <if test='materialTypeCode != null and materialTypeCode != "" and materialTypeCode != "null" and materialTypeCode != "undefined"'>
+               AND   MATERIAL_TYPE_CODE = #{materialTypeCode} /* 材料类型 */ 
+             </if>
+        
+             <if test='fileNo != null and fileNo != "" and fileNo != "null" and fileNo != "undefined"'>
+               AND   FILE_NO = #{fileNo} /* 上载材料文件号(文件关联系统返回唯一编号) */ 
+             </if>
+        
+             <if test='fileName != null and fileName != "" and fileName != "null" and fileName != "undefined"'>
+               AND   FILE_NAME = #{fileName} /* 上载文件名 */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /*  */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+    </select>
+    
+    <select id="getCheckByPrmMap"
+            parameterType="java.util.HashMap"
+            resultType="java.lang.Integer">
+    
+            SELECT   /* getCheckByPrmMap+@com.vilio.bps.commonMapper.sql.BpsInquiryMaterialMapper.xml */ 
+                     count(1)
+              FROM   BPS_INQUIRY_MATERIAL  /* 询价上载材料表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   ID = #{id} /*  */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   CODE = #{code} /*  */ 
+             </if>
+        
+             <if test='serialNo != null and serialNo != "" and serialNo != "null" and serialNo != "undefined"'>
+               AND   SERIAL_NO = #{serialNo} /* bps_user_inquiry表中serial_no */ 
+             </if>
+        
+             <if test='materialTypeCode != null and materialTypeCode != "" and materialTypeCode != "null" and materialTypeCode != "undefined"'>
+               AND   MATERIAL_TYPE_CODE = #{materialTypeCode} /* 材料类型 */ 
+             </if>
+        
+             <if test='fileNo != null and fileNo != "" and fileNo != "null" and fileNo != "undefined"'>
+               AND   FILE_NO = #{fileNo} /* 上载材料文件号(文件关联系统返回唯一编号) */ 
+             </if>
+        
+             <if test='fileName != null and fileName != "" and fileName != "null" and fileName != "undefined"'>
+               AND   FILE_NAME = #{fileName} /* 上载文件名 */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /*  */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+    </select>
+
+    <insert id="saveMaterial"
+            parameterType="java.util.Map">
+
+        INSERT
+        INTO   bps_inquiry_material
+        (
+        CODE
+        ,SERIAL_NO
+        ,MATERIAL_TYPE_CODE
+        ,FILE_NO
+        ,FILE_NAME
+        ,company_code
+        )
+        VALUES  (
+        #{code,jdbcType=VARCHAR}
+        ,#{serialNo,jdbcType=VARCHAR}
+        ,#{materialTypeCode,jdbcType=VARCHAR}
+        ,#{fileNo,jdbcType=VARCHAR}
+        ,#{fileName,jdbcType=VARCHAR}
+        ,#{companyCode,jdbcType=VARCHAR}
+        )
+
+    </insert>
+
+    <select id="queryMaterialBySerialNo" parameterType="java.util.HashMap" resultType="com.vilio.bps.commonMapper.pojo.BpsInquiryMaterial">
+        SELECT
+            t.code
+        ,t.company_code as companyCode
+        ,t.file_name as fileName
+        ,t.file_no as fileNo
+        ,t.material_type_code as materialTypeCode
+        ,t.serial_no as serialNo
+        ,t.date_created as dateCreated
+        FROM
+            bps_inquiry_material t
+        WHERE
+            t.serial_no = #{serialNo,jdbcType=VARCHAR}
+            and t.company_code = #{companyCode,jdbcType=VARCHAR}
+
+    </select>
+
+</mapper>

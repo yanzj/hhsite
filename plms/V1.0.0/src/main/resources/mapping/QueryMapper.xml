@@ -1,0 +1,1469 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.QueryDao" >
+
+    <select id="qryLoanList" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        select pci.code as "contractCode",
+                     pci.contract_no as "contractNo",
+                     pc.abbr_name as "cityName",
+                     pd.abbr_name as "distributorName",
+                     (select name from plms_customer t where t.apply_code = pai.code and t.is_main = '1') as "customerName",
+                     pci.credit_start_date as "creditStartDate",
+                     pad.total_quota as "totalQuota",
+                     pci.credit_period as "creditPeriod",
+                     pad.principal as "principal",
+               (case when (ifnull(pad.principal,0) &gt; 0 ) then
+											(case when ifnull((select count(*) from plms_repayment_schedule prs
+                                   where prs.detail_code = pad.code
+                                     and prs.status = '03'),0) &gt; 0 then '03'
+														else '02'
+											end)
+										else '01'
+               end)
+                     as "loanStatusCode",
+							 (case when (ifnull(pad.principal,0) &gt; 0 ) then
+											(case when ifnull((select count(*) from plms_repayment_schedule prs
+                                   where prs.detail_code = pad.code
+                                     and prs.status = '03'),0) &gt; 0 then '逾期'
+														else '正常'
+											end)
+										else '已结清'
+               end)
+                as "loanStatusName"
+          from plms_contract_info pci,
+               plms_apply_info pai,
+               plms_distributor pd,
+               plms_city pc,
+               plms_account_detail pad
+         where pci.apply_code = pai.code
+           and pai.distribute_code = pd.code
+           and pd.city_no = pc.code
+           and pci.code = pad.contract_code
+           and pci.status != '0'
+           and pai.status != '0'
+           and pd.status != '0'
+           and pc.status != '0'
+           and pad.status != '0'
+           <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+           and pc.code=#{cityCode,jdbcType=VARCHAR}
+           </if>
+
+            <if test='distributorList != null'>
+                AND pd.code IN
+                <foreach item="item" index="index" collection="distributorList" open="(" separator="," close=")" >
+                    #{item.distributorCode}
+                </foreach >
+            </if>
+
+
+           <if test='distributorCode != null and distributorCode != "" and distributorCode != "null" and distributorCode != "undefined"'>
+           and pd.code=#{distributorCode,jdbcType=VARCHAR}
+           </if>
+           <if test='customerName != null and customerName != "" and customerName != "null" and customerName != "undefined"'>
+           and exists (select name from plms_customer t where t.apply_code = pai.code and t.name like concat('%', #{customerName,jdbcType=VARCHAR}, '%') )
+           </if>
+           <if test='creditStartDate != null and creditStartDate != "" and creditStartDate != "null" and creditStartDate != "undefined"'>
+           and pci.credit_start_date &gt;= date_format(#{creditStartDate,jdbcType=VARCHAR}, '%Y/%m/%d')
+           </if>
+           <if test='creditEndDate != null and creditEndDate != "" and creditEndDate != "null" and creditEndDate != "undefined"'>
+           and pci.credit_start_date &lt; date_add(date_format(#{creditEndDate,jdbcType=VARCHAR}, '%Y/%m/%d'),INTERVAL 1 DAY)
+           </if>
+           <if test='agentName != null and agentName != "" and agentName != "null" and agentName != "undefined"'>
+           and exists (select name from plms_agent t where t.name like concat('%', #{agentName,jdbcType=VARCHAR}, '%') and t.distributor_code = pd.code)
+           </if>
+           <if test='loanStatusCode == "01"'>
+           and ifnull(pad.principal,0) &lt;= 0
+           </if>
+           <if test='loanStatusCode == "02"'>
+           and (ifnull(pad.principal,0) &gt;= 0 and not exists (select 1 from plms_repayment_schedule prs
+                                   where prs.detail_code = pad.code
+                                     and prs.status = '03'))
+           </if>
+           <if test='loanStatusCode == "03"'>
+           and (ifnull(pad.principal,0) &gt;= 0 and exists (select 1 from plms_repayment_schedule prs
+                                   where prs.detail_code = pad.code
+                                     and prs.status = '03'))
+           </if>
+           <if test='loanStatusCode == "04"'>
+           and ifnull(pad.principal,0) &gt;= 0
+           </if>
+        order by pci.credit_start_date desc
+    </select>
+
+    <select id="queryLoanBaseInfo" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        select distinct pci.code as "contractCode",
+                            pci.contract_no as "contractNo",
+                            pc.abbr_name as "cityName",
+                            pd.abbr_name as "distributorName",
+                            (select name from plms_agent t where t.code = pai.agent_code and t.status = '1') "agentName",
+                            (select name from plms_customer t where t.apply_code = pai.code and t.is_main = '1' and t.status = '1') as "customerName",
+                            (select product_name from plms_product t where t.apply_code = pai.code and t.status = '1') "productName",
+                            (case pai.lending_methods when '01' then '他证' when '02' then '收件收据' end) as "lendingMethodsName",
+                            (select t2.abbr_name
+                       from plms_fund_side t1, plms_company t2
+                      where t1.contract_code = pci.code
+                        and t1.status = '1'
+                        and t2.status = '1'
+                        and t1.company_code = t2.code) as "fundSideName",
+                            (select t2.abbr_name
+                       from plms_guarantee_corporation t1, plms_company t2
+                      where t1.contract_code = pci.code
+                        and t1.status = '1'
+                        and t2.status = '1'
+                        and t1.company_code = t2.code) as "guaranteeCorporationName",
+                            (select t2.abbr_name
+                       from plms_guarantee_corporation t1, plms_company t2
+                      where t1.contract_code = pci.code
+                        and t1.status = '1'
+                        and t2.status = '1'
+                        and t1.company_code = t2.code) as "insuranceCompanyName",
+                            pad.total_quota as "totalquota",
+                            pad.principal "principal",
+                            (ifnull(pad.principal,0) + ifnull(pad.interest,0) + ifnull(pad.service_fee,0) + ifnull(pad.bail,0)
+                             + ifnull(pad.overdue,0) + ifnull(pad.service_fee_penalty,0) + ifnull(pad.bail_penalty,0) ) as "repaymentAmount",
+                            pci.credit_start_date as "creditStartDate",
+                            pci.credit_end_date as "creditEndDate",
+                            pci.credit_period as "creditPeriod",
+                            datediff(pci.credit_end_date,pci.credit_start_date) "creditDays",
+                            (select annualized_interest from plms_apply_interesting t where t.contract_code = pci.code and t.status = '1') as "annualizedInterest",
+                            (case when (ifnull(pad.principal,0) &gt; 0 ) then
+											(case when ifnull((select count(*) from plms_repayment_schedule prs
+                                   where prs.detail_code = pad.code
+                                     and prs.status = '03'),0) &gt; 0 then '03'
+														else '02'
+											end)
+										else '01'
+               end)
+                     as "loanStatusCode",
+							 (case when (ifnull(pad.principal,0) &gt; 0 ) then
+											(case when ifnull((select count(*) from plms_repayment_schedule prs
+                                   where prs.detail_code = pad.code
+                                     and prs.status = '03'),0) &gt; 0 then '逾期'
+														else '正常还款中'
+											end)
+										else '已结清'
+               end)
+                as "loanStatusName",
+                        (case when (pain.is_interest_Instead = 0 ) then '0'
+                                             when (pain.is_interest_Instead = 1 ) then '1'
+                                    end)  as "isInterestInstead", /* 利息是否代收代付 */
+              pad.confirmed as confirmed
+
+              from plms_contract_info pci,
+                   plms_apply_info pai,
+                   plms_distributor pd,
+                   plms_city pc,
+                   plms_account_detail pad,
+                   plms_apply_interesting pain
+             where pci.apply_code = pai.code
+               and pai.distribute_code = pd.code
+               and pd.city_no = pc.code
+               and pci.code = pad.contract_code
+               and pain.contract_code = pci.code
+               and pci.status != '0'
+               and pai.status != '0'
+               and pd.status != '0'
+               and pc.status != '0'
+               and pad.status != '0'
+               and pci.code = #{contractCode,jdbcType=VARCHAR}
+               limit 1
+    </select>
+
+    <select id="queryHousInfoByContractCode" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        select CONCAT(ph.property_area,ph.certificate_address) as "houseAddress"
+          from plms_house ph
+         where ph.status != '0'
+           and ph.contract_code = #{contractCode,jdbcType=VARCHAR}
+    </select>
+
+
+    <select id="queryRepaymentScheduleList" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        SELECT
+            pc.abbr_name as "cityName",
+            pd.abbr_name as "distributorName",
+            (select name from plms_agent t where t.code = pai.agent_code and t.status = '1') "agentName",
+            (select name from plms_customer t where t.apply_code = pai.code and t.is_main = '1' and t.status = '1') as "customerName",
+            prs.code AS "repaymentScheduleCode",
+            prs.repayment_date AS "repaymentDate",
+            prs.principal AS "principal",
+            prs.interest AS "interest",
+            prs.overdue AS "overdue",
+            prs.service_fee AS "serviceFee",
+            prs.service_fee_penalty AS "serviceFeePenalty",
+            prs.bail AS "bail",
+            prs.bail_penalty AS "bailPenalty",
+            prs.amount AS "amount",
+            prs.status AS "loanStatusCode",
+            (
+              CASE
+                WHEN (prs.status = '01') THEN '已结清'
+                WHEN (prs.status = '02') THEN  '正常'
+                WHEN (prs.status = '03') THEN  '逾期'
+                END
+            ) AS "loanStatusName"
+        FROM
+            plms_repayment_schedule prs
+            JOIN plms_account_detail pad ON prs.detail_code = pad.code
+            JOIN plms_contract_info pci ON pad.contract_code = pci.code
+            JOIN plms_apply_interesting pain ON pain.contract_code = pci.code
+            JOIN plms_apply_info pai ON pci.apply_code = pai.code
+            JOIN plms_distributor pd ON pai.distribute_code = pd.code
+            JOIN plms_city pc ON pd.city_no = pc.code
+        WHERE
+            prs.STATUS != '00'
+
+            <if test='distributorList != null'>
+                AND pd.code IN
+                <foreach item="item" index="index" collection="distributorList" open="(" separator="," close=")" >
+                    #{item.distributorCode}
+                </foreach >
+            </if>
+
+            <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+                and pc.code=#{cityCode,jdbcType=VARCHAR}
+            </if>
+            <if test='distributorCode != null and distributorCode != "" and distributorCode != "null" and distributorCode != "undefined"'>
+                and pd.code=#{distributorCode,jdbcType=VARCHAR}
+            </if>
+            <if test='customerName != null and customerName != "" and customerName != "null" and customerName != "undefined"'>
+                and exists (select name from plms_customer t where t.apply_code = pai.code and t.name like concat('%', #{customerName,jdbcType=VARCHAR}, '%') )
+            </if>
+            <if test='repaymentStartDate != null and repaymentStartDate != "" and repaymentStartDate != "null" and repaymentStartDate != "undefined"'>
+                and prs.repayment_date &gt;= date_format(#{repaymentStartDate,jdbcType=VARCHAR}, '%Y/%m/%d')
+            </if>
+            <if test='repaymentEndDate != null and repaymentEndDate != "" and repaymentEndDate != "null" and repaymentEndDate != "undefined"'>
+                and prs.repayment_date &lt; date_add(date_format(#{repaymentEndDate,jdbcType=VARCHAR}, '%Y/%m/%d'),INTERVAL 1 DAY)
+            </if>
+            <if test='agentName != null and agentName != "" and agentName != "null" and agentName != "undefined"'>
+                and exists (select name from plms_agent t where t.name like concat('%', #{agentName,jdbcType=VARCHAR}, '%') and t.distributor_code = pd.code)
+            </if>
+           <if test='loanStatusCode == "01"'>
+              and prs.status = '01'
+           </if>
+           <if test='loanStatusCode == "02"'>
+              and prs.status = '02'
+           </if>
+           <if test='loanStatusCode == "03"'>
+              and prs.status = '03'
+           </if>
+           <if test='loanStatusCode == "04"'>
+              and prs.status in( '02','03')
+           </if>
+            <if test='payeeCode == "00"'>
+                and ((pain.is_interest_Instead = '1' and (prs.overdue &gt; 0 or prs.interest &gt; 0))
+                or (pain.is_interest_Instead = '0' and (prs.overdue &gt; 0 or prs.service_fee &gt; 0 or prs.service_fee_penalty &gt; 0)))
+            </if>
+            <if test='payeeCode == "01"'>
+                and ((pain.is_interest_Instead = '1' and prs.principal &gt; 0)
+                or (pain.is_interest_Instead = '0' and (prs.overdue &gt; 0 or prs.principal &gt; 0)))
+            </if>
+            order by prs.repayment_date desc
+
+    </select>
+
+    <select id="queryRepaymentScheduleInfoByCode" resultType="java.util.HashMap" parameterType="java.lang.String">
+        SELECT
+            pci.contract_no as "contractNo",
+            pc.abbr_name as "cityName",
+            pd.abbr_name as "distributorName",
+            (select name from plms_agent t where t.code = pai.agent_code and t.status = '1') "agentName",
+            (select name from plms_customer t where t.apply_code = pai.code and t.is_main = '1' and t.status = '1') as "customerName",
+            pco.abbr_name as "fundSideName",
+            prs.repayment_date AS "repaymentDate",
+            prs.principal AS "principal",
+            prs.interest AS "interest",
+            prs.overdue AS "overdue",
+            prs.service_fee AS "serviceFee",
+            prs.service_fee_penalty AS "serviceFeePenalty",
+            prs.bail AS "bail",
+            prs.bail_penalty AS "bailPenalty",
+            pad.honghuo_balance AS "honghuoBalance",
+            pad.fund_side_balance AS "fundSideBalance",
+            pad.honghuo_bail_account_balance AS "honghuoBailBalance",
+            (case when (pain.is_interest_Instead = 0 ) then '0'
+                                 when (pain.is_interest_Instead = 1 ) then '1'
+                        end)  as "isInterestInstead", /* 利息是否代收代付 */
+            prs.amount AS "amount",
+            prs.status AS "loanStatusCode",
+            (
+              CASE
+                WHEN (prs.status = '01') THEN '已结清'
+                WHEN (prs.status = '02') THEN  '正常'
+                WHEN (prs.status = '03') THEN  '逾期'
+                END
+            ) AS "loanStatusName"
+        FROM
+            plms_repayment_schedule prs
+            JOIN plms_account_detail pad ON prs.detail_code = pad.code
+            JOIN plms_contract_info pci ON pad.contract_code = pci.code
+            JOIN plms_apply_interesting pain ON pain.contract_code = pci.code
+            JOIN plms_fund_side pfs ON pfs.contract_code = pci.code
+            JOIN plms_company pco ON pfs.company_code = pco.code
+            JOIN plms_apply_info pai ON pci.apply_code = pai.code
+            JOIN plms_distributor pd ON pai.distribute_code = pd.code
+            JOIN plms_city pc ON pd.city_no = pc.code
+        WHERE
+            prs.STATUS != '00'
+            AND prs.code = #{repaymentScheduleCode,jdbcType=VARCHAR}
+            order by prs.repayment_date desc
+
+    </select>
+
+    <select id="queryRepaymentScheduleDetailsByCode" resultType="java.util.HashMap" parameterType="java.lang.String">
+        SELECT
+            ppi.paid_amount AS "paidAmount",
+            ppi.paid_time AS "paidTime",
+            prsd.current_period AS "period",
+            prsd.principal AS "repaymentPrincipal",
+            prsd.interest AS "repaymentInterest",
+            prsd.overdue AS "repaymentOverdue",
+            prsd.service_fee AS "serviceFee",
+            prsd.service_fee_penalty AS "serviceFeePenalty",
+            prsd.bail AS "bail",
+            prsd.bail_penalty AS "bailPenalty",
+            prsd.amount AS "repaymentAmount",
+            prsd.status AS "loanStatusCode",
+            (
+              CASE
+                WHEN (prsd.status = '01') THEN '已结清'
+                WHEN (prsd.status = '02') THEN  '正常'
+                WHEN (prsd.status = '03') THEN  '逾期'
+                END
+            ) AS "loanStatusName"
+        FROM
+            plms_repayment_schedule_detail prsd
+            JOIN plms_paid_info ppi ON prsd.paid_code = ppi.code
+        WHERE
+            prsd.schedule_code = #{repaymentScheduleCode,jdbcType=VARCHAR}
+            order by ppi.paid_time desc
+
+    </select>
+
+
+    <select id="queryRepaymentScheduleListByContractCode" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        select
+        a.is_interest_instead as isInterestInstead,
+        prs.current_period as "currentPeriod",           /*期数           */
+        prs.repayment_date as "repaymentDate",           /*还款日期       */
+        prs.principal as "principal",               /*应还本金       */
+        prs.interest as "interest",                /*应还利息       */
+        prs.overdue as "overdue",                 /*应还罚息       */
+        prs.service_fee as "serviceFee",              /*应还服务费     */
+        prs.service_fee_penalty as "serviceFeePenalty",       /*服务费违约金   */
+        prs.bail as "bail",              /*应还保证金     */
+        prs.bail_penalty as "bailPenalty",       /*保证金违约金   */
+        prs.amount as "amount",                  /*合计           */
+        prs.status  as "statusCode",  /*状态代码       */
+         (case when (prs.status = '01' ) then '已结清'
+                when (prs.status = '02' ) then '正常'
+                when (prs.status = '03' ) then '逾期'
+         end)
+            as "statusName" /*状态名称       */
+         from plms_repayment_schedule prs,
+              plms_account_detail pad,
+              plms_apply_interesting a
+        where prs.detail_code = pad.code and pad.contract_code=a.contract_code
+          and pad.contract_code = #{contractCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryPaidInfoList" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        select
+        ppi.code as "paidInfoCode",  /*放款code */
+        pci.code as contractCode,
+        pci.contract_no as contractNo, /* 借款合同编号 */
+        pc.abbr_name as cityName,
+        pd.abbr_name as distributorName,
+        pco.name as customerName,
+        pcoy.abbr_name as fundSide,
+        ppi.paid_time as "paidTime",     /*放款时间  */
+        ppi.paid_amount as "paidAmount"   /*放款金额  */
+        from plms_paid_info ppi
+        JOIN plms_contract_info pci on ppi.contract_code = pci.code AND pci.status != '0'
+        JOIN plms_apply_info pai on pci.apply_code = pai.code AND pai.status != '0'
+        JOIN plms_distributor pd on pai.distribute_code = pd.code and pd.status != '0'
+        JOIN plms_city pc on pd.city_no = pc.code and pc.status != '0'
+        JOIN plms_customer pco on pai.code = pco.apply_code and pco.is_main = '1' and pco.status != '0'
+        JOIN plms_fund_side pfs ON pfs.contract_code = pci.code
+        JOIN plms_company pcoy ON pfs.company_code = pcoy.code
+        WHERE 1 = 1
+        <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+            and pc.code=#{cityCode,jdbcType=VARCHAR}
+        </if>
+        <if test='distributorList != null'>
+            AND pd.code IN
+            <foreach item="item" index="index" collection="distributorList" open="(" separator="," close=")" >
+                #{item.distributorCode}
+            </foreach >
+        </if>
+        <if test='distributorCode != null and distributorCode != "" and distributorCode != "null" and distributorCode != "undefined"'>
+            and pd.code=#{distributorCode,jdbcType=VARCHAR}
+        </if>
+        <if test='customerName != null and customerName != "" and customerName != "null" and customerName != "undefined"'>
+            and pco.name LIKE  CONCAT('%', #{customerName,jdbcType=VARCHAR}, '%')
+        </if>
+        <if test='paidStartDate != null and paidStartDate != "" and paidStartDate != "null" and paidStartDate != "undefined"'>
+            and ppi.paid_time &gt;= date_format(#{paidStartDate,jdbcType=VARCHAR}, '%Y/%m/%d')
+        </if>
+        <if test='paidEndDate != null and paidEndDate != "" and paidEndDate != "null" and paidEndDate != "undefined"'>
+            and ppi.paid_time &lt; date_add(date_format(#{paidEndDate,jdbcType=VARCHAR}, '%Y/%m/%d'),INTERVAL 1 DAY)
+        </if>
+
+        order by ppi.paid_time desc
+    </select>
+
+    <select id="queryPaidInfoByPaidInfoCode" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        select
+        ppi.code as paidInfoCode,
+        pci.contract_no as contractNo, /* 借款合同编号 */
+        pc.abbr_name as cityName,
+        pd.abbr_name as distributorName,
+        pa.name as agentName,
+        pco.name as customerName,
+        pcoy.abbr_name as fundSideName,
+        ppi.paid_time as "paidTime",     /*放款时间  */
+        ppi.paid_amount as "paidAmount",   /*放款金额  */
+        pain.name as name,
+        pain.account_no as "accountNo",
+        pain.bank as "bank",
+        pai.remark as "remark"
+        from plms_paid_info ppi
+        left join plms_account_info pain on (ppi.account_code = pain.code and pain.status != '0')
+        JOIN plms_contract_info pci on ppi.contract_code = pci.code AND pci.status != '0'
+        JOIN plms_apply_info pai on pci.apply_code = pai.code AND pai.status != '0'
+        JOIN plms_agent pa on pai.agent_code = pa.code AND pa.status != '0'
+        JOIN plms_distributor pd on pai.distribute_code = pd.code and pd.status != '0'
+        JOIN plms_city pc on pd.city_no = pc.code and pc.status != '0'
+        JOIN plms_customer pco on pai.code = pco.apply_code and pco.is_main = '1' and pco.status != '0'
+        JOIN plms_fund_side pfs ON pfs.contract_code = pci.code
+        JOIN plms_company pcoy ON pfs.company_code = pcoy.code
+        WHERE ppi.code = #{paidInfoCode,jdbcType=VARCHAR}
+        order by ppi.paid_time desc
+    </select>
+
+    <select id="queryPaidInfoListByContractCode" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        select
+        ppi.code as "paidInfoCode",  /*放款code */
+        ppi.paid_time as "paidTime",     /*放款时间  */
+        ppi.paid_amount as "paidAmount",   /*放款金额  */
+        pai.name as "name",         /*户名      */
+        pai.account_no as "accountNo",    /*账号      */
+        pai.bank as "bank",         /*开户行    */
+        ppi.remark as "remark"       /*备注      */
+        from plms_paid_info ppi left join plms_account_info pai on (ppi.account_code = pai.code and pai.status != '0')
+        where ppi.contract_code = #{contractCode,jdbcType=VARCHAR}
+        order by ppi.paid_time desc
+    </select>
+
+    <select id="queryFileListForPaidInfo" resultType="java.util.HashMap" parameterType="java.lang.String">
+        select pbv.file_code as "fileCode",
+               pbv.file_name as "fileName",
+               pbv.upload_time as "uploadTime"
+        from plms_borrow_voucher pbv
+        where pbv.status != '0'
+          and pbv.paid_info_code = #{paidInfoCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryFileListForPigeonhole" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        select ppi.file_code as "fileCode",
+               ppi.file_name as "fileName",
+               ppi.file_suffix as "fileSuffix",
+               ppi.upload_time as "uploadTime"
+        from plms_pigeonhole_info ppi
+        where ppi.status != '0'
+          and ppi.type = #{type,jdbcType=VARCHAR}
+          and ppi.contract_code = #{contractCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="querySignNotarialByContractCode" resultType="java.util.HashMap" parameterType="java.lang.String">
+        select psn.sign_time as "signTime",
+               psn.remark as "signRemark"
+          from plms_sign_notarial psn
+         where psn.status != 0
+           and psn.contract_code = #{contractCode,jdbcType=VARCHAR}
+        order by psn.sign_time DESC
+        limit 1
+    </select>
+
+    <select id="queryRegistrationByContractCode" resultType="java.util.HashMap" parameterType="java.lang.String">
+        select pm.registration_time as "registrationTime",
+               pm.remark as "registrationRemark"
+          from plms_mortgage pm
+         where pm.status != 0
+           and pm.contract_code = #{contractCode,jdbcType=VARCHAR}
+        order by pm.registration_time DESC
+        limit 1
+    </select>
+
+    <select id="queryApprovalInfo" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        select
+             pa.first_approval_suggestion as "firstApprovalSuggestion",  /* 初审审批意见  */
+             pa.second_approval_suggesion as "secondApprovalSuggesion",  /* 复审审批意见  */
+             pa.final_approval_suggesion as "finalApprovalSuggesion",   /* 终审审批意见  */
+             pa.fund_side_suggesion as "fundSideSuggesion",        /* 资方审批意见  */
+             pa.guarantee_suggesion as "guaranteeSuggesion",       /* 担保审批意见  */
+             pa.insurance_suggesion as "insuranceSuggesion",       /* 保险审批意见  */
+             pp.product_name as "productName",              /* 产品名称      */
+             (select name from plms_agent t where t.code = pai.agent_code and t.status != '0') as "agentName",                /* 业务经理      */
+             pa.approval_time as "approvalTime",             /* 批复日期      */
+             pa.approval_quota as "approvalQuota",            /* 批复额度      */
+             pa.approval_quota as "approvalQuotaTotal",       /* 批复总额      */
+             pa.approval_period as "approvalPeriod",           /* 批复期限      */
+             pain.annualized_interest as "annualizedInterest",       /* 年化利率      */
+             (select inquiry_information from plms_house t where t.contract_code = pci.code and t.status != '0' limit 1) as "inquiryInformation",       /* 抵押物评估价  */
+             (select mortgage_total_amount
+                from plms_house_approval t1, plms_house t2
+               where t1.house_code = t2.code
+                 and t2.contract_code = pci.code
+                 and t1.status != '0'
+                 and t2.status != '0'
+               limit 1) as "creditorTotalAmount",      /* 抵押权债权总额*/
+             (case (select mortgage_type from plms_house t where t.contract_code = pci.code and t.status != '0' limit 1)
+                  when '01' then '一抵' when '02' then '二抵' when '03' then '一抵转单' when '04' then '二抵转单'
+              end) as "mortgageType",             /* 抵押类型      */
+             (select mortgage_rate from plms_house t where t.contract_code = pci.code and t.status != '0' limit 1) as "mortgageRate",             /* 综合抵押率    */
+             (select house_value
+                from plms_house_approval t1, plms_house t2
+               where t1.house_code = t2.code
+                 and t2.contract_code = pci.code
+                 and t1.status != '0'
+                 and t2.status != '0'
+               limit 1) as "houseValue",               /* 合同抵押物价值*/
+             pa.guarantee_limit as "guaranteeLimit",           /* 担保额度      */
+             pcfi.guarantee_fee_rate as "guaranteeFeeRate",         /* 担保费率      */
+             pcfi.guarantee_fee_amount as "guaranteeFeeAmount",       /* 担保费        */
+             pcfi.bail_rate as "bailRate",                 /* 保证金比例    */
+             pcfi.bail_amount as "bailAmount",               /* 保证金金额    */
+             pcfi.service_charge_amount as "serviceChargeAmount",      /* 服务费        */
+             pa.lending_terms as "lendingTerms",             /* 放款条件      */
+             pa.guarantee_condition as "guaranteeCondition"       /* 担保条件      */
+
+            from plms_approval pa,
+                 plms_contract_info pci,
+                 plms_apply_info pai,
+                 plms_product pp,
+                 plms_apply_interesting pain,
+                 plms_customer_fee_info pcfi
+            where pa.apply_code = pai.code
+              and pci.apply_code = pai.code
+              and pp.apply_code = pai.code
+              and pain.contract_code = pci.code
+              and pcfi.contract_code = pci.code
+              and pa.status != '0'
+              and pci.status != '0'
+              and pai.status != '0'
+              and pp.status != '0'
+              and pain.status != '0'
+              and pcfi.status != '0'
+              and pci.code = #{contractCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryCustomerList" resultType="java.util.HashMap" parameterType="java.lang.String">
+        select
+            pc.name "name", /*姓名        */
+            pc.old_name "oldName", /*曾用名      */
+            (case pc.id_type when '01' then '身份证' else '其它'  end) "idType", /*证件类型    */
+            pc.id_no "idNo", /*证件号码    */
+            pc.start_time "startTime", /*证件有效期起*/
+            pc.end_time "endTime", /*证件有效期止*/
+            pc.mobile "mobile", /*移动电话    */
+            pc.age "age", /*年龄        */
+            (case pc.marriage when '01' then '未婚' when '02' then '已婚'
+               when '03' then '离异' when '04' then '丧偶'
+               when '05' then '重婚' when '06' then '再婚' else '其它'  end)  "marriage", /*当前婚姻状况*/
+            pc.organization "organization", /*工作单位    */
+            pc.titile "titile", /*职位        */
+            pc.annual_income "annualIncome", /*年收入      */
+            pc.address "address", /*家庭地址    */
+            pc.marriage_history "marriageHistory" /*婚史信息    */
+            from plms_customer pc
+            where pc.status != '0'
+              and pc.apply_code = #{applyCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryHouseList" resultType="java.util.HashMap" parameterType="java.lang.String">
+        select
+            ph.code as "code",
+            concat(ph.certificate_number_first,'第',ph.certificate_number_second,'号')as "certificate_number",/*产证编号*/
+            ph.inquiry_information as "inquiryInformation",/*评估价*/
+            ph.register_date as "registerDate",/*登记日*/
+            ph.property_owner as "investigationPerson",/*产权人*/
+            ph.certificate_address as "certificateAddress",/*产证地址*/
+            (case ph.land_property when '01' then '国有' when '02' then '集体' end) as "landProperty",/*土地性质*/
+            (case ph.acquisition_form when '01' then '出让' when '02' then '划拨' when '03' then '转让' end) as "acquisitionForm",/*使用权取得方式*/
+            ph.land_usage as "landUsage",/*土地用途*/
+            ph.owner_source as "ownerSource",/*房屋所有权来源*/
+            (case ph.type when '01' then '公寓' when '02' then '别墅' end) as "type",/*房屋类型*/
+            ph.covered_area as "coveredArea",/*建筑面积*/
+            ph.garage_address as "garageAddress",/*车库地址*/
+            ph.garage_area as "garageArea",/*车库面积*/
+            ph.total_floor as "totalFloor",/*总层数*/
+            ph.build_year as "buildYear",/*竣工日期*/
+            (case ph.share_type when '01' then '共同共有' when '02' then '按份共有' end)  as "shareType",/*共有类型*/
+            ph.minors_units as "minorsUnits",/*未成年人份额*/
+            (case ph.usage_detail when '01' then '自住' when '02' then '已备案出租'
+              when '03' then '未备案出租' when '04' then '空置' end)  as "usageDetail",/*房屋使用情况*/
+            (case ph.is_unique when '01' then '是' when '02' then '否' end) as "isUnique",/*是否唯一住房*/
+            ph.registered_residence_structure as "registeredResidenceStructure",/*户口结构*/
+            ph.mortgage_type as "mortgageTypeCode",/*抵押类型代码*/
+            (case ph.mortgage_type when '01' then '一抵' when '02' then '二抵'
+              when '03' then '一抵转单' when '04' then '二抵转单' end)  as "mortgageType",/*抵押类型*/
+            ph.first_balance_type as "firstBalanceTypeCode",/*一抵余额类型代码*/
+            (case ph.first_balance_type when '01' then '余额' when '02' then '最高额' end) as "firstBalanceType",/*一抵余额类型*/
+            ph.first_balance_amount as "firstBalanceAmount",/*一抵余额金额*/
+            ph.first_mortgage_amount as "firstMortgageAmount",/*一抵金额*/
+            ph.second_mortgage_amount as "secondMortgageAmount",/*二抵金额*/
+            ph.remark as "remark" /*附记*/
+            from plms_house ph
+            where ph.status != '0'
+              and ph.contract_code = #{contractCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryLatestPropertyInvestigation" resultType="java.util.HashMap" parameterType="java.lang.String">
+        SELECT ppi.code as "code",
+               ppi.investigation_time as "investigationTime",
+               ppi.in_case_information as "inCaseInformation"
+          from plms_property_investigation ppi
+         where ppi.status != '0'
+           and ppi.house_code = #{houseCode,jdbcType=VARCHAR}
+         order by ppi.investigation_time desc
+         limit 1
+    </select>
+
+    <select id="queryInvestDetail" resultType="java.util.HashMap" parameterType="java.lang.String">
+        select
+             pid.mortgage_rank as "mortgageRank",          /*抵押权顺位*/
+             (case pid.creditor_rights_type when '01' then '一般抵押' when '02' then '最高额抵押' end)  as "creditorRightsType",    /*债权类型  */
+             pid.creditor_rights_person as "creditorRightsPerson",  /*债权人    */
+             (case pid.creditor_property when '01' then '银行借贷' when '02' then '民间借贷' end) as "creditorProperty",      /*债权性质  */
+             pid.creditor_amount as "creditorAmount"        /*债权金额  */
+            from plms_invest_detail pid
+            where pid.status != '0'
+              and pid.investigation_code = #{investigationCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryHouseholdRegistration" resultType="java.util.HashMap" parameterType="java.lang.String">
+        select
+             phr.name as "name",          /*姓名*/
+             phr.id_no as "idNo"    /*身份证号码  */
+            from plms_household_registration phr
+            where phr.status != '0'
+              and phr.house_code = #{houseCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="querySpareHouseListByContractCode" resultType="java.util.HashMap" parameterType="java.lang.String">
+        select
+             psh.property_person as "investigationPerson",          /*姓名*/
+             psh.property_address as "address"    /*身份证号码  */
+            from plms_spare_house psh, plms_contract_info pci
+            where psh.status != '0'
+              and pci.status != '0'
+              and pci.apply_code = psh.apply_code
+              and pci.code = #{contractCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryAccountListByContractCode" resultType="java.util.HashMap" parameterType="java.lang.String">
+        select
+             pain.name as "name",          /*户名*/
+             pain.bank as "bank",          /*开户行*/
+             pain.account_no as "accountNo"    /*账号  */
+            from plms_apply_info pai, plms_contract_info pci, plms_account_info pain
+            where pai.status != '0'
+              and pci.status != '0'
+              and pain.status != '0'
+              and pci.apply_code = pai.code
+              and pai.account_code = pain.code
+              and pci.code = #{contractCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryCreditInvestigationListByContractCode" resultType="java.util.HashMap" parameterType="java.lang.String">
+        select
+             pcin.code as "code",          /*征信代码*/
+             pcin.name as "name",          /*姓名*/
+             pcin.remark as "remark",          /*姓名*/
+             pcin.report_time as "reportTime"    /*征信报告时间  */
+            from plms_apply_info pai, plms_contract_info pci, plms_credit_investigation pcin
+            where pai.status != '0'
+              and pci.status != '0'
+              and pcin.status != '0'
+              and pci.apply_code = pai.code
+              and pai.code = pcin.apply_code
+              and pci.code = #{contractCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryLoanUnsettledByCreditCode" resultType="java.util.HashMap" parameterType="java.lang.String">
+        select
+             plu.loan_times as "loanTimes",          /*贷款笔数*/
+             plu.contract_amount as "contractAmount",          /*合同总额*/
+             plu.balance as "balance",          /*余额*/
+             plu.six_month_repayment as "repaymentable"    /*近6个月平均应还款  */
+            from plms_loan_unsettle plu
+            where plu.status != '0'
+              and plu.credit_code = #{creditCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryUnClosingCardByCreditCode" resultType="java.util.HashMap" parameterType="java.lang.String">
+        select
+             puc.account_number as "accountNumber",          /*账户数*/
+             puc.total_credit as "totalCredit",          /*授信总额*/
+             puc.contract_amount as "contractAmount",          /*已用额度*/
+             puc.six_month_loan_amount as "sixMonthLoanAmount"    /*近6个月平均使用额度  */
+            from plms_unclosing_card puc
+            where puc.status != '0'
+              and puc.credit_code = #{creditCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryLoanedInfoListByCreditCode" resultType="java.util.HashMap" parameterType="java.lang.String">
+        select
+             pli.loan_no as "loanNo",          /*序号*/
+             (case when (pli.type = '01' ) then '当前逾期'
+                   when (pli.type = '02' ) then '非正常类贷款'
+                   when (pli.type = '03' ) then '近12个月累计最高逾期次数'
+                   when (pli.type = '04' ) then '近12个月最高连续逾期期数'
+              end) as "type",          /*类型*/
+             (case when (pli.type = '01' ) then pli.overdue_amount
+                   when (pli.type = '02' ) then pli.loan_status
+                   when (pli.type = '03' ) then pli.overdue_num
+                   when (pli.type = '04' ) then pli.period
+              end) as "detail"    /*详情  */
+            from plms_loaned_info pli
+            where pli.status != '0'
+              and pli.credit_code = #{creditCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryCreaditCardListByCreditCode" resultType="java.util.HashMap" parameterType="java.lang.String">
+        select
+             pcc.card_no as "loanNo",          /*序号*/
+             (case when (pcc.type = '01' ) then '当前逾期'
+                   when (pcc.type = '02' ) then '非正常类贷款'
+                   when (pcc.type = '03' ) then '近12个月累计最高逾期次数'
+                   when (pcc.type = '04' ) then '近12个月最高连续逾期期数'
+              end) as "type",          /*类型*/
+             (case when (pcc.type = '01' ) then pcc.overdue_amount
+                   when (pcc.type = '02' ) then pcc.card_status
+                   when (pcc.type = '03' ) then pcc.overdue_num
+                   when (pcc.type = '04' ) then pcc.period
+              end) as "detail"    /*详情  */
+            from plms_creadit_card pcc
+            where pcc.status != '0'
+              and pcc.credit_code = #{creditCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryGuaranteeInfoListByCreditCode" resultType="java.util.HashMap" parameterType="java.lang.String">
+        select
+             pgi.guarantee_status as "guaranteeStatus",          /*担保状态*/
+             pgi.guarantee_amount as "guaranteeAmount",          /*担保额度*/
+             pgi.guarantee_balance as "guaranteeBalance"    /*担保余额  */
+            from plms_guarantee_info pgi
+            where pgi.status != '0'
+              and pgi.credit_code = #{creditCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryQueryRecordByCreditCode" resultType="java.util.HashMap" parameterType="java.lang.String">
+        select
+             pqr.query_num as "queryNum",          /*近三个月查询次数*/
+             pqr.manage_num as "manageNum",          /*贷后管理次数*/
+             pqr.check_num as "checkNum"    /*担保资格审查次数  */
+            from plms_query_record pqr
+            where pqr.status != '0'
+              and pqr.credit_code = #{creditCode,jdbcType=VARCHAR}
+            order by pqr.modify_date DESC
+            limit 1
+    </select>
+
+    <select id="queryJudicialInfoListByContractCode" resultType="java.util.HashMap" parameterType="java.lang.String">
+        select
+             pji.name as "name",          /*姓名/公司名称*/
+             (case when pji.has_litigation_info = 1 then '是' else '否' end) as "hasLitigationInfo",          /*是否有司法诉讼信息*/
+             pji.litigation_no as "litigationNo",          /*立案号*/
+             pji.execution as "execution",          /*执行标的*/
+             (case when pji.is_closed = 1 then '是' else '否' end) as "isClosed",          /*是否结案*/
+             pji.details as "details"    /*情况说明  */
+            from plms_judicial_info pji, plms_contract_info pci
+            where pji.status != '0'
+              and pci.status != '0'
+              and pji.apply_code = pci.apply_code
+              and pci.code = #{contractCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryCaseInfoByContractCode" resultType="java.util.HashMap" parameterType="java.lang.String">
+        select
+             pcin.major_asset as "majorAsset",          /*家庭主要资产*/
+             pcin.major_liabilities as "majorLiabilities",          /*家庭主要负债*/
+             pcin.income_sources as "incomeSources",          /*家庭主要收入来源*/
+             pcin.collateral_investigation as "collateralInvestigation",          /*抵押物实地调研情况*/
+             pcin.loan_usage as "loanUsage",          /*借款用途*/
+             pcin.repayment_source as "repaymentSource"    /*还款来源  */
+            from plms_case_info pcin, plms_contract_info pci
+            where pcin.status != '0'
+              and pci.status != '0'
+              and pcin.apply_code = pci.apply_code
+              and pci.code = #{contractCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryMaterialInfoListByContractCode" resultType="java.util.HashMap" parameterType="java.lang.String">
+        SELECT DISTINCT
+            pmi. CODE AS "materialTypeCode",
+            /*材料类型代码*/
+            pmi.type_name AS "materialTypeName",
+            /*材料类型名称*/
+            (
+                SELECT
+                    count(t. CODE)
+                FROM
+                    plms_material t
+                WHERE
+                    t.apply_code = pci.apply_code
+                AND t. STATUS != '0'
+                AND t.file_type = pmi. CODE
+            ) AS "fileNum" /*文件个数 */
+        FROM
+            plms_material pm
+        JOIN plms_contract_info pci ON pm.apply_code = pci.apply_code AND	pm. STATUS != '0' AND pci. STATUS != '0' AND pci. CODE = #{contractCode,jdbcType=VARCHAR}
+        RIGHT JOIN plms_material_type pmi ON pmi. CODE = pm.file_type
+        AND pmi. STATUS != '0'
+    </select>
+
+    <select id="queryFileListByContractCodeAndFileType" resultType="java.util.HashMap" parameterType="java.lang.String">
+        select DISTINCT
+             pm.file_code as "fileCode",          /*文件编码*/
+             pm.file_name as "fileName",          /*文件名称*/
+             pm.file_suffix as "fileSuffix",          /*文件类型*/
+             pm.upload_time as "uploadTime"    /*上载时间  */
+            from plms_material pm, plms_material_type pmi, plms_contract_info pci
+            where pm.status != '0'
+              and pmi.status != '0'
+              and pci.status != '0'
+              and pm.apply_code = pci.apply_code
+              and pmi.code = pm.file_type
+              and pm.file_type = #{materialTypeCode,jdbcType=VARCHAR}
+              and pci.code = #{contractCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryReceiptsRecordListByContractCode" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        SELECT prr.code as "receiptsRecordCode",
+               prr.receipts_date as "receiptsDate", /*还款日期*/
+               prr.receipts_amount as "receiptsAmount",/*还款金额*/
+               (case when (prr.account_type = '00' ) then '宏获还款账户'
+                                 when (prr.account_type = '01' ) then '资方还款账户'
+                                 when (prr.account_type = '02' ) then '宏获保证金账户'
+                        end) as "accountTypeName",/*收款方*/
+               (case when (prr.fund_source = '01' ) then '客户'
+                                 when (prr.fund_source = '02' ) then '宏获'
+                                 when (prr.fund_source = '03' ) then '担保'
+                        end) as "fundSource",/*资金来源*/
+               (case when (prr.account_type = '00' )
+                       then (select name from plms_account_info where status != '0' and code = pai.honghuo_code)
+                                 when (prr.account_type = '01' )
+                       then (select name from plms_account_info where status != '0' and code = pai.fund_side_code)
+                                 when (prr.account_type = '02' )
+                       then (select name from plms_account_info where status != '0' and code = pai.honghuo_bail_account_code)
+                        end) as "name",/*收款账户名*/
+               (case when (prr.account_type = '00' )
+                       then (select account_no from plms_account_info where status != '0' and code = pai.fund_side_code)
+                                 when (prr.account_type = '01' )
+                       then (select account_no from plms_account_info where status != '0' and code = pai.honghuo_code)
+                        end)  as "accountNo",/*收款账户开户行*/
+               (case when (prr.account_type = '00' )
+                       then (select bank from plms_account_info where status != '0' and code = pai.fund_side_code)
+                                 when (prr.account_type = '01' )
+                       then (select bank from plms_account_info where status != '0' and code = pai.honghuo_code)
+                        end)  as "bank",/*收款账户账号*/
+               prr.remark as "remark"/*备注*/
+          from plms_receipts_record prr,
+               plms_apply_interesting pai
+         where prr.status != '0'
+           and prr.deal_status = '01'
+           and pai.status != '0'
+           and prr.contract_code = pai.contract_code
+           and prr.contract_code = #{contractCode,jdbcType=VARCHAR}
+         order by prr.receipts_date desc
+    </select>
+    <select id="queryReceiptsRecordList" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        select distinct prr.code as "receiptsRecordCode", /* 资金入账编码 */
+        pci.code as "contractCode", /* 借款合同编号 */
+        pci.contract_no as "contractNo", /* 借款合同编号 */
+        pc.abbr_name as "cityName", /* 城市 */
+        pd.abbr_name as "distributorName", /* 渠道 */
+        (select name from plms_customer t where t.apply_code = pai.code and t.is_main = '1' and t.status = '1') as "customerName", /* 借款人 */
+        (select t2.abbr_name
+            from plms_fund_side t1, plms_company t2
+            where t1.contract_code = pci.code
+            and t1.status != '0'
+            and t2.status != '0'
+            and t1.company_code = t2.code) as "fundSideName",/* 资方 */
+        (case when (prr.account_type = '00' ) then '宏获还款'
+              when (prr.account_type = '01' ) then '资方还款'
+              when (prr.account_type = '02' ) then '宏获保证金'
+        end) as "accountTypeName",/*收款方*/
+        (case when (prr.fund_source = '00' ) then '客户'
+              when (prr.fund_source = '01' ) then '宏获'
+              when (prr.fund_source = '02' ) then '担保'
+        end) as "fundSourceName",/*还款来源*/
+        prr.receipts_date as "receiptsDate",/*到账日期*/
+        prr.receipts_amount as "receiptsAmount"/*还款金额*/
+        from plms_contract_info pci,
+                plms_apply_info pai,
+                plms_distributor pd,
+                plms_city pc,
+                plms_receipts_record prr
+        where pci.apply_code = pai.code
+                and pai.distribute_code = pd.code
+                and pd.city_no = pc.code
+                and pci.code = prr.contract_code
+                and pci.status != '0'
+                and pai.status != '0'
+                and pd.status != '0'
+                and pc.status != '0'
+                and prr.status != '0'
+                and prr.deal_status = '02'
+                <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+                    and pc.code=#{cityCode,jdbcType=VARCHAR}
+                </if>
+
+                <if test='distributorList != null'>
+                    AND pd.code IN
+                    <foreach item="item" index="index" collection="distributorList" open="(" separator="," close=")" >
+                        #{item.distributorCode}
+                    </foreach >
+                </if>
+
+                <if test='distributorCode != null and distributorCode != "" and distributorCode != "null" and distributorCode != "undefined"'>
+                    and pd.code=#{distributorCode,jdbcType=VARCHAR}
+                </if>
+                <if test='customerName != null and customerName != "" and customerName != "null" and customerName != "undefined"'>
+                    and exists (select name from plms_customer t where t.apply_code = pai.code and t.name like concat('%', #{customerName,jdbcType=VARCHAR}, '%') )
+                </if>
+                <if test='receiptsStartDate != null and receiptsStartDate != "" and receiptsStartDate != "null" and receiptsStartDate != "undefined"'>
+                    and prr.receipts_date &gt;= date_format(#{receiptsStartDate,jdbcType=VARCHAR}, '%Y/%m/%d')
+                </if>
+                <if test='receiptsEndDate != null and receiptsEndDate != "" and receiptsEndDate != "null" and receiptsEndDate != "undefined"'>
+                    and prr.receipts_date &lt; date_add(date_format(#{receiptsEndDate,jdbcType=VARCHAR}, '%Y/%m/%d'),INTERVAL 1 DAY)
+                </if>
+                <if test='accountTypeCode != null and accountTypeCode != "" and accountTypeCode != "null" and accountTypeCode != "undefined"'>
+                    and prr.account_type = #{accountTypeCode,jdbcType=VARCHAR}
+                </if>
+                <if test='fundSourceCode != null and fundSourceCode != "" and fundSourceCode != "null" and fundSourceCode != "undefined"'>
+                    and prr.fund_source = #{fundSourceCode,jdbcType=VARCHAR}
+                </if>
+
+        order by prr.receipts_date desc
+    </select>
+
+    <select id="queryReceiptsRecordByReceiptsCode" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        select prr.code as "receiptsRecordCode", /* 资金入账编码 */
+            pci.contract_no as "contractNo", /* 借款合同编号 */
+            pc.abbr_name as "cityName", /* 城市 */
+            pd.abbr_name as "distributorName", /* 渠道 */
+            pa.name as "agentName",
+            (select name from plms_customer t where t.apply_code = pai.code and t.is_main = '1' and t.status = '1') as "customerName", /* 借款人 */
+            (select t2.abbr_name
+                from plms_fund_side t1, plms_company t2
+                where t1.contract_code = pci.code
+                and t1.status != '0'
+                and t2.status != '0'
+                and t1.company_code = t2.code) as "fundSideName",/* 资方 */
+            pain.is_interest_instead as isInterestInstead,
+            pad.total_quota as "totalQuota", /* 授信金额 */
+            pci.credit_start_date as creditStartDate,
+            pci.credit_period as creditPeriod,
+            (case when (prr.account_type = '00' ) then '宏获还款账户'
+                  when (prr.account_type = '01' ) then '资方账户'
+                  when (prr.account_type = '02' ) then '宏获保证金账户'
+            end) as "accountTypeName",/*收款方*/
+            (case when (prr.fund_source = '00' ) then '用户'
+                  when (prr.fund_source = '01' ) then '宏获'
+                  when (prr.fund_source = '02' ) then '担保'
+            end) as "fundSourceName",/*还款来源*/
+            prr.receipts_date as "receiptsDate",/*到账日期*/
+            prr.receipts_amount as "receiptsAmount",/*还款金额*/
+            pacin.name as name,
+            pacin.bank as bank,
+            pacin.account_no as accountNo,
+            prr.remark as remark,
+            prr.deal_user as dealUser,
+            prr.deal_time as dealTime,
+            (case when (prr.deal_status = '00' ) then '待处理'
+              when (prr.deal_status = '01' ) then '处理中'
+              when (prr.deal_status = '02' ) then '处理成功'
+              when (prr.deal_status = '03' ) then '处理失败'
+              when (prr.deal_status = '04' ) then '删除待处理'
+              when (prr.deal_status = '05' ) then '删除处理中'
+              when (prr.deal_status = '06' ) then '删除失败'
+              end) as "dealStatus"
+        from plms_contract_info pci
+        join plms_apply_info pai on pci.apply_code = pai.code
+        join plms_apply_interesting pain on pci.code = pain.contract_code
+        join plms_distributor pd on pai.distribute_code = pd.code
+        join plms_agent pa on pai.agent_code = pa.code
+        join plms_city pc on pd.city_no = pc.code
+        join plms_account_detail pad on pci.code = pad.contract_code
+        join plms_receipts_record prr on pci.code = prr.contract_code
+        join plms_account_info pacin on pai.account_code = pacin.code
+        where  prr.deal_status = '02'
+            and pci.status != '0'
+            and pai.status != '0'
+            and pain.status != '0'
+            and pd.status != '0'
+            and pa.status != '0'
+            and pc.status != '0'
+            and pad.status != '0'
+            and prr.status != '0'
+            and pacin.status != '0'
+            and prr.code = #{receiptsCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryFileListByReceiptsRecordCode" resultType="java.util.HashMap" parameterType="java.lang.String">
+        select
+             prv.file_code as "fileCode",          /*文件编码*/
+             prv.file_name as "fileName",          /*文件名称*/
+             prv.upload_time as "uploadTime"    /*上载时间  */
+            from plms_receipts_voucher prv
+            where prv.status != '0'
+              and prv.receipts_record_code = #{receiptsRecordCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryRepaymentDetailListByContractCode" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        SELECT prd.time_happened as "timeHappened", /*扣款时间*/
+               prd.amount as "amount",/*扣款金额*/
+               (case when (pain.is_interest_Instead = '0' )
+                       then (case when (prd.subject = '5' or prd.subject = '6' ) then '资方还款账户'
+                                   when (prd.subject = '8' ) then '宏获保证金账户'
+                                  else '宏获还款账户' end)
+                                 when (pain.is_interest_Instead = '1' )
+                       then (case when (prd.subject = '6' ) then '资方还款账户'
+                                   when (prd.subject = '8' ) then '宏获保证金账户'
+                                   else '宏获还款账户'
+                              end)
+                        end) as "accountTypeName",/*扣款账户*/
+               (case when (prd.subject = '1' ) then '服务费违约金'
+                                 when (prd.subject = '2' ) then '利息罚息'
+                                 when (prd.subject = '3' ) then '本金罚息'
+                                 when (prd.subject = '4' ) then '服务费'
+                                 when (prd.subject = '5' ) then '利息'
+                                 when (prd.subject = '6' ) then '本金'
+                                 when (prd.subject = '7' ) then '保证金违约金'
+                                 when (prd.subject = '8' ) then '保证金'
+                        end) as "subject"/*科目*/
+          from plms_repayment_detail prd,
+               plms_repayment_schedule_detail prsd,
+               plms_paid_info ppi,
+               plms_contract_info pci,
+               plms_apply_interesting pain
+         where prd.status != '0'
+           and prsd.status != '00'
+           and ppi.status != '00'
+           and pci.status != '0'
+           and prd.schedule_detail_code = prsd.code
+           and prsd.paid_code = ppi.code
+           and ppi.contract_code = pci.code
+           and pain.contract_code = pci.code
+           and pci.code = #{contractCode,jdbcType=VARCHAR}
+         order by prd.time_happened desc
+    </select>
+
+    <select id="queryRepaymentDetailList" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        SELECT prd.code AS repaymentCode,
+               pci.code AS contractCode,
+               pci.contract_no AS contractNo,
+               pc.abbr_name as "cityName", /* 城市 */
+               pd.abbr_name as "distributorName", /* 渠道 */
+               pa.name as "agentName",
+               (select name from plms_customer t where t.apply_code = pai.code and t.is_main = '1' and t.status = '1') as "customerName", /* 借款人 */
+               (select t2.abbr_name
+                from plms_fund_side t1, plms_company t2
+                where t1.contract_code = pci.code
+                and t1.status != '0'
+                and t2.status != '0'
+                and t1.company_code = t2.code) as "fundSideName",/* 资方 */
+               prd.time_happened as "timeHappened", /*扣款时间*/
+               prd.amount as "amount",/*扣款金额*/
+               (case when (pain.is_interest_Instead = '0' )
+                       then (case when (prd.subject = '5' or prd.subject = '6' ) then '资方还款'
+                                    when (prd.subject = '8') then '宏获保证金'
+                                    else '宏获还款' end)
+                                 when (pain.is_interest_Instead = '1' )
+                       then (case when (prd.subject = '6' ) then '资方还款'
+                                    when (prd.subject = '8') then '宏获保证金'
+                                    else '宏获还款' end)
+                        end) as "accountTypeName",/*扣款账户*/
+               (case when (prd.subject = '1' ) then '服务费违约金'
+                                 when (prd.subject = '2' ) then '本金罚息'
+                                 when (prd.subject = '3' ) then '利息罚息'
+                                 when (prd.subject = '4' ) then '服务费'
+                                 when (prd.subject = '5' ) then '利息'
+                                 when (prd.subject = '6' ) then '本金'
+                                 when (prd.subject = '7' ) then '保证金违约金'
+                                 when (prd.subject = '8' ) then '保证金'
+                                 when (prd.subject = '9' ) then '提前还款利息违约金'
+                                 when (prd.subject = '10' ) then '提前还款服务费违约金'
+                        end) as "subject"/*科目*/
+          from plms_repayment_detail prd
+               join plms_repayment_schedule_detail prsd ON prd.schedule_detail_code = prsd.code and prsd.status != '00'
+               join plms_paid_info ppi on prsd.paid_code = ppi.code and ppi.status != '00'
+               join plms_contract_info pci on ppi.contract_code = pci.code and pci.status != '0'
+               join plms_apply_info pai on pci.apply_code = pai.code and pai.status != '0'
+               join plms_agent pa ON pai.agent_code = pa.code and pa.status != '0'
+               join plms_distributor pd ON pai.distribute_code = pd.code and pd.status != '0'
+               join plms_city pc ON pd.city_no = pc.code and pc.status != '0'
+               join plms_apply_interesting pain on pain.contract_code = pci.code
+         where prd.status != '0'
+
+        <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+            and pc.code=#{cityCode,jdbcType=VARCHAR}
+        </if>
+        <if test='distributorList != null'>
+            AND pd.code IN
+            <foreach item="item" index="index" collection="distributorList" open="(" separator="," close=")" >
+                #{item.distributorCode}
+            </foreach >
+        </if>
+        <if test='distributorCode != null and distributorCode != "" and distributorCode != "null" and distributorCode != "undefined"'>
+            and pd.code=#{distributorCode,jdbcType=VARCHAR}
+        </if>
+        <if test='customerName != null and customerName != "" and customerName != "null" and customerName != "undefined"'>
+            and exists (select name from plms_customer t where t.apply_code = pai.code and t.name like concat('%', #{customerName,jdbcType=VARCHAR}, '%') )
+        </if>
+        <if test='timeHappenedStartDate != null and timeHappenedStartDate != "" and timeHappenedStartDate != "null" and timeHappenedStartDate != "undefined"'>
+            and prd.time_happened &gt;= date_format(#{timeHappenedStartDate,jdbcType=VARCHAR}, '%Y/%m/%d')
+        </if>
+        <if test='timeHappenedEndDate != null and timeHappenedEndDate != "" and timeHappenedEndDate != "null" and timeHappenedEndDate != "undefined"'>
+            and prd.time_happened &lt; date_add(date_format(#{timeHappenedEndDate,jdbcType=VARCHAR}, '%Y/%m/%d'),INTERVAL 1 DAY)
+        </if>
+        <if test='subjectCode != null and subjectCode != "" and subjectCode != "null" and subjectCode != "undefined" and subjectCode == "23"'>
+            and (prd.subject = '2' or prd.subject = '3')
+        </if>
+        <if test='subjectCode != null and subjectCode != "" and subjectCode != "null" and subjectCode != "undefined" and subjectCode != "23"'>
+            and prd.subject = #{subjectCode,jdbcType=VARCHAR}
+        </if>
+        <if test='accountTypeCode == "00"'>
+           and ((pain.is_interest_Instead = '0' and prd.subject not in ('5','6','8')) or (pain.is_interest_Instead = '1' and prd.subject not in ('6','8')))
+        </if>
+        <if test='accountTypeCode == "01"'>
+           and ((pain.is_interest_Instead = '0' and prd.subject in ('5','6')) or (pain.is_interest_Instead = '1' and prd.subject in ('6')))
+        </if>
+        <if test='accountTypeCode == "02"'>
+           and ((pain.is_interest_Instead = '0' and prd.subject in ('8')) or (pain.is_interest_Instead = '1' and prd.subject in ('8')))
+        </if>
+
+         order by prd.time_happened asc
+    </select>
+
+    <select id="queryRepaymentDetailByRepaymentCode" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        SELECT prd.code AS repaymentCode,
+        pci.contract_no AS contractNo,
+        pc.abbr_name as "cityName", /* 城市 */
+        pd.abbr_name as "distributorName", /* 渠道 */
+        pa.name as "agentName",
+        (select name from plms_customer t where t.apply_code = pai.code and t.is_main = '1' and t.status = '1') as "customerName", /* 借款人 */
+        (select t2.abbr_name
+        from plms_fund_side t1, plms_company t2
+        where t1.contract_code = pci.code
+        and t1.status != '0'
+        and t2.status != '0'
+        and t1.company_code = t2.code) as "fundSideName",/* 资方 */
+        pain.is_interest_instead as isInterestInstead,
+        pad.total_quota as "totalQuota", /* 授信金额 */
+        pci.credit_start_date as creditStartDate,
+        pci.credit_period as creditPeriod,
+        prd.time_happened as "timeHappened", /*扣款时间*/
+        prd.amount as "amount",/*扣款金额*/
+               (case when (pain.is_interest_Instead = '0' )
+                       then (case when (prd.subject = '5' or prd.subject = '6' ) then '资方还款'
+                                    when (prd.subject = '8') then '宏获保证金'
+                                    else '宏获还款' end)
+                                 when (pain.is_interest_Instead = '1' )
+                       then (case when (prd.subject = '6' ) then '资方还款'
+                                    when (prd.subject = '8') then '宏获保证金'
+                                    else '宏获还款' end)
+                        end) as "accountTypeName",/*扣款账户*/
+               (case when (prd.subject = '1' ) then '服务费违约金'
+                                 when (prd.subject = '2' ) then '本金罚息'
+                                 when (prd.subject = '3' ) then '利息罚息'
+                                 when (prd.subject = '4' ) then '服务费'
+                                 when (prd.subject = '5' ) then '利息'
+                                 when (prd.subject = '6' ) then '本金'
+                                 when (prd.subject = '7' ) then '保证金违约金'
+                                 when (prd.subject = '8' ) then '保证金'
+                                 when (prd.subject = '9' ) then '提前还款利息违约金'
+                                 when (prd.subject = '10' ) then '提前还款服务费违约金'
+                        end) as "subject"/*科目*/
+        from plms_repayment_detail prd
+        join plms_repayment_schedule_detail prsd ON prd.schedule_detail_code = prsd.code and prsd.status != '00'
+        join plms_paid_info ppi on prsd.paid_code = ppi.code and ppi.status != '00'
+        join plms_contract_info pci on ppi.contract_code = pci.code and pci.status != '0'
+        join plms_apply_info pai on pci.apply_code = pai.code and pai.status != '0'
+        join plms_agent pa ON pai.agent_code = pa.code and pa.status != '0'
+        join plms_distributor pd ON pai.distribute_code = pd.code and pd.status != '0'
+        join plms_city pc ON pd.city_no = pc.code and pc.status != '0'
+        join plms_apply_interesting pain on pain.contract_code = pci.code
+        join plms_account_detail pad on pci.code = pad.contract_code
+        where prd.status != '0'
+        and prd.code = #{repaymentCode,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryOverDueRepaymentScheduleList" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        SELECT      prs.code as "repaymentScheduleCode",/*还款计划唯一标识*/
+                pc.abbr_name as "cityName",/*城市名称*/
+                pd.abbr_name as "distributorName",/*渠道名称*/
+                (select name from plms_customer t where t.apply_code = pai.code and t.is_main = '1' and t.status = '1') as "customerName",/*借款人*/
+                prs.repayment_date as "repaymentScheduleCode",/*还款日期*/
+                (case when (pain.is_interest_Instead = 0 ) then IFNULL(prs.principal,0) + IFNULL(prs.interest,0)
+                                             when (pain.is_interest_Instead = 1 ) then IFNULL(prs.principal,0)
+                            end) as "fundSideAmount",/*应还资方金额*/
+                (case when (pain.is_interest_Instead = 0 ) then IFNULL(prs.repaymented_principal,0) + IFNULL(prs.repaymented_interest,0)
+                                             when (pain.is_interest_Instead = 1 ) then IFNULL(prs.repaymented_principal,0)
+                            end) as "repaymentedFundSideAmount",/*已还资方金额*/
+                (case when (pain.is_interest_Instead = 0 ) then IFNULL(prs.service_fee,0) + IFNULL(prs.service_fee_penalty,0) + IFNULL(prs.bail,0) + IFNULL(prs.overdue,0) + IFNULL(prs.bail_penalty,0)
+                                             when (pain.is_interest_Instead = 1 ) then IFNULL(prs.interest,0) + IFNULL(prs.bail,0) + IFNULL(prs.overdue,0) + IFNULL(prs.bail_penalty,0)
+                            end) as "hongHuoAmount",/*应还宏获金额*/
+                (case when (pain.is_interest_Instead = 0 ) then IFNULL(prs.repaymented_service_fee,0) + IFNULL(prs.repaymented_service_fee_penalty,0)+ IFNULL(prs.repaymented_bail,0) + IFNULL(prs.repaymented_overdue,0) + IFNULL(prs.repaymented_bail_penalty,0)
+                                             when (pain.is_interest_Instead = 1 ) then IFNULL(prs.repaymented_interest,0) + IFNULL(prs.repaymented_bail,0) + IFNULL(prs.repaymented_overdue,0) + IFNULL(prs.repaymented_bail_penalty,0)
+                            end) as "repaymentedHongHuoAmount",/*已还宏获金额*/
+                (SELECT (case when IFNULL(max(prsd.total_overdue_days),0) > IFNULL(max(prsd.service_fee_total_overdue_days),0) then IFNULL(max(prsd.total_overdue_days),0)
+                                                 else IFNULL(max(prsd.service_fee_total_overdue_days),0)
+                                            end)
+                   from plms_repayment_schedule_detail prsd
+                  where prsd.code = prs.code
+                    and prsd.status != '00') as "overdueDays"/*逾期天数*/
+            FROM plms_contract_info pci,
+                   plms_apply_info pai,
+                   plms_distributor pd,
+                   plms_city pc,
+                   plms_account_detail pad,
+                   plms_repayment_schedule prs,
+                   plms_apply_interesting pain
+             where pci.apply_code = pai.code
+               and pai.distribute_code = pd.code
+               and pd.city_no = pc.code
+               and pci.code = pad.contract_code
+               and prs.detail_code = pad.code
+               and pain.contract_code = pci.code
+               and pci.status != '0'
+               and pai.status != '0'
+               and pd.status != '0'
+               and pc.status != '0'
+               and pad.status != '0'
+               and prs.status != '00'
+               and pain.status != '0'
+               and prs.status = '03'
+            <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+                and pc.code=#{cityCode,jdbcType=VARCHAR}
+            </if>
+        <if test='distributorList != null'>
+            AND pd.code IN
+            <foreach item="item" index="index" collection="distributorList" open="(" separator="," close=")" >
+                #{item.distributorCode}
+            </foreach >
+        </if>
+            <if test='distributorCode != null and distributorCode != "" and distributorCode != "null" and distributorCode != "undefined"'>
+                and pd.code=#{distributorCode,jdbcType=VARCHAR}
+            </if>
+            <if test='customerName != null and customerName != "" and customerName != "null" and customerName != "undefined"'>
+                and exists (select name from plms_customer t where t.apply_code = pai.code and t.name like concat('%', #{customerName,jdbcType=VARCHAR}, '%') )
+            </if>
+            <if test='repaymentStartDate != null and repaymentStartDate != "" and repaymentStartDate != "null" and repaymentStartDate != "undefined"'>
+                and prs.repayment_date &gt;= date_format(#{repaymentStartDate,jdbcType=VARCHAR}, '%Y/%m/%d')
+            </if>
+            <if test='repaymentEndDate != null and repaymentEndDate != "" and repaymentEndDate != "null" and repaymentEndDate != "undefined"'>
+                and prs.repayment_date &lt; date_add(date_format(#{repaymentEndDate,jdbcType=VARCHAR}, '%Y/%m/%d'),INTERVAL 1 DAY)
+            </if>
+            <if test='agentName != null and agentName != "" and agentName != "null" and agentName != "undefined"'>
+                and exists (select name from plms_agent t where t.name like concat('%', #{agentName,jdbcType=VARCHAR}, '%') and t.distributor_code = pd.code)
+            </if>
+            <if test='repaymentScheduleCode != null and repaymentScheduleCode != "" and repaymentScheduleCode != "null" and repaymentScheduleCode != "undefined"'>
+                and prs.status = #{repaymentScheduleCode,jdbcType=VARCHAR}
+            </if>
+            <if test='overdueDaysStart != null and overdueDaysStart != "" and overdueDaysStart != "null" and overdueDaysStart != "undefined"'>
+                and (SELECT (case when IFNULL(max(prsd.total_overdue_days),0) > IFNULL(max(prsd.service_fee_total_overdue_days),0) then IFNULL(max(prsd.total_overdue_days),0)
+                                                 else IFNULL(max(prsd.service_fee_total_overdue_days),0)
+                                            end)
+                   from plms_repayment_schedule_detail prsd
+                  where prsd.code = prs.code
+                    and prsd.status != '00') &gt;= #{overdueDaysStart,jdbcType=VARCHAR}
+            </if>
+            <if test='overdueDaysEnd != null and overdueDaysEnd != "" and overdueDaysEnd != "null" and overdueDaysEnd != "undefined"'>
+                and (SELECT (case when IFNULL(max(prsd.total_overdue_days),0) > IFNULL(max(prsd.service_fee_total_overdue_days),0) then IFNULL(max(prsd.total_overdue_days),0)
+                                                 else IFNULL(max(prsd.service_fee_total_overdue_days),0)
+                                            end)
+                   from plms_repayment_schedule_detail prsd
+                  where prsd.code = prs.code
+                    and prsd.status != '00') &lt;= #{overdueDaysEnd,jdbcType=VARCHAR}
+            </if>
+            order by prs.repayment_date desc
+
+    </select>
+
+    <select id="queryOverDueRepaymentScheduleDetail" resultType="java.util.HashMap" parameterType="java.lang.String">
+        SELECT      prs.code as "repaymentScheduleCode",/*还款计划唯一标识*/
+            pci.contract_no as "contractNo",/*借款合同编号*/
+            pc.abbr_name as "cityName",/*城市名称*/
+            pd.abbr_name as "distributorName",/*渠道名称*/
+            (select name from plms_agent t where t.code = pai.agent_code and t.status != '0') "agentName", /* 业务经理 */
+            (select name from plms_customer t where t.apply_code = pai.code and t.is_main = '1' and t.status = '1') as "customerName",/*借款人*/
+            prs.repayment_date as "repaymentScheduleCode",/*还款日期*/
+            pco.abbr_name as "fundSideName",/*资方*/
+            prs.amount as "repaymentAmount",/*应还总额*/
+            prs.principal as "principal",/*应还本金*/
+            prs.interest as "interest",/*应还利息*/
+            prs.service_fee as "serviceFee",/*应还服务费*/
+            prs.overdue as "overdue",/*应还罚息*/
+            prs.service_fee_penalty as "serviceFeePenalty",/*应还服务费违约金*/
+            prs.bail as "bail",/*应还保证金*/
+            prs.bail_penalty as "bailPenalty",/*应还保证金违约金*/
+            (case when (pain.is_interest_Instead = 0 ) then '否'
+										 when (pain.is_interest_Instead = 1 ) then '是'
+						end) as "isInterestInstead",/*所属渠道利息是否代收代付*/
+            pad.honghuo_balance as "honghuoBalance",/*宏获账户余额*/
+            pad.fund_side_balance as "fundSideBalance",/*资方账户余额*/
+            pad.honghuo_bail_account_balance as "honghuoBailBalance",/*宏获保证金账户余额*/
+            prs.repaymented_principal as "repaymentedPrincipal",/*已还本金*/
+            prs.repaymented_interest as "repaymentedInterest",/*已还利息*/
+            prs.repaymented_service_fee as "repaymentedServiceFee",/*已还服务费*/
+            prs.repaymented_overdue as "repaymentedOverdue",/*已还罚息*/
+            prs.repaymented_service_fee_penalty as "repaymentedServiceFeePenalty",/*已还服务费违约金*/
+            prs.repaymented_bail as "repaymentedBail",/*已还保证金*/
+            prs.repaymented_bail_penalty as "repaymentedBailPenalty",/*已还保证金违约金*/
+            (IFNULL(prs.repaymented_principal,0) + IFNULL(prs.repaymented_interest,0) + IFNULL(prs.repaymented_service_fee,0) + IFNULL(prs.repaymented_overdue,0) +
+             IFNULL(prs.repaymented_service_fee_penalty,0) + IFNULL(prs.repaymented_bail,0) + IFNULL(prs.repaymented_bail_penalty,0) ) as "repaymentdAmount",/*已还总额*/
+            (SELECT IFNULL(max(prsd.total_overdue_days),0)
+               from plms_repayment_schedule_detail prsd
+              where prsd.code = prs.code
+                and prsd.status != '00') as "totalOverdueDays",/*本息逾期天数*/
+            (SELECT IFNULL(max(prsd.service_fee_total_overdue_days),0)
+               from plms_repayment_schedule_detail prsd
+              where prsd.code = prs.code
+                and prsd.status != '00') as "servicFeeTotalOverdueDdays"/*服务费逾期天数*/
+        FROM plms_contract_info pci,
+               plms_apply_info pai,
+               plms_distributor pd,
+               plms_city pc,
+               plms_account_detail pad,
+               plms_repayment_schedule prs,
+               plms_apply_interesting pain,
+               plms_fund_side pfs,
+               plms_company pco
+         where pci.apply_code = pai.code
+           and pai.distribute_code = pd.code
+           and pd.city_no = pc.code
+           and pci.code = pad.contract_code
+           and prs.detail_code = pad.code
+           and pain.contract_code = pci.code
+           and pfs.contract_code = pci.code
+           and pfs.company_code = pco.code
+           and pci.status != '0'
+           and pai.status != '0'
+           and pd.status != '0'
+           and pc.status != '0'
+           and pad.status != '0'
+           and prs.status != '00'
+           and pain.status != '0'
+           and pfs.status != '0'
+           and pco.status != '0'
+           and prs.status = '03'
+           and prs.code = #{repaymentScheduleCode,jdbcType=VARCHAR}
+
+    </select>
+
+    <select id="queryAccountDetailList" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        SELECT      pci.code as "contractCode",/*借款合同唯一编码*/
+                pci.contract_no as "contractNo",/*借款合同编号*/
+                pc.abbr_name as "cityName",/*城市名称*/
+                pd.abbr_name as "distributorName",/*渠道名称*/
+                (select name from plms_customer t where t.apply_code = pai.code and t.is_main = '1' and t.status = '1') as "customerName",/*借款人*/
+                (select t2.abbr_name
+                   from plms_fund_side t1, plms_company t2
+                  where t1.contract_code = pci.code
+                    and t1.status != '0'
+                    and t2.status != '0'
+                    and t1.company_code = t2.code) as "fundSideName",/* 资方 */
+                pad.honghuo_balance as "fundSideAmount",/*宏获账户余额*/
+                pad.fund_side_balance as "hongHuoAmount",/*资方账户余额*/
+                pad.honghuo_bail_account_balance as "hongHuoBailAmount"/*宏获保证金账户余额*/
+            FROM plms_contract_info pci,
+                   plms_apply_info pai,
+                   plms_distributor pd,
+                   plms_city pc,
+                   plms_account_detail pad,
+                   plms_apply_interesting pain
+             where pci.apply_code = pai.code
+               and pai.distribute_code = pd.code
+               and pd.city_no = pc.code
+               and pci.code = pad.contract_code
+               and pain.contract_code = pci.code
+               and pci.status != '0'
+               and pai.status != '0'
+               and pd.status != '0'
+               and pc.status != '0'
+               and pad.status != '0'
+               and pain.status != '0'
+            <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+                and pc.code=#{cityCode,jdbcType=VARCHAR}
+            </if>
+
+        <if test='distributorList != null'>
+            AND pd.code IN
+            <foreach item="item" index="index" collection="distributorList" open="(" separator="," close=")" >
+                #{item.distributorCode}
+            </foreach >
+        </if>
+            <if test='distributorCode != null and distributorCode != "" and distributorCode != "null" and distributorCode != "undefined"'>
+                and pd.code=#{distributorCode,jdbcType=VARCHAR}
+            </if>
+            <if test='customerName != null and customerName != "" and customerName != "null" and customerName != "undefined"'>
+                and exists (select name from plms_customer t where t.apply_code = pai.code and t.name like concat('%', #{customerName,jdbcType=VARCHAR}, '%') )
+            </if>
+            <if test='agentName != null and agentName != "" and agentName != "null" and agentName != "undefined"'>
+                and exists (select name from plms_agent t where t.name like concat('%', #{agentName,jdbcType=VARCHAR}, '%') and t.distributor_code = pd.code)
+            </if>
+            order by pci.credit_start_date desc
+
+    </select>
+
+    <select id="queryAccountDetail" resultType="java.util.HashMap" parameterType="java.lang.String">
+        select distinct pci.code as "contractCode", /* 借款合同编码 */
+                pci.contract_no as "contractNo", /* 借款合同编号 */
+                pc.abbr_name as "cityName", /* 城市 */
+                pd.abbr_name as "distributorName", /* 渠道 */
+                (select name from plms_agent t where t.code = pai.agent_code and t.status != '0') "agentName", /* 业务经理 */
+                (select name from plms_customer t where t.apply_code = pai.code and t.is_main = '1' and t.status != '0') as "customerName", /* 借款人 */
+                (select t2.abbr_name
+           from plms_fund_side t1, plms_company t2
+          where t1.contract_code = pci.code
+            and t1.status != '0'
+            and t2.status != '0'
+            and t1.company_code = t2.code) as "fundSideName",/* 资方 */
+                (case when (pain.is_interest_Instead = '0' ) then '否'
+                     when (pain.is_interest_Instead = '1' ) then '是'
+                end) as "isInterestInstead", /* 利息是否代收代付 */
+                                    pad.honghuo_balance as "hongHuoAmount",/*宏获账户余额*/
+                                    pad.fund_side_balance as "fundSideAmount",/*资方账户余额*/
+                pad.honghuo_bail_account_balance as "hongHuoBailAmount",/*宏获保证金账户余额*/
+             (select name from plms_account_info where status != '0' and code = pain.fund_side_code) as "fundSideAcountName",/*资方收款账户名*/
+             (select account_no from plms_account_info where status != '0' and code = pain.fund_side_code)  as "fundSideAccountNo",/*资方收款账户开户行*/
+             (select bank from plms_account_info where status != '0' and code = pain.fund_side_code)  as "fundSideBank",/*资方收款账户账号*/
+             (select name from plms_account_info where status != '0' and code = pain.honghuo_code) as "hongHuoAcountName",/*宏获收款账户名*/
+             (select account_no from plms_account_info where status != '0' and code = pain.honghuo_code)  as "hongHuoAccountNo",/*宏获收款账户开户行*/
+             (select bank from plms_account_info where status != '0' and code = pain.honghuo_code)  as "hongHuoBank",/*宏获收款账户账号*/
+             (select name from plms_account_info where status != '0' and code = pain.honghuo_bail_account_code) as "hongHuoBailAcountName",/*宏获保证金收款账户户名*/
+             (select account_no from plms_account_info where status != '0' and code = pain.honghuo_bail_account_code)  as "hongHuoBailAccountNo",/*宏获保证金收款账户开户行*/
+             (select bank from plms_account_info where status != '0' and code = pain.honghuo_bail_account_code)  as "hongHuoBailBank"/*宏获保证金收款账户账号*/
+      from plms_contract_info pci,
+           plms_apply_info pai,
+           plms_distributor pd,
+           plms_city pc,
+           plms_account_detail pad,
+           plms_apply_interesting pain
+     where pci.apply_code = pai.code
+       and pai.distribute_code = pd.code
+       and pd.city_no = pc.code
+       and pci.code = pad.contract_code
+       and pain.contract_code = pci.code
+       and pci.status != '0'
+       and pai.status != '0'
+       and pd.status != '0'
+       and pc.status != '0'
+       and pad.status != '0'
+       and pain.status != '0'
+       and pci.code=#{contractCode,jdbcType=VARCHAR}
+    </select>
+</mapper>

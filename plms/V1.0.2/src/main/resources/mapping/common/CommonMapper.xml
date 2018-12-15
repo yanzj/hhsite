@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.CommDao">
+
+    <!--查询序列-->
+    <select id="currval" resultType="java.lang.Long" parameterType="java.lang.String">
+        select current_value FROM sequence WHERE name=#{seqName}
+    </select>
+
+    <!--更改序列-->
+    <update id="nextval" parameterType="java.lang.String">
+        UPDATE sequence SET current_value = current_value + increment WHERE name=#{seqName}
+    </update>
+
+    <select id="getUUID" resultType="java.lang.String"  >
+        select uuid() from dual
+    </select>
+
+    <select id="getSysParam" resultType="com.vilio.plms.pojo.SysParam"  >
+        SELECT
+            id,
+            code,
+            syscode,
+            sysname,
+            item_id as itemId,
+            item_name as itemName,
+            item_cval as itemCval,
+            item_ival as itemIval,
+            item_desc as itemDesc,
+            remark,
+            remark1,
+            remark2,
+            create_date as createDate,
+            modify_date as modifyDate,
+			DATE_FORMAT(execute_time,'%Y-%m-%d') as executeTime
+        FROM
+            plms_sysparam_info
+        WHERE item_id = #{itemId}
+    </select>
+
+
+    <update id="setItemVal" parameterType="com.vilio.plms.pojo.SysParam" >
+      UPDATE plms_sysparam_info
+        <set >
+        <if test="itemCval != null and itemCval != '' " >
+            item_cval = #{itemCval,jdbcType=VARCHAR},
+        </if>
+        <if test="itemIval != null and itemIval != '' ">
+            item_ival = #{itemIval,jdbcType=VARCHAR},
+        </if>
+        <if test="executeTime != null and executeTime != '' ">
+            execute_time = #{executeTime,jdbcType=VARCHAR},
+        </if>
+        </set>
+        WHERE  item_id = #{itemId}
+    </update>
+
+    <select id="getFileModelByType" resultType="com.vilio.plms.pojo.PlmsFileModels"  >
+        SELECT
+        id,
+        code,
+        type,
+        file_code as fileCode,
+        remark
+        FROM
+        plms_file_models
+        WHERE type = #{type}
+    </select>
+
+    <select id="getParentAgentByAgentCode" resultType="java.util.Map" parameterType="java.lang.String" >
+        SELECT
+            bms_code AS bmsAgentCode,
+            CODE AS agentCode
+        FROM plms_agent
+        WHERE
+            STATUS = '1'
+        AND CODE = (
+            SELECT t.parent_user
+            FROM plms_agent t
+            WHERE t. CODE = #{agentCode}
+        )
+    </select>
+
+
+</mapper>

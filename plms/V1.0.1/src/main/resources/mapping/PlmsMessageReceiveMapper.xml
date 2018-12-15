@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.vilio.plms.dao.PlmsMessageReceiveMapper">
+
+    <insert id="savePlmsMessageReceive"
+            parameterType="com.vilio.plms.pojo.PlmsMessageReceive">
+
+        INSERT
+        INTO   plms_message_receive
+        (
+        code
+        ,SERIAL_NO
+        ,TITLE
+        ,CONTENT
+        ,SENDER_COMPANY_CODE
+        ,SENDER_COMPANY_NAME
+        ,SENDER_DEPARTMENT_CODE
+        ,SENDER_DEPARTMENT_NAME
+        ,SENDER_IDENTITY_ID
+        ,SENDER_NAME
+        ,RECEIVER_IDENTITY_ID
+        ,INTERNAL_PARAM
+        )
+        VALUES  (
+        #{code ,jdbcType=VARCHAR}
+        ,#{serialNo ,jdbcType=VARCHAR}
+        ,#{title,jdbcType=VARCHAR}
+        ,#{content,jdbcType=VARCHAR}
+        ,#{senderCompanyCode,jdbcType=VARCHAR}
+        ,#{senderCompanyName,jdbcType=VARCHAR}
+        ,#{senderDepartmentCode,jdbcType=VARCHAR}
+        ,#{senderDepartmentName,jdbcType=VARCHAR}
+        ,#{senderIdentityId,jdbcType=VARCHAR}
+        ,#{senderName,jdbcType=VARCHAR}
+        ,#{receiverIdentityId,jdbcType=VARCHAR}
+        ,#{internalParam,jdbcType=VARCHAR}
+        )
+
+    </insert>
+</mapper>

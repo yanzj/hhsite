@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.BmsBaseTableDao">
+
+        <!--查询核心系统城市-->
+        <select id="qryBmsCity" resultType="java.util.Map">
+            SELECT
+            code code,
+            abbr_name abbrName,
+            full_name fullName,
+            area_code areaCode,
+            order_by_no orderByNo,
+            created_by createdBy,
+            created_at createdAt,
+            updated_at updatedAt,
+            updated_by updateBy,
+            version version
+            FROM
+            city
+        </select>
+        <!--查询核心系统区域-->
+        <select id="qryBmsAreaList" parameterType="java.util.Map" resultType="java.util.Map">
+            <![CDATA[
+        SELECT
+            code code,
+            abbr_name abbrName,
+            full_name fullName,
+            order_by_no orderByNo,
+            created_by createdBy,
+            created_at createdAt,
+            updated_at updatedAt,
+            updated_by updateBy,
+            version version
+        FROM
+            area
+        ]]>
+        </select>
+        <!--查询核心系统区域-->
+        <select id="qryBmsAgentList" parameterType="java.util.Map" resultType="java.util.Map">
+            <![CDATA[
+        SELECT
+            id id,
+            app_key appKey,
+            name name,
+            channel_id channelId,
+            post post,
+            name name,
+            cellphone cellphone,
+            email email,
+            parent_id parentId,
+            is_enabled isEnabled,
+			created_at createdAt,
+			created_by createdBy,
+			updated_at updateAt,
+			updated_by updateBy,
+			version version
+        FROM
+            channel_members
+        ]]>
+        </select>
+
+        <!--查询核心系统公司表-->
+        <select id="qryBmsCompanyList" parameterType="java.util.Map" resultType="java.util.Map">
+            <![CDATA[
+        SELECT
+            app_key appKey,
+            type type,
+            code code,
+            name name,
+            short_name shortName,
+            output_cumtomer_phone outputCumtomerPhone,
+            is_enabled isEnabled,
+            legal legal,
+            email email,
+			phone phone,
+			account_name accountName,
+			bank_account bankAccount,
+			address address,
+			output_materials outputMaterials,
+			created_at createdAt,
+			created_by createdBy,
+			updated_at updatedAt,
+			updated_by updatedBy
+        FROM
+            external_institutions
+        ]]>
+        </select>
+
+        <!--查询核心系统渠道表-->
+        <select id="qryBmsDistributeList" parameterType="java.util.Map" resultType="java.util.Map">
+            <![CDATA[
+        SELECT
+            id id,
+            app_key appKey,
+            channel_type channelType,
+            parent_id parentId,
+            channel_name channelName,
+            channel_short_name channelShortName,
+            city city,
+            area area,
+            manager manager,
+            trial_group trialGroup,
+            review_group reviewGroup,
+            cfa_group cfaGroup,
+            contract_group contractGroup,
+            loan_group loanGroup,
+            warrant_group warrantGroup,
+            entry_group entryGroup,
+            data_view_group dataViewGroup,
+            sign_cooperation_agreement signCooperationAgreement,
+            collection_principal collectionPrincipal,
+            collection_interest collectionInterest,
+            is_full_repurchase isFullRepurchase,
+            is_enabled isEnabled,
+            sort_number sortNumber,
+            created_at createdAt,
+            created_by createdBy,
+            updated_at updatedAt,
+            updated_by updatedBy,
+            version version
+        FROM
+            channels
+        ]]>
+        </select>
+
+    </mapper>
+

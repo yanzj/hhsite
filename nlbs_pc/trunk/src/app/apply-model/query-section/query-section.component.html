@@ -1,0 +1,92 @@
+  <div class="row">
+    <ol class="breadcrumbNav col-12">
+      <li class="active">进件申请查询</li>
+    </ol>
+
+  </div>
+
+  <div class="row">
+      <div class="col-12">
+        <hr class="breadcrumbNavLine">
+      </div>
+  </div>
+
+  <div class="row">
+    <div class="condition-search">
+      <form>
+        <div class="citys" id="cityWraper">
+          <div class="queryName" >城市：</div>
+          <select class="width-100 queryContent" id="cityList" name="cityCode" [(ngModel)]="cityValue" >
+            <option></option>
+          </select>
+        </div>
+        <div class="queryName">借款人：</div>
+        <input class="msg-input width-100 queryContent" type="text" id="loanCustomer" name="loanCustomer" maxlength="15"/>
+        <div class="queryName">申请日期：</div>
+        <input class="msg-input width-100 datestart"  type="text" id="applyTimeBegin" name="applyTimeBegin" readonly/>
+        <div class="queryName" style="margin-left:0">至</div>
+        <input class="msg-input width-100 queryContent" type="text" id="applyTimeEnd" name="applyTimeEnd" readonly/>
+
+        <div class="queryName">状态</div>
+        <select class="width-100 queryContent" id="applyStatusList" name="applyStatus">
+          <option></option>
+        </select>
+        <button class="search-btn margin-left-20" id="search_btns" (click)="onSearchBtnClick()">搜索</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <table class="table width-100per" border="0" cellpadding="0" cellspacing="0">
+        <thead>
+          <tr>
+            <th class="width-16"></th>
+            <th class="width-100">城市</th>
+            <th class="width-100">借款人</th>
+            <th class="width-100">借款期限（月）</th>
+            <th class="width-120">申请金额（万元）</th>
+            <th class="width-140">申请时间</th>
+            <th class="width-100">状态</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of currentItemLists">
+            <td class="width-16"></td>
+            <td class="width-80">{{item.cityName}}</td>
+            <td class="width-100">{{item.customerName}}</td>
+            <td class="width-100 txtc">{{item.loanPeriodName}}</td>
+            <td class="width-120 txtc"><i class="digit">{{item.applyAmount/10000 |permil}}</i></td>
+            <td class="width-140">{{item.applyDatetime}}</td>
+            <td class="width-100">{{item.loanStatusName}}</td>
+            <td class="operation">
+              <a href="javascript:;" (click)="onFirstOperationClick(item)">{{item.operate}}</a>
+              <span  *ngIf =" (item.material == '2')&& (item.loanStatusCode == '02'||item.loanStatusCode == '03') ? true : false ">
+                <i>|</i>
+                <a href="javascript:;" (click)="onSecondOperationClick(item)">补充材料</a>
+              </span>
+               <span  *ngIf ="(item.material == '1')&& (item.loanStatusCode == '01') ? true : false ">
+                <i>|</i>
+                <a href="javascript:;" (click)="onSecondOperationClickDelete(item)">删除</a>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="table_footer col-12">
+      <div class="table_ll">
+        共{{totalListsCount}}条，显示第{{startListIndex}}至{{endListIndex}}条
+      </div>
+      <div class="table_rr">
+        <div class="tablePageCode"></div>
+      </div>
+    </div>
+  </div>
+
+
+

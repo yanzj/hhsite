@@ -1,0 +1,56 @@
+<!--借款人信息弹窗start-->
+<div class="popup dataInfoPersonPopup">
+  <header class="header">
+    <h4 class="header-title">借款人信息详情</h4>
+    <span class="close-btn" (click)="popupCloseBtn()">X</span>
+  </header>
+  <div class="popup-main">
+    <div class="row">
+      <div class="filed-name col-3">姓名：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.name}}</div>
+      <div class="filed-name col-3">曾用名：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.nameUsed}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">证件类型：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.idType}}</div>
+      <div class="filed-name col-3">证件号码：</div>
+      <div class="filed-text col-3" style="text-align: left">{{selectItemPopViewObj.idNo}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">证件有效期：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.periodOfValidityStart?(selectItemPopViewObj.periodOfValidityStart|date:'yyyy-MM')+' 至':''}}
+        {{selectItemPopViewObj.periodOfValidityEnd=='长期有效'? selectItemPopViewObj.periodOfValidityEnd:(selectItemPopViewObj.periodOfValidityEnd|date:'yyyy-MM')}}</div>
+      <div class="filed-name col-3">移动电话：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.mobilePhone}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">年龄：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.age?selectItemPopViewObj.age+'岁':''}}</div>
+      <div class="filed-name col-3">当前婚姻状况：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.marriage}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">工作单位：</div>
+      <div class="filed-text  col-9">{{selectItemPopViewObj.organization}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">职位：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.position}}</div>
+      <div class="filed-name col-3">年收入：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.annual|changeUnit}}万元</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">家庭地址：</div>
+      <div class="filed-text col-9">{{selectItemPopViewObj.address}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">婚史信息：</div>
+      <div class="filed-text col-9">{{selectItemPopViewObj.marriageInfo}}</div>
+    </div>
+  </div>
+
+  <button class="orange-button margin-top-40 margin-bottom-0" (click)="popupCloseBtn()">返回</button>
+
+</div>
+<!--借款人信息弹窗end-->

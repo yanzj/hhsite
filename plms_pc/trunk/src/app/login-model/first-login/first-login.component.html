@@ -1,0 +1,25 @@
+<div class="bg">
+</div>
+<!--  首次登录页面显示  -->
+<div class="login-container">
+  <div class="logo-title">
+    <div class="logo float-left"></div>
+    <p class="logo-subtitle float-right">业务管理系统</p>
+  </div>
+  <div id="warn_msg" class="warn-msg">首次登录，请修改密码</div>
+  <input id="telPhone" class="telPhone" disabled="disabled">
+  <div class="logo-lock">
+    <i></i>
+    <input type="password" placeholder="原密码" class="original_word password" [ngClass]="{errborder:original}" maxlength="16">
+  </div>
+  <div class="logo-lock">
+    <i></i>
+    <input type="password" placeholder="新密码" class="new_word newPassword" [ngClass]="{errborder:new}" maxlength="16">
+  </div>
+  <div class="psw-tip">至少6位字符</div>
+  <div class="logo-lock margin-top-20">
+    <i></i>
+    <input type="password" placeholder="确认密码" class="confirm_word newPasswordAgain" (keyup.enter)="save()" [ngClass]="{errborder:confirm}" maxlength="16">
+  </div>
+  <button class="psw-save" (click)="save()">保&nbsp;&nbsp; &nbsp; &nbsp;存</button>
+</div>

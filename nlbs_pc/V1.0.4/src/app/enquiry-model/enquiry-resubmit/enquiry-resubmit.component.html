@@ -1,0 +1,191 @@
+
+<div class="row">
+  <ol class="breadcrumbNav col-12">
+    <li><a (click)="enquireSearch()">{{resubmit}}</a><i>></i></li>
+    <li class="active">房产评估<i>|</i></li>
+    <li><a (click)="history()">历史</a></li>
+  </ol>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <hr class="breadcrumbNavLine">
+  </div>
+</div>
+
+<div>
+  <div class="progress-box">
+    <div class="progress-com">
+
+      <div class="progress-line">
+        <div *ngFor=" let item of itemStatusLists; let i=index ">
+                <span class="progress-circle circle{{i+1}} active title_cur"
+                      [ngClass]="{'title_cur':i<=itemSelectIndex}">
+                  <!--<i class="bigCircle" *ngIf=" itemSelectStatus == item ? true:false "></i>-->
+                  <i [ngClass]="{'bigCircle':i==itemSelectIndex}"></i>
+                  <ins [ngClass]="{'ins_line':i<itemSelectIndex}"></ins>
+                  <em [ngStyle]="{'color':i<=itemSelectIndex ? '#333' : '#999' }"
+                      [ngClass]="{'ProSeleceted':i==itemSelectIndex}">{{item}}</em>
+                </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+    <div class="filed-name col-2"><span>*</span>城市：</div>
+
+    <div class="filed-text">{{cityName}}</div>
+</div>
+
+<div class="row">
+    <div class="filed-name col-2"><span>*</span>房屋类型：</div>
+    <div class="filed-text col-2">{{houseName}}</div>
+</div>
+
+<!-- 公寓评估的结果 -->
+<div class="row">
+  <div class="col-6" *ngIf="isL!=2">
+    <div class="row">
+      <div class="company-title">{{lValue}}</div>
+    </div>
+    <div id="leftDetailDIV" *ngFor=" let item of leftDisplayTitleList; let i = index " class="row">
+        <div class="filed-name col-4"><span>*</span>{{item}}：</div>
+        <div class="col-8 white-space-nowrap">
+          <div class="filed-text" *ngIf=" i != (leftDisplayTitleList.length -1) ? true : false " >{{leftValueList[i]}}</div>
+          <div class="filed-text" *ngIf=" i == (leftDisplayTitleList.length -1)&&(isGotoPerson[0] != '待评估' && isGotoPerson[0] != '评估失败')">{{leftValueList[i]}}</div>
+          <input type="text"  class="msg-input width-115" maxlength="8" id="leftPriceID" *ngIf=" i == (leftDisplayTitleList.length -1) &&(isGotoPerson[0] == '待评估' || isGotoPerson[0] == '评估失败')">
+          <div class="filed-text uinit" *ngIf=" i == (leftDisplayTitleList.length -1)  &&(isGotoPerson[0] == '待评估' || isGotoPerson[0] == '评估失败')">万元</div>
+        </div>
+    </div>
+
+    <div class="row margin-top-40" *ngIf = " isGotoPerson[0] == '待评估'||isGotoPerson[0]=='评估失败'" >
+      <div class="col-4">
+        <a href="javascript:;" class="upload float-right" *ngIf="!isShow&&!isShow2">
+          <!--<div class="upContain">-->
+          <div class="explain">请上传评估截图</div>
+          <!-- 将input中的multiple去掉设置为单个上传的文件 -->
+          <input class="uploadof-material" type="file" ng2FileSelect [uploader]="uploader"
+                 (change)="selectedFileOnChanged($event)"/>
+          <!--</div>-->
+        </a>
+        <div class="container float-right" *ngIf="isShow">
+          <div class="upload-file-container">
+            <div>
+              <p *ngIf="!isUp" style="color: #CCCCCC">上传失败</p>
+              <div *ngIf="!isUp">
+                <a class="upload2 text-link" (click)="upAgiain()">重新上传</a>
+                <a (click)="deleteFile()" class="upload2 text-link">删除</a>
+              </div>
+              <div class="progress" *ngIf="isUp">
+                <div class="progress-bar progress-bar-warning progress-bar-striped active"
+                     [style.width.%]=progressLength>
+                  <div class="progress-value"><span>正在上传</span>{{progressLength}}%</div>
+                </div>
+              </div>
+              <p class="margin-top-15 image-name">{{fileName}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="container-up-success float-right" *ngIf="isShow2">
+          <div class="delete-mask" (click)="deleteUploadFile()">
+            <i class="delete-icon"></i>
+          </div>
+          <span class="delfile">
+              <img src="" alt="" class="upload-img" id="shiLianImg">
+            </span>
+          <div class="width-160">
+            <p class="image-name">{{fileName}}</p>
+            <p  class="upload-time">{{uploadTime}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 城市评估 -->
+  <div class="col-6" *ngIf="isR!='2'">
+    <div class="row">
+      <div class="col-12 company-title">{{rValue}}</div>
+    </div>
+    <div id="rightDetailDIV" *ngFor=" let item of rightDisplayTitleList; let i = index " class="row">
+          <div class="filed-name col-4"><span>*</span>{{item}}：</div>
+      <div class="col-8 white-space-nowrap">
+        <div class="filed-text" *ngIf=" i != (rightDisplayTitleList.length -1) ? true : false " >{{rightValueList[i]}}</div>
+        <div class="filed-text" *ngIf=" i == (rightDisplayTitleList.length -1)&&(isGotoPerson[1] != '待评估' && isGotoPerson[1] != '评估失败')">{{rightValueList[i]}}</div>
+        <input type="text"  class="msg-input width-115" maxlength="8" id="rightPriceID" *ngIf=" i == (rightDisplayTitleList.length -1)  &&(isGotoPerson[1] == '待评估' || isGotoPerson[1] == '评估失败')">
+        <div class="filed-text uinit" *ngIf=" i == (rightDisplayTitleList.length -1) &&(isGotoPerson[1] == '待评估' || isGotoPerson[1] == '评估失败')">万元</div>
+      </div>
+    </div>
+
+    <div class="row margin-top-40"  *ngIf = " isGotoPerson[1] == '待评估'||isGotoPerson[1]=='评估失败' ">
+      <a href="javascript:;" class="upload" *ngIf="!isShow3&&!isShow4">
+        <!--<div class="upContain">-->
+        <div class="explain">请上传评估截图</div>
+        <!-- 将input中的multiple去掉设置为单个上传的文件 -->
+        <input class="uploadof-material" type="file" ng2FileSelect [uploader]="uploader2"
+               (change)="selectedFileOnChanged2($event)"/>
+        <!--</div>-->
+      </a>
+      <div class="container" *ngIf="isShow3">
+        <div class="row upload-file-container">
+          <div class="col-12">
+            <p *ngIf="!isUp2" style="color: #CCCCCC">上传失败</p>
+            <div *ngIf="!isUp2">
+              <a class="upload2 text-link" (click)="upAgiain2()">重新上传</a>
+              <a (click)="deleteFile2()" class="upload2 text-link">删除</a>
+            </div>
+            <div class="progress" *ngIf="isUp2">
+              <div class="progress-bar progress-bar-warning progress-bar-striped active"
+                   [style.width.%]=progressLength2>
+                <div class="progress-value"><span>正在上传</span>{{progressLength2}}%</div>
+              </div>
+            </div>
+            <p class="image-name margin-top-15">{{fileName2}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="container-up-success" *ngIf="isShow4">
+        <div class="delete-mask" (click)="deleteUploadFile2()"><i class="delete-icon"></i></div>
+        <span class="delfile">
+              <img src=" " alt="" class="upload-img" id="chengShiImg">
+            </span>
+      </div>
+      <p *ngIf="isShow4">{{fileName2}}</p>
+      <p class="upload-time">{{uploadTime2}}</p>
+    </div>
+
+
+  </div>
+</div>
+
+<!--</div>-->
+
+<div class="row margin-top-40 margin-bottom-20">
+  <div class="col-12" >
+    <div class="message-title-line"></div>
+    <div class="message-title-name">综合评估结果</div>
+    <div class="label_hr">
+    </div>
+  </div>
+</div>
+
+<div class="row">
+      <div class="filed-name col-2">评估时间：</div>
+      <div class="filed-text col-8"></div>
+</div>
+
+<div class="row">
+      <div class="filed-name col-2">评估价：</div>
+      <div class="filed-text enquire-result col-8">待评估</div>
+</div>
+
+<div class="row  margin-top-40">
+  <div class="col-12">
+    <div class="orange-button float-left" (click)="submitPersonInputPriceDataInfoFunc()">提交</div>
+    <div class="gray-button float-left margin-left-20" (click)="onBackEnquiryBtnClick()">返回{{resubmit}}</div>
+
+  </div>
+
+
+</div>

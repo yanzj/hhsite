@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.PlmsCustomerFeeInfoDao">
+
+    <insert id="saveCustomerFeeInfo" parameterType="com.vilio.plms.pojo.PlmsCustomerFeeInfo">
+        INSERT INTO plms_customer_fee_info (
+            code,
+            service_charge_rate, service_charge_amount,
+            service_charge_receive_time,
+            guarantee_fee_rate,guarantee_fee_amount,
+            guarantee_fee_receive_time,
+            bail_rate,bail_amount,
+            bail_receive_time,
+            performance_bond_rate, performance_bond_amount,
+            second_insurance_name,
+            second_insurance_fee_rate, second_insurance_fee_amount,
+            contract_code,
+            status,
+            create_date,
+            modify_date,
+            service_charge_receive_amouont,
+            guarantee_fee_receive_amount,
+            bail_receive_amount,
+            performance_bond_receive_amount,
+            second_insurance_fee_receive_amount,
+            performance_bond_receive_time,
+            second_insurance_fee_receive_time
+        )
+        VALUES
+            (
+                #{code},
+                #{serviceChargeRate}, #{serviceChargeAmount},
+                #{serviceChargeReceiveTime},
+                #{guaranteeFeeRate}, #{guaranteeFeeAmount},
+                #{guaranteeFeeReceiveTime},
+                #{bailRate}, #{bailAmount},
+                #{bailReceiveTime},
+                #{performanceBondRate}, #{performanceBondAmount},
+                #{secondInsuranceName},
+                #{secondInsuranceFeeRate}, #{secondInsuranceFeeAmount},
+                #{contractCode},
+                #{status},
+                #{createDate},
+                #{modifyDate},
+                #{serviceChargeReceiveAmount},
+                #{guaranteeFeeReceiveAmount},
+                #{bailReceiveAmount},
+                #{performanceBondReceiveAmount},
+                #{secondInsuranceFeeReceiveAmount},
+                #{performanceBondReceiveTime},
+                #{secondInsuranceFeeReceiveTime}
+            )
+    </insert>
+</mapper>

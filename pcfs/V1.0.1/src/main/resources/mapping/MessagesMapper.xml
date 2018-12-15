@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.pcfs.dao.MessagesDao">
+
+
+    <insert id="insertMessagesForWaitMessage" parameterType="java.lang.String">
+        insert pcfs_messages(message_id,user_id,message_title,message_content,send_time,read_flag,
+        status,message_type,send_status,message_ticker,message_subtitle,send_method,source_system)
+        select a.message_id,a.user_id,a.message_title,a.message_content,a.send_time,'0','1',
+        a.message_type,'0',a.message_ticker,a.message_subtitle,a.send_method,a.source_system
+        from pcfs_wait_send_message a,pcfs_login_info b WHERE a.user_id = b.user_id and a.batch_no=#{batchNo}
+    </insert>
+
+    <update id="updateMessagesByBatchNo" parameterType="java.util.Map">
+          UPDATE pcfs_messages
+          SET send_status=#{newSendStatus},batch_no=#{batchNo}
+          WHERE send_status=#{oldSendStatus} and status!='0' and send_method=#{sendMethod}
+    </update>
+
+    <select id="queryMessagesByBatchNo" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            a.id,
+            a.message_id as messageId,
+            a.user_id as userId,
+            a.message_title as messageTitle,
+            a.message_content as messageContent,
+            a.reality_send_time as realitySendTime,
+            a.send_time as sendTime,
+            a.read_flag as readFlag,
+            a.create_time as createTime,
+            a.update_time as updateTime,
+            a.remark1,
+            a.remark2,
+            a.`status`,
+            a.message_type as messageType,
+            a.send_status as sendStatus,
+            a.batch_no as batchNo,
+            a.message_ticker as messageTicker,
+            a.message_subtitle as messageSubtitle,
+            a.send_method as sendMethod,
+            b.device_token as deviceToken,
+            b.channel,
+            a.source_system as sourceSystem
+        FROM
+            pcfs_messages a,pcfs_login_info b
+        WHERE batch_no=#{batchNo} and a.user_id=b.user_id and b.login_status='1'
+    </select>
+
+
+    <update id="updateMessagesById" parameterType="java.util.Map">
+        UPDATE pcfs_messages
+        SET send_status=#{sendStatus},ret_code=#{retCode},ret_msg=#{retMsg}
+        WHERE message_id=#{messageId}
+    </update>
+
+    <select id="queryMessagesCountByReadFlag" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(1) from pcfs_messages WHERE read_flag=#{readFlag} and status!='0' and user_id=#{userId}
+
+    </select>
+
+</mapper>

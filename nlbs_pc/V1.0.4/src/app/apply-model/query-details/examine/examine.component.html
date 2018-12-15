@@ -1,0 +1,174 @@
+<!-- 审批通知start-->
+<div class="tab_content">
+  <!--一次抵押start-->
+  <div class="examine-one" *ngIf="approvalNotice.mortgageList && approvalNotice.mortgageList.length == 1">
+    <div class="label_hr min-margin-top39"></div>
+    <div class="row">
+      <div class="filed-name col-2">产品名称：</div>
+      <div class="filed-text col-2">{{approvalNotice.productName}}</div>
+      <div class="filed-name col-2">业务经理：</div>
+      <div class="filed-text col-2">{{approvalNotice.agentName}}</div>
+      <div class="filed-name col-2">批复日期：</div>
+      <div class="filed-text col-2">{{approvalNotice.approvalDate|date:'yyyy-MM-dd'}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-2">借款人：</div>
+      <div class="filed-text col-10">{{approvalNotice.loaners}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-2">批复额度：</div>
+      <div class="filed-text col-2">{{approvalNotice.replyAmount|keepTwoDecimal|permil}}元</div>
+      <div class="filed-name col-2">批复期限：</div>
+      <div class="filed-text col-2">{{approvalNotice.replyTimeLimit?approvalNotice.replyTimeLimit+'个月':''}}</div>
+      <div class="filed-name col-2">年化利率：</div>
+      <div class="filed-text col-2">{{approvalNotice.yearRate*100|keepTwoDecimal|permil}}%</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-2">抵押物评估价：</div>
+      <div class="filed-text col-2">{{approvalNotice.evaluationPrice|keepTwoDecimal|permil}}元</div>
+      <div class="filed-name col-2">抵押权债权总额：</div>
+      <div class="filed-text col-2">{{approvalNotice.pecuniaCredita|keepTwoDecimal|permil}}元</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-2">抵押类型：</div>
+      <div class="filed-text col-2">{{approvalNotice.mortgageTypeName}}</div>
+      <div class="filed-name col-2">综合抵押率：</div>
+      <div class="filed-text col-2">{{approvalNotice.mortgageRate*100|keepTwoDecimal|permil}}%</div>
+      <div class="filed-name col-2">合同抵押物价值：</div>
+      <div class="filed-text col-2">{{approvalNotice.mortgageAssessAmount|keepTwoDecimal|permil}}元</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-2">担保额度：</div>
+      <div class="filed-text col-2">{{approvalNotice.securedAmount|keepTwoDecimal|permil}}元</div>
+      <div class="filed-name col-2">担保费率：</div>
+      <div class="filed-text col-2">{{approvalNotice.securedRate*100|keepTwoDecimal|permil}}%</div>
+      <div class="filed-name col-2">担保费：</div>
+      <div class="filed-text col-2">{{approvalNotice.securedFee|keepTwoDecimal|permil}}元</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-2">保证金比例：</div>
+      <div class="filed-text col-2">{{approvalNotice.cashDepositRate*100|keepTwoDecimal|permil}}%</div>
+      <div class="filed-name col-2">保证金金额：</div>
+      <div class="filed-text col-2">{{approvalNotice.cashDepositAmount|keepTwoDecimal|permil}}元</div>
+      <div class="filed-name col-2">服务费：</div>
+      <div class="filed-text col-2">{{approvalNotice.serviceCharge|keepTwoDecimal|permil}}元</div>
+    </div>
+    <div class="label_hr min-margin-top39"></div>
+    <div class="row">
+      <div class="col-2">
+        <div class= "height-120 filed-name-bg"><div class="filed-name-modify">放款条件：</div></div>
+      </div>
+      <div class="col-10">
+        <div class="height-120"><div class="filed-name-modify filed-name-modify-txt">{{approvalNotice.offerLoansCondition}}</div></div>
+      </div>
+    </div>
+    <div class="label_hr min-margin-top39"></div>
+    <div class="row">
+      <div class="col-2">
+        <div class= "height-120 filed-name-bg"><div class="filed-name-modify">担保条件：</div></div>
+      </div>
+      <div class="col-10">
+        <div class="height-120"><div class="filed-name-modify filed-name-modify-txt">{{approvalNotice.securedCondition}}</div></div>
+      </div>
+    </div>
+    <div class="label_hr min-margin-top39"></div>
+    <div class="row margin-top-40">
+      <div class="col-2">
+        <button class="orange-button float-left" (click)="querySection()">返回进件查询</button>
+      </div>
+    </div>
+  </div>
+  <!--一次抵押end-->
+  <!--多次抵押start-->
+  <!--*-->
+  <div class="examine" *ngIf="approvalNotice.mortgageList && approvalNotice.mortgageList.length > 1">
+    <div class="label_hr min-margin-top39"></div>
+    <div class="row">
+      <div class="filed-name col-2">产品名称：</div>
+      <div class="filed-text col-2">{{approvalNotice.productName}}</div>
+      <div class="filed-name col-2">业务经理：</div>
+      <div class="filed-text col-2">{{approvalNotice.agentName}}</div>
+      <div class="filed-name col-2">批复日期：</div>
+      <div class="filed-text col-2">{{approvalNotice.approvalDate|date:'yyyy-MM-dd'}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-2">借款人：</div>
+      <div class="filed-text col-10">{{approvalNotice.loaners}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-2">批复总额：</div>
+      <div class="filed-text col-2">{{approvalNotice.replyAmount |keepTwoDecimal|permil}}元</div>
+      <div class="filed-name col-2">批复期限：</div>
+      <div class="filed-text col-2">{{approvalNotice.replyTimeLimit?approvalNotice.replyTimeLimit+'个月':''}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-2">担保总额：</div>
+      <div class="filed-text col-2">{{approvalNotice.securedAmount|keepTwoDecimal|permil}}元</div>
+      <div class="filed-name col-2">担保费率：</div>
+      <div class="filed-text col-2">{{approvalNotice.securedRate*100|keepTwoDecimal|permil}}%</div>
+      <div class="filed-name col-2">担保费：</div>
+      <div class="filed-text col-2">{{approvalNotice.securedFee|keepTwoDecimal|permil}}元</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-2">保证金比例：</div>
+      <div class="filed-text col-2">{{approvalNotice.cashDepositRate*100|keepTwoDecimal|permil}}%</div>
+      <div class="filed-name col-2">保证金金额：</div>
+      <div class="filed-text col-2">{{approvalNotice.cashDepositAmount|keepTwoDecimal|permil}}元</div>
+      <div class="filed-name col-2">服务费：</div>
+      <div class="filed-text col-2">{{approvalNotice.serviceCharge|keepTwoDecimal|permil}}元</div>
+    </div>
+    <div class="label_hr min-margin-top39"></div>
+    <div *ngFor="let item of approvalNotice.mortgageList">
+      <div class="row">
+        <div class="filed-name col-2">产证编号：</div>
+        <div class="filed-text col-2">{{item.certificateNumber}}</div>
+        <div class="filed-name col-2">评估价：</div>
+        <div class="filed-text col-2">{{item.evaluationPrice|keepTwoDecimal|permil}}元</div>
+        <div class="filed-name col-2">抵押权债权总额：</div>
+        <div class="filed-text col-2">{{item.pecuniaCredita|keepTwoDecimal|permil}}元</div>
+      </div>
+      <div class="row">
+        <div class="filed-name col-2">批复金额：</div>
+        <div class="filed-text col-2">{{item.replyAmount|keepTwoDecimal|permil}}元</div>
+        <div class="filed-name col-2">担保额度：</div>
+        <div class="filed-text col-2">{{item.securedAmount|keepTwoDecimal|permil}}元</div>
+        <div class="filed-name col-2">年化利率：</div>
+        <div class="filed-text col-2">{{item.yearRate*100|keepTwoDecimal|permil}}%</div>
+      </div>
+      <div class="row">
+        <div class="filed-name col-2">抵押类型：</div>
+        <div class="filed-text col-2">{{item.mortgageTypeName}}</div>
+        <div class="filed-name col-2">抵押率：</div>
+        <div class="filed-text col-2">{{item.mortgageRate*100|keepTwoDecimal|permil}}%</div>
+        <div class="filed-name col-2">合同抵押物价值：</div>
+        <div class="filed-text col-2">{{item.mortgageAssessAmount|keepTwoDecimal|permil}}元</div>
+      </div>
+      <div class="label_hr min-margin-top39"></div>
+    </div>
+    <div class="row">
+      <div class="col-2">
+        <div class= "height-120 filed-name-bg"><div class="filed-name-modify">放款条件：</div></div>
+      </div>
+      <div class="col-10">
+        <div class="height-120"><div class="filed-name-modify filed-name-modify-txt">{{approvalNotice.offerLoansCondition}}</div></div>
+      </div>
+    </div>
+    <div class="label_hr min-margin-top39"></div>
+    <div class="row">
+      <div class="col-2">
+        <div class= "height-120 filed-name-bg"><div class="filed-name-modify">担保条件：</div></div>
+      </div>
+      <div class="col-10">
+        <div class="height-120"><div class="filed-name-modify filed-name-modify-txt">{{approvalNotice.securedCondition}}</div></div>
+      </div>
+    </div>
+    <div class="label_hr min-margin-top39"></div>
+    <div class="row margin-top-40">
+      <div class="col-2">
+        <button class="orange-button float-left" (click)="querySection()">返回进件查询</button>
+      </div>
+    </div>
+  </div>
+  <!--多次抵押end-->
+</div>
+<!-- 审批通知  end-->

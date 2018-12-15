@@ -1,0 +1,12 @@
+.upload2 {
+  cursor: pointer;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+/*enquiry CSS里面有用到*/
+.unvisible{
+  display: none;
+}

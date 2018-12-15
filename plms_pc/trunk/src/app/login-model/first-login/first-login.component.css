@@ -1,0 +1,27 @@
+@import "../login/login.component.css";
+/*  首次进入登录页面的样式 */
+
+.warn-msg{
+  margin-top: 70px;
+  width: 370px;
+  height: 40px;
+  border: 1px solid #E00;
+  background: #FCC;
+  padding-left: 18px;
+  line-height: 40px;
+}
+.telPhone{
+  line-height: 40px;
+  padding-left:18px ;
+  /*background: #EBEBE4;*/
+  margin-top: 20px;
+}
+.psw-tip{
+  margin-top: 20px;
+  color: #ffffff;
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.85);
+}
+.psw-save{
+  margin-top: 40px;
+}
+

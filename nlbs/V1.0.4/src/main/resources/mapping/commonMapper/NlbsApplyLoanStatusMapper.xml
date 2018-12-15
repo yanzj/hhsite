@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.nlbs.commonMapper.dao.NlbsApplyLoanStatusMapper" >
+    <select id="queryAllLocalStatus" resultType="java.util.HashMap" >
+        SELECT
+            s.code as loanStatusCode,
+            s.name as loanStatusName
+        FROM
+            nlbs_apply_loan_status s
+        WHERE
+            s.code != '99'
+        GROUP BY
+            s.code
+    </select>
+
+    <select id="queryApplyStatusMap" resultType="com.vilio.nlbs.commonMapper.pojo.NlbsApplyLoanStatus" >
+        SELECT
+        s.code,
+        s.name,
+        s.bms_code as bmsCode,
+        s.bms_name as bmsName
+        FROM
+        nlbs_apply_loan_status s
+    </select>
+
+</mapper>

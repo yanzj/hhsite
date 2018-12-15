@@ -1,0 +1,91 @@
+<!--还款到账查询-->
+<div class="row">
+  <ol class="breadcrumbNav col-12" >
+    <li (click)="querySection()"><a>还款到账查询</a><i>></i></li>
+    <li class="active">查看还款到账</li>
+  </ol>
+</div>
+
+<div class="row margin-bottom-20">
+  <div class="col-12">
+    <hr class="breadcrumbNavLine">
+  </div>
+</div>
+
+<app-professional-serial [professionalData]="professionalData"></app-professional-serial>
+
+<div class="row">
+  <div class="filed-name col-2">城市：</div>
+  <div class="filed-text col-2">{{currentItemLists.cityName}}</div>
+  <div class="filed-name col-2">渠道：</div>
+  <div class="filed-text col-2">{{currentItemLists.distributorName}}</div>
+  <div class="filed-name col-2">业务经理：</div>
+  <div class="filed-text col-2">{{currentItemLists.agentName}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">主借款人：</div>
+  <div class="filed-text col-2">{{currentItemLists.customerName}}</div>
+  <div class="filed-name col-2">资方：</div>
+  <div class="filed-text col-2">{{currentItemLists.fundSideName}}</div>
+  <div class="filed-name col-2">利息是否代收代付：</div>
+  <div class="filed-text col-2">{{currentItemLists.isInterestInstead=='1'?'是':'否'}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">授信金额：</div>
+  <div class="filed-text col-2">{{currentItemLists.totalQuota|lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">授信日期：</div>
+  <div class="filed-text col-2">{{currentItemLists.creditStartDate|date:'yyyy-MM-dd'}}</div>
+  <div class="filed-name col-2">授信期限：</div>
+  <div class="filed-text col-2">{{currentItemLists.creditPeriod?currentItemLists.creditPeriod+'个月':''}}</div>
+</div>
+
+
+<div class="row">
+  <div class="filed-name col-2">到账日期：</div>
+  <div class="filed-text col-2">{{currentItemLists.receiptsDate | date:'yyyy-MM-dd'}}</div>
+  <div class="filed-name col-2">还款金额：</div>
+  <div class="filed-text col-2">{{currentItemLists.receiptsAmount |dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">收款账户：</div>
+  <div class="filed-text col-2">{{currentItemLists.accountTypeName }}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">还款来源：</div>
+  <div class="filed-text col-2">{{currentItemLists.fundSourceName}}</div>
+  <div class="filed-name col-2">收款账户户名：</div>
+  <div class="filed-text col-6">{{currentItemLists.name}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">收款账户账号：</div>
+  <div class="filed-text col-2">{{currentItemLists.accountNo}}</div>
+  <div class="filed-name col-2">收款账户开户行：</div>
+  <div class="filed-text col-6">{{currentItemLists.bank}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">备注：</div>
+  <div class="filed-text col-2">{{currentItemLists.remark}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">登记人：</div>
+  <div class="filed-text col-2">{{currentItemLists.dealUser}}</div>
+  <div class="filed-name col-2">登记时间：</div>
+  <div class="filed-text col-2">{{currentItemLists.dealTime | date:'yyyy-MM-dd HH:mm:ss'}}</div>
+</div>
+
+<div class="row margin-top-40">
+  <div class="col-12">
+    <div class="img-list col-2" *ngFor="let item of currentItemLists.fileList let i=index">
+      <a class="img-box" (click)="downloadFile(item)"><img style="width:160px;height:160px;" src={{selectFileList[i]}}></a>
+      <p class="upload-file-name margin-top-10">{{item.fileName}}</p>
+      <!--<div class="upload-file-time">{{item.uploadTime}}</div>-->
+    </div>
+
+  </div>
+</div>
+
+<div class="orange-button col-2 padding-right-0 margin-top-40" (click)="querySection()">返回还款查询</div>

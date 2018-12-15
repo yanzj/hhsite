@@ -1,0 +1,13 @@
+.action{
+  float: right;
+}
+.margin-bottom-10{
+  margin-bottom: 10px;
+}
+.action:hover{
+  color: #FFA00A;
+  cursor: pointer;
+}
+.action:hover .icon-add-gray {
+  background-position: 14px -44px;
+}

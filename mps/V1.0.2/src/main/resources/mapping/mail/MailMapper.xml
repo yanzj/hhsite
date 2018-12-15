@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.mps.mail.dao.MailDao">
+
+
+    <insert id="insertMailInfo" parameterType="com.vilio.mps.mail.pojo.MailInfo">
+      INSERT INTO mps_email_info(
+            serial_no,
+            display_name,
+            user_name,
+            md5_pwd,
+            to_user_list,
+            to_cc_list,
+            subject,
+            content,
+            url_file_list,
+            timely_news,
+            send_status
+            ) VALUES(#{serialNo,jdbcType=VARCHAR},#{displayName,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},
+            md5(#{md5Pwd,jdbcType=VARCHAR}),#{toUserList,jdbcType=VARCHAR},#{toCcList,jdbcType=VARCHAR},#{subject,jdbcType=VARCHAR},
+            #{content,jdbcType=VARCHAR},#{urlFileList,jdbcType=VARCHAR},#{timelyNews,jdbcType=VARCHAR},#{sendStatus,jdbcType=VARCHAR})
+    </insert>
+
+
+      <update id="updateMailStatusBySerialNo" parameterType="com.vilio.mps.sms.pojo.Sms">
+            UPDATE mps_email_info m
+            SET m.send_status = #{sendStatus,jdbcType=VARCHAR},m.chl_state = #{chlState,jdbcType=VARCHAR},
+            m.chl_message = #{chlMessage,jdbcType=VARCHAR},
+            m.send_num = #{sendNum,jdbcType=VARCHAR}
+            WHERE
+            m.serial_no = #{serialNo,jdbcType=VARCHAR}
+      </update>
+
+</mapper>

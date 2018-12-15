@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.nlbs.bms.dao.BmsLoanMasterDao">
+
+    <select id="queryAllApplyList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT
+        *
+        FROM
+        (SELECT
+        *,
+        CASE WHEN x.successCount = x.totalCount AND x.totalCount > 0 AND x.originalStatusCode IN ('0081', '0090',
+        '0091', '0100') THEN '0100'
+        WHEN x.cancelCount = x.totalCount AND x.totalCount > 0 AND x.originalStatusCode IN ('0081', '0090', '0091',
+        '0100') THEN '1001'
+        WHEN x.refuseCount = x.totalCount AND x.totalCount > 0 AND x.originalStatusCode IN ('0081', '0090', '0091',
+        '0100') THEN '1002'
+        WHEN x.totalCount > x.successCount AND x.originalStatusCode IN ('0081', '0090', '0091', '0100') THEN '0091'
+        ELSE x.originalStatusCode
+        END AS loanStatusCode
+        FROM
+        (SELECT
+        lm.id as loanSerialNo,
+        lm.city_code as cityCode,
+        lm.city as cityName,
+        lm.customer_name as customerName,
+        lm.loanPeriod_code as loanPeriodCode,
+        lm.apply_period as loanPeriodName,
+        lm.loan_amount as applyAmount,
+        lm.apply_date as applyDatetime,
+        lm.loan_status as originalStatusCode,
+        lm.updated_at AS updatedAt,
+        (SELECT count(*) FROM contract_list cl WHERE cl.loan_id = lm.id AND cl.is_loan_contract = '1') AS totalCount,
+        (SELECT count(*) FROM contract_list cl WHERE cl.loan_id = lm.id AND cl.loan_status = '0100' AND
+        cl.is_loan_contract = '1') AS successCount,
+        (SELECT count(*) FROM contract_list cl WHERE cl.loan_id = lm.id AND cl.loan_status = '1001' AND
+        cl.is_loan_contract = '1') AS cancelCount,
+        (SELECT count(*) FROM contract_list cl WHERE cl.loan_id = lm.id AND cl.loan_status = '1002' AND
+        cl.is_loan_contract = '1') AS refuseCount
+        FROM
+        loan_master lm
+        WHERE 1 = 1
+        AND lm.loan_status != '1003'
+        <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+            AND   lm.city_code = #{cityCode}
+        </if>
+
+        <if test='customerName != null and customerName != "" and customerName != "null" and customerName != "undefined"'>
+            AND   lm.customer_name LIKE concat('%', #{customerName}, '%')
+        </if>
+
+        <if test='startDate != null and startDate != "" and startDate != "null" and startDate != "undefined"'>
+            AND   lm.apply_date > concat(#{startDate} , ' 00:00:00')
+        </if>
+        <if test='endDate != null and endDate != "" and endDate != "null" and endDate != "undefined"'>
+            AND   concat(#{endDate} , ' 23:59:59') > lm.apply_date
+        </if>
+        ) x
+        ORDER BY x.updatedAt DESC) y
+
+        WHERE 1=1
+
+        <if test='statusList != null and statusList.size() > 0'>
+            AND   y.loanStatusCode in
+            <foreach item="item" index="index" collection="statusList" open="(" separator="," close=")" >
+                #{item.loanStatusCode}
+            </foreach >
+        </if>
+    </select>
+
+    <select id="queryApplyList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT
+        *
+        FROM
+            (SELECT
+            *,
+            CASE WHEN x.successCount = x.totalCount AND x.totalCount > 0 AND x.originalStatusCode IN ('0081', '0090',
+            '0091', '0100') THEN '0100'
+            WHEN x.cancelCount = x.totalCount AND x.totalCount > 0 AND x.originalStatusCode IN ('0081', '0090', '0091',
+            '0100') THEN '1001'
+            WHEN x.refuseCount = x.totalCount AND x.totalCount > 0 AND x.originalStatusCode IN ('0081', '0090', '0091',
+            '0100') THEN '1002'
+            WHEN x.totalCount > x.successCount AND x.originalStatusCode IN ('0081', '0090', '0091', '0100') THEN '0091'
+            ELSE x.originalStatusCode
+            END AS loanStatusCode
+            FROM
+            (SELECT
+            lm.id as loanSerialNo,
+            lm.city_code as cityCode,
+            lm.city as cityName,
+            lm.customer_name as customerName,
+            lm.loanPeriod_code as loanPeriodCode,
+            lm.apply_period as loanPeriodName,
+            lm.loan_amount as applyAmount,
+            lm.apply_date as applyDatetime,
+            lm.loan_status as originalStatusCode,
+            lm.updated_at AS updatedAt,
+            (SELECT count(*) FROM contract_list cl WHERE cl.loan_id = lm.id AND cl.is_loan_contract = '1') AS totalCount,
+            (SELECT count(*) FROM contract_list cl WHERE cl.loan_id = lm.id AND cl.loan_status = '0100' AND
+            cl.is_loan_contract = '1') AS successCount,
+            (SELECT count(*) FROM contract_list cl WHERE cl.loan_id = lm.id AND cl.loan_status = '1001' AND
+            cl.is_loan_contract = '1') AS cancelCount,
+            (SELECT count(*) FROM contract_list cl WHERE cl.loan_id = lm.id AND cl.loan_status = '1002' AND
+            cl.is_loan_contract = '1') AS refuseCount
+            FROM
+            loan_master lm
+            WHERE 1 = 1
+            AND lm.loan_status != '1003'
+                    <if test='distributorList != null and distributorList.size() > 0'>AND lm. distributor_code in
+                        <foreach item="item" index="index" collection="distributorList" open="(" separator="," close=")" >
+                            #{item.distributorCode}
+                        </foreach >
+                    </if>
+
+                    <if test='agentList != null and agentList.size() > 0'>
+                        AND (lm.apply_people in
+                        <foreach item="item" index="index" collection="agentList" open="(" separator="," close=")">
+                            #{item.agentId}
+                        </foreach>
+                        OR lm.apply_people in
+                        <foreach item="item" index="index" collection="agentList" open="(" separator="," close=")">
+                            #{item.agentId}
+                        </foreach>
+                        )
+                    </if>
+
+                    <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+                        AND   lm.city_code = #{cityCode}
+                    </if>
+
+                    <if test='customerName != null and customerName != "" and customerName != "null" and customerName != "undefined"'>
+                        AND   lm.customer_name LIKE concat('%', #{customerName}, '%')
+                    </if>
+
+                    <if test='startDate != null and startDate != "" and startDate != "null" and startDate != "undefined"'>
+                        AND   lm.apply_date > concat(#{startDate} , ' 00:00:00')
+                    </if>
+                    <if test='endDate != null and endDate != "" and endDate != "null" and endDate != "undefined"'>
+                        AND   concat(#{endDate} , ' 23:59:59') > lm.apply_date
+                    </if>
+              ) x
+            ORDER BY x.updatedAt DESC) y
+
+        WHERE 1=1
+
+        <if test='statusList != null and statusList.size() > 0'>
+            AND   y.loanStatusCode in
+            <foreach item="item" index="index" collection="statusList" open="(" separator="," close=")" >
+                #{item.loanStatusCode}
+            </foreach >
+        </if>
+    </select>
+
+</mapper>

@@ -1,0 +1,115 @@
+<div class="row">
+  <ol class="breadcrumbNav col-12" >
+    <li (click)="querySection()" ><a>逾期记录查询</a><i>></i></li>
+    <li class="active">查看逾期记录</li>
+  </ol>
+</div>
+
+<div class="row margin-bottom-20">
+  <div class="col-12">
+    <hr class="breadcrumbNavLine">
+  </div>
+</div>
+
+<app-professional-serial [professionalData]="professionalData"></app-professional-serial>
+
+<div class="row">
+  <div class="filed-name col-2">城市：</div>
+  <div class="filed-text col-2">{{currentItemLists.cityName}}</div>
+  <div class="filed-name col-2">渠道：</div>
+  <div class="filed-text col-2">{{currentItemLists.distributorName}}</div>
+  <div class="filed-name col-2">业务经理：</div>
+  <div class="filed-text col-2">{{currentItemLists.agentName}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">主借款人：</div>
+  <div class="filed-text col-2">{{currentItemLists.customerName}}</div>
+  <div class="filed-name col-2">资方：</div>
+  <div class="filed-text col-2">{{currentItemLists.fundSideName}}</div>
+  <div class="filed-name col-2">利息是否代收代付：</div>
+  <div class="filed-text col-2">{{currentItemLists.isInterestInstead==1?'是':'否'}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">还款日期：</div>
+  <div class="filed-text col-2">{{currentItemLists.repaymentDate|date:'yyyy-MM-dd'}}</div>
+  <div class="filed-name col-2">本息逾期天数：</div>
+  <div class="filed-text col-2">{{currentItemLists.totalOverdueDays}}天</div>
+  <div class="filed-name col-2">服务费逾期天数：</div>
+  <div class="filed-text col-2">{{currentItemLists.servicFeeTotalOverdueDdays}}天</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">宏获还款账户余额：</div>
+  <div class="filed-text col-2">{{currentItemLists.honghuoBalance |lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">宏获保证金账户余额：</div>
+  <div class="filed-text col-2">{{currentItemLists.honghuoBailBalance |lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">资方还款账户余额：</div>
+  <div class="filed-text col-2">{{currentItemLists.fundSideBalance |lastNoneZero |keepTwoDecimal|permil}}元</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">应还总额：</div>
+  <div class="filed-text col-2">{{currentItemLists.repaymentAmount|lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">已还总额：</div>
+  <div class="filed-text col-6">{{currentItemLists.repaymentdAmount|lastNoneZero |keepTwoDecimal|permil}}元</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">应还本金：</div>
+  <div class="filed-text col-2">{{currentItemLists.principal|lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">已还本金：</div>
+  <div class="filed-text col-6">{{currentItemLists.repaymentedPrincipal|lastNoneZero |keepTwoDecimal|permil}}元</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">应还利息：</div>
+  <div class="filed-text col-2">{{currentItemLists.interest|lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">已还利息：</div>
+  <div class="filed-text col-6">{{currentItemLists.repaymentedInterest|lastNoneZero |keepTwoDecimal|permil}}元</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">应还服务费：</div>
+  <div class="filed-text col-2">{{currentItemLists.serviceFee|lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">已还服务费：</div>
+  <div class="filed-text col-6">{{currentItemLists.repaymentedServiceFee|lastNoneZero |keepTwoDecimal|permil}}元</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">应还保证金：</div>
+  <div class="filed-text col-2">{{currentItemLists.bail|lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">已还保证金：</div>
+  <div class="filed-text col-6">{{currentItemLists.repaymentedBail|lastNoneZero |keepTwoDecimal|permil}}元</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">应还罚息：</div>
+  <div class="filed-text col-2">{{currentItemLists.overdue|lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">已还罚息：</div>
+  <div class="filed-text col-6">{{currentItemLists.repaymentedOverdue|lastNoneZero |keepTwoDecimal|permil}}元</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">应还服务费违约金：</div>
+  <div class="filed-text col-2">{{currentItemLists.serviceFeePenalty |lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">已还服务费违约金：</div>
+  <div class="filed-text col-6">{{currentItemLists.repaymentedServiceFeePenalty |lastNoneZero |keepTwoDecimal|permil}}元</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">应还保证金违约金：</div>
+  <div class="filed-text col-2">{{currentItemLists.bailPenalty |lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">已还保证金违约金：</div>
+  <div class="filed-text col-2">{{currentItemLists.repaymentedBailPenalty |lastNoneZero |keepTwoDecimal|permil}}元</div>
+</div>
+
+
+<div class="row margin-top-40">
+  <div class="col-2">
+    <button class="orange-button float-right padding-right-0" (click)="querySection()">返回逾期查询</button>
+  </div>
+
+</div>
+

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.vilio.fms.generator.dao.FmsSendRecordsMapper">
+
+    <insert id="insertSendRecords" parameterType="com.vilio.fms.generator.pojo.FmsSendRecords" >
+        INSERT INTO  fms_send_records
+                    (
+                     code
+                    ,serial_no
+                    ,record_no
+                    ,mail_receiver_address
+                    ,mail_cc_address
+                    ,short_msg_receiver
+                    ,wechat_receiver
+                    ,content
+                    ,send_type
+                    )
+            VALUES  (
+                     #{code}
+                    ,#{serialNo}
+                    ,#{recordNo}
+                    ,#{mailReceiverAddress}
+                    ,#{mailCcAddress}
+                    ,#{shortMsgReceiver}
+                    ,#{wechatReceiver}
+                    ,#{content}
+                    ,#{sendType}
+                    )
+    </insert>
+
+
+    <select id="querySendRecordByRecordNo"
+            parameterType="java.lang.String"
+            resultType="com.vilio.fms.generator.pojo.FmsSendRecords">
+
+        SELECT
+         fsr.id                        AS id
+        ,fsr.code                      AS code
+        ,fsr.serial_no                 AS serialNo
+        ,fsr.record_no                 AS recordNo
+        ,fsr.date_created              AS dateCreated
+        ,fsr.date_modified             AS dateModified
+        ,fsr.mail_receiver_address     AS mailReceiverAddress
+        ,fsr.mail_cc_address           AS mailCcAddress
+        ,fsr.short_msg_receiver        AS shortMsgReceiver
+        ,fsr.wechat_receiver           AS wechatReceiver
+        ,fsr.content                   AS content
+        ,fsr.send_type                 AS sendType
+        FROM   fms_send_records     fsr
+        WHERE   fsr.record_no = #{recordNo}
+
+    </select>
+
+    <update id="updateSendRecord"
+            parameterType="com.vilio.fms.generator.pojo.FmsSendRecords">
+
+        UPDATE
+        fms_send_records
+        <set>
+            <if test='recordNo != null and recordNo != "" and recordNo != "null" and recordNo != "undefined"'>
+                record_no = #{recordNo,jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE   code = #{code}
+
+    </update>
+
+    <select id="querySendRecords"
+            parameterType="com.vilio.fms.generator.pojo.FmsSendRecords"
+            resultType="com.vilio.fms.generator.pojo.FmsSendRecords">
+
+        SELECT
+        fsr.id                        AS id
+        ,fsr.code                      AS code
+        ,fsr.serial_no                 AS serialNo
+        ,fsr.record_no                 AS recordNo
+        ,fsr.date_created              AS dateCreated
+        ,fsr.date_modified             AS dateModified
+        ,fsr.mail_receiver_address     AS mailReceiverAddress
+        ,fsr.mail_cc_address           AS mailCcAddress
+        ,fsr.short_msg_receiver        AS shortMsgReceiver
+        ,fsr.wechat_receiver           AS wechatReceiver
+        ,fsr.content                   AS content
+        ,fsr.send_type                 AS sendType
+        FROM    fms_send_records     fsr
+        WHERE 1=1
+            <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+                AND   fsr.code = #{code}
+            </if>
+            <if test='serialNo != null and serialNo != "" and serialNo != "null" and serialNo != "undefined"'>
+                AND   fsr.serial_no = #{serialNo}
+            </if>
+            <if test='recordNo != null and recordNo != "" and recordNo != "null" and recordNo != "undefined"'>
+                AND   fsr.record_no = #{recordNo}
+            </if>
+    </select>
+
+</mapper>

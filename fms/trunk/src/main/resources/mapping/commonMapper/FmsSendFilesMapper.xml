@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.vilio.fms.generator.dao.FmsSendFilesMapper">
+
+    <insert id="insertSendFiles" parameterType="com.vilio.fms.generator.pojo.FmsSendFiles" >
+        INSERT INTO  fms_send_files
+                    (
+                     code
+                    ,send_code
+                    ,file_id
+                    )
+            VALUES  (
+                     #{code}
+                    ,#{sendCode}
+                    ,#{fileId}
+                    )
+    </insert>
+
+
+    <select id="querySendFilesBySendCode"
+            parameterType="java.lang.String"
+            resultType="com.vilio.fms.generator.pojo.FmsSendFiles">
+
+        SELECT
+         fmb.id                        AS id
+        ,fmb.code                      AS code
+        ,fmb.send_code                 AS sendCode
+        ,fmb.file_id                   AS fileId
+        FROM   fms_send_files     fsf
+        WHERE   fsf.send_code = #{sendCode}
+
+    </select>
+
+</mapper>

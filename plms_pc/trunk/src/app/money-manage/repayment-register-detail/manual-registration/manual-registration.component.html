@@ -1,0 +1,185 @@
+<!--手工登记-->
+<div class="row">
+  <ol class="breadcrumbNav col-12" >
+    <li (click)="querySection()"><a>还款到账登记</a><i>></i></li>
+    <li (click)="querySectionLink()"><a>选择借款合同</a><i>></i></li>
+    <li class="active">手工登记</li>
+  </ol>
+</div>
+
+<div class="row margin-bottom-20">
+  <div class="col-12">
+    <hr class="breadcrumbNavLine">
+  </div>
+</div>
+
+<app-professional-serial [professionalData]="professionalData"></app-professional-serial>
+
+<div class="row">
+  <div class="filed-name col-2">城市：</div>
+  <div class="filed-text col-2">{{manulRegisterInit.cityName}}</div>
+  <div class="filed-name col-2">渠道：</div>
+  <div class="filed-text col-2">{{manulRegisterInit.distributorName}}</div>
+  <div class="filed-name col-2">业务经理：</div>
+  <div class="filed-text col-2">{{manulRegisterInit.agentName}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">主借款人：</div>
+  <div class="filed-text col-2">{{manulRegisterInit.customerName}}</div>
+  <div class="filed-name col-2">资方：</div>
+  <div class="filed-text col-2">{{manulRegisterInit.fundSideName}}</div>
+  <div class="filed-name col-2">利息是否代收代付：</div>
+  <div class="filed-text col-2">{{manulRegisterInit.isInterestInstead}}</div>
+
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">授信金额：</div>
+  <div class="filed-text col-2">{{manulRegisterInit.totalQuota |lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">授信日期：</div>
+  <div class="filed-text col-2">{{manulRegisterInit.creditStartDate | date:'yyyy-MM-dd'}}</div>
+  <div class="filed-name col-2">授信期限：</div>
+  <div class="filed-text col-2">{{manulRegisterInit.creditPeriod?manulRegisterInit.creditPeriod+'个月':''}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2"><span>*</span>到账日期：</div>
+  <div class="col-2 white-space-nowrap">
+    <input class="msg-input width-120 datestart date-placeholderStyle"  type="text" id="applyTimeBegin" name="applyTimeBegin" readonly placeholder="年/月/日"/>
+  </div>
+  <div class="filed-name col-2"><span>*</span>还款金额：</div>
+  <div class="col-2 white-space-nowrap">
+    <input type="text" class="msg-input width-115" id="applyMoney">
+    <div class="uinit">元</div>
+  </div>
+  <div class="filed-name col-2"><span>*</span>收款账户：</div>
+  <div class="col-2 white-space-nowrap">
+    <select name="" id="receipt" class="width-115 selectmsg" [(ngModel)]="receiptValue">
+      <option value=""></option>
+    </select>
+  </div>
+</div>
+
+
+  <div class="row">
+    <div class="filed-name col-2"><span>*</span>还款来源：</div>
+    <div class="col-2 white-space-nowrap">
+      <select name="" id="repayment" class="width-115 selectmsg">
+        <option value=""></option>
+      </select>
+    </div>
+    <div class="filed-name col-2">收款账户户名：</div>
+    <div class="filed-text col-6" *ngIf="accountTypeCode == '01'">{{manulRegisterInit.fundSideAcountName}}</div>
+    <div class="filed-text col-6" *ngIf="accountTypeCode == '00'">{{manulRegisterInit.hongHuoAcountName}}</div>
+    <div class="filed-text col-6" *ngIf="accountTypeCode == '02'">{{manulRegisterInit.hongHuoAcountName}}</div>
+  </div>
+
+  <div class="row">
+    <div class="filed-name col-2">收款账户账号：</div>
+    <div class="filed-text col-2" *ngIf="accountTypeCode == '01'">{{manulRegisterInit.fundSideBank}}</div>
+    <div class="filed-text col-2" *ngIf="accountTypeCode == '00'">{{manulRegisterInit.hongHuoBank}}</div>
+    <div class="filed-text col-2" *ngIf="accountTypeCode == '02'">{{manulRegisterInit.hongHuoBank}}</div>
+    <div class="filed-text col-2" *ngIf="(accountTypeCode!= '00'&&accountTypeCode != '01'&&accountTypeCode != '02')"></div>
+    <div class="filed-name col-2">收款账户开户行：</div>
+    <div class="filed-text col-6" *ngIf="accountTypeCode == '01'">{{manulRegisterInit.fundSideAccountNo}}</div>
+    <div class="filed-text col-6" *ngIf="accountTypeCode == '00'">{{manulRegisterInit.hongHuoAccountNo}}</div>
+    <div class="filed-text col-6" *ngIf="accountTypeCode == '02'">{{manulRegisterInit.hongHuoAccountNo}}</div>
+  </div>
+
+
+<div class="row">
+  <div class="filed-name col-2">备注：</div>
+  <div class="col-10 white-space-nowrap">
+    <input type="text" class="msg-input width-100per" [(ngModel)]="remark">
+  </div>
+</div>
+
+<div class="row margin-top-40">
+  <div class="row margin-bottom-20">
+    <div class="message-title-line"></div>
+    <div class="message-title-name">上传还款凭证</div>
+  </div>
+</div>
+
+<div class="row">
+  <a class=" upload-into-pieces">
+    <div class="gray-button garyButton-gai">选择文件上传</div>
+    <!--将input中的multiple去掉设置为单个上传的文件-->
+    <input type="button" class="gray-button uploadofMaterial upload-input" type="file" ng2FileSelect
+           [uploader]="uploader" (change)="selectedFileOnChanged($event)" multiple>
+
+  </a>
+  <span class="margin-left-20 hide margin-top-15"
+        id="uploadedfileNumber">上传成功{{sucUploadFileNum}}个，上传失败{{failUploadFileNum}}个</span>
+  <span class="margin-left-20"
+        id=uploadingfileNumber>正在上传：第{{sucUploadFileNum}}个（共{{uploader.queue.length}}个）</span>
+  <p style="margin:20px 0;color:#999">单次最多可选30个文件，单个文件大小不超过10M</p>
+
+  <div class="row">
+    <div id="uploader" class="wu-example">
+      <div class="row">
+        <div *ngFor="let item of uploader.queue;let i=index" id="uploadFileBox">
+          <div class="upload-file-box">
+
+            <!-- 上传成功后，展示对应图片 -->
+            <div class="photo">
+              <div *ngIf="item.isSuccess" class="success-uploadered-picture">
+                <div class="picture-deletion"><a class="delete-icon" (click)="deleteFile(i,1)"></a></div>
+                <div class="small-photo" id="smallPhoto" (click)="downloadFile(uploadFileList[i])"><img src="{{selectFileList[i]}}"
+                                                              id="uploadImg{{i}}"/></div>
+                <!--<p [ngStyle]="{'margin-top':item.isError?'0px':'10px'}">{{uploadFileList[i].fileCode}}</p>-->
+                <p [ngStyle]="{'margin-top':item.isError?'0px':'10px'}" class="upload-picture-name image-name">
+                  {{item.file.name}}</p>
+              </div>
+            </div>
+
+            <!-- 上传失败后，展示错误提示 -->
+            <div [ngClass]="{'upload-picture-styles-fail-style':item.isError}">
+              <div *ngIf="item.isError" class="fail-style">
+                <p class="upload-picture-fail-txt">上传失败</p>
+                <p>
+                  <a (click)="upAgiain(i)">
+                    重新上传
+                  </a>
+                  <a (click)="deleteFile(i, 0)" class="upload-picture-faildel">刪除</a>
+                </p>
+                <p [ngStyle]="{'margin-top':item.isError?'0px':'10px'}" class="upload-picture-name">
+                  {{item.file.name}}</p>
+
+              </div>
+
+
+              <div class="progress" *ngIf="!item.isSuccess&&!item.isError">
+                <div class="progress-bar progress-bar-warning progress-bar-striped active"
+                     [style.width.%]=item.progress>
+                  <div class="progress-value"></div>
+
+
+                </div>
+
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+  <!--原地方-->
+  <div class="uploader-detail-information margin-top-40">
+    <button type="button" class="disable-button" id="disableButton" disabled="disabled"
+            [ngStyle]="{'display':issmallPhoto==false?'block':'none'}">提交
+    </button>
+    <button type="button" class="orange-button" id="onSubmitButton"
+            [ngStyle]="{'display':issmallPhoto==false?'none':'block'}" (click)="onSubmitUploadFileFunc()">
+      提交
+    </button>
+    <button type="button" class="gray-button margin-left-20" (click)="cancelPopup()">取消</button>
+
+  </div>

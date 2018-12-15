@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.pcfs.dao.PushMessageDao">
+
+    <!--插入待发送信息-->
+    <insert id="insertPushMessagesList"  parameterType="java.util.List" >
+        insert into pcfs_wait_send_message (message_id,user_id,message_title,message_ticker,message_subtitle,message_content,send_time,send_method,message_type,status,source_system)
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (UUID(),#{item.umId},#{item.messageTitle},#{item.messageTicker},#{item.messageSubtitle},#{item.messageContent},date_format(#{item.sendTime},'%Y%m%d'),#{item.sendMethod},
+            #{item.messageType},'1',#{item.sourceSystem}
+            )
+        </foreach>
+
+    </insert>
+
+    <!-- 查询用户推送消息列表-->
+    <select id="queryUserMessagesListInfo" resultType="java.util.Map" parameterType="java.lang.String" >
+        SELECT
+        pm.message_id AS messageId,
+        pm.message_title AS  messageTitle,
+        pm.message_content AS  messageContent,
+        date_format(pm.send_time,'%Y-%m-%d') AS sendTime,
+        pm.read_flag AS readFlag,
+        pm.message_type AS messageType
+        FROM  pcfs_messages pm
+        WHERE pm.user_id = #{userId} AND pm.status != '0'
+
+    </select>
+
+    <!-- 查询用户推送消息列表-->
+    <select id="queryUserUnreadMessageNum"  parameterType="java.lang.String"  resultType="java.lang.String">
+        SELECT
+        COUNT(1)
+        FROM  pcfs_messages pm
+        WHERE pm.user_id = #{userId} AND pm.read_flag = '0' AND pm.status != '0'
+
+    </select>
+
+    <!--将当前用户指定信息标志为已读 -->
+    <update id="updateUserMesaageReadFlag" parameterType="java.lang.String"   >
+        UPDATE pcfs_messages
+
+        SET  read_flag = '1'
+
+        WHERE  message_id = #{messageId}
+
+    </update>
+
+    <!--将当前用户指定信息置为失效（删除）-->
+    <update id="updateUserMessageStatu" parameterType="java.lang.String"   >
+        UPDATE pcfs_messages
+
+        SET  status = '0'
+
+        WHERE  message_id = #{messageId}
+
+
+
+    </update>
+</mapper>

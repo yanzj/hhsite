@@ -1,0 +1,43 @@
+<!--进件材料 start-->
+<div class="tab_content">
+  <div class="material_tab" id="material_tab1">
+    <div class="row">
+      <div class="col-6" id="messageTitle_classify">
+        <div class="row margin-bottom-20">
+          <div class="message-title-line"></div>
+          <div class="message-title-name">材料分类</div>
+        </div>
+        <div class="material-panel" *ngFor="let materialObj of currentItemLists.materialInfoList;let i=index"
+             (click)="onSelectMaterial(materialObj,i)"
+             [class.materialselected]="i == selectedMaterial">
+          <label class="material-label"><input type="radio" name="apply" class="material-input"
+                                               value={{materialObj.materialTypeCode}}
+                                               [checked]="materialObj.materialTypeCode==(selectedMaterial+1)">{{materialObj.materialTypeName}}
+            <em *ngIf="materialObj.fileSize != '0' ">（{{materialObj.fileNum}}个文件）</em>
+          </label>
+        </div>
+
+        <div class="row margin-top-40">
+          <div class="col-4">
+            <button class="orange-button float-right" id="backToapplyQuery2" (click)="querySection()">{{this.button.name}}
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="row margin-bottom-20">
+          <div class="message-title-line"></div>
+          <div class="message-title-name">材料清单</div>
+        </div>
+        <div class="row">
+          <div class="img-list" *ngFor="let item of selectedMaterialDisplayImages">
+            <a class="img-box" (click)="downloadFile(item)"><img src="{{item.fileUrl}}" id="img-box"/></a>
+            <p class="upload-file-name ">{{item.fileName}}</p>
+            <div class="upload-file-time">{{item.uploadTime|date:'yyyy-MM-dd HH:mm:ss'}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--进件材料 end-->

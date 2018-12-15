@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.OverdueDao">
+
+    <!--根据划款计划明细，查询所有罚息信息-->
+    <select id="queryOverdueByScheduleDetail" resultType="com.vilio.plms.pojo.Overdue" parameterType="com.vilio.plms.pojo.PlmsRepaymentScheduleDetail">
+        SELECT
+            id,
+            `code`,
+            overdue_days as overdueDays,
+            overdue_amount as overdueAmount,
+            schedule_detail_code as scheduleDetailCode,
+            `status`,
+            date_format(create_date,'%Y-%m-%d %H:%i:%s') as createDate,
+            modify_date as modifyDate,
+            `subject`,
+            amount
+        FROM
+            plms_overdue
+        WHERE status != '00'
+            and schedule_detail_code = #{code}
+    </select>
+
+    <update id="updateOverdueByCode" parameterType="com.vilio.plms.pojo.Overdue">
+        UPDATE plms_overdue set overdue_days=#{overdueDays},amount=#{amount},status=#{status}
+        WHERE code=#{code}
+    </update>
+
+    <!--更新罚息表状态，批量根据还款明细更新-->
+    <update id="updateOverdueStatusByRepaymentDetailCodeBatch" parameterType="java.util.List">
+        UPDATE plms_overdue SET status = '02',repayment_detail_code = null
+        WHERE status != '00'
+        and repayment_detail_code in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item.code}
+        </foreach>
+    </update>
+
+
+</mapper>

@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.nlbs.commonMapper.dao.NlbsUserMapper" >
+  <resultMap id="BaseResultMap" type="com.vilio.nlbs.commonMapper.pojo.NlbsUser" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="user_no" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="parent_user_no" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="mobile" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="password" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="email" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="full_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="status" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="first_login" jdbcType="BIT" javaType="java.lang.Boolean" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_no, parent_user_no,mobile, password, user_name, email, full_name, status, first_login
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from nlbs_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select
+    u.id,
+    u.user_no AS userNo,
+    u.parent_user_no AS parentUserNo,
+    u.mobile,
+    u.password,
+    u.user_name AS userName,
+    u.email,
+    u.full_name AS fullName,
+    u.status,
+    u.first_login AS firstLogin
+    from nlbs_user u
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from nlbs_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsUser" >
+    insert into nlbs_user (id, user_no, parent_user_no, mobile,
+      password, user_name, email, 
+      full_name,
+      status, first_login)
+    values (#{id,jdbcType=INTEGER}, #{userNo,jdbcType=VARCHAR}, #{parent_user_no,jdbcType=VARCHAR},#{mobile,jdbcType=VARCHAR},
+      #{password,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{fullName,jdbcType=VARCHAR},
+      #{status,jdbcType=VARCHAR}, #{firstLogin,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsUser" >
+    insert into nlbs_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userNo != null" >
+        user_no,
+      </if>
+      <if test="parent_user_no != null" >
+        parent_user_no,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="fullName != null" >
+        full_name,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="firstLogin != null" >
+        first_login,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userNo != null" >
+        #{userNo,jdbcType=VARCHAR},
+      </if>
+      <if test="parentUserNo != null" >
+        #{parentUserNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null" >
+        #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="firstLogin != null" >
+        #{firstLogin,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsUser" >
+    update nlbs_user
+    <set >
+      <if test="userNo != null" >
+        user_no = #{userNo,jdbcType=VARCHAR},
+      </if>
+      <if test="parentUserNo != null" >
+        parent_user_no = #{parentUserNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null" >
+        full_name = #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="firstLogin != null" >
+        first_login = #{firstLogin,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsUser" >
+    update nlbs_user
+    set user_no = #{userNo,jdbcType=VARCHAR},
+      parent_user_no = #{parentUserNo,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      full_name = #{fullName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      first_login = #{firstLogin,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!--新增用户信息-->
+  <insert id="addNewUser" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsUser" >
+    insert into nlbs_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userNo != null" >
+        user_no,
+      </if>
+      <if test="parentUserNo != null" >
+        parent_user_no,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="mobile != null" >
+        password,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="fullName != null" >
+        full_name,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="firstLogin != null" >
+        first_login,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userNo != null" >
+        #{userNo,jdbcType=VARCHAR},
+      </if>
+      <if test="parentUserNo != null" >
+        #{parentUserNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        md5(#{mobile,jdbcType=VARCHAR}),
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null" >
+        #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="firstLogin != null" >
+        #{firstLogin,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+
+  <!--根据用户号变更用户信息-->
+  <update id="updateUserInfoByUserNo" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsUser" >
+    update nlbs_user
+    <set >
+      <if test="parentUserNo != null" >
+        parent_user_no = #{parentUserNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = md5(#{password,jdbcType=VARCHAR}),
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null" >
+        full_name = #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="distributorCode != null" >
+        distributor_code = #{distributorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="firstLogin != null" >
+        first_login = #{firstLogin,jdbcType=BIT},
+      </if>
+    </set>
+    where user_no = #{userNo,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectChildListUser" resultType="com.vilio.nlbs.commonMapper.pojo.NlbsUser" parameterType="java.lang.String" >
+    select
+    u.id,
+    u.user_no AS userNo,
+    u.parent_user_no AS parentUserNo,
+    u.mobile,
+    u.password,
+    u.user_name AS userName,
+    u.email,
+    u.full_name AS fullName,
+    u.status,
+    u.first_login AS firstLogin
+    from nlbs_user u
+    WHERE u.parent_user_no = #{userNo,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

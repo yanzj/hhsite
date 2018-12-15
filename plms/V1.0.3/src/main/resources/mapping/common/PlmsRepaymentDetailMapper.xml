@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.PlmsRepaymentDetailDao">
+
+    <insert id="saveRepaymentDetail" parameterType="com.vilio.plms.pojo.PlmsRepaymentDetail">
+        INSERT INTO plms_repayment_detail (
+            code,
+            subject,
+            amount,
+            schedule_detail_code,
+            status,
+            time_happened,
+            create_date,
+            modify_date
+        )
+        VALUES
+            (
+                #{code,jdbcType=VARCHAR},
+                #{subject,jdbcType=INTEGER},
+                #{amount,jdbcType=DECIMAL},
+                #{scheduleDetailCode,jdbcType=VARCHAR},
+                #{status,jdbcType=VARCHAR},
+                #{timeHappened,jdbcType=TIMESTAMP},
+                #{createDate,jdbcType=TIMESTAMP},
+                #{modifyDate,jdbcType=TIMESTAMP}
+            )
+    </insert>
+
+    <!--根据还款计划明细表，查询到账日到现在的所有还款明细信息-->
+    <select id="queryRepaymentDetailByScheduleDetailCodeAndDate"
+            resultType="com.vilio.plms.pojo.PlmsRepaymentDetail" parameterType="java.util.Map">
+        <![CDATA[
+
+            SELECT
+                id,
+                `code`,
+                `subject`,
+                amount,
+                schedule_detail_code as scheduleDetailCode,
+                `status`,
+                time_happened as timeHappened,
+                create_date as createDate,
+                modify_date as modifyDate
+            FROM
+                plms_repayment_detail
+            WHERE schedule_detail_code = #{scheduleDetailCode}
+            and status != '0'
+            and date_format(time_happened,'%Y%m%d') > date_format(#{rollBachDate},'%Y%m%d')
+            and date_format(time_happened,'%Y%m%d') <= date_format(#{nowDate},'%Y%m%d')
+
+        ]]>
+    </select>
+
+
+    <!--更新罚息表状态，批量根据还款明细更新-->
+    <update id="updateRepaymentDetailByCodeBatch" parameterType="java.util.List">
+        UPDATE plms_repayment_detail SET status = '0' WHERE status != '0' and
+        code in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item.code}
+        </foreach>
+    </update>
+
+
+</mapper>

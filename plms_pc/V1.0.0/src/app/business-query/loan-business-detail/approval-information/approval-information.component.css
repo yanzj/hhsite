@@ -1,0 +1,19 @@
+/*审批通知 和公证抵押*/
+.filed-name-modify{
+  line-height: 20px;
+  padding-top:10px;
+  padding-bottom:10px;
+  display: flex;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  word-break: break-all;
+  -moz-justify-content: flex-end;
+  -webkit-align-items: center;
+}
+.filed-name-modify-txt{
+  justify-content: flex-start;
+}

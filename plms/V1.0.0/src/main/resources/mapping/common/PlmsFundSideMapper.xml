@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.PlmsFundSideDao">
+
+    <select id="queryFundSideAndDistribute" resultType="java.util.Map" parameterType="java.lang.String">
+        SELECT
+            f.year_period AS yearPeriod,
+            f.contract_interest AS actualInterest
+        FROM plms_contract_info c
+        join plms_fund_side f on f.contract_code = c.code
+        WHERE c.code = #{contractCode,jdbcType=VARCHAR}
+    </select>
+</mapper>

@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!--
+******************************************************************************
+* 数据库表：BPS_ASSESSMENT_RESULT
+* 表的名称：估算计算结果表
+* 对应实体：com.vilio.bps.commonMapper.pojo.BpsAssessmentResult
+* 开发日期：2017-06-12
+* 技术服务：www.fwjava.com
+******************************************************************************
+-->
+<mapper namespace="com.vilio.bps.commonMapper.dao.IBpsAssessmentResultMapper">
+
+    <!--
+    **************************************************************************
+    * 1.新增一条数据
+    * 注: 根据Bean实体执行新增操作.
+    **************************************************************************
+    -->
+    <insert id="getInsert"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsAssessmentResult">
+    
+            INSERT   /* getInsert+@com.vilio.bps.commonMapper.sql.BpsAssessmentResultMapper.xml */ 
+              INTO   BPS_ASSESSMENT_RESULT             /* 估算计算结果表 */ 
+                    (
+                     ID                                /* 数据主键 */ 
+                    ,CODE                              /*  */ 
+                    ,ASSESSMENT_PRICE                  /* 房屋最终估算价格 */ 
+                    ,MIN_APPLY_TIME                    /* 依赖询价公司最早报价时间（用于对比是否在时间阈值内） */ 
+                    ,ALGORITHM_CODE                    /* 计算使用的算法 */ 
+                    ,ALGORITHM_METHOD                  /* 配置表有关算法的配置项名称 */ 
+                    ,PERCEN_DIFF_THRESHOLD             /* 依赖的差价阈值百分比 */ 
+                    ,STATUS                            /* 状态 */ 
+                    ,DATE_CREATED                      /* 数据创建时间 */ 
+                    ,DATE_MODIFIED                     /* 数据修改时间 */ 
+                    )
+            VALUES  (
+                     #{id}                             /* 数据主键 */ 
+                    ,#{code}                           /*  */ 
+                    ,#{assessmentPrice}                /* 房屋最终估算价格 */ 
+                    ,#{minApplyTime}                   /* 依赖询价公司最早报价时间（用于对比是否在时间阈值内） */ 
+                    ,#{algorithmCode}                  /* 计算使用的算法 */ 
+                    ,#{algorithmMethod}                /* 配置表有关算法的配置项名称 */ 
+                    ,#{percenDiffThreshold}            /* 依赖的差价阈值百分比 */ 
+                    ,#{status}                         /* 状态 */ 
+                    ,#{dateCreated}                    /* 数据创建时间 */ 
+                    ,#{dateModified}                   /* 数据修改时间 */ 
+                    )
+         
+    </insert>
+    
+    <insert id="getInsertPrmMap"
+            parameterType="java.util.HashMap">
+    
+            INSERT   /* getInsertPrmMap+@com.vilio.bps.commonMapper.sql.BpsAssessmentResultMapper.xml */ 
+              INTO   BPS_ASSESSMENT_RESULT             /* 估算计算结果表 */ 
+                    (
+                     ID                                /* 数据主键 */ 
+                    ,CODE                              /*  */ 
+                    ,ASSESSMENT_PRICE                  /* 房屋最终估算价格 */ 
+                    ,MIN_APPLY_TIME                    /* 依赖询价公司最早报价时间（用于对比是否在时间阈值内） */ 
+                    ,ALGORITHM_CODE                    /* 计算使用的算法 */ 
+                    ,ALGORITHM_METHOD                  /* 配置表有关算法的配置项名称 */ 
+                    ,PERCEN_DIFF_THRESHOLD             /* 依赖的差价阈值百分比 */ 
+                    ,STATUS                            /* 状态 */ 
+                    ,DATE_CREATED                      /* 数据创建时间 */ 
+                    ,DATE_MODIFIED                     /* 数据修改时间 */ 
+                    )
+            VALUES  (
+                     #{id}                             /* 数据主键 */ 
+                    ,#{code}                           /*  */ 
+                    ,#{assessmentPrice}                /* 房屋最终估算价格 */ 
+                    ,#{minApplyTime}                   /* 依赖询价公司最早报价时间（用于对比是否在时间阈值内） */ 
+                    ,#{algorithmCode}                  /* 计算使用的算法 */ 
+                    ,#{algorithmMethod}                /* 配置表有关算法的配置项名称 */ 
+                    ,#{percenDiffThreshold}            /* 依赖的差价阈值百分比 */ 
+                    ,#{status}                         /* 状态 */ 
+                    ,#{dateCreated}                    /* 数据创建时间 */ 
+                    ,#{dateModified}                   /* 数据修改时间 */ 
+                    )
+         
+    </insert>
+
+
+    <!--
+    **************************************************************************
+    * 2.删除一条数据
+    * 注: 根据Bean实体的主键ID执行删除操作.
+    **************************************************************************
+    -->
+    <delete id="getDelete"
+            parameterType="java.lang.String">
+    
+            DELETE   /* getDelete+@com.vilio.bps.commonMapper.sql.BpsAssessmentResultMapper.xml */ 
+              FROM   BPS_ASSESSMENT_RESULT    /* 估算计算结果表 */ 
+             WHERE   ID = #{_parameter}       /* 数据主键 */ 
+         
+    </delete>
+
+
+    <!--
+    **************************************************************************
+    * 3.变更一条数据
+    * 注: 根据Bean实体的主键ID执行变更操作.
+    **************************************************************************
+    -->
+    <update id="getUpdate"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsAssessmentResult">
+    
+            UPDATE   /* getUpdate+@com.vilio.bps.commonMapper.sql.BpsAssessmentResultMapper.xml */ 
+                     BPS_ASSESSMENT_RESULT                                /* 估算计算结果表 */ 
+               SET   CODE                     = #{code}                   /*  */ 
+                    ,ASSESSMENT_PRICE         = #{assessmentPrice}        /* 房屋最终估算价格 */ 
+                    ,MIN_APPLY_TIME           = #{minApplyTime}           /* 依赖询价公司最早报价时间（用于对比是否在时间阈值内） */ 
+                    ,ALGORITHM_CODE           = #{algorithmCode}          /* 计算使用的算法 */ 
+                    ,ALGORITHM_METHOD         = #{algorithmMethod}        /* 配置表有关算法的配置项名称 */ 
+                    ,PERCEN_DIFF_THRESHOLD    = #{percenDiffThreshold}    /* 依赖的差价阈值百分比 */ 
+                    ,STATUS                   = #{status}                 /* 状态 */ 
+                    ,DATE_CREATED             = #{dateCreated}            /* 数据创建时间 */ 
+                    ,DATE_MODIFIED            = #{dateModified}           /* 数据修改时间 */ 
+             WHERE   ID                       = #{id}                     /* 数据主键 */ 
+         
+    </update>
+    
+    <update id="getUpdatePrmMap"
+            parameterType="java.util.HashMap">
+    
+            UPDATE   /* getUpdatePrmMap+@com.vilio.bps.commonMapper.sql.BpsAssessmentResultMapper.xml */ 
+                     BPS_ASSESSMENT_RESULT                                /* 估算计算结果表 */ 
+               SET   CODE                     = #{code}                   /*  */ 
+                    ,ASSESSMENT_PRICE         = #{assessmentPrice}        /* 房屋最终估算价格 */ 
+                    ,MIN_APPLY_TIME           = #{minApplyTime}           /* 依赖询价公司最早报价时间（用于对比是否在时间阈值内） */ 
+                    ,ALGORITHM_CODE           = #{algorithmCode}          /* 计算使用的算法 */ 
+                    ,ALGORITHM_METHOD         = #{algorithmMethod}        /* 配置表有关算法的配置项名称 */ 
+                    ,PERCEN_DIFF_THRESHOLD    = #{percenDiffThreshold}    /* 依赖的差价阈值百分比 */ 
+                    ,STATUS                   = #{status}                 /* 状态 */ 
+                    ,DATE_CREATED             = #{dateCreated}            /* 数据创建时间 */ 
+                    ,DATE_MODIFIED            = #{dateModified}           /* 数据修改时间 */ 
+             WHERE   ID                       = #{id}                     /* 数据主键 */ 
+         
+    </update>
+
+
+    <!--
+    **************************************************************************
+    * 4.获取一个Bean实体
+    * 注: 根据Bean实体的主键ID获取一个Bean实体.
+    **************************************************************************
+    -->
+    <select id="getBean"
+            parameterType="java.lang.String"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsAssessmentResult">
+    
+            SELECT   /* getBean+@com.vilio.bps.commonMapper.sql.BpsAssessmentResultMapper.xml */ 
+                     bar.ID                        AS id                     /* 数据主键 */ 
+                    ,bar.CODE                      AS code                   /*  */ 
+                    ,bar.ASSESSMENT_PRICE          AS assessmentPrice        /* 房屋最终估算价格 */ 
+                    ,bar.MIN_APPLY_TIME            AS minApplyTime           /* 依赖询价公司最早报价时间（用于对比是否在时间阈值内） */ 
+                    ,bar.ALGORITHM_CODE            AS algorithmCode          /* 计算使用的算法 */ 
+                    ,bar.ALGORITHM_METHOD          AS algorithmMethod        /* 配置表有关算法的配置项名称 */ 
+                    ,bar.PERCEN_DIFF_THRESHOLD     AS percenDiffThreshold    /* 依赖的差价阈值百分比 */ 
+                    ,bar.STATUS                    AS status                 /* 状态 */ 
+                    ,bar.DATE_CREATED              AS dateCreated            /* 数据创建时间 */ 
+                    ,bar.DATE_MODIFIED             AS dateModified           /* 数据修改时间 */ 
+              FROM   BPS_ASSESSMENT_RESULT            bar                    /* 估算计算结果表 */ 
+             WHERE   bar.ID = #{_parameter}                                  /* 数据主键 */ 
+         
+    </select>
+    
+    <select id="getBeanRtnMap"
+            parameterType="java.lang.String"
+            resultType="java.util.HashMap">
+    
+            SELECT   /* getBeanRtnMap+@com.vilio.bps.commonMapper.sql.BpsAssessmentResultMapper.xml */ 
+                     bar.ID                        AS id                     /* 数据主键 */ 
+                    ,bar.CODE                      AS code                   /*  */ 
+                    ,bar.ASSESSMENT_PRICE          AS assessmentPrice        /* 房屋最终估算价格 */ 
+                    ,bar.MIN_APPLY_TIME            AS minApplyTime           /* 依赖询价公司最早报价时间（用于对比是否在时间阈值内） */ 
+                    ,bar.ALGORITHM_CODE            AS algorithmCode          /* 计算使用的算法 */ 
+                    ,bar.ALGORITHM_METHOD          AS algorithmMethod        /* 配置表有关算法的配置项名称 */ 
+                    ,bar.PERCEN_DIFF_THRESHOLD     AS percenDiffThreshold    /* 依赖的差价阈值百分比 */ 
+                    ,bar.STATUS                    AS status                 /* 状态 */ 
+                    ,bar.DATE_CREATED              AS dateCreated            /* 数据创建时间 */ 
+                    ,bar.DATE_MODIFIED             AS dateModified           /* 数据修改时间 */ 
+              FROM   BPS_ASSESSMENT_RESULT            bar                    /* 估算计算结果表 */ 
+             WHERE   bar.ID = #{_parameter}                                  /* 数据主键 */ 
+         
+    </select>
+
+
+    <!--
+    **************************************************************************
+    * 5.条件查询
+    * 注: 支持多条件查询、模糊查询、日期比较查询等操作.
+    **************************************************************************
+    -->
+    <select id="getList"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsAssessmentResult"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsAssessmentResult">
+    
+            SELECT   /* getList+@com.vilio.bps.commonMapper.sql.BpsAssessmentResultMapper.xml */ 
+                     bar.ID                        AS id                     /* 数据主键 */ 
+                    ,bar.CODE                      AS code                   /*  */ 
+                    ,bar.ASSESSMENT_PRICE          AS assessmentPrice        /* 房屋最终估算价格 */ 
+                    ,bar.MIN_APPLY_TIME            AS minApplyTime           /* 依赖询价公司最早报价时间（用于对比是否在时间阈值内） */ 
+                    ,bar.ALGORITHM_CODE            AS algorithmCode          /* 计算使用的算法 */ 
+                    ,bar.ALGORITHM_METHOD          AS algorithmMethod        /* 配置表有关算法的配置项名称 */ 
+                    ,bar.PERCEN_DIFF_THRESHOLD     AS percenDiffThreshold    /* 依赖的差价阈值百分比 */ 
+                    ,bar.STATUS                    AS status                 /* 状态 */ 
+                    ,bar.DATE_CREATED              AS dateCreated            /* 数据创建时间 */ 
+                    ,bar.DATE_MODIFIED             AS dateModified           /* 数据修改时间 */ 
+              FROM   BPS_ASSESSMENT_RESULT            bar                    /* 估算计算结果表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null and id != "" and id != "null" and id != "undefined"'>
+               AND   bar.ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   bar.CODE = #{code} /*  */ 
+             </if>
+        
+             <if test='assessmentPrice != null'>
+               AND   bar.ASSESSMENT_PRICE = #{assessmentPrice} /* 房屋最终估算价格 */ 
+             </if>
+        
+             <if test='minApplyTime != null'>
+               AND   date_format(bar.MIN_APPLY_TIME ,'%Y-%m-%d') = #{minApplyTimeChar} /* 依赖询价公司最早报价时间（用于对比是否在时间阈值内） */ 
+             </if>
+        
+             <if test='algorithmCode != null and algorithmCode != "" and algorithmCode != "null" and algorithmCode != "undefined"'>
+               AND   bar.ALGORITHM_CODE = #{algorithmCode} /* 计算使用的算法 */ 
+             </if>
+        
+             <if test='algorithmMethod != null and algorithmMethod != "" and algorithmMethod != "null" and algorithmMethod != "undefined"'>
+               AND   bar.ALGORITHM_METHOD = #{algorithmMethod} /* 配置表有关算法的配置项名称 */ 
+             </if>
+        
+             <if test='percenDiffThreshold != null and percenDiffThreshold != "" and percenDiffThreshold != "null" and percenDiffThreshold != "undefined"'>
+               AND   bar.PERCEN_DIFF_THRESHOLD = #{percenDiffThreshold} /* 依赖的差价阈值百分比 */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   bar.STATUS = #{status} /* 状态 */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(bar.DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /* 数据创建时间 */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(bar.DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /* 数据修改时间 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+    
+    <select id="getListPrmMapRtnBean"
+            parameterType="java.util.HashMap"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsAssessmentResult">
+    
+            SELECT   /* getListPrmMapRtnBean+@com.vilio.bps.commonMapper.sql.BpsAssessmentResultMapper.xml */ 
+                     bar.ID                        AS id                     /* 数据主键 */ 
+                    ,bar.CODE                      AS code                   /*  */ 
+                    ,bar.ASSESSMENT_PRICE          AS assessmentPrice        /* 房屋最终估算价格 */ 
+                    ,bar.MIN_APPLY_TIME            AS minApplyTime           /* 依赖询价公司最早报价时间（用于对比是否在时间阈值内） */ 
+                    ,bar.ALGORITHM_CODE            AS algorithmCode          /* 计算使用的算法 */ 
+                    ,bar.ALGORITHM_METHOD          AS algorithmMethod        /* 配置表有关算法的配置项名称 */ 
+                    ,bar.PERCEN_DIFF_THRESHOLD     AS percenDiffThreshold    /* 依赖的差价阈值百分比 */ 
+                    ,bar.STATUS                    AS status                 /* 状态 */ 
+                    ,bar.DATE_CREATED              AS dateCreated            /* 数据创建时间 */ 
+                    ,bar.DATE_MODIFIED             AS dateModified           /* 数据修改时间 */ 
+              FROM   BPS_ASSESSMENT_RESULT            bar                    /* 估算计算结果表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null and id != "" and id != "null" and id != "undefined"'>
+               AND   bar.ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   bar.CODE = #{code} /*  */ 
+             </if>
+        
+             <if test='assessmentPrice != null'>
+               AND   bar.ASSESSMENT_PRICE = #{assessmentPrice} /* 房屋最终估算价格 */ 
+             </if>
+        
+             <if test='minApplyTime != null'>
+               AND   date_format(bar.MIN_APPLY_TIME ,'%Y-%m-%d') = #{minApplyTimeChar} /* 依赖询价公司最早报价时间（用于对比是否在时间阈值内） */ 
+             </if>
+        
+             <if test='algorithmCode != null and algorithmCode != "" and algorithmCode != "null" and algorithmCode != "undefined"'>
+               AND   bar.ALGORITHM_CODE = #{algorithmCode} /* 计算使用的算法 */ 
+             </if>
+        
+             <if test='algorithmMethod != null and algorithmMethod != "" and algorithmMethod != "null" and algorithmMethod != "undefined"'>
+               AND   bar.ALGORITHM_METHOD = #{algorithmMethod} /* 配置表有关算法的配置项名称 */ 
+             </if>
+        
+             <if test='percenDiffThreshold != null and percenDiffThreshold != "" and percenDiffThreshold != "null" and percenDiffThreshold != "undefined"'>
+               AND   bar.PERCEN_DIFF_THRESHOLD = #{percenDiffThreshold} /* 依赖的差价阈值百分比 */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   bar.STATUS = #{status} /* 状态 */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(bar.DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /* 数据创建时间 */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(bar.DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /* 数据修改时间 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+    
+    <select id="getListPrmMapRtnMap"
+            parameterType="java.util.HashMap"
+            resultType="java.util.HashMap">
+    
+            SELECT   /* getListPrmMapRtnMap+@com.vilio.bps.commonMapper.sql.BpsAssessmentResultMapper.xml */ 
+                     bar.ID                        AS id                     /* 数据主键 */ 
+                    ,bar.CODE                      AS code                   /*  */ 
+                    ,bar.ASSESSMENT_PRICE          AS assessmentPrice        /* 房屋最终估算价格 */ 
+                    ,bar.MIN_APPLY_TIME            AS minApplyTime           /* 依赖询价公司最早报价时间（用于对比是否在时间阈值内） */ 
+                    ,bar.ALGORITHM_CODE            AS algorithmCode          /* 计算使用的算法 */ 
+                    ,bar.ALGORITHM_METHOD          AS algorithmMethod        /* 配置表有关算法的配置项名称 */ 
+                    ,bar.PERCEN_DIFF_THRESHOLD     AS percenDiffThreshold    /* 依赖的差价阈值百分比 */ 
+                    ,bar.STATUS                    AS status                 /* 状态 */ 
+                    ,bar.DATE_CREATED              AS dateCreated            /* 数据创建时间 */ 
+                    ,bar.DATE_MODIFIED             AS dateModified           /* 数据修改时间 */ 
+              FROM   BPS_ASSESSMENT_RESULT            bar                    /* 估算计算结果表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null and id != "" and id != "null" and id != "undefined"'>
+               AND   bar.ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   bar.CODE = #{code} /*  */ 
+             </if>
+        
+             <if test='assessmentPrice != null'>
+               AND   bar.ASSESSMENT_PRICE = #{assessmentPrice} /* 房屋最终估算价格 */ 
+             </if>
+        
+             <if test='minApplyTime != null'>
+               AND   date_format(bar.MIN_APPLY_TIME ,'%Y-%m-%d') = #{minApplyTimeChar} /* 依赖询价公司最早报价时间（用于对比是否在时间阈值内） */ 
+             </if>
+        
+             <if test='algorithmCode != null and algorithmCode != "" and algorithmCode != "null" and algorithmCode != "undefined"'>
+               AND   bar.ALGORITHM_CODE = #{algorithmCode} /* 计算使用的算法 */ 
+             </if>
+        
+             <if test='algorithmMethod != null and algorithmMethod != "" and algorithmMethod != "null" and algorithmMethod != "undefined"'>
+               AND   bar.ALGORITHM_METHOD = #{algorithmMethod} /* 配置表有关算法的配置项名称 */ 
+             </if>
+        
+             <if test='percenDiffThreshold != null and percenDiffThreshold != "" and percenDiffThreshold != "null" and percenDiffThreshold != "undefined"'>
+               AND   bar.PERCEN_DIFF_THRESHOLD = #{percenDiffThreshold} /* 依赖的差价阈值百分比 */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   bar.STATUS = #{status} /* 状态 */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(bar.DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /* 数据创建时间 */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(bar.DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /* 数据修改时间 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+
+
+    <!--
+    **************************************************************************
+    * 6.验证多条件数据是否存在
+    * 注: 根据多条件验证该数据是否存在 ,并返回数据量.
+    **************************************************************************
+    -->
+    <select id="getCheckBy"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsAssessmentResult"
+            resultType="java.lang.Integer">
+    
+            SELECT   /* getCheckBy+@com.vilio.bps.commonMapper.sql.BpsAssessmentResultMapper.xml */ 
+                     count(1)
+              FROM   BPS_ASSESSMENT_RESULT  /* 估算计算结果表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null and id != "" and id != "null" and id != "undefined"'>
+               AND   ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   CODE = #{code} /*  */ 
+             </if>
+        
+             <if test='assessmentPrice != null'>
+               AND   ASSESSMENT_PRICE = #{assessmentPrice} /* 房屋最终估算价格 */ 
+             </if>
+        
+             <if test='minApplyTime != null'>
+               AND   date_format(MIN_APPLY_TIME ,'%Y-%m-%d') = #{minApplyTimeChar} /* 依赖询价公司最早报价时间（用于对比是否在时间阈值内） */ 
+             </if>
+        
+             <if test='algorithmCode != null and algorithmCode != "" and algorithmCode != "null" and algorithmCode != "undefined"'>
+               AND   ALGORITHM_CODE = #{algorithmCode} /* 计算使用的算法 */ 
+             </if>
+        
+             <if test='algorithmMethod != null and algorithmMethod != "" and algorithmMethod != "null" and algorithmMethod != "undefined"'>
+               AND   ALGORITHM_METHOD = #{algorithmMethod} /* 配置表有关算法的配置项名称 */ 
+             </if>
+        
+             <if test='percenDiffThreshold != null and percenDiffThreshold != "" and percenDiffThreshold != "null" and percenDiffThreshold != "undefined"'>
+               AND   PERCEN_DIFF_THRESHOLD = #{percenDiffThreshold} /* 依赖的差价阈值百分比 */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   STATUS = #{status} /* 状态 */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /* 数据创建时间 */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /* 数据修改时间 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+    </select>
+    
+    <select id="getCheckByPrmMap"
+            parameterType="java.util.HashMap"
+            resultType="java.lang.Integer">
+    
+            SELECT   /* getCheckByPrmMap+@com.vilio.bps.commonMapper.sql.BpsAssessmentResultMapper.xml */ 
+                     count(1)
+              FROM   BPS_ASSESSMENT_RESULT  /* 估算计算结果表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null and id != "" and id != "null" and id != "undefined"'>
+               AND   ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   CODE = #{code} /*  */ 
+             </if>
+        
+             <if test='assessmentPrice != null'>
+               AND   ASSESSMENT_PRICE = #{assessmentPrice} /* 房屋最终估算价格 */ 
+             </if>
+        
+             <if test='minApplyTime != null'>
+               AND   date_format(MIN_APPLY_TIME ,'%Y-%m-%d') = #{minApplyTimeChar} /* 依赖询价公司最早报价时间（用于对比是否在时间阈值内） */ 
+             </if>
+        
+             <if test='algorithmCode != null and algorithmCode != "" and algorithmCode != "null" and algorithmCode != "undefined"'>
+               AND   ALGORITHM_CODE = #{algorithmCode} /* 计算使用的算法 */ 
+             </if>
+        
+             <if test='algorithmMethod != null and algorithmMethod != "" and algorithmMethod != "null" and algorithmMethod != "undefined"'>
+               AND   ALGORITHM_METHOD = #{algorithmMethod} /* 配置表有关算法的配置项名称 */ 
+             </if>
+        
+             <if test='percenDiffThreshold != null and percenDiffThreshold != "" and percenDiffThreshold != "null" and percenDiffThreshold != "undefined"'>
+               AND   PERCEN_DIFF_THRESHOLD = #{percenDiffThreshold} /* 依赖的差价阈值百分比 */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   STATUS = #{status} /* 状态 */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /* 数据创建时间 */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /* 数据修改时间 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+    </select>
+
+    <select id="queryAssessmentResultInThresholdByApplyParam" parameterType="com.vilio.bps.commonMapper.pojo.BpsCompanyInquiryApply" resultType="com.vilio.bps.commonMapper.pojo.BpsAssessmentResult">
+        SELECT
+        ar.code,
+        ar.algorithm_code as algorithmCode ,
+        ar.algorithm_method AS algorithmMethod,
+        ar.assessment_price AS assessmentPrice,
+        ar.date_created dateCreated,
+        ar.min_apply_time AS minApplyTime,
+        ar.percen_diff_threshold AS percenDiffThreshold,
+        ar.status
+        FROM
+        bps_company_inquiry_apply cia
+        JOIN bps_result_apply_relation re ON cia.code = re.apply_code
+        JOIN bps_assessment_result ar ON re.result_code = ar.code
+        WHERE
+        cia.plots_code = #{plotsCode,jdbcType=VARCHAR}
+        AND cia.unit_code = #{unitCode,jdbcType=VARCHAR}
+        AND cia.unit_no = #{unitName,jdbcType=VARCHAR}
+        AND cia.area = #{area,jdbcType=VARCHAR}
+        AND cia.total_floor =#{totalFloor,jdbcType=VARCHAR}
+        AND cia.current_floor = #{currentFloor,jdbcType=VARCHAR}
+        AND cia.company_code =#{companyCode,jdbcType=VARCHAR}
+        AND cia.room_code =#{houseCode,jdbcType=VARCHAR}
+        AND cia.room_no =#{houseName,jdbcType=VARCHAR}
+        AND ar.min_apply_time > #{priceTime,jdbcType=TIMESTAMP}
+        ORDER BY
+        ar.date_created DESC
+    </select>
+
+    <insert id="saveAssessmentResult"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsAssessmentResult">
+
+        INSERT
+        INTO   bps_assessment_result
+        (
+        CODE
+        ,ASSESSMENT_PRICE
+        ,MIN_APPLY_TIME
+        ,ALGORITHM_CODE
+        ,ALGORITHM_METHOD
+        ,PERCEN_DIFF_THRESHOLD
+        )
+        VALUES  (
+        #{code,jdbcType=VARCHAR}
+        ,#{assessmentPrice,jdbcType=DECIMAL}
+        ,#{minApplyTime,jdbcType=TIMESTAMP}
+        ,#{algorithmCode,jdbcType=VARCHAR}
+        ,#{algorithmMethod,jdbcType=VARCHAR}
+        ,#{percenDiffThreshold,jdbcType=VARCHAR}
+        )
+    </insert>
+
+</mapper>

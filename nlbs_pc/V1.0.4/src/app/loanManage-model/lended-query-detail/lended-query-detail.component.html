@@ -1,0 +1,101 @@
+<div class="row">
+  <ol class="breadcrumbNav col-12" >
+    <li (click)="querySection()"><a>借款业务查询</a><i>></i></li>
+    <li class="active">查看借款业务</li>
+  </ol>
+</div>
+
+<div class="row margin-bottom-20">
+  <div class="col-12">
+    <hr class="breadcrumbNavLine">
+  </div>
+</div>
+
+<app-professional-serial [professionalData]="professionalData"></app-professional-serial>
+
+<div class="row">
+  <div class="filed-name col-2">城市：</div>
+  <div class="filed-text col-2">{{currentItemLists.cityName}}</div>
+  <div class="filed-name col-2">公司：</div>
+  <div class="filed-text col-2">{{currentItemLists.distributorName}}</div>
+  <div class="filed-name col-2">业务经理：</div>
+  <div class="filed-text col-2">{{currentItemLists.agentName}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">主借款人：</div>
+  <div class="filed-text col-2">{{currentItemLists.customerName}}</div>
+  <div class="filed-name col-2">产品名称：</div>
+  <div class="filed-text col-2">{{currentItemLists.productName}}</div>
+  <div class="filed-name col-2">放款方式：</div>
+  <div class="filed-text col-2">{{currentItemLists.lendingMethodsName}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">授信金额：</div>
+  <div class="filed-text col-2">{{currentItemLists.totalquota |dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">已借金额：</div>
+  <div class="filed-text col-2">{{currentItemLists.principal |dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}元</div>
+  <div class="filed-name col-2">应还总额：</div>
+  <div class="filed-text col-2">{{currentItemLists.repaymentAmount |dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}元</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">授信日期：</div>
+  <div class="filed-text col-2">{{currentItemLists.creditStartDate | date:'yyyy-MM-dd'}}</div>
+  <div class="filed-name col-2">授信到期日：</div>
+  <div class="filed-text col-2">{{currentItemLists.creditEndDate   | date:'yyyy-MM-dd'}}</div>
+  <div class="filed-name col-2">授信期限：</div>
+  <div class="filed-text col-2">{{currentItemLists.creditPeriod?currentItemLists.creditPeriod+'个月':''}}</div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">授信天数：</div>
+  <div class="filed-text col-2">{{currentItemLists.creditDays}}天</div>
+  <div class="filed-name col-2">年化利率：</div>
+  <div class="filed-text col-2">{{currentItemLists.annualizedInterest*100|keepTwoDecimal|permil}}%</div>
+  <div class="filed-name col-2">状态：</div>
+  <div class="filed-text col-2">{{currentItemLists.loanStatusName}}</div>
+</div>
+
+<div class="row">
+  <div class="col-2 filed-name">抵押物：</div>
+  <div *ngFor="let item of currentItemLists.houseList let i=index">
+    <div class="col-2 filed-name" *ngIf="i>0"></div>
+    <div class="col-10 filed-text">{{item.houseAddress}}</div>
+  </div>
+</div>
+
+
+<div class="tab-menu margin-top-40">
+  <ul class="tab-menu-ul">
+    <li [ngClass]="{'current':this.tabHighLight=='01'?true:false}" (click)="this.dependHighLight('01')">
+      <a href="javascript:;">还款计划</a>
+    </li>
+
+    <li [ngClass]="{'current':this.tabHighLight=='02'?true:false}" (click)="this.dependHighLight('02')">
+      <a href="javascript:;">还款记录</a>
+    </li>
+
+    <li [ngClass]="{'current':this.tabHighLight=='03'?true:false}" (click)="this.dependHighLight('03')">
+      <a href="javascript:;">放款记录</a>
+    </li>
+
+  </ul>
+</div>
+<div class="label_hr"></div>
+<div class="tab_box margin-top-20">
+  <!--还款计划-->
+  <app-repayment-plan  [contractCode]="contractCode" [confirmed]="confirmed" *ngIf="this.tabHighLight=='01'" (event)="getData($event)" [repaymentSchedule]="repaymentSchedule"></app-repayment-plan>
+
+  <!--还款记录-->
+  <app-repayment-record  [contractCode]="contractCode"  *ngIf="this.tabHighLight=='02'" (event)="getData($event)"></app-repayment-record >
+
+  <!--放款记录-->
+  <app-loan-record  [contractCode]="contractCode" [detailPageShow]="detailPageShow" *ngIf="this.tabHighLight=='03'" (event)="getData($event)"></app-loan-record>
+
+
+</div>
+
+
+

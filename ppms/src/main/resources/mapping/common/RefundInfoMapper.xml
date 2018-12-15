@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.ppms.dao.common.RefundInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.vilio.ppms.pojo.common.RefundInfo" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sys_serno" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="trans_serno" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="route_serno" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="trans_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="trans_time" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="trans_type" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="refund_sys_serno" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="refund_trans_serno" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="refund_amount" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="route_ret_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="route_ret_msg" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="route_trans_result" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="resp_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="resp_msg" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="check_flag" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="estimate_fee" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="status" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="remark1" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="trans_status" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="step_status" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sys_status" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="source_fee" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="real_fee" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, sys_serno, trans_serno, route_serno, trans_date, trans_time, trans_type, 
+    refund_sys_serno, refund_trans_serno, refund_amount, route_ret_code, route_ret_msg, 
+    route_trans_result, resp_code, resp_msg, check_flag, estimate_fee, status, create_time, 
+    update_time, remark1, trans_status, step_status, sys_status, source_fee, real_fee
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from ppms_refund_info
+    where code = #{code,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ppms_refund_info
+    where code = #{code,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.vilio.ppms.pojo.common.RefundInfo" >
+    insert into ppms_refund_info (id, code, sys_serno, 
+      trans_serno, route_serno, trans_date, 
+      trans_time, trans_type, refund_sys_serno, 
+      refund_trans_serno, refund_amount, route_ret_code, 
+      route_ret_msg, route_trans_result, resp_code, 
+      resp_msg, check_flag, estimate_fee, 
+      status, create_time, update_time, 
+      remark1, trans_status, step_status, 
+      sys_status, source_fee, real_fee
+      )
+    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{sysSerno,jdbcType=VARCHAR}, 
+      #{transSerno,jdbcType=VARCHAR}, #{routeSerno,jdbcType=VARCHAR}, #{transDate,jdbcType=TIMESTAMP}, 
+      #{transTime,jdbcType=VARCHAR}, #{transType,jdbcType=VARCHAR}, #{refundSysSerno,jdbcType=VARCHAR}, 
+      #{refundTransSerno,jdbcType=VARCHAR}, #{refundAmount,jdbcType=DECIMAL}, #{routeRetCode,jdbcType=VARCHAR}, 
+      #{routeRetMsg,jdbcType=VARCHAR}, #{routeTransResult,jdbcType=VARCHAR}, #{respCode,jdbcType=VARCHAR}, 
+      #{respMsg,jdbcType=VARCHAR}, #{checkFlag,jdbcType=VARCHAR}, #{estimateFee,jdbcType=DECIMAL}, 
+      #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{remark1,jdbcType=VARCHAR}, #{transStatus,jdbcType=VARCHAR}, #{stepStatus,jdbcType=VARCHAR}, 
+      #{sysStatus,jdbcType=VARCHAR}, #{sourceFee,jdbcType=DECIMAL}, #{realFee,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.vilio.ppms.pojo.common.RefundInfo" >
+    insert into ppms_refund_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="sysSerno != null" >
+        sys_serno,
+      </if>
+      <if test="transSerno != null" >
+        trans_serno,
+      </if>
+      <if test="routeSerno != null" >
+        route_serno,
+      </if>
+      <if test="transDate != null" >
+        trans_date,
+      </if>
+      <if test="transTime != null" >
+        trans_time,
+      </if>
+      <if test="transType != null" >
+        trans_type,
+      </if>
+      <if test="refundSysSerno != null" >
+        refund_sys_serno,
+      </if>
+      <if test="refundTransSerno != null" >
+        refund_trans_serno,
+      </if>
+      <if test="refundAmount != null" >
+        refund_amount,
+      </if>
+      <if test="routeRetCode != null" >
+        route_ret_code,
+      </if>
+      <if test="routeRetMsg != null" >
+        route_ret_msg,
+      </if>
+      <if test="routeTransResult != null" >
+        route_trans_result,
+      </if>
+      <if test="respCode != null" >
+        resp_code,
+      </if>
+      <if test="respMsg != null" >
+        resp_msg,
+      </if>
+      <if test="checkFlag != null" >
+        check_flag,
+      </if>
+      <if test="estimateFee != null" >
+        estimate_fee,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="remark1 != null" >
+        remark1,
+      </if>
+      <if test="transStatus != null" >
+        trans_status,
+      </if>
+      <if test="stepStatus != null" >
+        step_status,
+      </if>
+      <if test="sysStatus != null" >
+        sys_status,
+      </if>
+      <if test="sourceFee != null" >
+        source_fee,
+      </if>
+      <if test="realFee != null" >
+        real_fee,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="sysSerno != null" >
+        #{sysSerno,jdbcType=VARCHAR},
+      </if>
+      <if test="transSerno != null" >
+        #{transSerno,jdbcType=VARCHAR},
+      </if>
+      <if test="routeSerno != null" >
+        #{routeSerno,jdbcType=VARCHAR},
+      </if>
+      <if test="transDate != null" >
+        #{transDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="transTime != null" >
+        #{transTime,jdbcType=VARCHAR},
+      </if>
+      <if test="transType != null" >
+        #{transType,jdbcType=VARCHAR},
+      </if>
+      <if test="refundSysSerno != null" >
+        #{refundSysSerno,jdbcType=VARCHAR},
+      </if>
+      <if test="refundTransSerno != null" >
+        #{refundTransSerno,jdbcType=VARCHAR},
+      </if>
+      <if test="refundAmount != null" >
+        #{refundAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="routeRetCode != null" >
+        #{routeRetCode,jdbcType=VARCHAR},
+      </if>
+      <if test="routeRetMsg != null" >
+        #{routeRetMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="routeTransResult != null" >
+        #{routeTransResult,jdbcType=VARCHAR},
+      </if>
+      <if test="respCode != null" >
+        #{respCode,jdbcType=VARCHAR},
+      </if>
+      <if test="respMsg != null" >
+        #{respMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="checkFlag != null" >
+        #{checkFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="estimateFee != null" >
+        #{estimateFee,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark1 != null" >
+        #{remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="transStatus != null" >
+        #{transStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="stepStatus != null" >
+        #{stepStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="sysStatus != null" >
+        #{sysStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceFee != null" >
+        #{sourceFee,jdbcType=DECIMAL},
+      </if>
+      <if test="realFee != null" >
+        #{realFee,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vilio.ppms.pojo.common.RefundInfo" >
+    update ppms_refund_info
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="sysSerno != null" >
+        sys_serno = #{sysSerno,jdbcType=VARCHAR},
+      </if>
+      <if test="transSerno != null" >
+        trans_serno = #{transSerno,jdbcType=VARCHAR},
+      </if>
+      <if test="routeSerno != null" >
+        route_serno = #{routeSerno,jdbcType=VARCHAR},
+      </if>
+      <if test="transDate != null" >
+        trans_date = #{transDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="transTime != null" >
+        trans_time = #{transTime,jdbcType=VARCHAR},
+      </if>
+      <if test="transType != null" >
+        trans_type = #{transType,jdbcType=VARCHAR},
+      </if>
+      <if test="refundSysSerno != null" >
+        refund_sys_serno = #{refundSysSerno,jdbcType=VARCHAR},
+      </if>
+      <if test="refundTransSerno != null" >
+        refund_trans_serno = #{refundTransSerno,jdbcType=VARCHAR},
+      </if>
+      <if test="refundAmount != null" >
+        refund_amount = #{refundAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="routeRetCode != null" >
+        route_ret_code = #{routeRetCode,jdbcType=VARCHAR},
+      </if>
+      <if test="routeRetMsg != null" >
+        route_ret_msg = #{routeRetMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="routeTransResult != null" >
+        route_trans_result = #{routeTransResult,jdbcType=VARCHAR},
+      </if>
+      <if test="respCode != null" >
+        resp_code = #{respCode,jdbcType=VARCHAR},
+      </if>
+      <if test="respMsg != null" >
+        resp_msg = #{respMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="checkFlag != null" >
+        check_flag = #{checkFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="estimateFee != null" >
+        estimate_fee = #{estimateFee,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark1 != null" >
+        remark1 = #{remark1,jdbcType=VARCHAR},
+      </if>
+      <if test="transStatus != null" >
+        trans_status = #{transStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="stepStatus != null" >
+        step_status = #{stepStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="sysStatus != null" >
+        sys_status = #{sysStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceFee != null" >
+        source_fee = #{sourceFee,jdbcType=DECIMAL},
+      </if>
+      <if test="realFee != null" >
+        real_fee = #{realFee,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vilio.ppms.pojo.common.RefundInfo" >
+    update ppms_refund_info
+    set code = #{code,jdbcType=VARCHAR},
+      sys_serno = #{sysSerno,jdbcType=VARCHAR},
+      trans_serno = #{transSerno,jdbcType=VARCHAR},
+      route_serno = #{routeSerno,jdbcType=VARCHAR},
+      trans_date = #{transDate,jdbcType=TIMESTAMP},
+      trans_time = #{transTime,jdbcType=VARCHAR},
+      trans_type = #{transType,jdbcType=VARCHAR},
+      refund_sys_serno = #{refundSysSerno,jdbcType=VARCHAR},
+      refund_trans_serno = #{refundTransSerno,jdbcType=VARCHAR},
+      refund_amount = #{refundAmount,jdbcType=DECIMAL},
+      route_ret_code = #{routeRetCode,jdbcType=VARCHAR},
+      route_ret_msg = #{routeRetMsg,jdbcType=VARCHAR},
+      route_trans_result = #{routeTransResult,jdbcType=VARCHAR},
+      resp_code = #{respCode,jdbcType=VARCHAR},
+      resp_msg = #{respMsg,jdbcType=VARCHAR},
+      check_flag = #{checkFlag,jdbcType=VARCHAR},
+      estimate_fee = #{estimateFee,jdbcType=DECIMAL},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      remark1 = #{remark1,jdbcType=VARCHAR},
+      trans_status = #{transStatus,jdbcType=VARCHAR},
+      step_status = #{stepStatus,jdbcType=VARCHAR},
+      sys_status = #{sysStatus,jdbcType=VARCHAR},
+      source_fee = #{sourceFee,jdbcType=DECIMAL},
+      real_fee = #{realFee,jdbcType=DECIMAL}
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+</mapper>

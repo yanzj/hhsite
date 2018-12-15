@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.vilio.fms.generator.dao.FmsBuildModelDetailsMapper">
+
+    <insert id="insertDetails" parameterType="com.vilio.fms.generator.pojo.FmsBuildModelDetails" >
+        INSERT INTO  fms_build_model_details
+                    (
+                     code
+                    ,serial_no
+                    ,model_code
+                    ,file_name
+                    ,file_code
+                    )
+            VALUES  (
+                     #{code}
+                    ,#{serialNo}
+                    ,#{modelCode}
+                    ,#{fileName}
+                    ,#{fileCode}
+                    )
+    </insert>
+
+    <update id="updateDetails"
+            parameterType="com.vilio.fms.generator.pojo.FmsBuildModelDetails">
+
+        UPDATE
+        fms_build_model_details
+        SET
+        file_code              = #{fileCode}
+        ,file_name              = #{fileName}
+        ,status              = #{status}
+        WHERE   code                = #{code}
+
+    </update>
+
+    <delete id="deleteDetailsBySerialNo" parameterType="java.lang.String" >
+        delete from fms_build_model_details
+        where serial_no = #{serialNo}
+    </delete>
+
+    <select id="queryDetails"
+            parameterType="com.vilio.fms.generator.pojo.FmsBuildModelDetails"
+            resultType="com.vilio.fms.generator.pojo.FmsBuildModelDetails">
+        SELECT
+         fbmd.id                                                        AS id
+        ,DATE_FORMAT(fbmd.date_created ,'%Y-%m-%d %H:%i:%s')            AS dateCreated
+        ,fbmd.code                                                      AS code
+        ,fbmd.serial_no                                                 AS serialNo
+        ,fbmd.model_code                                                AS modelCode
+        ,fbmd.file_name                                                 AS fileName
+        ,fbmd.file_code                                                 AS fileCode
+        ,fbmd.required_param                                            AS requiredParam
+        ,fbmd.mortgage_type                                             AS mortgageType
+        ,fbmd.certificate_number_first                                  AS certificateNumberFirst
+        ,fbmd.certificate_number_second                                 AS certificateNumberSecond
+        ,fbmd.status                                                    AS status
+        FROM   fms_build_model_details     fbmd
+        WHERE   1=1
+
+        <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+            AND   fbmd.code = #{code}
+        </if>
+        <if test='serialNo != null and serialNo != "" and serialNo != "null" and serialNo != "undefined"'>
+            AND   fbmd.serial_no = #{serialNo}
+        </if>
+        <if test='modelCode != null and modelCode != "" and modelCode != "null" and modelCode != "undefined"'>
+            AND   fbmd.model_code = #{modelCode}
+        </if>
+        <if test='fileCode != null and fileCode != "" and fileCode != "null" and fileCode != "undefined"'>
+            AND   fbmd.file_code = #{fileCode}
+        </if>
+
+
+    </select>
+
+</mapper>

@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!--
+******************************************************************************
+* 数据库表：NLBS_PENDING_USER_DISTRIBUTOR
+* 表的名称：待处理人和渠道关联表
+* 对应实体：com.vilio.nlbs.commonMapper.pojo.NlbsPendingUserDistributor
+* 开发日期：2017-06-15
+* 技术服务：www.fwjava.com
+******************************************************************************
+-->
+<mapper namespace="com.vilio.nlbs.commonMapper.dao.NlbsPendingUserDistributorMapper">
+
+    <!--
+    **************************************************************************
+    * 1.新增一条数据
+    * 注: 根据Bean实体执行新增操作.
+    **************************************************************************
+    -->
+    <insert id="getInsert"
+            parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsPendingUserDistributor"
+            useGeneratedKeys="true"
+            keyProperty="id">
+    
+            INSERT   /* getInsert+@com.vilio.nlbs.commonMapper.sql.NlbsPendingUserDistributorMapper.xml */ 
+              INTO   NLBS_PENDING_USER_DISTRIBUTOR         /* 待处理人和渠道关联表 */ 
+                    (
+                     USER_NO                               /* 待处理人 */ 
+                    ,DISTRIBUTOR_CODE                      /* 所属渠道 */ 
+                    )
+            VALUES  (
+                     #{userNo}                             /* 待处理人 */ 
+                    ,#{distributorCode}                    /* 所属渠道 */ 
+                    )
+         
+    </insert>
+    
+    <insert id="getInsertPrmMap"
+            parameterType="java.util.HashMap"
+            useGeneratedKeys="true"
+            keyProperty="id">
+    
+            INSERT   /* getInsertPrmMap+@com.vilio.nlbs.commonMapper.sql.NlbsPendingUserDistributorMapper.xml */ 
+              INTO   NLBS_PENDING_USER_DISTRIBUTOR         /* 待处理人和渠道关联表 */ 
+                    (
+                     USER_NO                               /* 待处理人 */ 
+                    ,DISTRIBUTOR_CODE                      /* 所属渠道 */ 
+                    )
+            VALUES  (
+                     #{userNo}                             /* 待处理人 */ 
+                    ,#{distributorCode}                    /* 所属渠道 */ 
+                    )
+         
+    </insert>
+
+
+    <!--
+    **************************************************************************
+    * 2.删除一条数据
+    * 注: 根据Bean实体的主键ID执行删除操作.
+    **************************************************************************
+    -->
+    <delete id="getDelete"
+            parameterType="java.lang.Integer">
+    
+            DELETE   /* getDelete+@com.vilio.nlbs.commonMapper.sql.NlbsPendingUserDistributorMapper.xml */ 
+              FROM   NLBS_PENDING_USER_DISTRIBUTOR    /* 待处理人和渠道关联表 */ 
+             WHERE   ID = #{_parameter}               /* 数据主键 */ 
+         
+    </delete>
+
+
+    <!--
+    **************************************************************************
+    * 3.变更一条数据
+    * 注: 根据Bean实体的主键ID执行变更操作.
+    **************************************************************************
+    -->
+    <update id="getUpdate"
+            parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsPendingUserDistributor">
+    
+            UPDATE   /* getUpdate+@com.vilio.nlbs.commonMapper.sql.NlbsPendingUserDistributorMapper.xml */ 
+                     NLBS_PENDING_USER_DISTRIBUTOR                            /* 待处理人和渠道关联表 */ 
+               SET   USER_NO                          = #{userNo}             /* 待处理人 */ 
+                    ,DISTRIBUTOR_CODE                 = #{distributorCode}    /* 所属渠道 */ 
+             WHERE   ID                               = #{id}                 /* 数据主键 */ 
+         
+    </update>
+    
+    <update id="getUpdatePrmMap"
+            parameterType="java.util.HashMap">
+    
+            UPDATE   /* getUpdatePrmMap+@com.vilio.nlbs.commonMapper.sql.NlbsPendingUserDistributorMapper.xml */ 
+                     NLBS_PENDING_USER_DISTRIBUTOR                            /* 待处理人和渠道关联表 */ 
+               SET   USER_NO                          = #{userNo}             /* 待处理人 */ 
+                    ,DISTRIBUTOR_CODE                 = #{distributorCode}    /* 所属渠道 */ 
+             WHERE   ID                               = #{id}                 /* 数据主键 */ 
+         
+    </update>
+
+
+    <!--
+    **************************************************************************
+    * 4.获取一个Bean实体
+    * 注: 根据Bean实体的主键ID获取一个Bean实体.
+    **************************************************************************
+    -->
+    <select id="getBean"
+            parameterType="java.lang.Integer"
+            resultType="com.vilio.nlbs.commonMapper.pojo.NlbsPendingUserDistributor">
+    
+            SELECT   /* getBean+@com.vilio.nlbs.commonMapper.sql.NlbsPendingUserDistributorMapper.xml */ 
+                     npud.ID                                AS id                 /* 数据主键 */ 
+                    ,npud.USER_NO                           AS userNo             /* 待处理人 */ 
+                    ,npud.DISTRIBUTOR_CODE                  AS distributorCode    /* 所属渠道 */ 
+              FROM   NLBS_PENDING_USER_DISTRIBUTOR             npud               /* 待处理人和渠道关联表 */ 
+             WHERE   npud.ID = #{_parameter}                                      /* 数据主键 */ 
+         
+    </select>
+    
+    <select id="getBeanRtnMap"
+            parameterType="java.lang.Integer"
+            resultType="java.util.HashMap">
+    
+            SELECT   /* getBeanRtnMap+@com.vilio.nlbs.commonMapper.sql.NlbsPendingUserDistributorMapper.xml */ 
+                     npud.ID                                AS id                 /* 数据主键 */ 
+                    ,npud.USER_NO                           AS userNo             /* 待处理人 */ 
+                    ,npud.DISTRIBUTOR_CODE                  AS distributorCode    /* 所属渠道 */ 
+              FROM   NLBS_PENDING_USER_DISTRIBUTOR             npud               /* 待处理人和渠道关联表 */ 
+             WHERE   npud.ID = #{_parameter}                                      /* 数据主键 */ 
+         
+    </select>
+
+
+    <!--
+    **************************************************************************
+    * 5.条件查询
+    * 注: 支持多条件查询、模糊查询、日期比较查询等操作.
+    **************************************************************************
+    -->
+    <select id="getList"
+            parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsPendingUserDistributor"
+            resultType="com.vilio.nlbs.commonMapper.pojo.NlbsPendingUserDistributor">
+    
+            SELECT   /* getList+@com.vilio.nlbs.commonMapper.sql.NlbsPendingUserDistributorMapper.xml */ 
+                     npud.ID                                AS id                 /* 数据主键 */ 
+                    ,npud.USER_NO                           AS userNo             /* 待处理人 */ 
+                    ,npud.DISTRIBUTOR_CODE                  AS distributorCode    /* 所属渠道 */ 
+              FROM   NLBS_PENDING_USER_DISTRIBUTOR             npud               /* 待处理人和渠道关联表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   npud.ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='userNo != null and userNo != "" and userNo != "null" and userNo != "undefined"'>
+               AND   npud.USER_NO = #{userNo} /* 待处理人 */ 
+             </if>
+        
+             <if test='distributorCode != null and distributorCode != "" and distributorCode != "null" and distributorCode != "undefined"'>
+               AND   npud.DISTRIBUTOR_CODE = #{distributorCode} /* 所属渠道 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+    
+    <select id="getListPrmMapRtnBean"
+            parameterType="java.util.HashMap"
+            resultType="com.vilio.nlbs.commonMapper.pojo.NlbsPendingUserDistributor">
+    
+            SELECT   /* getListPrmMapRtnBean+@com.vilio.nlbs.commonMapper.sql.NlbsPendingUserDistributorMapper.xml */ 
+                     npud.ID                                AS id                 /* 数据主键 */ 
+                    ,npud.USER_NO                           AS userNo             /* 待处理人 */ 
+                    ,npud.DISTRIBUTOR_CODE                  AS distributorCode    /* 所属渠道 */ 
+              FROM   NLBS_PENDING_USER_DISTRIBUTOR             npud               /* 待处理人和渠道关联表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   npud.ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='userNo != null and userNo != "" and userNo != "null" and userNo != "undefined"'>
+               AND   npud.USER_NO = #{userNo} /* 待处理人 */ 
+             </if>
+        
+             <if test='distributorCode != null and distributorCode != "" and distributorCode != "null" and distributorCode != "undefined"'>
+               AND   npud.DISTRIBUTOR_CODE = #{distributorCode} /* 所属渠道 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+    
+    <select id="getListPrmMapRtnMap"
+            parameterType="java.util.HashMap"
+            resultType="java.util.HashMap">
+    
+            SELECT   /* getListPrmMapRtnMap+@com.vilio.nlbs.commonMapper.sql.NlbsPendingUserDistributorMapper.xml */ 
+                     npud.ID                                AS id                 /* 数据主键 */ 
+                    ,npud.USER_NO                           AS userNo             /* 待处理人 */ 
+                    ,npud.DISTRIBUTOR_CODE                  AS distributorCode    /* 所属渠道 */ 
+              FROM   NLBS_PENDING_USER_DISTRIBUTOR             npud               /* 待处理人和渠道关联表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   npud.ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='userNo != null and userNo != "" and userNo != "null" and userNo != "undefined"'>
+               AND   npud.USER_NO = #{userNo} /* 待处理人 */ 
+             </if>
+        
+             <if test='distributorCode != null and distributorCode != "" and distributorCode != "null" and distributorCode != "undefined"'>
+               AND   npud.DISTRIBUTOR_CODE = #{distributorCode} /* 所属渠道 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+
+
+    <select id="getUserListByUserNo"
+            parameterType="java.lang.String"
+            resultType="java.util.HashMap">
+
+        SELECT   /* getListPrmMapRtnBean+@com.vilio.nlbs.commonMapper.sql.NlbsPendingUserDistributorMapper.xml */
+        npud.USER_NO                           AS userNo             /* 待处理人 */
+        ,nuu.full_name                         AS userName           /* 待处理人姓名 */
+
+        FROM   NLBS_PENDING_USER_DISTRIBUTOR             npud               /* 待处理人和渠道关联表 */
+        JOIN nlbs_agent na ON npud.distributor_code = na.distributor_code
+        JOIN nlbs_user nu ON nu.agent_id = na.agent_id
+        JOIN nlbs_user nuu ON npud.user_no = nuu.user_no
+
+        WHERE   nu.USER_NO = #{userNo} /* 待处理人 */
+
+    </select>
+
+
+    <!--
+    **************************************************************************
+    * 6.验证多条件数据是否存在
+    * 注: 根据多条件验证该数据是否存在 ,并返回数据量.
+    **************************************************************************
+    -->
+    <select id="getCheckBy"
+            parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsPendingUserDistributor"
+            resultType="java.lang.Integer">
+    
+            SELECT   /* getCheckBy+@com.vilio.nlbs.commonMapper.sql.NlbsPendingUserDistributorMapper.xml */ 
+                     count(1)
+              FROM   NLBS_PENDING_USER_DISTRIBUTOR  /* 待处理人和渠道关联表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='userNo != null and userNo != "" and userNo != "null" and userNo != "undefined"'>
+               AND   USER_NO = #{userNo} /* 待处理人 */ 
+             </if>
+        
+             <if test='distributorCode != null and distributorCode != "" and distributorCode != "null" and distributorCode != "undefined"'>
+               AND   DISTRIBUTOR_CODE = #{distributorCode} /* 所属渠道 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+    </select>
+    
+    <select id="getCheckByPrmMap"
+            parameterType="java.util.HashMap"
+            resultType="java.lang.Integer">
+    
+            SELECT   /* getCheckByPrmMap+@com.vilio.nlbs.commonMapper.sql.NlbsPendingUserDistributorMapper.xml */ 
+                     count(1)
+              FROM   NLBS_PENDING_USER_DISTRIBUTOR  /* 待处理人和渠道关联表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='userNo != null and userNo != "" and userNo != "null" and userNo != "undefined"'>
+               AND   USER_NO = #{userNo} /* 待处理人 */ 
+             </if>
+        
+             <if test='distributorCode != null and distributorCode != "" and distributorCode != "null" and distributorCode != "undefined"'>
+               AND   DISTRIBUTOR_CODE = #{distributorCode} /* 所属渠道 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+    </select>
+
+
+</mapper>

@@ -1,0 +1,146 @@
+<!--征信信息弹窗start-->
+<div class="popup dataInfoCreditPopup">
+  <header class="header">
+    <h4 class="header-title">征信信息详情</h4>
+    <span class="close-btn" (click)="popupCloseBtn()">X</span>
+  </header>
+  <div class="popup-main">
+    <div class="row">
+      <div class="filed-name col-3">姓名：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.name}}</div>
+      <div class="filed-name col-3">征信报告时间：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.reportTime | date:'yyyy年MM月dd日'}}</div>
+    </div>
+    <div *ngIf="selectItemPopViewObj.loanUnsettle">
+      <div class="msgofPawn clearfix">
+        <div class="message-title-line"></div>
+        <div class="message-title-name">未结清贷款信息汇总</div>
+      </div>
+      <div class="row">
+        <div class="filed-name col-3">贷款笔数：</div>
+        <div class="filed-text col-3">{{selectItemPopViewObj.loanUnsettle.loanTimes}}</div>
+        <div class="filed-name col-3">合同总额：</div>
+        <div class="filed-text col-3">{{selectItemPopViewObj.loanUnsettle.contractAmount|changeUnit|permil}}万元</div>
+      </div>
+      <div class="row">
+        <div class="filed-name col-3">余额：</div>
+        <div class="filed-text col-3">{{selectItemPopViewObj.loanUnsettle.balance|changeUnit|permil}}万元</div>
+        <div class="filed-name col-3">近6个月平均应还款：</div>
+        <div class="filed-text col-3">{{selectItemPopViewObj.loanUnsettle.repaymentable|changeUnit|permil}}万元</div>
+      </div>
+    </div>
+
+    <div *ngIf="selectItemPopViewObj.unClosingCard">
+      <div class="msgofPawn clearfix">
+        <div class="message-title-line"></div>
+        <div class="message-title-name">未销户贷记卡信息汇总</div>
+      </div>
+      <div class="row">
+        <div class="filed-name col-3">账户数：</div>
+        <div class="filed-text col-3">{{selectItemPopViewObj.unClosingCard.accountNumber}}</div>
+        <div class="filed-name col-3">授信总额：</div>
+        <div class="filed-text col-3">{{selectItemPopViewObj.unClosingCard.totalCredit|changeUnit|permil}}万元</div>
+      </div>
+      <div class="row">
+        <div class="filed-name col-3">已用额度：</div>
+        <div class="filed-text col-3">{{selectItemPopViewObj.unClosingCard.contractAmount|changeUnit|permil}}万元</div>
+        <div class="filed-name col-3">近6个月平均使用额度：</div>
+        <div class="filed-text col-3">{{selectItemPopViewObj.unClosingCard.sixMonthLoanAmount|changeUnit|permil}}万元</div>
+      </div>
+    </div>
+
+    <div class="msgofPawn clearfix">
+      <div class="message-title-line"></div>
+      <div class="message-title-customname">贷款信息</div>
+      <table class="table" border="0" cellpadding="0" cellspacing="0" style="margin:0;border-bottom:0">
+        <thead>
+        <tr>
+          <th class="width-80">序号</th>
+          <th class="width-280">类型</th>
+          <th class="width-180">详情</th>
+        </tr>
+        </thead>
+        <tbody *ngFor=" let item of selectItemPopViewObj.loanedInfoList ">
+        <tr>
+          <td class="width-80">{{item.loanNo}}</td>
+          <td class="width-280">{{item.type}}</td>
+          <td class="width-180">{{item.type=='当前逾期'?(item.detail|changeUnit|permil)+'万元':item.detail}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="msgofPawn clearfix">
+      <div class="message-title-line"></div>
+      <div class="message-title-customname">贷记卡信息</div>
+      <table class="table" border="0" cellpadding="0" cellspacing="0" style="margin:0;border-bottom:0">
+        <thead>
+        <tr>
+          <th class="width-80">序号</th>
+          <th class="width-280">类型</th>
+          <th class="width-180">详情</th>
+        </tr>
+        </thead>
+        <tbody *ngFor=" let item of selectItemPopViewObj.creaditCardList ">
+        <tr>
+          <td class="width-80">{{item.loanNo}}</td>
+          <td class="width-280">{{item.type}}</td>
+          <td class="width-180">{{item.type=='当前逾期'?(item.detail|changeUnit|permil)+'万元':item.detail}}</td>
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
+    <div class="msgofPawn clearfix">
+      <div class="message-title-line"></div>
+      <div class="message-title-name">担保信息</div>
+    </div>
+    <table class="table" border="0" cellpadding="0" cellspacing="0" style="margin:0;border-bottom:0">
+      <thead>
+      <tr>
+        <th class="width-180">担保状态</th>
+        <th class="width-180">担保金额</th>
+        <th class="width-180">担保余额</th>
+      </tr>
+      </thead>
+      <tbody *ngFor=" let item of selectItemPopViewObj.guaranteeInfoList ">
+      <tr>
+        <td class="width-180">{{item.guaranteeStatus}}</td>
+        <td class="width-180">{{item.guaranteeAmount|changeUnit|permil}}万元</td>
+        <td class="width-180">{{item.guaranteeBalance|changeUnit|permil}}万元</td>
+      </tr>
+
+      </tbody>
+    </table>
+
+    <div class="msgofPawn clearfix">
+      <div class="message-title-line"></div>
+      <div class="message-title-name">查询记录</div>
+    </div>
+    <div *ngIf="selectItemPopViewObj.queryRecord">
+      <div class="row">
+        <div class="filed-name col-3">近三个月查询次数：</div>
+        <div class="filed-text col-3">{{selectItemPopViewObj.queryRecord.queryNum}}</div>
+        <div class="filed-name col-3">贷后管理次数：</div>
+        <div class="filed-text col-3">{{selectItemPopViewObj.queryRecord.manageNum}}</div>
+      </div>
+
+      <div class="row">
+        <div class="filed-name col-3">担保资格审查次数：</div>
+        <div class="filed-text col-9">{{selectItemPopViewObj.queryRecord.checkNum}}</div>
+      </div>
+    </div>
+    <div class="msgofPawn clearfix">
+      <div class="message-title-line"></div>
+      <div class="message-title-name">备注</div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="filed-text text-left">{{selectItemPopViewObj.remark}}</div>
+      </div>
+    </div>
+  </div>
+
+  <button class="orange-button margin-top-40 margin-bottom-0" (click)="popupCloseBtn()">返回</button>
+
+</div>
+<!--征信信息弹窗end-->

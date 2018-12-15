@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.PlmsInsuranceCompanyDao">
+
+    <insert id="saveInsuranceCompanyInfo" parameterType="com.vilio.plms.pojo.PlmsInsuranceCompany">
+        INSERT INTO plms_insurance_company (
+            `code`,
+            `company_code`,
+            `bail_rate`,
+            `bail_amount`,
+            `bail_payed_time`,
+            `performance_bond_rate`,
+            `performance_bond_amount`,
+            `performance_bond_payed_time`,
+            `second_insurance_name`,
+            `second_insurance_fee_rate`,
+            `second_insurance_fee_amount`,
+            `second_insurance_payed_time`,
+            `contract_code`,
+            `status`,
+            `create_date`,
+            `modify_date`,
+            `bail_payed_amount`,
+            `performance_bond_payed_amount`,
+            `second_insurance_payed_amount`,
+            `bail_payed_method`,
+            `performance_bond_payed_method`,
+            `second_insurance_payed_method`
+        )
+        VALUES
+            (
+                #{code},
+                #{companyCode},
+                #{bailRate},
+               #{bailAmount},
+                #{bailPayedTime},
+                #{performanceBondRate},
+                #{performanceBondAmount},
+                #{performanceBondPayedTime},
+                #{secondInsuranceName},
+               #{secondInsuranceFeeRate},
+                #{secondInsuranceFeeAmount},
+                #{secondInsurancePayedTime},
+                #{contractCode},
+                #{status},
+                #{createDate},
+                #{modifyDate},
+                #{bailPayedAmount},
+                #{performanceBondPayedAmount},
+                #{secondInsurancePayedAmount},
+                #{bailPayedMethod},
+                #{performanceBondPayedMethod},
+               #{secondInsurancePayedMethod}
+            )
+    </insert>
+</mapper>

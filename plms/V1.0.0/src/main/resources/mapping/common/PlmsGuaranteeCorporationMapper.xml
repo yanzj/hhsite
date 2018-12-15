@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.PlmsGuaranteeCorporationDao">
+
+    <insert id="saveGuaranteeCorporation" parameterType="com.vilio.plms.pojo.PlmsGuaranteeCorporation">
+        INSERT INTO plms_guarantee_corporation (
+            code,
+            company_code,
+            guarantee_rate,
+            guarantee_amount,
+            guarantee_payed_amount,
+            guarantee_payed_time,
+            contract_code,
+            status,
+            create_date,
+            modify_date,
+            bail_rate,
+            bail_amount,
+            bail_payed_amount,
+            bail_payed_time
+        )
+        VALUES
+            (
+                #{code},
+                #{companyCode},
+                #{guaranteeRate},
+                #{guaranteeAmount},
+                #{guaranteePayedAmount},
+                #{guaranteePayedTime},
+                #{contractCode},
+                #{status},
+                #{createDate},
+                #{modifyDate},
+                #{bailRate},
+                #{bailAmount},
+                #{bailPayedAmount},
+                #{bailPayedTime}
+            )
+    </insert>
+</mapper>

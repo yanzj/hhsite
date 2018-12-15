@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.ppms.dao.common.SuningpayTransInfoLogMapper" >
+  <resultMap id="BaseResultMap" type="com.vilio.ppms.pojo.common.SuningpayTransInfoLog" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sn_trans_type" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sn_acct_serno" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sn_trans_serno" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sn_goods_order_no" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sn_order_create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="sn_opposite" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sn_order_no" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sn_order_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sn_receipts_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="sn_receipts_amount" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="sn_expense_amount" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="sn_aount_balance" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="sn_pay_chl" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sn_remark" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="sn_merhant_order_no" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="check_flag" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="status" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="remark1" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, sn_trans_type, sn_acct_serno, sn_trans_serno, sn_goods_order_no, sn_order_create_time, 
+    sn_opposite, sn_order_no, sn_order_name, sn_receipts_time, sn_receipts_amount, sn_expense_amount, 
+    sn_aount_balance, sn_pay_chl, sn_remark, sn_merhant_order_no, check_flag, status, 
+    create_time, update_time, remark1
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from ppms_suningpay_trans_info_log
+    where code = #{code,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ppms_suningpay_trans_info_log
+    where code = #{code,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.vilio.ppms.pojo.common.SuningpayTransInfoLog" >
+    insert into ppms_suningpay_trans_info_log (id, code, sn_trans_type, 
+      sn_acct_serno, sn_trans_serno, sn_goods_order_no, 
+      sn_order_create_time, sn_opposite, sn_order_no, 
+      sn_order_name, sn_receipts_time, sn_receipts_amount, 
+      sn_expense_amount, sn_aount_balance, sn_pay_chl, 
+      sn_remark, sn_merhant_order_no, check_flag, 
+      status, create_time, update_time, 
+      remark1)
+    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{snTransType,jdbcType=VARCHAR}, 
+      #{snAcctSerno,jdbcType=VARCHAR}, #{snTransSerno,jdbcType=VARCHAR}, #{snGoodsOrderNo,jdbcType=VARCHAR}, 
+      #{snOrderCreateTime,jdbcType=TIMESTAMP}, #{snOpposite,jdbcType=VARCHAR}, #{snOrderNo,jdbcType=VARCHAR}, 
+      #{snOrderName,jdbcType=VARCHAR}, #{snReceiptsTime,jdbcType=TIMESTAMP}, #{snReceiptsAmount,jdbcType=DECIMAL}, 
+      #{snExpenseAmount,jdbcType=DECIMAL}, #{snAountBalance,jdbcType=DECIMAL}, #{snPayChl,jdbcType=VARCHAR}, 
+      #{snRemark,jdbcType=VARCHAR}, #{snMerhantOrderNo,jdbcType=VARCHAR}, #{checkFlag,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{remark1,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.vilio.ppms.pojo.common.SuningpayTransInfoLog" >
+    insert into ppms_suningpay_trans_info_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="snTransType != null" >
+        sn_trans_type,
+      </if>
+      <if test="snAcctSerno != null" >
+        sn_acct_serno,
+      </if>
+      <if test="snTransSerno != null" >
+        sn_trans_serno,
+      </if>
+      <if test="snGoodsOrderNo != null" >
+        sn_goods_order_no,
+      </if>
+      <if test="snOrderCreateTime != null" >
+        sn_order_create_time,
+      </if>
+      <if test="snOpposite != null" >
+        sn_opposite,
+      </if>
+      <if test="snOrderNo != null" >
+        sn_order_no,
+      </if>
+      <if test="snOrderName != null" >
+        sn_order_name,
+      </if>
+      <if test="snReceiptsTime != null" >
+        sn_receipts_time,
+      </if>
+      <if test="snReceiptsAmount != null" >
+        sn_receipts_amount,
+      </if>
+      <if test="snExpenseAmount != null" >
+        sn_expense_amount,
+      </if>
+      <if test="snAountBalance != null" >
+        sn_aount_balance,
+      </if>
+      <if test="snPayChl != null" >
+        sn_pay_chl,
+      </if>
+      <if test="snRemark != null" >
+        sn_remark,
+      </if>
+      <if test="snMerhantOrderNo != null" >
+        sn_merhant_order_no,
+      </if>
+      <if test="checkFlag != null" >
+        check_flag,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="remark1 != null" >
+        remark1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="snTransType != null" >
+        #{snTransType,jdbcType=VARCHAR},
+      </if>
+      <if test="snAcctSerno != null" >
+        #{snAcctSerno,jdbcType=VARCHAR},
+      </if>
+      <if test="snTransSerno != null" >
+        #{snTransSerno,jdbcType=VARCHAR},
+      </if>
+      <if test="snGoodsOrderNo != null" >
+        #{snGoodsOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="snOrderCreateTime != null" >
+        #{snOrderCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="snOpposite != null" >
+        #{snOpposite,jdbcType=VARCHAR},
+      </if>
+      <if test="snOrderNo != null" >
+        #{snOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="snOrderName != null" >
+        #{snOrderName,jdbcType=VARCHAR},
+      </if>
+      <if test="snReceiptsTime != null" >
+        #{snReceiptsTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="snReceiptsAmount != null" >
+        #{snReceiptsAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="snExpenseAmount != null" >
+        #{snExpenseAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="snAountBalance != null" >
+        #{snAountBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="snPayChl != null" >
+        #{snPayChl,jdbcType=VARCHAR},
+      </if>
+      <if test="snRemark != null" >
+        #{snRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="snMerhantOrderNo != null" >
+        #{snMerhantOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="checkFlag != null" >
+        #{checkFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark1 != null" >
+        #{remark1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vilio.ppms.pojo.common.SuningpayTransInfoLog" >
+    update ppms_suningpay_trans_info_log
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="snTransType != null" >
+        sn_trans_type = #{snTransType,jdbcType=VARCHAR},
+      </if>
+      <if test="snAcctSerno != null" >
+        sn_acct_serno = #{snAcctSerno,jdbcType=VARCHAR},
+      </if>
+      <if test="snTransSerno != null" >
+        sn_trans_serno = #{snTransSerno,jdbcType=VARCHAR},
+      </if>
+      <if test="snGoodsOrderNo != null" >
+        sn_goods_order_no = #{snGoodsOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="snOrderCreateTime != null" >
+        sn_order_create_time = #{snOrderCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="snOpposite != null" >
+        sn_opposite = #{snOpposite,jdbcType=VARCHAR},
+      </if>
+      <if test="snOrderNo != null" >
+        sn_order_no = #{snOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="snOrderName != null" >
+        sn_order_name = #{snOrderName,jdbcType=VARCHAR},
+      </if>
+      <if test="snReceiptsTime != null" >
+        sn_receipts_time = #{snReceiptsTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="snReceiptsAmount != null" >
+        sn_receipts_amount = #{snReceiptsAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="snExpenseAmount != null" >
+        sn_expense_amount = #{snExpenseAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="snAountBalance != null" >
+        sn_aount_balance = #{snAountBalance,jdbcType=DECIMAL},
+      </if>
+      <if test="snPayChl != null" >
+        sn_pay_chl = #{snPayChl,jdbcType=VARCHAR},
+      </if>
+      <if test="snRemark != null" >
+        sn_remark = #{snRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="snMerhantOrderNo != null" >
+        sn_merhant_order_no = #{snMerhantOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="checkFlag != null" >
+        check_flag = #{checkFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark1 != null" >
+        remark1 = #{remark1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vilio.ppms.pojo.common.SuningpayTransInfoLog" >
+    update ppms_suningpay_trans_info_log
+    set code = #{code,jdbcType=VARCHAR},
+      sn_trans_type = #{snTransType,jdbcType=VARCHAR},
+      sn_acct_serno = #{snAcctSerno,jdbcType=VARCHAR},
+      sn_trans_serno = #{snTransSerno,jdbcType=VARCHAR},
+      sn_goods_order_no = #{snGoodsOrderNo,jdbcType=VARCHAR},
+      sn_order_create_time = #{snOrderCreateTime,jdbcType=TIMESTAMP},
+      sn_opposite = #{snOpposite,jdbcType=VARCHAR},
+      sn_order_no = #{snOrderNo,jdbcType=VARCHAR},
+      sn_order_name = #{snOrderName,jdbcType=VARCHAR},
+      sn_receipts_time = #{snReceiptsTime,jdbcType=TIMESTAMP},
+      sn_receipts_amount = #{snReceiptsAmount,jdbcType=DECIMAL},
+      sn_expense_amount = #{snExpenseAmount,jdbcType=DECIMAL},
+      sn_aount_balance = #{snAountBalance,jdbcType=DECIMAL},
+      sn_pay_chl = #{snPayChl,jdbcType=VARCHAR},
+      sn_remark = #{snRemark,jdbcType=VARCHAR},
+      sn_merhant_order_no = #{snMerhantOrderNo,jdbcType=VARCHAR},
+      check_flag = #{checkFlag,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      remark1 = #{remark1,jdbcType=VARCHAR}
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+</mapper>

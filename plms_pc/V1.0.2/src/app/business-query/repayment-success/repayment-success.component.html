@@ -1,0 +1,102 @@
+<!--还款到账-->
+<div class="row">
+  <ol class="breadcrumbNav col-12">
+    <li class="active">还款到账查询</li>
+  </ol>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <hr class="breadcrumbNavLine">
+  </div>
+</div>
+
+<div class="row">
+  <div class="condition-search">
+    <form>
+      <div class="bundle-area" id="cityWraper">
+        <div class="queryName">城市：</div>
+        <select class="width-100 queryContent" id="cityList" name="cityCode" [(ngModel)]="cityValue" >
+          <option></option>
+        </select>
+      </div>
+      <div class="bundle-area" id="channel">
+        <div class="queryName">渠道：</div>
+        <select class="width-100 queryContent" id="channelList" name="channelCode" [(ngModel)]="channelValue" >
+          <option></option>
+        </select>
+      </div>
+      <div class="bundle-area">
+        <div class="queryName">借款人：</div>
+        <input class="msg-input width-100 queryContent" type="text" id="loanCustomer" name="loanCustomer" maxlength="15"/>
+      </div>
+      <div class="bundle-area">
+        <div class="queryName">到账日期：</div>
+        <input class="msg-input width-100 datestart date-placeholderStyle"  type="text" id="applyTimeBegin" name="applyTimeBegin" readonly placeholder="年/月/日"/>
+        <div class="queryName">至</div>
+        <input class="msg-input width-100 queryContent date-placeholderStyle" type="text" id="applyTimeEnd" name="applyTimeEnd" readonly  placeholder="年/月/日"/>
+      </div>
+      <div class="bundle-area">
+        <div class="queryName">收款账户：</div>
+        <select class="width-100 queryContent" id="accountTypeList" name="receipt" [(ngModel)]="receiptValue">
+          <option></option>
+        </select>
+      </div>
+      <div class="bundle-area">
+        <div class="queryName">还款来源：</div>
+        <select class="width-100 queryContent" id="repaymentOrigin" name="applyStatus" [(ngModel)]="applyStatusValue">
+          <option></option>
+        </select>
+      </div>
+      <button class="search-btn margin-left-20" id="search_btns" (click)="onSearchBtnClick()">搜索</button>
+    </form>
+  </div>
+</div>
+
+<div class="row margin-top-30">
+  <div class="col-12">
+    <table class="table width-100per" border="0" cellpadding="0" cellspacing="0">
+      <thead>
+      <tr>
+        <th class="width-16"></th>
+        <th class="width-140">借款合同编号</th>
+        <th class="width-70">城市</th>
+        <th class="width-100">渠道</th>
+        <th class="width-100">借款人</th>
+        <th class="width-120">资方</th>
+        <th class="width-100">收款账户</th>
+        <th class="width-100">到账日期</th>
+        <th class="width-140">还款金额（元）</th>
+        <th class="width-80">还款来源</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of currentItemLists">
+        <td class="width-16"></td>
+        <td class="width-140"><span class="text-link margin-0" (click)="onSecondOperationClick(item)">{{item.contractNo}}</span></td>
+        <td class="width-70"> {{item.cityName}}</td>
+        <td class="width-100">{{item.distributorName}}</td>
+        <td class="width-100">{{item.customerName}}</td>
+        <td class="width-120">{{item.fundSideName}}</td>
+        <td class="width-100">{{item.accountTypeName}}</td>
+        <td class="width-100">{{item.receiptsDate | date:"yyyy-MM-dd"}}</td>
+        <td class="width-140">{{item.receiptsAmount |dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}</td>
+        <td class="width-80">{{item.fundSourceName}}</td>
+        <td><span class="text-link" (click)="repaymentSuccessClick(item.receiptsRecordCode)">查看</span></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="table_footer col-12">
+    <div class="table_ll">
+      共{{totalListsCount}}条，显示第{{startListIndex}}至{{endListIndex}}条
+    </div>
+    <div class="table_rr">
+      <div class="tablePageCode"></div>
+    </div>
+  </div>
+</div>

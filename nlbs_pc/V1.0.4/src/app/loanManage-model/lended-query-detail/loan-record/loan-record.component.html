@@ -1,0 +1,40 @@
+<!--放款记录组件-->
+<div class="row margin-top-30" *ngIf="!detailPageShow">
+  <div class="col-12">
+    <table class="table width-100per" border="0" cellpadding="0" cellspacing="0">
+      <thead>
+      <tr>
+        <th class="width-160">放款时间</th>
+        <th class="width-160">放款金额（元）</th>
+        <th class="width-160">放款凭证</th>
+        <th>备注</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of currentItemLists">
+        <td class="width-160">{{item.paidTime | date:"yyyy-MM-dd HH:mm:ss"}}</td>
+        <td class="width-160">{{item.paidAmount |dealNullPipe|lastNoneZero |keepTwoDecimal|permil}}</td>
+        <td><a class="text-link" (click)="readDetail(item)">查看</a></td>
+        <td></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row" *ngIf="!detailPageShow">
+  <div class="table_footer col-12">
+    <div class="table_ll">
+      共{{totalListsCount}}条，显示第{{startListIndex}}至{{endListIndex}}条
+    </div>
+    <div class="table_rr">
+      <div class="tablePageCode"></div>
+    </div>
+  </div>
+</div>
+<div class="orange-button col-2 padding-right-0" (click)="querySection()"  *ngIf="!detailPageShow">返回贷款查询</div>
+<app-loan-record-view (event)="getData($event)" *ngIf="detailPageShow" [detailPageShow]="detailPageShow"
+                           [receiptsRecordList]="paidInfoDetail" >
+
+
+</app-loan-record-view>

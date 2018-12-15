@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.PlmsRepaymentDateDao">
+    <select id="getProductInfoAndInterest" resultType="com.vilio.plms.pojo.PlmsRepaymentDate" parameterType="java.util.Map">
+        SELECT
+        rd.repayment_date as repaymentDate
+        ,rd.code
+        ,rd.detail_code AS detailCode
+        FROM
+        plms_repayment_date rd
+        JOIN plms_account_detail ad ON rd.detail_code = ad.CODE
+        WHERE
+        ad.contract_code =  #{contractCode} and rd.status = '1'
+        AND rd.repayment_date &gt; #{paidTime,jdbcType=TIMESTAMP}
+        AND rd.repayment_date  <![CDATA[ <= ]]> #{borrowEndDate,jdbcType=TIMESTAMP}
+        ORDER BY
+        rd.repayment_date
+    </select>
+<!--判断当前传入日期是不是还款日-->
+    <select id="getProductInfoByContractCodeAndDate" resultType="com.vilio.plms.pojo.PlmsRepaymentDate" parameterType="java.util.Map">
+        SELECT
+        rd.repayment_date as repaymentDate
+        ,rd.code
+        ,rd.detail_code AS detailCode
+        FROM
+        plms_repayment_date rd
+        JOIN plms_account_detail ad ON rd.detail_code = ad.CODE
+        WHERE
+        ad.contract_code =  #{contractCode}
+        AND rd.repayment_date = #{date,jdbcType=TIMESTAMP}
+        ORDER BY
+        rd.repayment_date
+    </select>
+
+
+    <select id="queryPlmsRepaymentDateForNowAndPrincipalDate" resultType="com.vilio.plms.pojo.PlmsRepaymentDate" parameterType="java.util.Map">
+        <![CDATA[
+            SELECT
+                id,
+                `code`,
+                repayment_date as repaymentDate,
+                detail_code as detailCode,
+                `status`,
+                create_date as createDate,
+                modify_date as modifyDate
+            FROM
+                plms_repayment_date
+            WHERE
+                detail_code = #{detailCode}
+                and date_format(repayment_date,'%Y%m%d')>date_format(#{nowDate},'%Y%m%d')
+                AND date_format(repayment_date, '%Y%m%d') <= date_format(#{principalDate},'%Y%m%d')
+                and status != '0'
+              ORDER BY repayment_date DESC
+      ]]>
+    </select>
+
+    <select id="selectRepaymentDateByParams" parameterType="com.vilio.plms.pojo.PlmsRepaymentDate" resultType="com.vilio.plms.pojo.PlmsRepaymentDate">
+        SELECT
+        id,
+        code,
+        repayment_date as repaymentDate,
+        detail_code as detailCode,
+        status,
+        create_date as createDate,
+        modify_date as modifyDate
+        FROM
+        plms_repayment_date
+        <where>
+            <if test="detailCode != null" >
+                detail_code = #{detailCode}
+            </if>
+            <if test="repaymentDate != null" >
+                and repayment_date = #{repaymentDate}
+            </if>
+            <if test="status != null" >
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <insert id="saveRepaymentDate" parameterType="com.vilio.plms.pojo.PlmsRepaymentDate">
+        INSERT INTO plms_repayment_date (
+            code,
+            repayment_date,
+            detail_code,
+            status,
+            create_date,
+            modify_date
+            )
+        VALUES
+            (
+            #{code},
+            #{repaymentDate},
+            #{detailCode},
+            #{status},
+            #{createDate},
+            #{modifyDate}
+            )
+    </insert>
+
+</mapper>

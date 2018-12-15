@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.PlmsPigeonholeInfoDao">
+
+    <insert id="savePigeonholeInfo" parameterType="com.vilio.plms.pojo.PlmsPigeonholeInfo">
+        INSERT INTO plms_pigeonhole_info (
+            code,
+            file_code,
+            contract_code,
+            file_suffix,
+            status,
+            create_date,
+            modify_date,
+            type,
+            upload_time,
+            file_name
+        )
+        VALUES
+            (
+                #{code},
+                #{fileCode},
+                #{contractCode},
+                #{fileSuffix},
+                #{status},
+                #{createDate},
+                #{modifyDate},
+                #{type},
+                #{uploadTime},
+                #{fileName}
+            )
+    </insert>
+</mapper>

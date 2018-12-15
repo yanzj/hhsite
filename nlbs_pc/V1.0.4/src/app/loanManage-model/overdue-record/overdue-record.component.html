@@ -1,0 +1,89 @@
+<!--逾期记录查询-->
+<div class="row">
+  <ol class="breadcrumbNav col-12">
+    <li class="active">逾期记录查询</li>
+  </ol>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <hr class="breadcrumbNavLine">
+  </div>
+</div>
+
+<div class="row">
+  <div class="condition-search">
+    <form>
+      <div class="bundle-area" id="cityWraper">
+        <div class="queryName">城市：</div>
+        <select class="width-100 queryContent" id="cityList" name="cityCode" [(ngModel)]="cityValue" >
+          <option></option>
+        </select>
+      </div>
+      <div class="bundle-area">
+        <div class="queryName">借款人：</div>
+        <input class="msg-input width-100 queryContent" type="text" id="loanCustomer" name="loanCustomer" maxlength="15"/>
+      </div>
+      <div class="bundle-area">
+        <div class="queryName">还款日期：</div>
+        <input class="msg-input width-100 datestart date-placeholderStyle"  type="text" id="applyTimeBegin" name="applyTimeBegin" readonly placeholder="年/月/日"/>
+        <div class="queryName">至</div>
+        <input class="msg-input width-100 queryContent date-placeholderStyle" type="text" id="applyTimeEnd" name="applyTimeEnd" readonly placeholder="年/月/日"/>
+      </div>
+      <div class="bundle-area">
+        <div class="queryName">逾期天数：</div>
+        <input class="msg-input width-80 datestart date-placeholderStyle"  id="overdueTimeBegin" name="applyTimeBegin" type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();"  />
+        <div class="queryName">至</div>
+        <input class="msg-input width-80 queryContent date-placeholderStyle" id="overdueTimeEnd" name="applyTimeEnd" type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();"   />
+      </div>
+
+      <button class="search-btn margin-left-20" id="search_btns" (click)="onSearchBtnClick()">搜索</button>
+    </form>
+  </div>
+</div>
+
+<div class="row margin-top-30">
+  <div class="col-12">
+    <table class="table width-100per" border="0" cellpadding="0" cellspacing="0">
+      <thead>
+      <tr>
+        <th class="width-16"></th>
+        <th class="width-60">城市</th>
+        <th class="width-70">借款人</th>
+        <th class="width-100">还款日期</th>
+        <th class="width-140">应还资方金额</th>
+        <th class="width-140">已还资方金额</th>
+        <th class="width-140">应还宏获金额</th>
+        <th class="width-140">已还宏获金额</th>
+        <th class="width-80">逾期天数</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of currentItemLists">
+        <td class="width-16"></td>
+        <td class="width-60">{{item.cityName}}</td>
+        <td class="width-70">{{item.customerName}}</td>
+        <td class="width-100">{{item.repaymentDate     | date:'yyyy-MM-dd'}}</td>
+        <td class="width-120">{{item.fundSideAmount              |lastNoneZero |keepTwoDecimal|permil}}</td>
+        <td class="width-120">{{item.repaymentedFundSideAmount   |lastNoneZero |keepTwoDecimal|permil}}</td>
+        <td class="width-120">{{item.hongHuoAmount               |lastNoneZero |keepTwoDecimal|permil}}</td>
+        <td class="width-120">{{item.repaymentedHongHuoAmount    |lastNoneZero |keepTwoDecimal|permil}}</td>
+        <td class="width-80" style="text-align: center">{{item.overdueDays}}</td>
+        <td class="operation"><a (click)="onSecondOperationClick(item)">查看</a></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="table_footer col-12">
+    <div class="table_ll">
+      共{{totalListsCount}}条，显示第{{startListIndex}}至{{endListIndex}}条
+    </div>
+    <div class="table_rr">
+      <div class="tablePageCode"></div>
+    </div>
+  </div>
+</div>

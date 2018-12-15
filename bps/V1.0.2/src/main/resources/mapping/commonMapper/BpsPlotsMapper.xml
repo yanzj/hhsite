@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!--
+******************************************************************************
+* 数据库表：BPS_PLOTS
+* 表的名称：小区表
+* 对应实体：com.vilio.bps.commonMapper.pojo.BpsPlots
+* 开发日期：2017-06-12
+* 技术服务：www.fwjava.com
+******************************************************************************
+-->
+<mapper namespace="com.vilio.bps.commonMapper.dao.IBpsPlotsMapper">
+
+    <!--
+    **************************************************************************
+    * 1.新增一条数据
+    * 注: 根据Bean实体执行新增操作.
+    **************************************************************************
+    -->
+    <insert id="getInsert"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsPlots"
+            useGeneratedKeys="true"
+            keyProperty="id">
+    
+            INSERT   /* getInsert+@com.vilio.bps.commonMapper.sql.BpsPlotsMapper.xml */ 
+              INTO   BPS_PLOTS             /* 小区表 */ 
+                    (
+                     CODE                  /* 维护询价公司小区code */ 
+                    ,PLOT_CODE             /* 维护询价公司小区code */ 
+                    ,NAME                  /* 小区名称 */ 
+                    ,COMPANY_CODE          /* 询价公司编号 */ 
+                    ,CITY_CODE             /* 关联城市 */ 
+                    ,ADDRESS               /* 小区地址 */ 
+                    ,YEAR_BUILT            /* 建成年代 */ 
+                    ,HOUSE_TYPE            /* 房屋类型(别墅，普通住宅，商业住宅) */ 
+                    ,STATUS                /* 状态(0不可用，1可用) */ 
+                    ,DATE_CREATED          /* 数据创建时间 */ 
+                    ,DATE_MODIFIED         /* 数据修改时间 */ 
+                    )
+            VALUES  (
+                     #{code}               /* 维护询价公司小区code */ 
+                    ,#{plotCode}           /* 维护询价公司小区code */ 
+                    ,#{name}               /* 小区名称 */ 
+                    ,#{companyCode}        /* 询价公司编号 */ 
+                    ,#{cityCode}           /* 关联城市 */ 
+                    ,#{address}            /* 小区地址 */ 
+                    ,#{yearBuilt}          /* 建成年代 */ 
+                    ,#{houseType}          /* 房屋类型(别墅，普通住宅，商业住宅) */ 
+                    ,#{status}             /* 状态(0不可用，1可用) */ 
+                    ,#{dateCreated}        /* 数据创建时间 */ 
+                    ,#{dateModified}       /* 数据修改时间 */ 
+                    )
+         
+    </insert>
+    
+    <insert id="getInsertPrmMap"
+            parameterType="java.util.HashMap"
+            useGeneratedKeys="true"
+            keyProperty="id">
+    
+            INSERT   /* getInsertPrmMap+@com.vilio.bps.commonMapper.sql.BpsPlotsMapper.xml */ 
+              INTO   BPS_PLOTS             /* 小区表 */ 
+                    (
+                     CODE                  /* 维护询价公司小区code */ 
+                    ,PLOT_CODE             /* 维护询价公司小区code */ 
+                    ,NAME                  /* 小区名称 */ 
+                    ,COMPANY_CODE          /* 询价公司编号 */ 
+                    ,CITY_CODE             /* 关联城市 */ 
+                    ,ADDRESS               /* 小区地址 */ 
+                    ,YEAR_BUILT            /* 建成年代 */ 
+                    ,HOUSE_TYPE            /* 房屋类型(别墅，普通住宅，商业住宅) */ 
+                    ,STATUS                /* 状态(0不可用，1可用) */ 
+                    ,DATE_CREATED          /* 数据创建时间 */ 
+                    ,DATE_MODIFIED         /* 数据修改时间 */ 
+                    )
+            VALUES  (
+                     #{code}               /* 维护询价公司小区code */ 
+                    ,#{plotCode}           /* 维护询价公司小区code */ 
+                    ,#{name}               /* 小区名称 */ 
+                    ,#{companyCode}        /* 询价公司编号 */ 
+                    ,#{cityCode}           /* 关联城市 */ 
+                    ,#{address}            /* 小区地址 */ 
+                    ,#{yearBuilt}          /* 建成年代 */ 
+                    ,#{houseType}          /* 房屋类型(别墅，普通住宅，商业住宅) */ 
+                    ,#{status}             /* 状态(0不可用，1可用) */ 
+                    ,#{dateCreated}        /* 数据创建时间 */ 
+                    ,#{dateModified}       /* 数据修改时间 */ 
+                    )
+         
+    </insert>
+
+
+    <!--
+    **************************************************************************
+    * 2.删除一条数据
+    * 注: 根据Bean实体的主键ID执行删除操作.
+    **************************************************************************
+    -->
+    <delete id="getDelete"
+            parameterType="java.lang.Integer">
+    
+            DELETE   /* getDelete+@com.vilio.bps.commonMapper.sql.BpsPlotsMapper.xml */ 
+              FROM   BPS_PLOTS             /* 小区表 */ 
+             WHERE   ID = #{_parameter}    /* 数据主键 */ 
+         
+    </delete>
+
+
+    <!--
+    **************************************************************************
+    * 3.变更一条数据
+    * 注: 根据Bean实体的主键ID执行变更操作.
+    **************************************************************************
+    -->
+    <update id="getUpdate"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsPlots">
+    
+            UPDATE   /* getUpdate+@com.vilio.bps.commonMapper.sql.BpsPlotsMapper.xml */ 
+                     BPS_PLOTS                             /* 小区表 */ 
+               SET   CODE             = #{code}            /* 维护询价公司小区code */ 
+                    ,PLOT_CODE        = #{plotCode}        /* 维护询价公司小区code */ 
+                    ,NAME             = #{name}            /* 小区名称 */ 
+                    ,COMPANY_CODE     = #{companyCode}     /* 询价公司编号 */ 
+                    ,CITY_CODE        = #{cityCode}        /* 关联城市 */ 
+                    ,ADDRESS          = #{address}         /* 小区地址 */ 
+                    ,YEAR_BUILT       = #{yearBuilt}       /* 建成年代 */ 
+                    ,HOUSE_TYPE       = #{houseType}       /* 房屋类型(别墅，普通住宅，商业住宅) */ 
+                    ,STATUS           = #{status}          /* 状态(0不可用，1可用) */ 
+                    ,DATE_CREATED     = #{dateCreated}     /* 数据创建时间 */ 
+                    ,DATE_MODIFIED    = #{dateModified}    /* 数据修改时间 */ 
+             WHERE   ID               = #{id}              /* 数据主键 */ 
+         
+    </update>
+    
+    <update id="getUpdatePrmMap"
+            parameterType="java.util.HashMap">
+    
+            UPDATE   /* getUpdatePrmMap+@com.vilio.bps.commonMapper.sql.BpsPlotsMapper.xml */ 
+                     BPS_PLOTS                             /* 小区表 */ 
+               SET   CODE             = #{code}            /* 维护询价公司小区code */ 
+                    ,PLOT_CODE        = #{plotCode}        /* 维护询价公司小区code */ 
+                    ,NAME             = #{name}            /* 小区名称 */ 
+                    ,COMPANY_CODE     = #{companyCode}     /* 询价公司编号 */ 
+                    ,CITY_CODE        = #{cityCode}        /* 关联城市 */ 
+                    ,ADDRESS          = #{address}         /* 小区地址 */ 
+                    ,YEAR_BUILT       = #{yearBuilt}       /* 建成年代 */ 
+                    ,HOUSE_TYPE       = #{houseType}       /* 房屋类型(别墅，普通住宅，商业住宅) */ 
+                    ,STATUS           = #{status}          /* 状态(0不可用，1可用) */ 
+                    ,DATE_CREATED     = #{dateCreated}     /* 数据创建时间 */ 
+                    ,DATE_MODIFIED    = #{dateModified}    /* 数据修改时间 */ 
+             WHERE   ID               = #{id}              /* 数据主键 */ 
+         
+    </update>
+
+
+    <!--
+    **************************************************************************
+    * 4.获取一个Bean实体
+    * 注: 根据Bean实体的主键ID获取一个Bean实体.
+    **************************************************************************
+    -->
+    <select id="getBean"
+            parameterType="java.lang.Integer"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsPlots">
+    
+            SELECT   /* getBean+@com.vilio.bps.commonMapper.sql.BpsPlotsMapper.xml */ 
+                     bp.ID                AS id              /* 数据主键 */ 
+                    ,bp.CODE              AS code            /* 维护询价公司小区code */ 
+                    ,bp.PLOT_CODE         AS plotCode        /* 维护询价公司小区code */ 
+                    ,bp.NAME              AS name            /* 小区名称 */ 
+                    ,bp.COMPANY_CODE      AS companyCode     /* 询价公司编号 */ 
+                    ,bp.CITY_CODE         AS cityCode        /* 关联城市 */ 
+                    ,bp.ADDRESS           AS address         /* 小区地址 */ 
+                    ,bp.YEAR_BUILT        AS yearBuilt       /* 建成年代 */ 
+                    ,bp.HOUSE_TYPE        AS houseType       /* 房屋类型(别墅，普通住宅，商业住宅) */ 
+                    ,bp.STATUS            AS status          /* 状态(0不可用，1可用) */ 
+                    ,bp.DATE_CREATED      AS dateCreated     /* 数据创建时间 */ 
+                    ,bp.DATE_MODIFIED     AS dateModified    /* 数据修改时间 */ 
+              FROM   BPS_PLOTS               bp              /* 小区表 */ 
+             WHERE   bp.ID = #{_parameter}                   /* 数据主键 */ 
+         
+    </select>
+    
+    <select id="getBeanRtnMap"
+            parameterType="java.lang.Integer"
+            resultType="java.util.HashMap">
+    
+            SELECT   /* getBeanRtnMap+@com.vilio.bps.commonMapper.sql.BpsPlotsMapper.xml */ 
+                     bp.ID                AS id              /* 数据主键 */ 
+                    ,bp.CODE              AS code            /* 维护询价公司小区code */ 
+                    ,bp.PLOT_CODE         AS plotCode        /* 维护询价公司小区code */ 
+                    ,bp.NAME              AS name            /* 小区名称 */ 
+                    ,bp.COMPANY_CODE      AS companyCode     /* 询价公司编号 */ 
+                    ,bp.CITY_CODE         AS cityCode        /* 关联城市 */ 
+                    ,bp.ADDRESS           AS address         /* 小区地址 */ 
+                    ,bp.YEAR_BUILT        AS yearBuilt       /* 建成年代 */ 
+                    ,bp.HOUSE_TYPE        AS houseType       /* 房屋类型(别墅，普通住宅，商业住宅) */ 
+                    ,bp.STATUS            AS status          /* 状态(0不可用，1可用) */ 
+                    ,bp.DATE_CREATED      AS dateCreated     /* 数据创建时间 */ 
+                    ,bp.DATE_MODIFIED     AS dateModified    /* 数据修改时间 */ 
+              FROM   BPS_PLOTS               bp              /* 小区表 */ 
+             WHERE   bp.ID = #{_parameter}                   /* 数据主键 */ 
+         
+    </select>
+
+
+    <!--
+    **************************************************************************
+    * 5.条件查询
+    * 注: 支持多条件查询、模糊查询、日期比较查询等操作.
+    **************************************************************************
+    -->
+    <select id="getList"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsPlots"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsPlots">
+    
+            SELECT   /* getList+@com.vilio.bps.commonMapper.sql.BpsPlotsMapper.xml */ 
+                     bp.ID                AS id              /* 数据主键 */ 
+                    ,bp.CODE              AS code            /* 维护询价公司小区code */ 
+                    ,bp.PLOT_CODE         AS plotCode        /* 维护询价公司小区code */ 
+                    ,bp.NAME              AS name            /* 小区名称 */ 
+                    ,bp.COMPANY_CODE      AS companyCode     /* 询价公司编号 */ 
+                    ,bp.CITY_CODE         AS cityCode        /* 关联城市 */ 
+                    ,bp.ADDRESS           AS address         /* 小区地址 */ 
+                    ,bp.YEAR_BUILT        AS yearBuilt       /* 建成年代 */ 
+                    ,bp.HOUSE_TYPE        AS houseType       /* 房屋类型(别墅，普通住宅，商业住宅) */ 
+                    ,bp.STATUS            AS status          /* 状态(0不可用，1可用) */ 
+                    ,bp.DATE_CREATED      AS dateCreated     /* 数据创建时间 */ 
+                    ,bp.DATE_MODIFIED     AS dateModified    /* 数据修改时间 */ 
+              FROM   BPS_PLOTS               bp              /* 小区表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   bp.ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   bp.CODE = #{code} /* 维护询价公司小区code */ 
+             </if>
+        
+             <if test='plotCode != null and plotCode != "" and plotCode != "null" and plotCode != "undefined"'>
+               AND   bp.PLOT_CODE = #{plotCode} /* 维护询价公司小区code */ 
+             </if>
+        
+             <if test='name != null and name != "" and name != "null" and name != "undefined"'>
+               AND   bp.NAME = #{name} /* 小区名称 */ 
+             </if>
+        
+             <if test='companyCode != null and companyCode != "" and companyCode != "null" and companyCode != "undefined"'>
+               AND   bp.COMPANY_CODE = #{companyCode} /* 询价公司编号 */ 
+             </if>
+        
+             <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+               AND   bp.CITY_CODE = #{cityCode} /* 关联城市 */ 
+             </if>
+        
+             <if test='address != null and address != "" and address != "null" and address != "undefined"'>
+               AND   bp.ADDRESS = #{address} /* 小区地址 */ 
+             </if>
+        
+             <if test='yearBuilt != null and yearBuilt != "" and yearBuilt != "null" and yearBuilt != "undefined"'>
+               AND   bp.YEAR_BUILT = #{yearBuilt} /* 建成年代 */ 
+             </if>
+        
+             <if test='houseType != null and houseType != "" and houseType != "null" and houseType != "undefined"'>
+               AND   bp.HOUSE_TYPE = #{houseType} /* 房屋类型(别墅，普通住宅，商业住宅) */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   bp.STATUS = #{status} /* 状态(0不可用，1可用) */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(bp.DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /* 数据创建时间 */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(bp.DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /* 数据修改时间 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+    
+    <select id="getListPrmMapRtnBean"
+            parameterType="java.util.HashMap"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsPlots">
+    
+            SELECT   /* getListPrmMapRtnBean+@com.vilio.bps.commonMapper.sql.BpsPlotsMapper.xml */ 
+                     bp.ID                AS id              /* 数据主键 */ 
+                    ,bp.CODE              AS code            /* 维护询价公司小区code */ 
+                    ,bp.PLOT_CODE         AS plotCode        /* 维护询价公司小区code */ 
+                    ,bp.NAME              AS name            /* 小区名称 */ 
+                    ,bp.COMPANY_CODE      AS companyCode     /* 询价公司编号 */ 
+                    ,bp.CITY_CODE         AS cityCode        /* 关联城市 */ 
+                    ,bp.ADDRESS           AS address         /* 小区地址 */ 
+                    ,bp.YEAR_BUILT        AS yearBuilt       /* 建成年代 */ 
+                    ,bp.HOUSE_TYPE        AS houseType       /* 房屋类型(别墅，普通住宅，商业住宅) */ 
+                    ,bp.STATUS            AS status          /* 状态(0不可用，1可用) */ 
+                    ,bp.DATE_CREATED      AS dateCreated     /* 数据创建时间 */ 
+                    ,bp.DATE_MODIFIED     AS dateModified    /* 数据修改时间 */ 
+              FROM   BPS_PLOTS               bp              /* 小区表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   bp.ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   bp.CODE = #{code} /* 维护询价公司小区code */ 
+             </if>
+        
+             <if test='plotCode != null and plotCode != "" and plotCode != "null" and plotCode != "undefined"'>
+               AND   bp.PLOT_CODE = #{plotCode} /* 维护询价公司小区code */ 
+             </if>
+        
+             <if test='name != null and name != "" and name != "null" and name != "undefined"'>
+               AND   bp.NAME = #{name} /* 小区名称 */ 
+             </if>
+        
+             <if test='companyCode != null and companyCode != "" and companyCode != "null" and companyCode != "undefined"'>
+               AND   bp.COMPANY_CODE = #{companyCode} /* 询价公司编号 */ 
+             </if>
+        
+             <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+               AND   bp.CITY_CODE = #{cityCode} /* 关联城市 */ 
+             </if>
+        
+             <if test='address != null and address != "" and address != "null" and address != "undefined"'>
+               AND   bp.ADDRESS = #{address} /* 小区地址 */ 
+             </if>
+        
+             <if test='yearBuilt != null and yearBuilt != "" and yearBuilt != "null" and yearBuilt != "undefined"'>
+               AND   bp.YEAR_BUILT = #{yearBuilt} /* 建成年代 */ 
+             </if>
+        
+             <if test='houseType != null and houseType != "" and houseType != "null" and houseType != "undefined"'>
+               AND   bp.HOUSE_TYPE = #{houseType} /* 房屋类型(别墅，普通住宅，商业住宅) */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   bp.STATUS = #{status} /* 状态(0不可用，1可用) */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(bp.DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /* 数据创建时间 */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(bp.DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /* 数据修改时间 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+    
+    <select id="getListPrmMapRtnMap"
+            parameterType="java.util.HashMap"
+            resultType="java.util.HashMap">
+    
+            SELECT   /* getListPrmMapRtnMap+@com.vilio.bps.commonMapper.sql.BpsPlotsMapper.xml */ 
+                     bp.ID                AS id              /* 数据主键 */ 
+                    ,bp.CODE              AS code            /* 维护询价公司小区code */ 
+                    ,bp.PLOT_CODE         AS plotCode        /* 维护询价公司小区code */ 
+                    ,bp.NAME              AS name            /* 小区名称 */ 
+                    ,bp.COMPANY_CODE      AS companyCode     /* 询价公司编号 */ 
+                    ,bp.CITY_CODE         AS cityCode        /* 关联城市 */ 
+                    ,bp.ADDRESS           AS address         /* 小区地址 */ 
+                    ,bp.YEAR_BUILT        AS yearBuilt       /* 建成年代 */ 
+                    ,bp.HOUSE_TYPE        AS houseType       /* 房屋类型(别墅，普通住宅，商业住宅) */ 
+                    ,bp.STATUS            AS status          /* 状态(0不可用，1可用) */ 
+                    ,bp.DATE_CREATED      AS dateCreated     /* 数据创建时间 */ 
+                    ,bp.DATE_MODIFIED     AS dateModified    /* 数据修改时间 */ 
+              FROM   BPS_PLOTS               bp              /* 小区表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   bp.ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   bp.CODE = #{code} /* 维护询价公司小区code */ 
+             </if>
+        
+             <if test='plotCode != null and plotCode != "" and plotCode != "null" and plotCode != "undefined"'>
+               AND   bp.PLOT_CODE = #{plotCode} /* 维护询价公司小区code */ 
+             </if>
+        
+             <if test='name != null and name != "" and name != "null" and name != "undefined"'>
+               AND   bp.NAME = #{name} /* 小区名称 */ 
+             </if>
+        
+             <if test='companyCode != null and companyCode != "" and companyCode != "null" and companyCode != "undefined"'>
+               AND   bp.COMPANY_CODE = #{companyCode} /* 询价公司编号 */ 
+             </if>
+        
+             <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+               AND   bp.CITY_CODE = #{cityCode} /* 关联城市 */ 
+             </if>
+        
+             <if test='address != null and address != "" and address != "null" and address != "undefined"'>
+               AND   bp.ADDRESS = #{address} /* 小区地址 */ 
+             </if>
+        
+             <if test='yearBuilt != null and yearBuilt != "" and yearBuilt != "null" and yearBuilt != "undefined"'>
+               AND   bp.YEAR_BUILT = #{yearBuilt} /* 建成年代 */ 
+             </if>
+        
+             <if test='houseType != null and houseType != "" and houseType != "null" and houseType != "undefined"'>
+               AND   bp.HOUSE_TYPE = #{houseType} /* 房屋类型(别墅，普通住宅，商业住宅) */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   bp.STATUS = #{status} /* 状态(0不可用，1可用) */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(bp.DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /* 数据创建时间 */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(bp.DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /* 数据修改时间 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+
+
+    <!--
+    **************************************************************************
+    * 6.验证多条件数据是否存在
+    * 注: 根据多条件验证该数据是否存在 ,并返回数据量.
+    **************************************************************************
+    -->
+    <select id="getCheckBy"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsPlots"
+            resultType="java.lang.Integer">
+    
+            SELECT   /* getCheckBy+@com.vilio.bps.commonMapper.sql.BpsPlotsMapper.xml */ 
+                     count(1)
+              FROM   BPS_PLOTS  /* 小区表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   CODE = #{code} /* 维护询价公司小区code */ 
+             </if>
+        
+             <if test='plotCode != null and plotCode != "" and plotCode != "null" and plotCode != "undefined"'>
+               AND   PLOT_CODE = #{plotCode} /* 维护询价公司小区code */ 
+             </if>
+        
+             <if test='name != null and name != "" and name != "null" and name != "undefined"'>
+               AND   NAME = #{name} /* 小区名称 */ 
+             </if>
+        
+             <if test='companyCode != null and companyCode != "" and companyCode != "null" and companyCode != "undefined"'>
+               AND   COMPANY_CODE = #{companyCode} /* 询价公司编号 */ 
+             </if>
+        
+             <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+               AND   CITY_CODE = #{cityCode} /* 关联城市 */ 
+             </if>
+        
+             <if test='address != null and address != "" and address != "null" and address != "undefined"'>
+               AND   ADDRESS = #{address} /* 小区地址 */ 
+             </if>
+        
+             <if test='yearBuilt != null and yearBuilt != "" and yearBuilt != "null" and yearBuilt != "undefined"'>
+               AND   YEAR_BUILT = #{yearBuilt} /* 建成年代 */ 
+             </if>
+        
+             <if test='houseType != null and houseType != "" and houseType != "null" and houseType != "undefined"'>
+               AND   HOUSE_TYPE = #{houseType} /* 房屋类型(别墅，普通住宅，商业住宅) */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   STATUS = #{status} /* 状态(0不可用，1可用) */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /* 数据创建时间 */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /* 数据修改时间 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+    </select>
+    
+    <select id="getCheckByPrmMap"
+            parameterType="java.util.HashMap"
+            resultType="java.lang.Integer">
+    
+            SELECT   /* getCheckByPrmMap+@com.vilio.bps.commonMapper.sql.BpsPlotsMapper.xml */ 
+                     count(1)
+              FROM   BPS_PLOTS  /* 小区表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   CODE = #{code} /* 维护询价公司小区code */ 
+             </if>
+        
+             <if test='plotCode != null and plotCode != "" and plotCode != "null" and plotCode != "undefined"'>
+               AND   PLOT_CODE = #{plotCode} /* 维护询价公司小区code */ 
+             </if>
+        
+             <if test='name != null and name != "" and name != "null" and name != "undefined"'>
+               AND   NAME = #{name} /* 小区名称 */ 
+             </if>
+        
+             <if test='companyCode != null and companyCode != "" and companyCode != "null" and companyCode != "undefined"'>
+               AND   COMPANY_CODE = #{companyCode} /* 询价公司编号 */ 
+             </if>
+        
+             <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+               AND   CITY_CODE = #{cityCode} /* 关联城市 */ 
+             </if>
+        
+             <if test='address != null and address != "" and address != "null" and address != "undefined"'>
+               AND   ADDRESS = #{address} /* 小区地址 */ 
+             </if>
+        
+             <if test='yearBuilt != null and yearBuilt != "" and yearBuilt != "null" and yearBuilt != "undefined"'>
+               AND   YEAR_BUILT = #{yearBuilt} /* 建成年代 */ 
+             </if>
+        
+             <if test='houseType != null and houseType != "" and houseType != "null" and houseType != "undefined"'>
+               AND   HOUSE_TYPE = #{houseType} /* 房屋类型(别墅，普通住宅，商业住宅) */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   STATUS = #{status} /* 状态(0不可用，1可用) */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /* 数据创建时间 */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /* 数据修改时间 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+    </select>
+
+
+</mapper>

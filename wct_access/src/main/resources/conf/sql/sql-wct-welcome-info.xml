@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlinfos>
+	<sqlinfo>
+		<sqlid>QUERY0004</sqlid>
+		<sqlname>查询欢迎信息表（图文类型最多支持八条，其他消息只支持一条）</sqlname>
+		<sql><![CDATA[
+			SELECT
+				wel_id,
+				app_id,
+				wel_status,
+				msg_type,
+				content,
+				media_id,
+				title,
+				description,
+				music_url,
+				hq_music_url,
+				thumb_media_id,
+				pic_url,
+				url,
+				create_time,
+				update_time,
+				remark1,
+				remark2
+			FROM
+				wct_welcome_info
+			where
+				app_id = '${app_id}'
+				and wel_status='${wel_status}'
+				ORDER BY update_time DESC 
+				LIMIT 8
+		]]></sql>
+	</sqlinfo>
+
+
+
+</sqlinfos>
+

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!--
+******************************************************************************
+* 数据库表：NLBS_OPERATION_HISTORY
+* 表的名称：操作历史表
+* 对应实体：com.vilio.nlbs.commonMapper.pojo.NlbsOperationHistory
+* 开发日期：2017-06-15
+* 技术服务：www.fwjava.com
+******************************************************************************
+-->
+<mapper namespace="com.vilio.nlbs.commonMapper.dao.NlbsOperationHistoryMapper">
+
+    <!--
+    **************************************************************************
+    * 1.新增一条数据
+    * 注: 根据Bean实体执行新增操作.
+    **************************************************************************
+    -->
+    <insert id="getInsert"
+            parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsOperationHistory"
+            useGeneratedKeys="true"
+            keyProperty="id">
+    
+            INSERT
+              INTO   NLBS_OPERATION_HISTORY         /* 操作历史表 */ 
+                    (
+                    OPERATER                       /*  */
+                    ,SERIAL_NO                      /* 关联单号 */ 
+                    ,SYSTEM_CODE                    /* 序列号所属系统 */ 
+                    ,OPERATE_TYPE                   /* 操作类型 */
+                    ,distributor_name
+                    ,operater_name
+                    ,distributor_code
+                    )
+            VALUES  (
+                    #{operater}                    /*  */
+                    ,#{serialNo}                    /* 关联单号 */ 
+                    ,#{systemCode}                  /* 序列号所属系统 */ 
+                    ,#{operateType}                 /* 操作类型 */
+                    ,#{distributorName,jdbcType=VARCHAR}
+                    ,#{operaterName,jdbcType=VARCHAR}
+                    ,#{distributorCode,jdbcType=VARCHAR}
+                    )
+
+    </insert>
+
+    <select id="getListBySerialNo"
+            parameterType="java.util.HashMap"
+            resultType="java.util.HashMap">
+
+        SELECT
+         noh.CREATE_TIME                AS createTime
+        ,noh.distributor_name                   AS distributorName
+        ,noh.operater_name                  AS userName
+        ,notype.name                       AS operateName
+        FROM   NLBS_OPERATION_HISTORY            noh
+              ,NLBS_OPERATION_TYPE               notype
+
+        WHERE    noh.OPERATE_TYPE = notype.code
+            AND   noh.SERIAL_NO = #{serialNo}
+            ORDER BY  noh.CREATE_TIME DESC
+
+    </select>
+
+
+</mapper>

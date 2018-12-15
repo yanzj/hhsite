@@ -1,0 +1,15 @@
+.upload-input {
+  position: absolute;
+  right: -3px;
+  top: 0;
+  opacity: 0;
+  filter: alpha(opacity=1);
+  cursor: pointer;
+  width: 85px;
+}
+.action{
+  position: relative;}
+.table tbody tr:nth-child(odd) td {
+  background-color: #F5F5F5;
+}
+

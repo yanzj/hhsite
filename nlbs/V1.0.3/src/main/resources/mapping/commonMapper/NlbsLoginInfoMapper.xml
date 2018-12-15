@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.nlbs.commonMapper.dao.NlbsLoginInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.vilio.nlbs.commonMapper.pojo.NlbsLoginInfo" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_no" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="system_timestamp" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="client_timestamp" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, user_no, system_timestamp, client_timestamp
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from nlbs_login_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from nlbs_login_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsLoginInfo" >
+    insert into nlbs_login_info (id, code, user_no,
+      system_timestamp, client_timestamp)
+    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{userNo,jdbcType=VARCHAR}, 
+      #{systemTimestamp,jdbcType=VARCHAR}, #{clientTimestamp,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsLoginInfo" >
+    insert into nlbs_login_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="userNo != null" >
+        user_no,
+      </if>
+      <if test="systemTimestamp != null" >
+        system_timestamp,
+      </if>
+      <if test="clientTimestamp != null" >
+        client_timestamp,
+      </if>
+
+      <if test='mobile != null and mobile != "" '>
+        mobile ,
+      </if>
+      <if test='email != null and email != "" '>
+        email,
+      </if>
+      <if test='userName != null and userName != "" '>
+        user_name ,
+      </if>
+      <if test='fullName != null and fullName != "" '>
+        full_name ,
+      </if>
+      <if test='cityCode != null and cityCode != "" '>
+        city_code ,
+      </if>
+      <if test='cityName != null and cityName != "" '>
+        city_name ,
+      </if>
+      <if test='distributorCode != null and distributorCode != "" '>
+        distributor_code ,
+      </if>
+      <if test='distributorName != null and distributorName != "" '>
+        distributor_name ,
+      </if>
+      <if test='agentId != null and agentId != "" '>
+        agent_id ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="userNo != null" >
+        #{userNo,jdbcType=VARCHAR},
+      </if>
+      <if test="systemTimestamp != null" >
+        #{systemTimestamp,jdbcType=VARCHAR},
+      </if>
+      <if test="clientTimestamp != null" >
+        #{clientTimestamp,jdbcType=VARCHAR},
+      </if>
+
+      <if test='mobile != null and mobile != "" '>
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test='email != null and email != "" '>
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test='userName != null and userName != "" '>
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test='fullName != null and fullName != "" '>
+         #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test='cityCode != null and cityCode != "" '>
+         #{cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test='cityName != null and cityName != "" '>
+        #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test='distributorCode != null and distributorCode != "" '>
+         #{distributorCode,jdbcType=VARCHAR},
+      </if>
+      <if test='distributorName != null and distributorName != "" '>
+        #{distributorName,jdbcType=VARCHAR},
+      </if>
+      <if test='agentId != null and agentId != "" '>
+        #{agentId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsLoginInfo" >
+    update nlbs_login_info
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="userNo != null" >
+        user_no = #{userNo,jdbcType=VARCHAR},
+      </if>
+      <if test="systemTimestamp != null" >
+        system_timestamp = #{systemTimestamp,jdbcType=VARCHAR},
+      </if>
+      <if test="clientTimestamp != null" >
+        client_timestamp = #{clientTimestamp,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsLoginInfo" >
+    update nlbs_login_info
+    set code = #{code,jdbcType=VARCHAR},
+      user_no = #{userNo,jdbcType=VARCHAR},
+      system_timestamp = #{systemTimestamp,jdbcType=VARCHAR},
+      client_timestamp = #{clientTimestamp,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="selectLoginInfoByUserNo" resultType="java.util.HashMap" parameterType="java.lang.String" >
+    select bli.user_no as userNo,
+    bli.system_timestamp as systemTimestamp,
+    bli.client_timestamp as clientTimestamp
+    from nlbs_login_info bli
+    where bli.user_no = #{userNo,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteLoginInfoByUserNo" parameterType="java.lang.String">
+    delete from nlbs_login_info where user_no = #{userNo,jdbcType=VARCHAR}
+  </delete>
+
+  <update id="updateLoginInfoByUserNo" parameterType="java.util.HashMap" >
+    update nlbs_login_info
+    <set >
+      <if test='systemTimestamp != null and systemTimestamp != "" '>
+        system_timestamp = #{systemTimestamp,jdbcType=VARCHAR},
+      </if>
+      <if test='clientTimestamp != null and clientTimestamp != "" '>
+        client_timestamp = #{clientTimestamp,jdbcType=VARCHAR},
+      </if>
+      <if test='distributorCode != null and distributorCode != "" '>
+        distributor_code = #{distributorCode,jdbcType=VARCHAR},
+      </if>
+      <if test='distributorName != null and distributorName != "" '>
+        distributor_name = #{distributorName,jdbcType=VARCHAR},
+      </if>
+      <if test='mobile != null and mobile != "" '>
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test='email != null and email != "" '>
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test='userName != null and userName != "" '>
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test='fullName != null and fullName != "" '>
+        full_name = #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test='cityCode != null and cityCode != "" '>
+        city_code = #{cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test='cityName != null and cityName != "" '>
+        city_name = #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test='agentId != null and agentId != "" '>
+        agent_id = #{agentId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_no = #{userNo,jdbcType=VARCHAR}
+  </update>
+
+  <select id="queryNlbsUserByUserNo" resultType="com.vilio.nlbs.commonMapper.pojo.NlbsLoginInfo" parameterType="java.lang.String" >
+    SELECT
+      bli.user_no AS userNo,
+      bli.system_timestamp AS systemTimestamp,
+      bli.client_timestamp AS clientTimestamp,
+      bli.user_name as userName,
+      bli.full_name as fullName,
+      bli.city_code as cityCode,
+      bli.city_name as cityName,
+      bli.distributor_code as distributorCode,
+      bli.distributor_name as distributorName,
+      bli.email,
+      bli.mobile,
+      bli.agent_id as agentId
+    FROM
+        nlbs_login_info bli
+    where bli.user_no = #{userNo,jdbcType=VARCHAR}
+  </select>
+</mapper>

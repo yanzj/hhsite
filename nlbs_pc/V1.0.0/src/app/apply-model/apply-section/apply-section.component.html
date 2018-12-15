@@ -1,0 +1,200 @@
+ <div class="row">
+    <ol class="breadcrumbNav col-12" id="breadcrumbNav1" [ngStyle]="{'display':breadcrumbNavDisplay==false?'block':'none'}">
+      <li class="active">进件申请提交</li>
+    </ol>
+    <ol class="breadcrumbNav col-12" id="breadcrumbNav2" [ngStyle]="{'display':breadcrumbNavDisplay==false?'none':'block'}">
+      <li><a (click)="querySection()">进件申请查询</a><i>></i></li>
+      <li class="active">进件申请提交<i>|</i></li>
+      <li><a (click)="history()">历史</a></li>
+    </ol>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <hr class="breadcrumbNavLine">
+    </div>
+  </div>
+
+  <div class="progress-box">
+    <div class="progress-com">
+
+      <div class="progress-line">
+        <div *ngFor=" let item of itemStatusLists; let i=index ">
+                <span class="progress-circle circle{{i+1}} active title_cur" [ngClass]="{'title_cur':i<=itemSelectIndex}">
+                  <!--<i class="bigCircle" *ngIf=" itemSelectStatus == item ? true:false "></i>-->
+                  <i [ngClass]="{'bigCircle':i==itemSelectIndex}"></i>
+                  <ins [ngClass]="{'ins_line':i<itemSelectIndex}"></ins>
+                  <em [ngStyle]="{'color':i<=itemSelectIndex ? '#333' : '#999' }"
+                      [ngClass]="{'ProSeleceted':i==itemSelectIndex}">{{item}}</em>
+                </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-2 filed-name"><span>*</span>进件公司：</div>
+    <div class="col-2 white-space-nowrap">
+      <select name="" id="company" class="width-115 selectmsg selectmsg2">
+        <option value=""></option>
+      </select>
+    </div>
+    <div class="col-2 filed-name"><span>*</span>业务经理：</div>
+    <div class="col-6 white-space-nowrap">
+      <select name="" id="manager" class="width-115 selectmsg selectmsg2">
+        <option value=""></option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-2 filed-name">
+      <span>*</span>主借款人姓名：
+    </div>
+    <div class="col-2 white-space-nowrap">
+      <input type="text" class="msg-input width-115" maxlength="15" id="mainName">
+    </div>
+    <div class="col-2 filed-name">手机验证码：</div>
+    <div class="col-6">
+      <input type="text" class="msg-input width-115" maxlength="20" id="phoneVerificate" >
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-2 filed-name"><span>*</span>产品名称：</div>
+    <div class="col-2 white-space-nowrap">
+      <select class="selectmsg width-115" id="proDuctName">
+        <option value=""></option>
+      </select>
+    </div>
+    <div class="col-2 filed-name"><span>*</span>放款方式：</div>
+    <div class="col-6 white-space-nowrap">
+      <select name="" id="" class="selectmsg width-115" id="method">
+        <option value=""></option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+      <div class="col-2 filed-name"><span>*</span>申请金额：</div>
+      <div class="col-2 white-space-nowrap">
+        <input type="text" class="msg-input width-115" maxlength="8" id="applyMoney">
+        <div class="uinit">万元</div>
+      </div>
+      <div class="col-2 filed-name"><span>*</span>借款期限：</div>
+      <div class="col-6 white-space-nowrap">
+        <select name="" id="deadline" class="width-115 selectmsg">
+          <option value=""></option>
+        </select>
+        <div class="uinit">个月</div>
+      </div>
+  </div>
+
+  <div class="row">
+      <div class="col-2 filed-name">意向金：</div>
+      <div class="col-2">
+        <input type="text" class="msg-input width-115" maxlength="9" id="intentionM">
+        <div class="uinit">元</div>
+      </div>
+      <div class="col-2 filed-name">备注：</div>
+      <div class="col-4">
+        <input class="msg-input width-100per" maxlength="100"  id="remark">
+      </div>
+  </div>
+
+  <div class="row margin-top-40 margin-bottom-20">
+    <div class="col-12">
+      <div class="message-title-line"></div>
+      <div class="message-title-name">抵押物信息</div>
+      <div class="action" (click)="addCertificateListFunc()">
+        <div class="icon icon-add-gray q_icon">
+        </div>
+        添加
+      </div>
+      <div class="label_hr">
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngFor="let n of num;let i=index">
+    <div class="col-2 filed-name"><span>*</span>产证编号：</div>
+    <div class="col-4 white-space-nowrap" id="#dd">
+      <input type="text" maxlength="20" value="{{n.certificateNumberFirst}}" class="width-160 msg-input firstNum{{i}}" max-length="20" id="firstNum{{i}}">
+      <span class="uinit2">第</span>
+      <input type="text" maxlength="15" value="{{n.certificateNumberSecond}}" class="width-115 msg-input secondNum{{i}}" max-length="15" id="secondNum{{i}}">
+      <span class="uinit2">号</span>
+      <!--<div class="error error-icon"></div>-->
+    </div>
+    <div class="col-2 filed-name"><span>*</span>抵押物类型：</div>
+    <div class="col-2 white-space-nowrap">
+      <select name="" class="width-115 selectmsg" id="mortgage{{i}}" ><!--  [value]="n.mortgageTypeCode" >-->
+        <!--<option *ngFor="let m of num.mortgageTypeList" [value]=""></option>-->
+        <option value=""></option>
+      </select>
+    </div>
+    <div class="col-1 del" (click)="delete($event,i);$event.stopPropagation()" *ngIf="num.length>1?true:false"> 删除</div>
+  </div>
+
+  <div class="row margin-top-40">
+    <div class="col-12">
+      <div class="message-title-line"></div>
+      <div class="message-title-name">材料上载</div>
+      <div class="label_hr">
+      </div>
+    </div>
+  </div>
+
+  <div class="row margin-top-40">
+    <div class="col-2">
+    <a href="javascript:;" class="upload float-right" *ngIf="!isShow&&!isShow2">
+      <!--<div class="upContain">-->
+      <div class="explain">请将材料压缩打包上传，每次只能上传一个</div>
+      <!-- 将input中的multiple去掉设置为单个上传的文件 -->
+      <input class="uploadof-material" type="file" ng2FileSelect [uploader]="uploader"
+             (change)="selectedFileOnChanged($event)"/>
+      <!--</div>-->
+    </a>
+    <div class="container float-right" *ngIf="isShow">
+      <div class="upload-file-container">
+        <div>
+          <p *ngIf="!isUp" style="color: #CCCCCC">上传失败</p>
+          <div *ngIf="!isUp">
+            <a class="upload2 text-link margin-top-10" (click)="upAgiain()">重新上传</a>
+            <a (click)="deleteFile()" class="upload2 text-link">删除</a>
+          </div>
+          <div class="progress" *ngIf="isUp">
+            <div class="progress-bar progress-bar-warning progress-bar-striped active"
+                 [style.width.%]=progressLength>
+              <div class="progress-value"><span>正在上传</span>{{progressLength}}%</div>
+            </div>
+          </div>
+          <p class="image-name margin-top-15">{{fileName}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="container-up-success float-right" *ngIf="isShow2">
+      <div class="delete-mask" (click)="deleteUploadFile()">
+        <i class="delete-icon"></i>
+      </div>
+      <div class="success-container delfile">
+          <div class="container-up-successImg"></div>
+        </div>
+      <div class="width-160">
+        <p class="image-name">{{fileName}}</p>
+        <p  class="upload-time">{{uploadTime}}</p>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="row margin-top-40">
+    <div class="col-2">
+        <button class="orange-button float-right" (click)="q_submit()" id="q_submit">提交</button>
+    </div>
+    <div class="col-10">
+        <button class="gray-button float-left" (click)="q_Temporary()" id="q_Temporary">暂存</button>
+        <button *ngIf="isDeleteShow" class="gray-button float-left margin-left-20" (click)="deleteFunc()" id="delete">删除</button>
+    </div>
+  </div>
+
+<!--</div>-->

@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!--
+******************************************************************************
+* 数据库表：BPS_HOUSE_TYPE
+* 表的名称：房屋类型表
+* 对应实体：com.vilio.bps.commonMapper.pojo.BpsHouseType
+* 开发日期：2017-06-12
+* 技术服务：www.fwjava.com
+******************************************************************************
+-->
+<mapper namespace="com.vilio.bps.commonMapper.dao.IBpsHouseTypeMapper">
+
+    <!--
+    **************************************************************************
+    * 1.新增一条数据
+    * 注: 根据Bean实体执行新增操作.
+    **************************************************************************
+    -->
+    <insert id="getInsert"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsHouseType"
+            useGeneratedKeys="true"
+            keyProperty="id">
+    
+            INSERT   /* getInsert+@com.vilio.bps.commonMapper.sql.BpsHouseTypeMapper.xml */ 
+              INTO   BPS_HOUSE_TYPE         /* 房屋类型表 */ 
+                    (
+                     CODE                   /* 类型代码 */ 
+                    ,NAME                   /* 类型名称 */ 
+                    )
+            VALUES  (
+                     #{code}                /* 类型代码 */ 
+                    ,#{name}                /* 类型名称 */ 
+                    )
+         
+    </insert>
+    
+    <insert id="getInsertPrmMap"
+            parameterType="java.util.HashMap"
+            useGeneratedKeys="true"
+            keyProperty="id">
+    
+            INSERT   /* getInsertPrmMap+@com.vilio.bps.commonMapper.sql.BpsHouseTypeMapper.xml */ 
+              INTO   BPS_HOUSE_TYPE         /* 房屋类型表 */ 
+                    (
+                     CODE                   /* 类型代码 */ 
+                    ,NAME                   /* 类型名称 */ 
+                    )
+            VALUES  (
+                     #{code}                /* 类型代码 */ 
+                    ,#{name}                /* 类型名称 */ 
+                    )
+         
+    </insert>
+
+
+    <!--
+    **************************************************************************
+    * 2.删除一条数据
+    * 注: 根据Bean实体的主键ID执行删除操作.
+    **************************************************************************
+    -->
+    <delete id="getDelete"
+            parameterType="java.lang.Integer">
+    
+            DELETE   /* getDelete+@com.vilio.bps.commonMapper.sql.BpsHouseTypeMapper.xml */ 
+              FROM   BPS_HOUSE_TYPE        /* 房屋类型表 */ 
+             WHERE   ID = #{_parameter}    /* 数据主键 */ 
+         
+    </delete>
+
+
+    <!--
+    **************************************************************************
+    * 3.变更一条数据
+    * 注: 根据Bean实体的主键ID执行变更操作.
+    **************************************************************************
+    -->
+    <update id="getUpdate"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsHouseType">
+    
+            UPDATE   /* getUpdate+@com.vilio.bps.commonMapper.sql.BpsHouseTypeMapper.xml */ 
+                     BPS_HOUSE_TYPE                 /* 房屋类型表 */ 
+               SET   CODE              = #{code}    /* 类型代码 */ 
+                    ,NAME              = #{name}    /* 类型名称 */ 
+             WHERE   ID                = #{id}      /* 数据主键 */ 
+         
+    </update>
+    
+    <update id="getUpdatePrmMap"
+            parameterType="java.util.HashMap">
+    
+            UPDATE   /* getUpdatePrmMap+@com.vilio.bps.commonMapper.sql.BpsHouseTypeMapper.xml */ 
+                     BPS_HOUSE_TYPE                 /* 房屋类型表 */ 
+               SET   CODE              = #{code}    /* 类型代码 */ 
+                    ,NAME              = #{name}    /* 类型名称 */ 
+             WHERE   ID                = #{id}      /* 数据主键 */ 
+         
+    </update>
+
+
+    <!--
+    **************************************************************************
+    * 4.获取一个Bean实体
+    * 注: 根据Bean实体的主键ID获取一个Bean实体.
+    **************************************************************************
+    -->
+    <select id="getBean"
+            parameterType="java.lang.Integer"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsHouseType">
+    
+            SELECT   /* getBean+@com.vilio.bps.commonMapper.sql.BpsHouseTypeMapper.xml */ 
+                     bht.ID                 AS id      /* 数据主键 */ 
+                    ,bht.CODE               AS code    /* 类型代码 */ 
+                    ,bht.NAME               AS name    /* 类型名称 */ 
+              FROM   BPS_HOUSE_TYPE            bht     /* 房屋类型表 */ 
+             WHERE   bht.ID = #{_parameter}            /* 数据主键 */ 
+         
+    </select>
+    
+    <select id="getBeanRtnMap"
+            parameterType="java.lang.Integer"
+            resultType="java.util.HashMap">
+    
+            SELECT   /* getBeanRtnMap+@com.vilio.bps.commonMapper.sql.BpsHouseTypeMapper.xml */ 
+                     bht.ID                 AS id      /* 数据主键 */ 
+                    ,bht.CODE               AS code    /* 类型代码 */ 
+                    ,bht.NAME               AS name    /* 类型名称 */ 
+              FROM   BPS_HOUSE_TYPE            bht     /* 房屋类型表 */ 
+             WHERE   bht.ID = #{_parameter}            /* 数据主键 */ 
+         
+    </select>
+
+
+    <!--
+    **************************************************************************
+    * 5.条件查询
+    * 注: 支持多条件查询、模糊查询、日期比较查询等操作.
+    **************************************************************************
+    -->
+    <select id="getList"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsHouseType"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsHouseType">
+    
+            SELECT   /* getList+@com.vilio.bps.commonMapper.sql.BpsHouseTypeMapper.xml */ 
+                     bht.ID                 AS id      /* 数据主键 */ 
+                    ,bht.CODE               AS code    /* 类型代码 */ 
+                    ,bht.NAME               AS name    /* 类型名称 */ 
+              FROM   BPS_HOUSE_TYPE            bht     /* 房屋类型表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   bht.ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   bht.CODE = #{code} /* 类型代码 */ 
+             </if>
+        
+             <if test='name != null and name != "" and name != "null" and name != "undefined"'>
+               AND   bht.NAME = #{name} /* 类型名称 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+    
+    <select id="getListPrmMapRtnBean"
+            parameterType="java.util.HashMap"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsHouseType">
+    
+            SELECT   /* getListPrmMapRtnBean+@com.vilio.bps.commonMapper.sql.BpsHouseTypeMapper.xml */ 
+                     bht.ID                 AS id      /* 数据主键 */ 
+                    ,bht.CODE               AS code    /* 类型代码 */ 
+                    ,bht.NAME               AS name    /* 类型名称 */ 
+              FROM   BPS_HOUSE_TYPE            bht     /* 房屋类型表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   bht.ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   bht.CODE = #{code} /* 类型代码 */ 
+             </if>
+        
+             <if test='name != null and name != "" and name != "null" and name != "undefined"'>
+               AND   bht.NAME = #{name} /* 类型名称 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+    
+    <select id="getListPrmMapRtnMap"
+            parameterType="java.util.HashMap"
+            resultType="java.util.HashMap">
+    
+            SELECT   /* getListPrmMapRtnMap+@com.vilio.bps.commonMapper.sql.BpsHouseTypeMapper.xml */ 
+                     bht.ID                 AS id      /* 数据主键 */ 
+                    ,bht.CODE               AS code    /* 类型代码 */ 
+                    ,bht.NAME               AS name    /* 类型名称 */ 
+              FROM   BPS_HOUSE_TYPE            bht     /* 房屋类型表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   bht.ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   bht.CODE = #{code} /* 类型代码 */ 
+             </if>
+        
+             <if test='name != null and name != "" and name != "null" and name != "undefined"'>
+               AND   bht.NAME = #{name} /* 类型名称 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+
+
+    <!--
+    **************************************************************************
+    * 6.验证多条件数据是否存在
+    * 注: 根据多条件验证该数据是否存在 ,并返回数据量.
+    **************************************************************************
+    -->
+    <select id="getCheckBy"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsHouseType"
+            resultType="java.lang.Integer">
+    
+            SELECT   /* getCheckBy+@com.vilio.bps.commonMapper.sql.BpsHouseTypeMapper.xml */ 
+                     count(1)
+              FROM   BPS_HOUSE_TYPE  /* 房屋类型表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   CODE = #{code} /* 类型代码 */ 
+             </if>
+        
+             <if test='name != null and name != "" and name != "null" and name != "undefined"'>
+               AND   NAME = #{name} /* 类型名称 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+    </select>
+    
+    <select id="getCheckByPrmMap"
+            parameterType="java.util.HashMap"
+            resultType="java.lang.Integer">
+    
+            SELECT   /* getCheckByPrmMap+@com.vilio.bps.commonMapper.sql.BpsHouseTypeMapper.xml */ 
+                     count(1)
+              FROM   BPS_HOUSE_TYPE  /* 房屋类型表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   CODE = #{code} /* 类型代码 */ 
+             </if>
+        
+             <if test='name != null and name != "" and name != "null" and name != "undefined"'>
+               AND   NAME = #{name} /* 类型名称 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+    </select>
+
+    <select id="getHouseTypeByCode" parameterType="java.lang.String" resultType="com.vilio.bps.commonMapper.pojo.BpsHouseType">
+        SELECT
+            t.code,
+            t.name
+        FROM
+            bps_house_type t
+        WHERE
+            t.code = #{name, jdbcType=VARCHAR}
+    </select>
+
+</mapper>

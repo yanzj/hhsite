@@ -1,0 +1,244 @@
+<!--录单信息的抵押物信息弹窗start-->
+<div class="popup dataInfoPawnPopup">
+  <header class="header">
+    <h4 class="header-title">抵押物信息详情</h4>
+    <span class="close-btn" (click)="popupCloseBtn()">X</span>
+  </header>
+
+  <!--录单信息的抵押物弹窗内容 end-->
+  <div class="popup-main" *ngIf="catalogueInfoDatafn.existsPerson">
+    <div class="row">
+      <div class="filed-name  col-3" style="text-align: left">产证编号：</div>
+      <div class="filed-text  col-9">{{selectItemPopViewObj.certificateNumber}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">评估价：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.evalutionPrice|changeUnit|keepTwoDecimal|permil}}万元</div>
+      <div class="filed-name col-3">登记日：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.buyingTime |dealYearMonth}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">产权人：</div>
+      <div class="filed-text col-9">{{selectItemPopViewObj.propertyOwners}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">产证地址：</div>
+      <div class="filed-text col-9">{{selectItemPopViewObj.propertyAddress}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">土地性质：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.landCharacterisstics}}</div>
+      <div class="filed-name col-3">使用权取得方式：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.acquisitionMethod}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">土地用途：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.landUse}}</div>
+      <div class="filed-name col-3">房屋类型：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.buildingType}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">建筑面积：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.structureArea?selectItemPopViewObj.structureArea+'平米':''}}</div>
+      <div class="filed-name col-3">车库地址：</div>
+      <div class="filed-text col-3" style="text-align: left">{{selectItemPopViewObj.garageAddress}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">车库面积：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.garageArea?selectItemPopViewObj.garageArea:''}}</div>
+      <div class="filed-name col-3">总层数：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.totalFloors}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">竣工日期：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.endDate?selectItemPopViewObj.endDate+'年':''}}</div>
+      <div class="filed-name col-3">共有类型：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.commonTypes}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">未成年人份额：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.minorShare}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">附记：</div>
+      <div class="filed-text col-9" style="overflow-y: auto;">{{selectItemPopViewObj.mortgageRemark}}</div>
+    </div>
+
+    <div class="row">
+      <div class="filed-name col-3">产调信息：</div>
+      <div class="filed-text col-9">
+        <div class="fl">产调时间：</div>
+        <div class="fl" *ngIf="mortgageListInvestObj[0]">{{mortgageListInvestObj[0].investTime | date: "yyyy年M月d日"}}</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3"></div>
+      <div class="filed-text col-9">
+        <div class="fl">在办案件：</div>
+        <div class="fl" *ngIf="mortgageListInvestObj[0]">{{mortgageListInvestObj[0].dealingCase}}</div>
+      </div>
+    </div>
+    <div class="row" *ngFor="let item of mortgageListInvestObj">
+      <div class="col-3" >
+        <div class="filed-name"></div>
+      </div>
+      <div class="col-3 filed-text"><span class="mort-text">{{item.mortgageRank}}债权人：</span><span class="mort-text">{{item.creditor}}</span>
+        </div>
+        <div class="col-3 filed-text"><span>{{item.creditorRightType}}{{item.pecuniaCredita|changeUnit|permil}}万元</span></div>
+        <div class="col-3 filed-text"><span>{{item.creditorRightNature}}</span></div>
+    </div>
+
+    <div class="row">
+      <div class="filed-name col-3">户口信息：</div>
+      <div class="col-9 width-100per" *ngFor=" let item of selectItemPopViewObj.residenceInfList; let i=index">
+        <div class="col-3 padding-right-15">
+          <div class="filed-name"></div>
+        </div>
+        <div class="col-9">
+          <div class="filed-text" style="margin-top: -37px;">
+            <div class="popup-info"><span>姓名：</span><span>{{item.residenceName}}</span></div>
+            <div class="popup-info"><span>身份证号：</span><span>{{item.residenceIdNo}}</span></div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!--<button class="orange-button margin-top-40 margin-bottom-0" (click)="popupCloseBtn()">返回</button>-->
+  </div>
+
+
+  <div class="popup-main" *ngIf="catalogueInfoDatafn.existsLoaner">
+    <div class="row">
+      <div class="filed-name  col-3">产证编号：</div>
+      <div class="filed-text  col-9">{{selectItemPopViewObj.certificateNumber}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">评估价：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.evalutionPrice|changeUnit|keepTwoDecimal|permil}}万元</div>
+      <div class="filed-name col-3">登记日：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.buyingTime|dealYearMonth}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">产权人：</div>
+      <div class="filed-text col-9">{{selectItemPopViewObj.propertyOwners}}</div>
+      <!--<div class="filed-text col-9"><span *ngFor="let item of propertyOwners let i=index">{{i===0?item.lili:('、'+item.lili)}}</span></div>-->
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">产证地址：</div>
+      <div class="filed-text col-9">{{selectItemPopViewObj.propertyAddress}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">土地性质：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.landCharacterisstics}}</div>
+      <div class="filed-name col-3">使用权取得方式：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.acquisitionMethod}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">土地用途：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.landUse}}</div>
+      <div class="filed-name col-3">房屋所有权来源：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.sourceOfHousingOwnership}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">房屋类型：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.buildingType}}</div>
+      <div class="filed-name col-3">建筑面积：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.structureArea?selectItemPopViewObj.structureArea+'平米':''}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">车库地址：</div>
+      <div class="filed-text col-3"  style="text-align: left">{{selectItemPopViewObj.garageAddress}}</div>
+      <div class="filed-name col-3">车库面积：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.garageArea?selectItemPopViewObj.garageArea:''}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">总层数：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.totalFloors}}</div>
+      <div class="filed-name col-3">竣工日期：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.endDate?selectItemPopViewObj.endDate+'年':''}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">共有类型：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.commonTypes}}</div>
+      <div class="filed-name col-3">未成年人份额：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.minorShare}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">房屋使用情况：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.housingUsage}}</div>
+      <div class="filed-name col-3">是否唯一住房：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.isOnlyHousing}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">户口结构：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.householdRegistrationStructure}}</div>
+      <div class="filed-name col-3">抵押类型：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.mortgageTypeName }}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3" *ngIf="secondMortgagePrice">二抵金额：</div>
+      <div class="filed-text col-3" *ngIf="secondMortgagePrice">{{selectItemPopViewObj.secondMortgagePrice?
+        (selectItemPopViewObj.secondMortgagePrice|changeUnit|keepTwoDecimal|permil)+'万元':'0'}}</div>
+      <div class="filed-name col-3" *ngIf="firstMortgageBalance">一抵余额：</div>
+      <div class="filed-text col-3" *ngIf="firstMortgageBalance">
+        {{selectItemPopViewObj.firstMortgageBalanceType?selectItemPopViewObj.firstMortgageBalanceType:''}}
+        {{(selectItemPopViewObj.firstMortgageBalance?(selectItemPopViewObj.firstMortgageBalance|changeUnit|keepTwoDecimal|permil)+'万元':'0')
+        ||(selectItemPopViewObj.firstMortgageBalance==''?'':'0')}}</div>
+      <div class="filed-name col-3" *ngIf="firstMortgagePrice">一抵金额：</div>
+      <div class="filed-text col-3" *ngIf="firstMortgagePrice">{{selectItemPopViewObj.firstMortgagePrice?
+        (selectItemPopViewObj.firstMortgagePrice|changeUnit|keepTwoDecimal|permil)+'万元':'0'}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">附记：</div>
+      <div class="filed-text col-9" style="overflow-y: auto;">{{selectItemPopViewObj.mortgageRemark}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">产调信息：</div>
+      <div class="filed-text col-9">
+        <div class="fl">产调时间：</div>
+        <div class="fl" *ngIf="mortgageListInvestObj[0]">{{mortgageListInvestObj[0].investTime | date: "yyyy年M月d日"}}</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3"></div>
+      <div class="filed-text col-9">
+        <div class="fl">在办案件：</div>
+        <div class="fl" *ngIf="mortgageListInvestObj[0]">{{mortgageListInvestObj[0].dealingCase}}</div>
+      </div>
+    </div>
+    <div class="row" *ngFor="let item of mortgageListInvestObj">
+      <div class="col-3" >
+        <div class="filed-name"></div>
+      </div>
+      <div class="col-3 filed-text"><span class="mort-text">{{item.mortgageRank}}债权人：</span><span class="mort-text">{{item.creditor}}</span>
+      </div>
+      <div class="col-3 filed-text"><span>{{item.creditorRightType}}{{item.pecuniaCredita|changeUnit|permil}}万元</span></div>
+      <div class="col-3 filed-text"><span>{{item.creditorRightNature}}</span></div>
+
+    </div>
+
+    <div class="row">
+      <div class="filed-name col-3">户口信息：</div>
+      <div class="col-9 width-100per" *ngFor=" let item of selectItemPopViewObj.residenceInfList; let i=index">
+        <div class="col-3 padding-right-15">
+          <div class="filed-name"></div>
+        </div>
+        <div class="col-9">
+          <div class="filed-text" style="margin-top: -37px;">
+            <div class="popup-info"><span>姓名：</span><span>{{item.residenceName}}</span></div>
+            <div class="popup-info"><span>身份证号：</span><span>{{item.residenceIdNo}}</span></div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+  <button class="orange-button margin-top-40 margin-bottom-0" (click)="popupCloseBtn()">返回</button>
+</div>
+
+<!--录单信息的抵押物弹窗内容 end-->

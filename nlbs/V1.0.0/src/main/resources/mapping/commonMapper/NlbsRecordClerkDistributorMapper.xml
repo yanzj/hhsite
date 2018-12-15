@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.nlbs.commonMapper.dao.NlbsRecordClerkDistributorMapper" >
+  <resultMap id="BaseResultMap" type="com.vilio.nlbs.commonMapper.pojo.NlbsRecordClerkDistributor" >
+    <constructor >
+      <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_no" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="distributor_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_no, distributor_code
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from nlbs_record_clerk_distributor
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from nlbs_record_clerk_distributor
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsRecordClerkDistributor" >
+    insert into nlbs_record_clerk_distributor (id, user_no, distributor_code)
+    values (#{id,jdbcType=VARCHAR}, #{userNo,jdbcType=VARCHAR}, #{distributorCode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsRecordClerkDistributor" >
+    insert into nlbs_record_clerk_distributor
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userNo != null" >
+        user_no,
+      </if>
+      <if test="distributorCode != null" >
+        distributor_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userNo != null" >
+        #{userNo,jdbcType=VARCHAR},
+      </if>
+      <if test="distributorCode != null" >
+        #{distributorCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsRecordClerkDistributor" >
+    update nlbs_record_clerk_distributor
+    <set >
+      <if test="userNo != null" >
+        user_no = #{userNo,jdbcType=VARCHAR},
+      </if>
+      <if test="distributorCode != null" >
+        distributor_code = #{distributorCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsRecordClerkDistributor" >
+    update nlbs_record_clerk_distributor
+    set user_no = #{userNo,jdbcType=VARCHAR},
+      distributor_code = #{distributorCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <delete id="deleteByDistributorCode" parameterType="java.lang.String" >
+    delete from nlbs_record_clerk_distributor
+    where distributor_code = #{distributorCode,jdbcType=VARCHAR}
+  </delete>
+  <select id="selectDistributorByRecordClerk" resultType="java.util.Map" parameterType="java.lang.String" >
+    select
+    a.distributor_code AS distributorCode, b.abbr_name AS distributorName
+    from nlbs_record_clerk_distributor a, nlbs_distributor b
+    WHERE a.distributor_code = b.code
+    AND a.user_no = #{userNo,jdbcType=VARCHAR}
+  </select>
+</mapper>

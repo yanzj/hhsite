@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.mps.push.dao.UmengDao">
+
+    <insert id="insertUmengBatch" parameterType="java.util.List">
+        INSERT INTO mps_umeng_info(serial_no,app_code,ticker,title,text,device_token,timely_news,send_status,system_type,subtitle)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.serialNo,jdbcType=VARCHAR},
+             #{item.appCode,jdbcType=VARCHAR},
+             #{item.ticker,jdbcType=VARCHAR},
+             #{item.title,jdbcType=VARCHAR},
+             #{item.text,jdbcType=VARCHAR},
+             #{item.deviceToken,jdbcType=VARCHAR},
+            #{item.timelyNews,jdbcType=VARCHAR},
+             #{item.sendStatus,jdbcType=VARCHAR},
+            #{item.systemType,jdbcType=VARCHAR},
+            #{item.subtitle,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <update id="updateUmengBatch" parameterType="java.util.Map">
+        UPDATE mps_umeng_info m
+        SET m.chl_ret = #{chlRet,jdbcType=VARCHAR}
+        ,m.chl_ret_data = #{chlRetData,jdbcType=VARCHAR}
+        ,m.chl_error_code = #{chlErrorCode,jdbcType=VARCHAR}
+        ,m.send_status = #{sendStatus,jdbcType=VARCHAR}
+        ,m.send_num = #{sendNum,jdbcType=VARCHAR}
+        ,m.chl_msg_id = #{chlMsgId,jdbcType=VARCHAR}
+        ,m.task_id = #{taskId,jdbcType=VARCHAR}
+        WHERE
+        m.serial_no in
+        <foreach collection="umengs" index="index" item="item" open="(" separator="," close=")">
+            #{item.serialNo,jdbcType=VARCHAR}
+        </foreach>
+
+    </update>
+</mapper>

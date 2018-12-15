@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!--
+******************************************************************************
+* 数据库表：BPS_THRESHOLD
+* 表的名称：时间阈值表
+* 对应实体：com.vilio.bps.commonMapper.pojo.BpsThreshold
+* 开发日期：2017-06-12
+* 技术服务：www.fwjava.com
+******************************************************************************
+-->
+<mapper namespace="com.vilio.bps.commonMapper.dao.IBpsThresholdMapper">
+
+    <!--
+    **************************************************************************
+    * 1.新增一条数据
+    * 注: 根据Bean实体执行新增操作.
+    **************************************************************************
+    -->
+    <insert id="getInsert"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsThreshold"
+            useGeneratedKeys="true"
+            keyProperty="id">
+    
+            INSERT   /* getInsert+@com.vilio.bps.commonMapper.sql.BpsThresholdMapper.xml */ 
+              INTO   BPS_THRESHOLD         /* 时间阈值表 */ 
+                    (
+                     CODE                  /*  */ 
+                    ,VALUE                 /* 时间阈值 */ 
+                    ,CITY_CODE             /* 关联城市 */ 
+                    ,STATUS                /* 状态(0不可用，1可用) */ 
+                    ,DATE_CREATED          /* 数据创建时间 */ 
+                    ,DATE_MODIFIED         /* 数据更新时间 */ 
+                    )
+            VALUES  (
+                     #{code}               /*  */ 
+                    ,#{value}              /* 时间阈值 */ 
+                    ,#{cityCode}           /* 关联城市 */ 
+                    ,#{status}             /* 状态(0不可用，1可用) */ 
+                    ,#{dateCreated}        /* 数据创建时间 */ 
+                    ,#{dateModified}       /* 数据更新时间 */ 
+                    )
+         
+    </insert>
+    
+    <insert id="getInsertPrmMap"
+            parameterType="java.util.HashMap"
+            useGeneratedKeys="true"
+            keyProperty="id">
+    
+            INSERT   /* getInsertPrmMap+@com.vilio.bps.commonMapper.sql.BpsThresholdMapper.xml */ 
+              INTO   BPS_THRESHOLD         /* 时间阈值表 */ 
+                    (
+                     CODE                  /*  */ 
+                    ,VALUE                 /* 时间阈值 */ 
+                    ,CITY_CODE             /* 关联城市 */ 
+                    ,STATUS                /* 状态(0不可用，1可用) */ 
+                    ,DATE_CREATED          /* 数据创建时间 */ 
+                    ,DATE_MODIFIED         /* 数据更新时间 */ 
+                    )
+            VALUES  (
+                     #{code}               /*  */ 
+                    ,#{value}              /* 时间阈值 */ 
+                    ,#{cityCode}           /* 关联城市 */ 
+                    ,#{status}             /* 状态(0不可用，1可用) */ 
+                    ,#{dateCreated}        /* 数据创建时间 */ 
+                    ,#{dateModified}       /* 数据更新时间 */ 
+                    )
+         
+    </insert>
+
+
+    <!--
+    **************************************************************************
+    * 2.删除一条数据
+    * 注: 根据Bean实体的主键ID执行删除操作.
+    **************************************************************************
+    -->
+    <delete id="getDelete"
+            parameterType="java.lang.Integer">
+    
+            DELETE   /* getDelete+@com.vilio.bps.commonMapper.sql.BpsThresholdMapper.xml */ 
+              FROM   BPS_THRESHOLD         /* 时间阈值表 */ 
+             WHERE   ID = #{_parameter}    /* 数据主键 */ 
+         
+    </delete>
+
+
+    <!--
+    **************************************************************************
+    * 3.变更一条数据
+    * 注: 根据Bean实体的主键ID执行变更操作.
+    **************************************************************************
+    -->
+    <update id="getUpdate"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsThreshold">
+    
+            UPDATE   /* getUpdate+@com.vilio.bps.commonMapper.sql.BpsThresholdMapper.xml */ 
+                     BPS_THRESHOLD                         /* 时间阈值表 */ 
+               SET   CODE             = #{code}            /*  */ 
+                    ,VALUE            = #{value}           /* 时间阈值 */ 
+                    ,CITY_CODE        = #{cityCode}        /* 关联城市 */ 
+                    ,STATUS           = #{status}          /* 状态(0不可用，1可用) */ 
+                    ,DATE_CREATED     = #{dateCreated}     /* 数据创建时间 */ 
+                    ,DATE_MODIFIED    = #{dateModified}    /* 数据更新时间 */ 
+             WHERE   ID               = #{id}              /* 数据主键 */ 
+         
+    </update>
+    
+    <update id="getUpdatePrmMap"
+            parameterType="java.util.HashMap">
+    
+            UPDATE   /* getUpdatePrmMap+@com.vilio.bps.commonMapper.sql.BpsThresholdMapper.xml */ 
+                     BPS_THRESHOLD                         /* 时间阈值表 */ 
+               SET   CODE             = #{code}            /*  */ 
+                    ,VALUE            = #{value}           /* 时间阈值 */ 
+                    ,CITY_CODE        = #{cityCode}        /* 关联城市 */ 
+                    ,STATUS           = #{status}          /* 状态(0不可用，1可用) */ 
+                    ,DATE_CREATED     = #{dateCreated}     /* 数据创建时间 */ 
+                    ,DATE_MODIFIED    = #{dateModified}    /* 数据更新时间 */ 
+             WHERE   ID               = #{id}              /* 数据主键 */ 
+         
+    </update>
+
+
+    <!--
+    **************************************************************************
+    * 4.获取一个Bean实体
+    * 注: 根据Bean实体的主键ID获取一个Bean实体.
+    **************************************************************************
+    -->
+    <select id="getBean"
+            parameterType="java.lang.Integer"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsThreshold">
+    
+            SELECT   /* getBean+@com.vilio.bps.commonMapper.sql.BpsThresholdMapper.xml */ 
+                     bt.ID                AS id              /* 数据主键 */ 
+                    ,bt.CODE              AS code            /*  */ 
+                    ,bt.VALUE             AS value           /* 时间阈值 */ 
+                    ,bt.CITY_CODE         AS cityCode        /* 关联城市 */ 
+                    ,bt.STATUS            AS status          /* 状态(0不可用，1可用) */ 
+                    ,bt.DATE_CREATED      AS dateCreated     /* 数据创建时间 */ 
+                    ,bt.DATE_MODIFIED     AS dateModified    /* 数据更新时间 */ 
+              FROM   BPS_THRESHOLD           bt              /* 时间阈值表 */ 
+             WHERE   bt.ID = #{_parameter}                   /* 数据主键 */ 
+         
+    </select>
+    
+    <select id="getBeanRtnMap"
+            parameterType="java.lang.Integer"
+            resultType="java.util.HashMap">
+    
+            SELECT   /* getBeanRtnMap+@com.vilio.bps.commonMapper.sql.BpsThresholdMapper.xml */ 
+                     bt.ID                AS id              /* 数据主键 */ 
+                    ,bt.CODE              AS code            /*  */ 
+                    ,bt.VALUE             AS value           /* 时间阈值 */ 
+                    ,bt.CITY_CODE         AS cityCode        /* 关联城市 */ 
+                    ,bt.STATUS            AS status          /* 状态(0不可用，1可用) */ 
+                    ,bt.DATE_CREATED      AS dateCreated     /* 数据创建时间 */ 
+                    ,bt.DATE_MODIFIED     AS dateModified    /* 数据更新时间 */ 
+              FROM   BPS_THRESHOLD           bt              /* 时间阈值表 */ 
+             WHERE   bt.ID = #{_parameter}                   /* 数据主键 */ 
+         
+    </select>
+
+
+    <!--
+    **************************************************************************
+    * 5.条件查询
+    * 注: 支持多条件查询、模糊查询、日期比较查询等操作.
+    **************************************************************************
+    -->
+    <select id="getList"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsThreshold"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsThreshold">
+    
+            SELECT   /* getList+@com.vilio.bps.commonMapper.sql.BpsThresholdMapper.xml */ 
+                     bt.ID                AS id              /* 数据主键 */ 
+                    ,bt.CODE              AS code            /*  */ 
+                    ,bt.VALUE             AS value           /* 时间阈值 */ 
+                    ,bt.CITY_CODE         AS cityCode        /* 关联城市 */ 
+                    ,bt.STATUS            AS status          /* 状态(0不可用，1可用) */ 
+                    ,bt.DATE_CREATED      AS dateCreated     /* 数据创建时间 */ 
+                    ,bt.DATE_MODIFIED     AS dateModified    /* 数据更新时间 */ 
+              FROM   BPS_THRESHOLD           bt              /* 时间阈值表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   bt.ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   bt.CODE = #{code} /*  */ 
+             </if>
+        
+             <if test='value != null'>
+               AND   bt.VALUE = #{value} /* 时间阈值 */ 
+             </if>
+        
+             <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+               AND   bt.CITY_CODE = #{cityCode} /* 关联城市 */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   bt.STATUS = #{status} /* 状态(0不可用，1可用) */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(bt.DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /* 数据创建时间 */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(bt.DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /* 数据更新时间 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+    
+    <select id="getListPrmMapRtnBean"
+            parameterType="java.util.HashMap"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsThreshold">
+    
+            SELECT   /* getListPrmMapRtnBean+@com.vilio.bps.commonMapper.sql.BpsThresholdMapper.xml */ 
+                     bt.ID                AS id              /* 数据主键 */ 
+                    ,bt.CODE              AS code            /*  */ 
+                    ,bt.VALUE             AS value           /* 时间阈值 */ 
+                    ,bt.CITY_CODE         AS cityCode        /* 关联城市 */ 
+                    ,bt.STATUS            AS status          /* 状态(0不可用，1可用) */ 
+                    ,bt.DATE_CREATED      AS dateCreated     /* 数据创建时间 */ 
+                    ,bt.DATE_MODIFIED     AS dateModified    /* 数据更新时间 */ 
+              FROM   BPS_THRESHOLD           bt              /* 时间阈值表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   bt.ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   bt.CODE = #{code} /*  */ 
+             </if>
+        
+             <if test='value != null'>
+               AND   bt.VALUE = #{value} /* 时间阈值 */ 
+             </if>
+        
+             <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+               AND   bt.CITY_CODE = #{cityCode} /* 关联城市 */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   bt.STATUS = #{status} /* 状态(0不可用，1可用) */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(bt.DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /* 数据创建时间 */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(bt.DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /* 数据更新时间 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+    
+    <select id="getListPrmMapRtnMap"
+            parameterType="java.util.HashMap"
+            resultType="java.util.HashMap">
+    
+            SELECT   /* getListPrmMapRtnMap+@com.vilio.bps.commonMapper.sql.BpsThresholdMapper.xml */ 
+                     bt.ID                AS id              /* 数据主键 */ 
+                    ,bt.CODE              AS code            /*  */ 
+                    ,bt.VALUE             AS value           /* 时间阈值 */ 
+                    ,bt.CITY_CODE         AS cityCode        /* 关联城市 */ 
+                    ,bt.STATUS            AS status          /* 状态(0不可用，1可用) */ 
+                    ,bt.DATE_CREATED      AS dateCreated     /* 数据创建时间 */ 
+                    ,bt.DATE_MODIFIED     AS dateModified    /* 数据更新时间 */ 
+              FROM   BPS_THRESHOLD           bt              /* 时间阈值表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   bt.ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   bt.CODE = #{code} /*  */ 
+             </if>
+        
+             <if test='value != null'>
+               AND   bt.VALUE = #{value} /* 时间阈值 */ 
+             </if>
+        
+             <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+               AND   bt.CITY_CODE = #{cityCode} /* 关联城市 */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   bt.STATUS = #{status} /* 状态(0不可用，1可用) */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(bt.DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /* 数据创建时间 */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(bt.DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /* 数据更新时间 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+             <if test='orderBy != null and orderBy != ""'>
+               ORDER BY   ${orderBy}  /* 排序 */ 
+             </if>
+         
+    </select>
+
+
+    <!--
+    **************************************************************************
+    * 6.验证多条件数据是否存在
+    * 注: 根据多条件验证该数据是否存在 ,并返回数据量.
+    **************************************************************************
+    -->
+    <select id="getCheckBy"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsThreshold"
+            resultType="java.lang.Integer">
+    
+            SELECT   /* getCheckBy+@com.vilio.bps.commonMapper.sql.BpsThresholdMapper.xml */ 
+                     count(1)
+              FROM   BPS_THRESHOLD  /* 时间阈值表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   CODE = #{code} /*  */ 
+             </if>
+        
+             <if test='value != null'>
+               AND   VALUE = #{value} /* 时间阈值 */ 
+             </if>
+        
+             <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+               AND   CITY_CODE = #{cityCode} /* 关联城市 */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   STATUS = #{status} /* 状态(0不可用，1可用) */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /* 数据创建时间 */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /* 数据更新时间 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+    </select>
+    
+    <select id="getCheckByPrmMap"
+            parameterType="java.util.HashMap"
+            resultType="java.lang.Integer">
+    
+            SELECT   /* getCheckByPrmMap+@com.vilio.bps.commonMapper.sql.BpsThresholdMapper.xml */ 
+                     count(1)
+              FROM   BPS_THRESHOLD  /* 时间阈值表 */ 
+             WHERE   1 = 1
+        
+             <if test='id != null'>
+               AND   ID = #{id} /* 数据主键 */ 
+             </if>
+        
+             <if test='code != null and code != "" and code != "null" and code != "undefined"'>
+               AND   CODE = #{code} /*  */ 
+             </if>
+        
+             <if test='value != null'>
+               AND   VALUE = #{value} /* 时间阈值 */ 
+             </if>
+        
+             <if test='cityCode != null and cityCode != "" and cityCode != "null" and cityCode != "undefined"'>
+               AND   CITY_CODE = #{cityCode} /* 关联城市 */ 
+             </if>
+        
+             <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+               AND   STATUS = #{status} /* 状态(0不可用，1可用) */ 
+             </if>
+        
+             <if test='dateCreated != null'>
+               AND   date_format(DATE_CREATED ,'%Y-%m-%d') = #{dateCreatedChar} /* 数据创建时间 */ 
+             </if>
+        
+             <if test='dateModified != null'>
+               AND   date_format(DATE_MODIFIED ,'%Y-%m-%d') = #{dateModifiedChar} /* 数据更新时间 */ 
+             </if>
+         
+         
+         
+             <!-- 常用自定义字段 -->
+             <!-- /常用自定义字段 -->
+         
+    </select>
+
+    <!--获取选定城市的时间阈值-->
+    <select id="queryAvaliableThresholdCityCode" resultType="com.vilio.bps.commonMapper.pojo.BpsThreshold"  >
+        select
+        t.id,
+        t.city_code as cityCode,
+        t.value,
+        t.status
+        from bps_threshold t
+        where
+        t.city_code=#{cityCode}
+        and t.status = '1'
+        order by t.date_created desc
+    </select>
+
+</mapper>

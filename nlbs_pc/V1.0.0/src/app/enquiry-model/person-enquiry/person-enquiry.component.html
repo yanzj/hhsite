@@ -1,0 +1,170 @@
+<div class="row">
+  <ol class="breadcrumbNav col-12 Mp">
+    <li class="active">人工询价</li>
+  </ol>
+</div>
+<div class="row">
+  <div class="col-12">
+    <hr class="breadcrumbNavLine">
+  </div>
+</div>
+
+<div class="progress-box">
+  <div class="progress-com">
+
+    <div class="progress-line">
+      <div *ngFor=" let item of itemStatusLists; let i=index ">
+                <span class="progress-circle circle{{i+1}} active title_cur"
+                      [ngClass]="{'title_cur':i<=itemSelectIndex}">
+                  <!--<i class="bigCircle" *ngIf=" itemSelectStatus == item ? true:false "></i>-->
+                  <i [ngClass]="{'bigCircle':i==itemSelectIndex}"></i>
+                  <ins [ngClass]="{'ins_line':i<itemSelectIndex}"></ins>
+                  <em [ngStyle]="{'color':i<=itemSelectIndex ? '#333' : '#999' }"
+                      [ngClass]="{'ProSeleceted':i==itemSelectIndex}">{{item}}</em>
+                </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2"><span>*</span>城市：</div>
+  <div class="col-2 white-space-nowrap">
+    <select name="" id="city" class="selectmsg width-115" [(ngModel)]="cityValue">
+      <option value=""></option>
+      <option *ngFor="let item of cityList;let i of index" [value]="item.cityCode">{{item.cityName}}</option>
+    </select>
+  </div>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2"><span>*</span>房屋地址：</div>
+  <div class="col-4 white-space-nowrap">
+    <input type="text" id="address" class="col-12 msg-input" maxlength="100">
+  </div>
+</div>
+
+<!--  跟据城市决定是否显示  -->
+
+<div class="box" [ngClass]="{'unvisible':isCityEmpty}">
+  <div class="row">
+    <!-- 世联评估 -->
+    <div class="col-6" [ngClass]="{'unvisible':!isL}">
+      <div class="row">
+        <div class="col-12 company-title">{{lValue}}评估</div>
+      </div>
+      <div class="row">
+        <div class="filed-name col-4">
+          <span>*</span>评估价：
+        </div>
+        <div class="col-8 white-space-nowrap">
+          <input type="text" class="msg-input" id="price1" maxlength="8">
+          <div class="uinit">万元</div>
+        </div>
+      </div>
+      <div class="row margin-top-40">
+        <div class="col-4">
+          <a href="javascript:;" class="upload float-right" *ngIf="!isShow&&!isShow2">
+            <!--<div class="upContain">-->
+            <div class="explain">请上传评估截图</div>
+            <!-- 将input中的multiple去掉设置为单个上传的文件 -->
+            <input class="uploadof-material" type="file" ng2FileSelect [uploader]="uploader"
+                   (change)="selectedFileOnChanged($event)"/>
+            <!--</div>-->
+          </a>
+          <div class="container float-right" *ngIf="isShow">
+            <div class="upload-file-container">
+              <div>
+                <p *ngIf="!isUp" style="color: #CCCCCC">上传失败</p>
+                <div *ngIf="!isUp">
+                  <a class="upload2 text-link" (click)="upAgiain()">重新上传</a>
+                  <a (click)="deleteFile()" class="upload2 text-link">删除</a>
+                </div>
+                <div class="progress" *ngIf="isUp">
+                  <div class="progress-bar progress-bar-warning progress-bar-striped active"
+                       [style.width.%]=progressLength>
+                    <div class="progress-value"><span>正在上传</span>{{progressLength}}%</div>
+                  </div>
+                </div>
+                <p class="margin-top-15 image-name">{{fileName}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="container-up-success float-right" *ngIf="isShow2">
+            <div class="delete-mask" (click)="deleteUploadFile()">
+              <i class="delete-icon"></i>
+            </div>
+            <span class="delfile">
+              <img src="" alt="" class="upload-img" id="shiLianImg">
+            </span>
+            <div class="width-160">
+              <p class="image-name">{{fileName}}</p>
+              <p  class="upload-time">{{uploadTime}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 城市评估 -->
+    <div class="col-6" [ngClass]="{'unvisible':!isR}">
+      <div class="row">
+        <div class="col-12 company-title">{{rValue}}评估</div>
+      </div>
+      <div class="row">
+        <div class="filed-name col-4">
+          <span>*</span>评估价：
+        </div>
+        <div class="col-8 white-space-nowrap">
+          <input type="text" class="msg-input" id="price2" maxlength="8">
+          <div class="uinit">万元</div>
+        </div>
+      </div>
+      <div class="row margin-top-40">
+        <div class="col-12">
+          <a href="javascript:;" class="upload" *ngIf="!isShow3&&!isShow4">
+            <!--<div class="upContain">-->
+            <div class="explain">请上传评估截图</div>
+            <!-- 将input中的multiple去掉设置为单个上传的文件 -->
+            <input class="uploadof-material" type="file" ng2FileSelect [uploader]="uploader2"
+                   (change)="selectedFileOnChanged2($event)"/>
+            <!--</div>-->
+          </a>
+          <div class="container" *ngIf="isShow3">
+            <div class="upload-file-container">
+              <div class="">
+                <p *ngIf="!isUp2" style="color: #CCCCCC">上传失败</p>
+                <div *ngIf="!isUp2">
+                  <a *ngIf="!isUp2"class="upload2 text-link" (click)="upAgiain2()">重新上传</a>
+                  <a (click)="deleteFile()" class="upload2 text-link">删除</a>
+                </div>
+                <div class="progress" *ngIf="isUp2">
+                  <div class="progress-bar progress-bar-warning progress-bar-striped active"
+                       [style.width.%]=progressLength2>
+                    <div class="progress-value"><span>正在上传</span>{{progressLength2}}%</div>
+                  </div>
+                </div>
+                <p class="image-name margin-top-15">{{fileName2}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="container-up-success" *ngIf="isShow4">
+            <div class="delete-mask" (click)="deleteUploadFile2()"><i class="delete-icon"></i></div>
+            <span class="delfile">
+              <img src="" alt="" class="upload-img" id="chengShiImg">
+            </span>
+            <div class="width-160">
+              <p class="image-name">{{fileName2}}</p>
+              <p  class="upload-time">{{uploadTime2}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row margin-top-40">
+    <div class="col-2">
+      <div class="orange-button float-right" (click)="submit()">提交</div>
+    </div>
+  </div>
+</div>

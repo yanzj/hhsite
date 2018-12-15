@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.ApplyInterestingDao">
+
+    <!--查询还款申请表-->
+    <select id="qryApplyInteresting" resultType="com.vilio.plms.pojo.ApplyInteresting" parameterType="com.vilio.plms.pojo.ApplyInteresting">
+        SELECT
+            id,
+            `code`,
+            annualized_interest as annualizedInterest,
+            principal_over_interest as principalOverInterest,
+            interest_over_interest as interestOverInterest,
+            default_interest_rate as defaultInterestRate,
+            contract_code as contractCode,
+            create_date as createDate,
+            modify_date as modifyDate,
+            `status`,
+            is_principal_instead as isPrincipalInstead,
+            is_interest_instead as isInterestInstead,
+            is_full_repurchase as isFullRepurchase,
+            service_fee_interest_rate as serviceFeeInterestRate
+        FROM
+          plms_apply_interesting
+        WHERE  contract_code = #{contractCode} and status != '0'
+    </select>
+
+    <insert id="saveApplyInteresting" parameterType="com.vilio.plms.pojo.ApplyInteresting">
+        INSERT INTO plms_apply_interesting (
+        code,
+        annualized_interest,principal_over_interest,interest_over_interest,
+        default_interest_rate,service_fee_interest_rate,
+        contract_code,
+        create_date, modify_date,
+        status,
+        is_principal_instead,is_interest_instead,is_full_repurchase,
+        fund_side_code,
+        honghuo_code,
+        honghuo_bail_account_code
+        )
+        VALUES
+        (
+        #{code,jdbcType=VARCHAR},
+        #{annualizedInterest,jdbcType=DECIMAL}, #{principalOverInterest,jdbcType=DECIMAL}, #{interestOverInterest,jdbcType=DECIMAL},
+        #{defaultInterestRate,jdbcType=DECIMAL},#{serviceFeeInterestRate,jdbcType=DECIMAL},
+        #{contractCode,jdbcType=VARCHAR},
+        #{createDate,jdbcType=TIMESTAMP}, #{modifyDate,jdbcType=TIMESTAMP},
+        #{status,jdbcType=VARCHAR},
+        #{isPrincipalInstead},#{isInterestInstead},#{isFullRepurchase},
+        #{fundSideCode,jdbcType=VARCHAR},
+        #{honghuoCode,jdbcType=VARCHAR},
+        #{honghuoBailAccountCode,jdbcType=VARCHAR}
+        )
+    </insert>
+
+</mapper>

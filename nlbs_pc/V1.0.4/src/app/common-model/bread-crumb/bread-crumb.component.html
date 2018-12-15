@@ -1,0 +1,10 @@
+<div class="row">
+  <ol class="breadcrumbNav col-12" id="breadcrumbNav1" [ngStyle]="{'display':contact.breadcrumbNavDisplay==false?'block':'none'}">
+    <li class="active">{{contact.title}}</li>
+  </ol>
+  <ol class="breadcrumbNav col-12" id="breadcrumbNav2" [ngStyle]="{'display':contact.breadcrumbNavDisplay==false?'none':'block'}">
+    <li ><a (click)="querySection()">{{contact.firstTitle}}</a><i>></i></li>
+    <li class="active">{{contact.secondTitle}}<i>|</i></li>
+    <li><a (click)="history()">{{contact.thirdTitle}}</a></li>
+  </ol>
+</div>

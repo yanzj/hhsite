@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+    <!-- Quartz配置 -->
+    <!-- quartz持久化存储 -->
+    <bean id="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="dataSource">
+            <ref bean="umDataSource"/>
+        </property>
+        <property name="startupDelay" value="20"/>
+        <property name="autoStartup" value="true"/>
+        <property name="overwriteExistingJobs" value="true"/>
+        <property name="applicationContextSchedulerContextKey" value="applicationContextKey"/>
+        <property name="configLocation" value="classpath:quartz.properties"/>
+        <property name="schedulerContextAsMap">
+            <map>
+                <!-- spring 管理的service需要放到这里，才能够注入成功 -->
+                <description>schedulerContextAsMap</description>
+                <entry key="umUserDao" value-ref="umUserDao"/>
+                <entry key="customUserDao" value-ref="customUserDao"/>
+            </map>
+        </property>
+        <property name="triggers">
+            <list>
+                <ref bean="umUnLockJobTrigger"/>
+                <ref bean="customUnLockJobTrigger"/>
+            </list>
+        </property>
+
+    </bean>
+
+    <bean id="umUnLockJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.vilio.um.quartz.UmUnLockJob"/>
+        <property name="name" value="umUnLockJob"/>
+        <property name="durability" value="true"/>
+    </bean>
+
+    <bean id="umUnLockJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="umUnLockJob"/>
+        <property name="cronExpression" value="${umUnLockJobTriggerCronExpression}"/>
+    </bean>
+
+
+    <bean id="customUnLockJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.vilio.custom.quartz.CustomUnLockJob"/>
+        <property name="name" value="customUnLockJob"/>
+        <property name="durability" value="true"/>
+    </bean>
+
+    <bean id="customUnLockJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="customUnLockJob"/>
+        <property name="cronExpression" value="${customUnLockJobTriggerCronExpression}"/>
+    </bean>
+
+
+
+</beans>

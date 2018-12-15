@@ -1,0 +1,173 @@
+<!--进件详情 start-->
+<div class="tab_content">
+  <!--借款人信息-->
+  <div class="row margin-top-40 margin-bottom-20">
+    <div class="col-12">
+      <div class="message-title-line"></div>
+      <div class="message-title-name">借款人信息</div>
+      <div class="label_hr">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <table class="table width-100per" border="0" cellpadding="0" cellspacing="0">
+      <thead>
+      <tr>
+        <th class="col-2">姓名</th>
+        <th class="col-2">证件号码</th>
+        <th class="col-2">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of catalogueInfoData.applyInputPersionInfoLists;let i=index">
+        <td class="col-2">{{item.name}}</td>
+        <td class="col-2">{{item.idNo}}</td>
+        <td class="col-2"><a href="javascript:;" (click)="dataInfoPersonPopup(i)">详情</a></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!--抵押物信息-->
+  <div class="row margin-top-40 margin-bottom-20">
+    <div class="col-12">
+      <div class="message-title-line"></div>
+      <div class="message-title-name">抵押物信息</div>
+      <div class="label_hr">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <table class="table width-100per" border="0" cellpadding="0" cellspacing="0">
+      <thead>
+      <tr>
+        <th class="col-2">产证编号</th>
+        <th class="col-4">地址</th>
+        <th class="col-2">评估价</th>
+        <th class="col-2">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of catalogueInfoData.mortgageList;let i=index">
+        <td class="col-2">{{item.certificateNumber}}</td>
+        <td class="col-4">{{item.propertyAddress}}</td>
+        <td class="col-2">{{item.evalutionPrice+'万'}}</td>
+        <td class="col-2"><a href="javascript:;" (click)="dataInfoPawnPopup(i)">详情</a></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!--备用房信息-->
+  <div class="row margin-top-40 margin-bottom-20" *ngIf="catalogueInfoData.spareHouseList.length>0">
+    <div class="col-12">
+      <div class="message-title-line"></div>
+      <div class="message-title-name">备用房信息</div>
+      <div class="label_hr"></div>
+    </div>
+  </div>
+  <div class="row"  *ngIf="catalogueInfoData.spareHouseList.length>0">
+    <table class="table width-100per" border="0" cellpadding="0" cellspacing="0">
+      <thead>
+      <tr>
+        <th class="col-2">产权人</th>
+        <th class="col-4">地址</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of catalogueInfoData.spareHouseList">
+        <td class="col-2">{{item.owner}}</td>
+        <td class="col-4">{{item.address}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 放款账户信息 -->
+  <div class="row margin-top-40 margin-bottom-20" *ngIf="catalogueInfoData.loanAccountInfo">
+    <div class="col-12">
+      <div class="message-title-line"></div>
+      <div class="message-title-name">放款账户信息</div>
+      <div class="label_hr"></div>
+    </div>
+  </div>
+  <div class="row" *ngIf="catalogueInfoData.loanAccountInfo">
+    <div class="col-2 filed-name">户名：</div>
+    <div class="col-2 filed-text">{{catalogueInfoData.loanAccountInfo.loanAccountName}}</div>
+    <div class="col-2 filed-name">开户行：</div>
+    <div class="col-2 filed-text">{{catalogueInfoData.loanAccountInfo.loanAccountBank}}</div>
+    <div class="col-2 filed-name">账号：</div>
+    <div class="col-2 filed-text">{{catalogueInfoData.loanAccountInfo.loanAccount}}</div>
+
+  </div>
+
+  <!--征信信息-->
+  <div class="row margin-top-40 margin-bottom-20">
+    <div class="col-12">
+      <div class="message-title-line"></div>
+      <div class="message-title-name">征信信息</div>
+      <div class="label_hr"></div>
+    </div>
+  </div>
+  <div class="row">
+    <table class="table width-100per" border="0" cellpadding="0" cellspacing="0">
+      <thead>
+      <tr>
+        <th class="col-2">姓名</th>
+        <th class="col-2">征信报告时间</th>
+        <th class="col-2">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of catalogueInfoData.creditInfList; let i = index">
+        <td class="col-2">{{item.name}}</td>
+        <td class="col-2">{{item.reportTime}}</td>
+        <td class="col-2"><a href="javascript:;" (click)="dataInfoCreditPopup(i)">详情</a></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <!--司法信息-->
+  <div class="row margin-top-40 margin-bottom-20">
+    <div class="col-12">
+      <div class="message-title-line"></div>
+      <div class="message-title-name">司法信息</div>
+      <div class="label_hr"></div>
+    </div>
+  </div>
+  <div class="row">
+    <table class="table width-100per" border="0" cellpadding="0" cellspacing="0">
+      <thead>
+      <tr>
+        <th class="col-2">姓名/公司名称</th>
+        <th class="col-2">是否有司法诉讼</th>
+        <th class="col-2">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of catalogueInfoData.judicialInfList; let i = index">
+        <td class="col-2">{{item.judicialInfName}}</td>
+        <td class="col-2">{{item.litigation}}</td>
+        <td class="col-2"><a href="javascript:;" (click)="dataInfoJudicialPopup(i)">详情</a></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="row margin-top-40">
+    <div class="col-2">
+      <button class="orange-button float-left" id="pre_btn" (click)="querySection()">返回进件查询</button>
+    </div>
+
+  </div>
+</div>
+<!--进件详情 end-->
+
+<!--人员弹窗-->
+<app-popup-person-info (event)="getData($event)" *ngIf="popupShow=='borrower'" [selectItemPopViewObj]="selectItemPopViewObj"></app-popup-person-info>
+<!--抵押物弹窗-->
+<app-popup-catalogue (event)="getData($event)" *ngIf="popupShow=='pawn'" [selectItemPopViewObj]="selectItemPopViewObj" [mortgageListInvestObj]="mortgageListInvestObj"></app-popup-catalogue>
+<!--征信弹窗-->
+<app-popup-credit (event)="getData($event)" *ngIf="popupShow=='credit'" [loanInfoList]="loanInfoList" [loanCardInfoList]="loanCardInfoList"></app-popup-credit>
+<!--司法弹窗-->
+<app-popup-judicial (event)="getData($event)" *ngIf="popupShow=='judicial'" [selectItemPopViewObj]="selectItemPopViewObj"></app-popup-judicial>

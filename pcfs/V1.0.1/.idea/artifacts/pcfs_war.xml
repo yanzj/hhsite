@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="pcfs:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="pcfs.war">
+      <element id="artifact" artifact-name="pcfs:war exploded" />
+    </root>
+  </artifact>
+</component>

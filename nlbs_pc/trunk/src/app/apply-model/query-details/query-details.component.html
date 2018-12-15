@@ -1,0 +1,99 @@
+<div class="row">
+  <ol class="breadcrumbNav col-12">
+    <li><a (click)="querySection()">进件申请查询</a><i>></i></li>
+    <li class="active">查看进件申请<i>|</i></li>
+    <li><a (click)="history()">历史</a></li>
+  </ol>
+</div>
+<div class="row">
+  <div class="col-12">
+    <hr class="breadcrumbNavLine">
+  </div>
+</div>
+
+<div class="progress-box">
+  <div class="progress-com">
+
+    <div class="progress-line">
+      <div *ngFor=" let item of itemStatusLists; let i=index ">
+                <span class="progress-circle circle{{i+1}} active" [ngClass]="{'title_cur':i<=itemSelectIndex}">
+                    <i [ngClass]="{'bigCircle':i==itemSelectIndex}"></i>
+                    <ins [ngClass]="{'ins_line':i<itemSelectIndex}"></ins>
+                    <em [ngStyle]="{'color':i<=itemSelectIndex ? '#333' : '#999' }"
+                        [ngClass]="{'ProSeleceted':i==itemSelectIndex}">{{item}}</em>
+                </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="messagePanel">
+  <span class="message-title">业务编号：</span><em class="message-number">{{businessObj.bmsLoanCode}}</em>
+</div>
+
+<div class="row">
+  <div class="filed-name col-2">申请时间：</div>
+  <div class="filed-text col-2">{{businessObj.applyTime}}</div>
+  <div class="filed-name col-2">状态：</div>
+  <div class="filed-text col-2">{{businessStatusName}}</div>
+</div>
+
+<div class="row" *ngIf="itemSelectStatus=='拒单'||itemSelectStatus=='撤单'" >
+  <div class="col-2">
+    <div class= "height-120 filed-name-bg"><div class="filed-name-modify">{{itemSelectStatus}}原因：</div></div>
+  </div>
+  <div class="col-10 height-120">
+    <textarea disabled="disabled" class="filed-name-modify filed-name-modify-txt width-100per filed-text-area">{{refuseReason}}</textarea>
+  </div>
+
+</div>
+
+<div class="tab-menu margin-top-40">
+  <ul class="tab-menu-ul">
+    <li *ngIf="loanInfoShow" [ngClass]="{'current':tabHighLight=='08'?true:false}" (click)="dependHighLight('08')">
+      <a href="javascript:;">授信信息</a></li>
+
+    <li *ngIf="equityShow" [ngClass]="{'current':tabHighLight=='07'?true:false}" (click)="dependHighLight('07')">
+      <a href="javascript:;">公正抵押</a></li>
+
+    <li *ngIf="contractShow" [ngClass]="{'current':tabHighLight=='06'?true:false}" (click)="dependHighLight('06')">
+      <a href="javascript:;">签约公正</a></li>
+
+    <li *ngIf="approvalNoticeShow" [ngClass]="{'current':tabHighLight=='02'?true:false}" (click)="dependHighLight('02')">
+      <a href="javascript:;">审批通知</a></li>
+
+    <li *ngIf="applyDetailShow" [ngClass]="{'current':tabHighLight=='04'?true:false}" (click)="dependHighLight('04')">
+      <a href="javascript:;">进件详情</a>
+    </li>
+
+    <li *ngIf="applyInfoShow" [ngClass]="{'current':tabHighLight=='01'?true:false}" (click)="dependHighLight('01')">
+      <a href="javascript:;">申请信息</a></li>
+
+    <li *ngIf="catalogueInfoShow" [ngClass]="{'current':tabHighLight=='05'?true:false}" (click)="dependHighLight('05')">
+      <a href="javascript:;">录单信息</a></li>
+
+    <li *ngIf="applyMaterialShow" [ngClass]="{'current':tabHighLight=='03'?true:false}" (click)="dependHighLight('03')">
+      <a href="javascript:;">进件材料</a>
+    </li>
+  </ul>
+  <div class="label_hr"></div>
+  <div class="tab_box margin-top-20">
+    <!--申请信息-->
+    <app-apply-info  *ngIf="tabHighLight=='01'" [applyInfoData]="applyInfoData"></app-apply-info>
+
+    <!--录单信息-->
+    <app-catalogue-info *ngIf="tabHighLight=='05'" [catalogueInfoData]="catalogueInfoData" ></app-catalogue-info>
+
+    <!--进件材料-->
+    <app-apply-material  *ngIf="tabHighLight=='03'" [materialTypeListData]="materialTypeListData" [loanSerialNo]="loanSerialNo"></app-apply-material>
+    <!--审批通知-->
+    <app-examine *ngIf="tabHighLight=='02'" [approvalNotice]="approvalNotice"></app-examine>
+    <!--进件详情-->
+    <app-catalogue-info *ngIf="tabHighLight=='04'" [catalogueInfoData]="catalogueInfoData" ></app-catalogue-info>
+    <!--签约公正-->
+    <app-contract *ngIf="tabHighLight=='06'||tabHighLight=='07'" [mortgageData]="mortgageData"></app-contract>
+    <!--授信信息-->
+    <app-loan-info *ngIf="tabHighLight=='08'" [loanInfo]="loanInfo"></app-loan-info>
+  </div>
+</div>
+

@@ -1,0 +1,7 @@
+.materialselected {
+  background: #f5f5f5;
+}
+
+.materialselected .material-label {
+  font-weight: bold;
+}

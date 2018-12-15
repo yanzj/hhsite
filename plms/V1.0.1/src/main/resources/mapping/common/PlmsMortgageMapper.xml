@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.PlmsMortgageDao">
+
+    <insert id="saveMortgageInfo" parameterType="com.vilio.plms.pojo.PlmsMortgage">
+        INSERT INTO plms_mortgage (
+            code,
+            registration_time,
+            registration_result,
+            remark,
+            contract_code,
+            status,
+            create_date,
+            modify_date
+        )
+        VALUES
+            (
+                #{code},
+                #{registrationTime},
+                #{registrationResult},
+                #{remark},
+                #{contractCode},
+                #{status},
+                #{createDate},
+                #{modifyDate}
+            )
+    </insert>
+</mapper>

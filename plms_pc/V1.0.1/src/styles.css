@@ -1,0 +1,774 @@
+/* You can add global styles to this file, and also import other style files */
+
+/************这是自适应公共试样**************/
+
+.condition-search {
+  margin: 30px 0 0 -20px;
+}
+
+*{
+  box-sizing: border-box;
+}
+
+.row {margin-right: -20px;}
+.row:after {
+  content: "";
+  clear: both;
+  display: block;
+}
+[class*="col-"] {
+  float: left;
+  padding-right: 20px;
+}
+[class*='select']
+.col-1 {width: 8.33%;}
+.col-2 {width: 16.66%;}
+.col-3 {width: 25%;}
+.col-4 {width: 33.33%;}
+.col-5 {width: 41.66%;}
+.col-6 {width: 50%;}
+.col-7 {width: 58.33%;}
+.col-8 {width: 66.66%;}
+.col-9 {width: 75%;}
+.col-10 {width: 83.33%;}
+.col-11 {width: 91.66%;}
+.col-12 {width: 100%;}
+.col-2-offset{margin-left:16.66%;}
+
+
+
+/************这是边距 宽度 高度 试样**************/
+.margin-top-10 { margin-top:10px;}
+.margin-top-15{ margin-top: 15px;}
+.margin-top-20 { margin-top: 20px;}
+.margin-top-30 { margin-top: 30px;}
+.margin-top-40 { margin-top: 40px;}
+.min-margin-top39{margin-top:-39px;}
+.margin-bottom-0 { margin-bottom: 0}
+.margin-bottom-10 { margin-bottom: 10px;}
+.margin-bottom-20 { margin-bottom: 20px;}
+.margin-bottom-40 { margin-bottom: 40px;}
+.margin-bottom-80 { margin-bottom:80px;}
+.margin-right-10 { margin-right: 10px;}
+.margin-right-20 { margin-right: 20px;}
+.margin-right-54 { margin-right: 54px;}
+.margin-left-0  { margin-left:0}
+.margin-left-8  { margin-left: 8px;}
+.margin-left-10 { margin-left: 10px;}
+.margin-left-20 { margin-left:20px;}
+.margin-left-30 { margin-left: 30px;}
+.margin-left-40 { margin-left:40px;}
+.margin-left-45 { margin-left: 45px;}
+.padding-right-0{ padding-right:0 }
+.padding-right-15 { padding-right:15px;}
+
+.width-100per{width: 100%;}
+.width-16{ width:16px;}
+.width-50{ width:50px;}
+.width-60{ width:60px;}
+.width-70{ width:70px;}
+.width-80{ width:80px;}
+.width-90{ width: 90px; }
+.width-100{ width:100px;}
+.width-110{ width:110px;}
+.width-115{ width: 115px;}
+.width-120{ width: 120px;}
+.width-140{ width: 140px;}
+.width-150{ width: 150px;}
+.width-160{ width: 160px;}
+.width-180{ width: 280px;}
+.width-190{ width: 190px;}
+.width-200{ width: 200px;}
+.width-250{ width: 250px;}
+.width-280{ width: 180px;}
+.width-340{width: 340px;}
+.height-120{height:120px;}
+.height-80{height:80px;}
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+.font-weight-bold{font-weight: bold}
+.text-left{text-align: left;}
+
+/************这是 样色 试样**************/
+.main-color{
+  color: #FFA00A;
+}
+
+/*当状态为“逾期”显示这个颜色*/
+.addColorF50 td,.table tbody .addColorF50 td a{color:#f50;}
+
+/*小弹窗的 秒数使用的颜色*/
+#secondValue{
+  color: #ffa00a;
+}
+
+/*页面上部的进度*/
+.progress-box{margin-top:57px;padding-left:33px;position: relative;margin-bottom: 102px}
+.progress-line{width:984px;height:1px;background: #ccc;position: relative}
+.progress-circle{width:14px;height:14px;border-radius:50%;background: #ccc;display: block;position: absolute;top:-7px}
+.title_cur{background: #FFA00A;width:14px;height:14px;border-radius:50%;display: block;top:-7px;z-index: 10}
+.progress-circle em{color:#ccc;display: inline-block;width:60px;position: absolute;top:40px;left:-17px;height:20px;line-height: 20px;}
+.circle1,.circle.active{left:-7px;}
+.circle2,.circle.active{left:157px;}
+.circle3,.circle.active{left:321px;}
+.circle4,.circle.active{left:485px;}
+.circle5,.circle.active{left:649px;}
+.circle6,.circle.active{left:813px;}
+.circle7,.circle.active{left:977px;}
+
+.bigCircle{background: rgba(255,160,10,0.5);width:34px;height:34px;border-radius:50%;display: block;position: absolute;z-index: 5;top:-10px;left:-10px}
+.ins_line{width:164px;height:1px;background: #ffa00a;position: absolute;top:7px;left:7px;}
+.ProSeleceted{font-weight:bold;}
+/* end/页面上部的进度*/
+
+
+/*start 面包屑导航*/
+.breadcrumbNav{
+  height: 40px;
+  line-height: 40px;
+  margin-top: 25px;
+  list-style: none;
+  background-color: #fff;
+  color: #333;
+  text-align: left;
+}
+.breadcrumbNavLine {
+  border-bottom: none;
+  border-top: 2px solid #ffa00a;
+  margin: 0;
+}
+.breadcrumbNav{color:#ffa00a}
+.breadcrumbNav li{
+  float: left;
+  height: 40px;
+  line-height: 40px;
+  font-weight:bold;
+  font-size: 14px;
+
+}
+.breadcrumbNav li a{
+  color:#999999;
+  font-weight:bold;
+  font-size: 14px;
+}
+.breadcrumbNav li.active {
+  color:#ffa00a;
+}
+.breadcrumbNav li a:hover{
+  color:#FF5500;
+  text-decoration:none
+
+}
+.breadcrumbNav li i{
+  margin:0 12px;
+  font-weight:bold;
+  color:#999999;
+  font-size: 14px;}
+
+/*end 面包屑导航*/
+
+
+
+/*  灰色横条 */
+.label_hr {
+  box-sizing: border-box;
+  height: 40px;
+  border-bottom: 1px solid #CCC;
+}
+
+/*a 链接的样式start*/
+.text-link{
+  color: #669;
+  margin: 0 8px;
+  cursor: pointer;
+}
+.text-link:hover,.text-link:focus,.text-link:active{
+  color: #f50;
+  text-decoration: underline;
+  cursor: pointer;
+}
+/*a 链接的样式 end*/
+
+
+  /*表单属性名称  删除按钮的公共样式*/
+.filed-name,.del{
+  height: 40px;
+  background-clip: content-box;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  word-break: break-all;
+  -webkit-justify-content:flex-end;
+  -moz-justify-content:flex-end;
+  justify-content: flex-end;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+}
+.filed-name-bg,.filed-name{
+  background-color:#F5F5F5;
+}
+.filed-name>span{
+  color:#ffa00a;
+}
+
+.del{
+  justify-content: flex-start;
+    color: #669;
+}
+.del:hover{
+  cursor: pointer;
+}
+
+.filed-text{
+  height: 40px;
+  display: flex;
+  justify-content: flex-start;
+  -webkit-justify-content:flex-start;
+  -moz-justify-content:flex-start;
+  align-items: center;
+  -webkit-align-items:center;
+  -moz-align-items:center;
+  word-break: break-all;
+}
+
+
+/*-------------按钮---------------*/
+.orange-button {
+  width: 120px;
+  height: 26px;
+  line-height: 26px;
+  text-align: center;
+  background: #FF6600;
+  color: #FFF;
+  border: 0px;
+  /*margin-bottom: 50px;*/
+}
+.orange-button:hover {
+  background: #EE5500;
+  cursor: pointer;
+}
+.gray-button {
+  width: 120px;
+  height: 26px;
+  line-height: 26px;
+  text-align: center;
+  border: 1px solid #CCC;
+  background: #F5F5F5;
+}
+.disable-button{
+  width: 120px;
+  height: 26px;
+  line-height: 26px;
+  text-align: center;
+  background: #c3c3c3;
+  color:#fff;
+  cursor: default;
+  border: 1px solid #c3c3c3;
+}
+
+.gray-button:hover {
+  background: #FFE7DE;
+  cursor: pointer;
+}
+
+/**  单位公共样式 **/
+.uinit{
+  height: 40px;
+  display: flex;
+  float: left;
+  justify-content: flex-start;
+  align-items: center;
+  word-break: break-all;
+  margin-left: 10px;
+}
+
+/*select框样式*/
+.selectmsg{
+  height: 20px;
+  margin-top: 10px;
+  float:left;
+  visibility: hidden;
+  border: 1px solid #CCCCCC;
+}
+
+/*input框样式*/
+.msg-input{
+  float: left;
+  margin-top:10px;
+  height: 20px;
+  border: 1px solid #CCC;
+}
+
+input{
+  display: inline-block;
+}
+
+/*input禁用的样式*/
+input[disabled=disabled]{
+  background: #EBEBE4;
+  border:1px solid #A9A9A9;
+}
+
+.error-input {
+  background: #F7C4C4;
+  border: 1px solid #A9A9A9;
+  padding: 0px;
+}
+
+.white-space-nowrap {
+  white-space: nowrap;
+}
+
+/*搜索一行的样式*/
+.bundle-area{
+  height:40px;
+  float:left;
+  margin-left:20px;
+}
+/*搜索按钮*/
+.search-btn {
+  margin-top: 10px;
+  /*margin-left: 20px;*/
+  float: left;
+  width: 60px;
+  height: 20px;
+  border: 1px solid #ccc;
+  background: #F1F1F1;
+  color: #333;
+  outline: none;
+}
+
+.search-btn:hover {
+  background: #FFE7DE;
+  border: 1px solid #f50;
+  cursor: pointer;
+}
+
+/*城市评估  世联评估的样式 询价都有用到*/
+.company-title{
+  height: 40px;
+  line-height: 40px;
+  font-weight: bold;
+  color: #ffa00a ;
+}
+
+/*icon*/
+.icon{
+  background-image:url("./assets/img/index_hh_icons.png");
+  display:inline-block;
+  width:14px;
+  height:14px;
+}
+.icon-reset-gray{
+  background-position: 28px -30px;
+}
+.icon-reset-orange{
+  background-position: 14px -30px;
+}
+.icon-add-gray{
+  background-position: 28px -44px;
+}
+.icon-add-orange{
+  background-position: 14px -44px;
+}
+.icon-delete-gray{
+  background-position: 28px -58px;
+}
+.icon-delete-orange{
+  background-position: 14px -58px;
+}
+.icon-delete-white{
+  background-position: 14px -72px;
+}
+.icon-error{
+  background-position: 28px -72px;
+}
+.icon-rotate-left{
+  background-position: 28px -86px;
+}
+.icon-rotate-right{
+  background-position: 14px -86px;
+}
+.icon-repitmsg{
+  background-image:url("./assets/img/index_hh_icons.png");
+  display: inline-block;
+  width:14px;
+  height:8px;
+  background-position: 42px -54px;
+}
+.icon-replenish{
+  background-image:url("./assets/img/index_hh_icons.png");
+  display: inline-block;
+  width:14px;
+  height:12px;
+  background-position: 42px -62px;
+}
+.icon-pull{
+  background-image:url("./assets/img/index_hh_icons.png");
+  display:inline-block;
+  background-position: 42px -30px;
+  width: 14px;
+  height:8px;
+}
+.icon-push{
+  background-image:url("./assets/img/index_hh_icons.png");
+  display:inline-block;
+  width:14px;
+  height:8px;
+  background-position: 42px -38px;
+}
+
+.icon-logo{
+  background-image:url("./assets/img/index_hh_icons.png");
+  display:inline-block;
+  width:105px;
+  height:30px;
+  background-position: 105px 0;
+}
+
+/*黑色往上*/
+.icon-top-nav-up-arrow{
+  background-image:url("./assets/img/index_hh_icons.png");
+  display:inline-block;
+  width:8px;
+  height:4px;
+  background-position: 36px -46px;
+}
+/*白色往下*/
+.icon-nav-down-arrow{
+  background-image:url("./assets/img/index_hh_icons.png");
+  display:inline-block;
+  width:8px;
+  height:4px;
+  background-position: 36px -50px;
+}
+/*白色往上*/
+.icon-left-nav-up-arrow{
+  background-image:url("./assets/img/index_hh_icons.png");
+  display:inline-block;
+  width:8px;
+  height:4px;
+  background-position: 36px -74px;
+}
+
+/* 页面内部每一个栏目标题相关的样式 */
+.message-title-line{
+  float:left;
+  width: 3px;
+  height:14px;
+  margin-top: 13px;
+  margin-right: 10px;
+  background-color: #FFA00A;
+}
+.message-title-name{
+  height: 40px;
+  line-height: 40px;
+  font-weight: bold;
+  float:left;
+}
+
+/* 文件上传的公共样式 */
+.container{
+  width: 160px;
+  height: 160px;
+  display: inline-block;
+  border: 1px solid #CCCCCC;
+  border-radius: 5px;
+  position: relative;
+  color: #999;
+  text-align: left;
+}
+.uploadof-material{
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  cursor: pointer;
+  margin-top: 30px;
+  overflow: hidden;
+}
+.upload{
+  width: 160px;
+  height: 160px;
+  display: inline-block;
+  border: 1px dashed #ccc;
+  border-radius: 5px;
+  position: relative;
+  color: #999;
+  text-align: center;
+}
+
+.container-up-success{
+  display: inline-block;
+  border: 1px dashed #ccc;
+  border-radius: 5px;
+  position: relative;
+  color: #999;
+  text-align: center;
+  margin-bottom: 0px;
+}
+.explain{
+  display: inline-block;
+  color: #999999;
+  cursor: pointer;
+}
+.upload::before,.container-up-success::before{
+  content: '';
+  display: block;
+  width: 70px;
+  height: 50px;
+  margin: 38px auto 16px;
+  background: url("./assets/img/upload/u496.png")center/cover;
+}
+.container-up-success::before{
+  background: url("./assets/img/upload/u571.png")center/cover;
+}
+.container-up-successImg {
+  width: 70px;
+  height: 50px;
+  margin: 55px 45px;
+  float: left;
+  background: url("./assets/img/upload/u571.png")center/cover;
+}
+.upload:hover{
+  border-color: #FFA00A;
+  background: #FFE7DE;
+  color: #333333;
+}
+.upload-file-container{
+  margin: auto auto;
+  position: absolute;
+  transform: translateY(-50%);
+  top:50%;
+  width: 130px;
+  margin: 0 15px;
+}
+.delfile {
+  width: 160px;
+  height: 160px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  visibility: visible;
+}
+.container-up-success:hover .delfile{
+  visibility: visible;
+}
+.container-up-success:hover .delete-mask {
+  /*visibility: visible;*/
+  display: block;
+}
+.container-up-success::before{
+  display: none;
+}
+/*文件上传成功后的删除样式*/
+
+/*头部黑色阴影遮罩*/
+.delete-mask {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 30px;
+  margin: 0px;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99999999999999999999999999999;
+  display: none;
+}
+.delete-icon {
+  width: 14px;
+  height: 14px;
+  position: absolute;
+  right: 14px;
+  top: 8px;
+  background-image: url("./assets/img/index_hh_icons.png");
+  background-position: -91px -72px;
+  background-repeat: no-repeat;
+  display: inline-block
+}
+.delete-icon:hover{
+  cursor: pointer;
+}
+
+.image-name {
+  margin-top: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.upload-time {
+  color: #CCCCCC;
+  margin-top: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.upload2{
+  display: inline-block;
+  height: 20px;
+  line-height: 20px;
+  position: relative;
+  color: #669;
+  text-align: left;
+  margin-right: 10px;
+}
+.uploadImg{
+  width: 160px;
+  height: 160px;
+}
+.container-up-success{
+  border-style: none;
+}
+
+/*上传文件的进度条*/
+.progress{
+  height: 15px;
+  overflow: visible;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0);
+  width: 130px;
+  background: #ffffff;
+  border: 1px solid #ffa00a;
+  border-radius: 0px;
+}
+.progress .progress-bar{
+  position: relative;
+  animation: animate-positive 0.5s;
+  height: 15px;
+  background:#ffa00a;
+}
+.progress .progress-value{
+  font-size: 10px;
+  color: #ffa00a;
+  width: 130px;
+  height: 15px;
+  position: absolute;
+  top: -31px;
+  text-align: left;
+}
+.progress-bar.active{
+  animation: reverse progress-bar-stripes 0.10s linear infinite, animate-positive 0.1s;
+}
+@-webkit-keyframes animate-positive {
+  0% {
+    width: 0;
+  }
+}
+
+@keyframes animate-positive {
+  0% {
+    width: 0;
+  }
+}
+
+/*询价查询和进件查询的搜索那一栏的样式*/
+.bundle-area .queryName{margin-left:0}
+.queryName{
+  height: 40px;
+  line-height:40px;
+  float: left;
+  margin-right: 8px;
+  margin-left: 20px;
+}
+.queryContent{
+  float: left;
+  margin:10px 0 10px 0;
+}
+
+
+.datestart{
+  float: left;
+  margin:10px 8px 10px 0;
+}
+
+.upload-img{
+  width: 160px;
+  height: 160px;
+}
+/*列表的样式*/
+.table tr{
+  height: 40px;
+}
+.table tr th{
+  border-top:1px solid #ccc;
+  border-bottom:1px solid #ccc;
+  padding: 0 8px;
+  text-align: left;
+  vertical-align: middle;
+  font-weight: bold;
+}
+.table tbody tr:nth-child(odd) td{
+  background-color:#F5F5F5 ;
+}
+.table tbody tr td a{color:#666699}
+.operation sapn i{margin:0 8px;}
+
+.table tbody tr td{
+  height:40px;
+  vertical-align: middle;
+  text-align: left;
+  border-bottom:1px solid #ccc;
+  padding: 0 8px;
+}
+.table tbody tr td a{
+  color:#669
+}
+/*让历史组件的table的 td字数过长自动撑高 用于class带col-* 的 table，class带width-* 的不要用这个*/
+.table-auto-height tr th{
+  height: 38px;
+  line-height:38px;;
+  padding: 0 8px;
+  text-align: left;
+  vertical-align: middle;
+  font-weight: bold;
+  background-color:#F5F5F5 ;
+  border-top:1px solid #ccc;
+  border-bottom:1px solid #ccc;
+}
+
+.table-auto-height tr td{
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height:40px;
+  padding: 0 8px;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  word-break: break-all;
+  -moz-justify-content: flex-end;
+  justify-content: flex-start;;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+}
+.table-auto-height tr td a{color:#669;}
+.table-auto-height tbody tr:last-child td{
+  border-bottom:1px solid #ccc;
+}
+
+/*日历的placeholder样式*/
+.date-placeholderStyle{text-indent: 5px;}
+
+
+/*iconj箭头的样式*/
+.action:hover{color:#ffa00a; cursor: pointer;}
+.main-icon{width:14px;height:14px;display:inline-block; background-image: url("./assets/img/upload/main.png");}
+.main-icon-up{background-position: -115px -32px;}
+.action:hover .main-icon-up{background-position: -130px -32px;}
+.main-icon-down{background-position: -145px -32px;}
+.action:hover .main-icon-down{background-position: -160px -32px;}
+

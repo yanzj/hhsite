@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.ppms.dao.common.RateInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.vilio.ppms.pojo.common.RateInfo" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="route_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="trans_type" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="charge_type" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="stair_type" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="fee_max_amount" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="fee_min_amount" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="fee_rate" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="total_count_type" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="total_type" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="status" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="remark1" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, route_code, trans_type, charge_type, stair_type, fee_max_amount, fee_min_amount, 
+    fee_rate, total_count_type, total_type, status, create_time, update_time, remark1
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from ppms_rate_info
+    where code = #{code,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ppms_rate_info
+    where code = #{code,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.vilio.ppms.pojo.common.RateInfo" >
+    insert into ppms_rate_info (id, code, route_code, 
+      trans_type, charge_type, stair_type, 
+      fee_max_amount, fee_min_amount, fee_rate, 
+      total_count_type, total_type, status, 
+      create_time, update_time, remark1
+      )
+    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{routeCode,jdbcType=VARCHAR}, 
+      #{transType,jdbcType=VARCHAR}, #{chargeType,jdbcType=VARCHAR}, #{stairType,jdbcType=VARCHAR}, 
+      #{feeMaxAmount,jdbcType=DECIMAL}, #{feeMinAmount,jdbcType=DECIMAL}, #{feeRate,jdbcType=DECIMAL}, 
+      #{totalCountType,jdbcType=VARCHAR}, #{totalType,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{remark1,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.vilio.ppms.pojo.common.RateInfo" >
+    insert into ppms_rate_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="routeCode != null" >
+        route_code,
+      </if>
+      <if test="transType != null" >
+        trans_type,
+      </if>
+      <if test="chargeType != null" >
+        charge_type,
+      </if>
+      <if test="stairType != null" >
+        stair_type,
+      </if>
+      <if test="feeMaxAmount != null" >
+        fee_max_amount,
+      </if>
+      <if test="feeMinAmount != null" >
+        fee_min_amount,
+      </if>
+      <if test="feeRate != null" >
+        fee_rate,
+      </if>
+      <if test="totalCountType != null" >
+        total_count_type,
+      </if>
+      <if test="totalType != null" >
+        total_type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="remark1 != null" >
+        remark1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="routeCode != null" >
+        #{routeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="transType != null" >
+        #{transType,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeType != null" >
+        #{chargeType,jdbcType=VARCHAR},
+      </if>
+      <if test="stairType != null" >
+        #{stairType,jdbcType=VARCHAR},
+      </if>
+      <if test="feeMaxAmount != null" >
+        #{feeMaxAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="feeMinAmount != null" >
+        #{feeMinAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="feeRate != null" >
+        #{feeRate,jdbcType=DECIMAL},
+      </if>
+      <if test="totalCountType != null" >
+        #{totalCountType,jdbcType=VARCHAR},
+      </if>
+      <if test="totalType != null" >
+        #{totalType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark1 != null" >
+        #{remark1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vilio.ppms.pojo.common.RateInfo" >
+    update ppms_rate_info
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="routeCode != null" >
+        route_code = #{routeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="transType != null" >
+        trans_type = #{transType,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeType != null" >
+        charge_type = #{chargeType,jdbcType=VARCHAR},
+      </if>
+      <if test="stairType != null" >
+        stair_type = #{stairType,jdbcType=VARCHAR},
+      </if>
+      <if test="feeMaxAmount != null" >
+        fee_max_amount = #{feeMaxAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="feeMinAmount != null" >
+        fee_min_amount = #{feeMinAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="feeRate != null" >
+        fee_rate = #{feeRate,jdbcType=DECIMAL},
+      </if>
+      <if test="totalCountType != null" >
+        total_count_type = #{totalCountType,jdbcType=VARCHAR},
+      </if>
+      <if test="totalType != null" >
+        total_type = #{totalType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark1 != null" >
+        remark1 = #{remark1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vilio.ppms.pojo.common.RateInfo" >
+    update ppms_rate_info
+    set code = #{code,jdbcType=VARCHAR},
+      route_code = #{routeCode,jdbcType=VARCHAR},
+      trans_type = #{transType,jdbcType=VARCHAR},
+      charge_type = #{chargeType,jdbcType=VARCHAR},
+      stair_type = #{stairType,jdbcType=VARCHAR},
+      fee_max_amount = #{feeMaxAmount,jdbcType=DECIMAL},
+      fee_min_amount = #{feeMinAmount,jdbcType=DECIMAL},
+      fee_rate = #{feeRate,jdbcType=DECIMAL},
+      total_count_type = #{totalCountType,jdbcType=VARCHAR},
+      total_type = #{totalType,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      remark1 = #{remark1,jdbcType=VARCHAR}
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+</mapper>

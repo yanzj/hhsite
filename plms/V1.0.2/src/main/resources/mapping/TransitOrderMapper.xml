@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.TransitOrderDao">
+
+    <!--查询还款申请表-->
+    <select id="queryTransitOrder" resultType="java.util.Map" parameterType="java.util.Map">
+        select * from (SELECT
+            code AS orderID,
+            apply_status AS status,
+            amount,
+            apply_time AS date,
+            #{borrowType} AS orderType
+        FROM
+            plms_borrow_apply
+        UNION ALL
+            SELECT
+                code,
+                status,
+                paid_amount,
+                paid_time,
+                #{paidType}
+            FROM
+                plms_paid_info) a ORDER BY a.date desc
+            LIMIT 1
+    </select>
+
+
+</mapper>

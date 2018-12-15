@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.nlbs.commonMapper.dao.NlbsMenuMapper" >
+  <resultMap id="BaseResultMap" type="com.vilio.nlbs.commonMapper.pojo.NlbsMenu" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="menu_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="menu_url" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="menu_order_no" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="menu_level" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="father_menu_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="empty_type" jdbcType="BIT" javaType="java.lang.Boolean" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, menu_name, menu_url, menu_order_no, menu_level, father_menu_code, empty_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from nlbs_menu
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from nlbs_menu
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsMenu" >
+    insert into nlbs_menu (id, code, menu_name,
+      menu_url, menu_order_no, menu_level, 
+      father_menu_code, empty_type)
+    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{menuName,jdbcType=VARCHAR}, 
+      #{menuUrl,jdbcType=VARCHAR}, #{menuOrderNo,jdbcType=VARCHAR}, #{menuLevel,jdbcType=INTEGER}, 
+      #{fatherMenuCode,jdbcType=VARCHAR}, #{emptyType,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsMenu" >
+    insert into nlbs_menu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="menuName != null" >
+        menu_name,
+      </if>
+      <if test="menuUrl != null" >
+        menu_url,
+      </if>
+      <if test="menuOrderNo != null" >
+        menu_order_no,
+      </if>
+      <if test="menuLevel != null" >
+        menu_level,
+      </if>
+      <if test="fatherMenuCode != null" >
+        father_menu_code,
+      </if>
+      <if test="emptyType != null" >
+        empty_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null" >
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null" >
+        #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="menuOrderNo != null" >
+        #{menuOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="menuLevel != null" >
+        #{menuLevel,jdbcType=INTEGER},
+      </if>
+      <if test="fatherMenuCode != null" >
+        #{fatherMenuCode,jdbcType=VARCHAR},
+      </if>
+      <if test="emptyType != null" >
+        #{emptyType,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsMenu" >
+    update nlbs_menu
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null" >
+        menu_name = #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuUrl != null" >
+        menu_url = #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="menuOrderNo != null" >
+        menu_order_no = #{menuOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="menuLevel != null" >
+        menu_level = #{menuLevel,jdbcType=INTEGER},
+      </if>
+      <if test="fatherMenuCode != null" >
+        father_menu_code = #{fatherMenuCode,jdbcType=VARCHAR},
+      </if>
+      <if test="emptyType != null" >
+        empty_type = #{emptyType,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vilio.nlbs.commonMapper.pojo.NlbsMenu" >
+    update nlbs_menu
+    set code = #{code,jdbcType=VARCHAR},
+      menu_name = #{menuName,jdbcType=VARCHAR},
+      menu_url = #{menuUrl,jdbcType=VARCHAR},
+      menu_order_no = #{menuOrderNo,jdbcType=VARCHAR},
+      menu_level = #{menuLevel,jdbcType=INTEGER},
+      father_menu_code = #{fatherMenuCode,jdbcType=VARCHAR},
+      empty_type = #{emptyType,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.ppms.dao.common.RouteTotalLogMapper" >
+  <resultMap id="BaseResultMap" type="com.vilio.ppms.pojo.common.RouteTotalLog" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="route_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="merchant_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="trans_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="total_amount_day" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="total_count_day" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="total_amount_month" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="total_count_ month" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="total_amount_year" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="total_count_year" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="total_amount" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="total_count" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="status" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="remark1" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, route_code, merchant_code, trans_date, total_amount_day, total_count_day, 
+    total_amount_month, "total_count_ month", total_amount_year, total_count_year, total_amount, 
+    total_count, status, create_time, update_time, remark1
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from ppms_route_total_log
+    where code = #{code,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ppms_route_total_log
+    where code = #{code,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.vilio.ppms.pojo.common.RouteTotalLog" >
+    insert into ppms_route_total_log (id, code, route_code, 
+      merchant_code, trans_date, total_amount_day, 
+      total_count_day, total_amount_month, "total_count_ month", 
+      total_amount_year, total_count_year, total_amount, 
+      total_count, status, create_time, 
+      update_time, remark1)
+    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{routeCode,jdbcType=VARCHAR}, 
+      #{merchantCode,jdbcType=VARCHAR}, #{transDate,jdbcType=TIMESTAMP}, #{totalAmountDay,jdbcType=DECIMAL}, 
+      #{totalCountDay,jdbcType=BIGINT}, #{totalAmountMonth,jdbcType=DECIMAL}, #{totalCountMonth,jdbcType=BIGINT}, 
+      #{totalAmountYear,jdbcType=DECIMAL}, #{totalCountYear,jdbcType=BIGINT}, #{totalAmount,jdbcType=DECIMAL}, 
+      #{totalCount,jdbcType=BIGINT}, #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{remark1,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.vilio.ppms.pojo.common.RouteTotalLog" >
+    insert into ppms_route_total_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="routeCode != null" >
+        route_code,
+      </if>
+      <if test="merchantCode != null" >
+        merchant_code,
+      </if>
+      <if test="transDate != null" >
+        trans_date,
+      </if>
+      <if test="totalAmountDay != null" >
+        total_amount_day,
+      </if>
+      <if test="totalCountDay != null" >
+        total_count_day,
+      </if>
+      <if test="totalAmountMonth != null" >
+        total_amount_month,
+      </if>
+      <if test="totalCountMonth != null" >
+        "total_count_ month",
+      </if>
+      <if test="totalAmountYear != null" >
+        total_amount_year,
+      </if>
+      <if test="totalCountYear != null" >
+        total_count_year,
+      </if>
+      <if test="totalAmount != null" >
+        total_amount,
+      </if>
+      <if test="totalCount != null" >
+        total_count,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="remark1 != null" >
+        remark1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="routeCode != null" >
+        #{routeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantCode != null" >
+        #{merchantCode,jdbcType=VARCHAR},
+      </if>
+      <if test="transDate != null" >
+        #{transDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="totalAmountDay != null" >
+        #{totalAmountDay,jdbcType=DECIMAL},
+      </if>
+      <if test="totalCountDay != null" >
+        #{totalCountDay,jdbcType=BIGINT},
+      </if>
+      <if test="totalAmountMonth != null" >
+        #{totalAmountMonth,jdbcType=DECIMAL},
+      </if>
+      <if test="totalCountMonth != null" >
+        #{totalCountMonth,jdbcType=BIGINT},
+      </if>
+      <if test="totalAmountYear != null" >
+        #{totalAmountYear,jdbcType=DECIMAL},
+      </if>
+      <if test="totalCountYear != null" >
+        #{totalCountYear,jdbcType=BIGINT},
+      </if>
+      <if test="totalAmount != null" >
+        #{totalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="totalCount != null" >
+        #{totalCount,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark1 != null" >
+        #{remark1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vilio.ppms.pojo.common.RouteTotalLog" >
+    update ppms_route_total_log
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="routeCode != null" >
+        route_code = #{routeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantCode != null" >
+        merchant_code = #{merchantCode,jdbcType=VARCHAR},
+      </if>
+      <if test="transDate != null" >
+        trans_date = #{transDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="totalAmountDay != null" >
+        total_amount_day = #{totalAmountDay,jdbcType=DECIMAL},
+      </if>
+      <if test="totalCountDay != null" >
+        total_count_day = #{totalCountDay,jdbcType=BIGINT},
+      </if>
+      <if test="totalAmountMonth != null" >
+        total_amount_month = #{totalAmountMonth,jdbcType=DECIMAL},
+      </if>
+      <if test="totalCountMonth != null" >
+        "total_count_ month" = #{totalCountMonth,jdbcType=BIGINT},
+      </if>
+      <if test="totalAmountYear != null" >
+        total_amount_year = #{totalAmountYear,jdbcType=DECIMAL},
+      </if>
+      <if test="totalCountYear != null" >
+        total_count_year = #{totalCountYear,jdbcType=BIGINT},
+      </if>
+      <if test="totalAmount != null" >
+        total_amount = #{totalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="totalCount != null" >
+        total_count = #{totalCount,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark1 != null" >
+        remark1 = #{remark1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vilio.ppms.pojo.common.RouteTotalLog" >
+    update ppms_route_total_log
+    set code = #{code,jdbcType=VARCHAR},
+      route_code = #{routeCode,jdbcType=VARCHAR},
+      merchant_code = #{merchantCode,jdbcType=VARCHAR},
+      trans_date = #{transDate,jdbcType=TIMESTAMP},
+      total_amount_day = #{totalAmountDay,jdbcType=DECIMAL},
+      total_count_day = #{totalCountDay,jdbcType=BIGINT},
+      total_amount_month = #{totalAmountMonth,jdbcType=DECIMAL},
+      "total_count_ month" = #{totalCountMonth,jdbcType=BIGINT},
+      total_amount_year = #{totalAmountYear,jdbcType=DECIMAL},
+      total_count_year = #{totalCountYear,jdbcType=BIGINT},
+      total_amount = #{totalAmount,jdbcType=DECIMAL},
+      total_count = #{totalCount,jdbcType=BIGINT},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      remark1 = #{remark1,jdbcType=VARCHAR}
+    where code = #{code,jdbcType=VARCHAR}
+  </update>
+</mapper>

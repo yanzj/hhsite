@@ -1,0 +1,55 @@
+<!--利息不代收代付-->
+
+<div class="row margin-top-40 margin-bottom-20" *ngIf="repaymentSchedule.repaymentList">
+  <div class="col-12">
+    <div class="action" (click)="addPopup()">
+      <div class="icon icon-add-gray q_icon">
+      </div>
+      添加
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="repaymentSchedule.repaymentList">
+  <div class="col-12">
+    <table class="table width-100per" border="0" cellpadding="0" cellspacing="0">
+      <thead>
+      <tr>
+        <th></th>
+        <th>期数</th>
+        <th class="width-100" >还款日期</th>
+        <th>应还本金（元）</th>
+        <th>应还利息（元）</th>
+        <th>应还服务费（元）</th>
+        <th>应还保证金（元）</th>
+        <th>应还罚息（元）</th>
+        <th>服务费违约金（元）</th>
+        <th>保证金违约金（元）</th>
+        <th>合计（元）</th>
+        <th class="width-70">状态</th>
+        <th class="width-120">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of repaymentSchedule.repaymentList">
+        <td></td>
+        <td>{{item.currentPeriod}}</td>
+        <td class="width-100" >{{item.repaymentDate |date:'yyyy-MM-dd'}}</td>
+        <td>{{item.principal          |lastNoneZero |keepTwoDecimal|permil}}</td>
+        <td>{{item.interest           |lastNoneZero |keepTwoDecimal|permil}}</td>
+        <td>{{item.serviceFee         |lastNoneZero |keepTwoDecimal|permil}}</td>
+        <td>{{item.bail         |lastNoneZero |keepTwoDecimal|permil}}</td>
+        <td>{{item.overdue            |lastNoneZero |keepTwoDecimal|permil}}</td>
+        <td>{{item.serviceFeePenalty  |lastNoneZero |keepTwoDecimal|permil}}</td>
+        <td>{{item.bailPenalty  |lastNoneZero |keepTwoDecimal|permil}}</td>
+        <td>{{item.amount  |lastNoneZero |keepTwoDecimal|permil}}</td>
+        <td class="width-70">{{item.statusName}}</td>
+        <td class="width-120"><span class="text-link" (click)="modifyPopup(item)">修改</span><span>|</span><a (click)="deletePopup(item.repaymentDate,item.scheduleDetailTmpCode)" class="text-link">删除</a></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<app-popup-add-repayment (event)="getData($event)" *ngIf="popShow=='add'" (event3)="getData3($event)" (event4)="getData4($event)" [paidCode]="paidCode"></app-popup-add-repayment>
+
+<app-popup-modify-repayment (event)="getData($event)" (event2)="getData2($event)"  (event3)="getData3($event)" [paidCode]="paidCode" (event4)="getData4($event)"
+                            *ngIf="popShow=='modify'" [modifyData]="modifyData"></app-popup-modify-repayment>

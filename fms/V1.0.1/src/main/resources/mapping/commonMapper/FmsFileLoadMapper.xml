@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.vilio.fms.commonMapper.dao.FmsFileLoadMapper">
+    <resultMap id="BaseResultMap" type="com.vilio.fms.commonMapper.pojo.FmsFileLoad" >
+        <constructor >
+            <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="interface_type" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="serial_no" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="file_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="file_path" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="file_suffix" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="original_file_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="status" jdbcType="VARCHAR" javaType="java.lang.String" />
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, interface_type, serial_no, file_name, file_path, file_suffix, original_file_name, status
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from fms_file_load
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="queryBySerialNo" resultType="com.vilio.fms.commonMapper.pojo.FmsFileLoad" parameterType="java.lang.String" >
+        select
+        id,
+        interface_type as interfaceType,
+        serial_no serialNo,
+        file_name fileName,
+        file_path filePath,
+        file_suffix fileSuffix,
+        original_file_name originalFileName,
+        url,
+        status,
+        create_time as createTime
+        from fms_file_load
+        where serial_no = #{serialNo,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="saveFileLoad" parameterType="com.vilio.fms.commonMapper.pojo.FmsFileLoad" >
+        insert into fms_file_load
+        (id, interface_type, serial_no, file_name,file_path,file_suffix,original_file_name,status)
+        values (#{id,jdbcType=INTEGER}, #{interfaceType,jdbcType=VARCHAR}, #{serialNo,jdbcType=VARCHAR},
+        #{fileName,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR}, #{fileSuffix,jdbcType=VARCHAR},
+        #{originalFileName,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="modifyFileLoadUrl" parameterType="com.vilio.fms.commonMapper.pojo.FmsFileLoad" >
+        update fms_file_load d set d.url = #{url,jdbcType=VARCHAR} where d.serial_no=#{serialNo,jdbcType=VARCHAR}
+    </update>
+
+</mapper>

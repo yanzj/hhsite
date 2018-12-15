@@ -1,0 +1,34 @@
+<!--司法信息弹窗start-->
+<div class="popup dataInfoJudicialPopup">
+  <header class="header">
+    <h4 class="header-title">司法信息详情</h4>
+    <span class="close-btn" (click)="popupCloseBtn()">X</span>
+  </header>
+  <div class="popup-main">
+    <div class="row">
+      <div class="filed-name col-3">姓名/公司名称：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.judicialInfName}}</div>
+      <div class="filed-name col-3">是否有司法诉讼：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.litigation}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">立案号：</div>
+      <div class="filed-text col-3" style="text-align: left">{{selectItemPopViewObj.registrationNo}}</div>
+      <div class="filed-name col-3">是否结案：</div>
+      <div class="filed-text col-3">{{selectItemPopViewObj.isClosed}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">执行标的：</div>
+      <div class="filed-text col-9">{{selectItemPopViewObj.executeTarget}}</div>
+    </div>
+    <div class="row">
+      <div class="filed-name col-3">情况说明：</div>
+      <div class="filed-text col-9">{{selectItemPopViewObj.statusStatement}}</div>
+
+    </div>
+  </div>
+
+  <button class="orange-button margin-top-40 margin-bottom-0" (click)="popupCloseBtn()">返回</button>
+
+</div>
+<!--司法信息弹窗end-->

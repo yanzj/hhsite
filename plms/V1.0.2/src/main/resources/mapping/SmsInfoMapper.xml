@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.SmsInfoDao">
+
+
+
+
+    <insert id="insertSmsInfoBatch" parameterType="java.util.List">
+        INSERT into plms_sms_info(code,mobile,template_param,sender_name,sign_no,template_code,sms_type,
+        send_status,send_method,repayment_schedule_code,request_no)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator="," >
+            (
+            #{item.code,jdbcType=VARCHAR},
+            #{item.mobile,jdbcType=VARCHAR},
+            #{item.templateParam,jdbcType=VARCHAR},
+            #{item.senderName,jdbcType=VARCHAR},
+            #{item.signNo,jdbcType=VARCHAR},
+            #{item.templateCode,jdbcType=VARCHAR},
+            #{item.smsType,jdbcType=VARCHAR},
+            #{item.sendStatus,jdbcType=VARCHAR},
+            #{item.sendMethod,jdbcType=VARCHAR},
+            #{item.repaymentScheduleCode,jdbcType=VARCHAR},
+            #{item.requestNo,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <!--根据老状态修改成新状态-->
+    <update id="updateSmsInfoStatusByStatus" parameterType="java.util.Map">
+        UPDATE plms_sms_info set send_status=#{newSendStatus},batch_no=#{batchNo}
+        WHERE send_status=#{oldSendStatus}
+    </update>
+
+
+
+    <select id="querySmsInfoByBatch" parameterType="java.util.Map" resultType="com.vilio.plms.pojo.SmsInfo">
+        SELECT
+            id,
+            `code`,
+            mobile,
+            request_no as requestNo,
+            template_param as templateParam,
+            sender_name as senderName,
+            sign_no as signNo,
+            template_code as templateCode,
+            sms_type as smsType,
+            real_send_time as realSendTime,
+            send_status as sendStatus,
+            batch_no as batchNo,
+            send_method as sendMethod,
+            ret_code as retCode,
+            ret_msg as retMsg,
+            repayment_schedule_code as repaymentScheduleCode,
+            create_time as createTime,
+            update_time as updateTime,
+            remark1
+        FROM
+            plms_sms_info
+        WHERE batch_no=#{batchNo}
+    </select>
+
+    <update id="updateSmsInfoRetByCode" parameterType="com.vilio.plms.pojo.SmsInfo">
+        UPDATE plms_sms_info set real_send_time=#{realSendTime},send_status=#{sendStatus},ret_code=#{retCode},ret_msg=#{retMsg}
+        WHERE code=#{code}
+    </update>
+
+    <!--转移历史表-->
+    <insert id="insertSmsInfoLogByBatch" parameterType="java.util.Map">
+        insert into plms_sms_info_log(code,mobile,request_no,template_param,sender_name,sign_no,
+        template_code,sms_type,real_send_time,send_status,batch_no,send_method,ret_code,ret_msg,repayment_schedule_code,create_time,update_time)
+        select code,mobile,request_no,template_param,sender_name,sign_no,
+        template_code,sms_type,real_send_time,send_status,batch_no,send_method,ret_code,ret_msg,repayment_schedule_code,create_time,update_time
+        from plms_sms_info WHERE batch_no=#{batchNo}
+    </insert>
+
+    <delete id="deleteSmsInfoByBatch" parameterType="java.util.Map">
+        DELETE from plms_sms_info WHERE batch_no=#{batchNo}
+    </delete>
+
+</mapper>

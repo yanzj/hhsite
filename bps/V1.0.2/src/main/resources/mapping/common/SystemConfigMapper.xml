@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.bps.common.dao.IBpsSystemConfigMapper">
+
+    <update id="updateSystemConfig" parameterType="java.util.Map" >
+        update bps_config
+        <set>
+            <if test="id != null" >
+                id = #{id},
+            </if>
+            <if test="config_name != null" >
+                CONFIG_NAME      = #{configName},
+            </if>
+            <if test='dateCreated != null'>
+                DATE_CREATED     = #{dateCreated},
+            </if>
+            <if test='dateModified != null'>
+                DATE_MODIFIED    = #{dateModified},
+            </if>
+            <if test='configValue != null and configValue != "" and configValue != "null" and configValue != "undefined"'>
+                CONFIG_VALUE     = #{configValue},
+            </if>
+            <if test='description != null and description != "" and description != "null" and description != "undefined"'>
+                DESCRIPTION      = #{description},
+            </if>
+            <if test='status != null and status != "" and status != "null" and status != "undefined"'>
+                STATUS           = #{status},
+            </if>
+        </set>
+        WHERE   CONFIG_NAME      = #{configName}
+        AND STATUS = '1'
+    </update>
+
+    <!--
+  **************************************************************************
+  * 查询可用的系统配置
+  **************************************************************************
+  -->
+    <select id="getValidSystemConfig"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsConfig"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsConfig">
+        SELECT
+            id,
+            date_created AS dateCreated,
+            date_modified AS dateModified,
+            config_name AS configName,
+            config_value AS configValue,
+            description,
+            status
+        FROM
+            bps_config
+            WHERE
+            status = '1'
+    </select>
+
+        <!--
+    **************************************************************************
+    * 查询可用的系统配置
+    **************************************************************************
+    -->
+    <select id="getAllSystemConfig"
+            parameterType="com.vilio.bps.commonMapper.pojo.BpsConfig"
+            resultType="com.vilio.bps.commonMapper.pojo.BpsConfig">
+        SELECT
+        id, date_created, date_modified, config_name, config_value, description, status
+        FROM
+        bps_config
+    </select>
+
+    <update id="updateCityThreshold" parameterType="java.util.Map" >
+        UPDATE bps_threshold
+        set
+          value=#{value,jdbcType=VARCHAR},
+          status=#{status,jdbcType=VARCHAR}
+        WHERE
+        city_id=#{cityId,jdbcType=VARCHAR}
+    </update>
+
+
+</mapper>

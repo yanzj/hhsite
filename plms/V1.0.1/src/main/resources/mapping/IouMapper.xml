@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.IouDao">
+
+    <!--查询还款申请表-->
+    <insert id="saveIou"  parameterType="com.vilio.plms.pojo.Iou">
+        INSERT INTO  plms_iou(code,loan_amount,sign_date,paid_date,bussiness_code,customer,account_no,account_name,
+        currency,annual_interesting,overdue_interesting,contract_no,interest_start_date,interest_end_date,repayment_method
+        ,interest_cycle,interesting_adjust_method,promise,elec_sign,status,create_date,modify_date)
+        VALUES (#{code,jdbcType=VARCHAR},#{loanAmount,jdbcType=VARCHAR},#{signDate,jdbcType=VARCHAR},#{paidDate,jdbcType=VARCHAR}
+        ,#{bussinessCode,jdbcType=VARCHAR},#{customer,jdbcType=VARCHAR},#{accountNo,jdbcType=VARCHAR},#{accountName,jdbcType=VARCHAR}
+        ,#{currency,jdbcType=VARCHAR},#{annualInteresting,jdbcType=VARCHAR},#{overdueInteresting,jdbcType=VARCHAR}
+        ,#{contractNo,jdbcType=VARCHAR},#{interestStartDate,jdbcType=VARCHAR},#{interestEndDate,jdbcType=VARCHAR}
+        ,#{repaymentMethod,jdbcType=VARCHAR},#{interestCycle,jdbcType=VARCHAR},#{interestingAdjustMethod,jdbcType=VARCHAR}
+        ,#{promise,jdbcType=VARCHAR},#{elecSign,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR}
+        ,#{createDate,jdbcType=VARCHAR},#{modifyDate,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateIouStats" parameterType="java.util.Map">
+        UPDATE plms_iou t
+        <set>
+            <if test="status!=null and status!=''">
+                t.STATUS = #{status,jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE
+            t.CODE = #{code,jdbcType=VARCHAR}
+    </update>
+
+</mapper>

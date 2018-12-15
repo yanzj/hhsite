@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vilio.plms.dao.PlmsPaidInfoDao">
+
+    <!--获取用户-->
+    <select id="queryUserPaidInfo" resultType="com.vilio.plms.pojo.BorrowApply"
+            parameterType="com.vilio.plms.pojo.BorrowApply">
+        SELECT
+        b.code,
+        a.amount,
+        date_format(a.apply_time, '%Y-%m-%d %H:%i:%s') as applyTime,
+        a.apply_status as applyStatus,
+        a.business_code as businessCode,
+        a.apply_code as applyCode,
+        date_format(a.create_date, '%Y-%m-%d %H:%i:%s')  as createDate,
+        date_format(a.modify_date, '%Y-%m-%d %H:%i:%s') as modifyDate,
+        b.paid_amount as paidAmount,
+        date_format(b.paid_time, '%Y-%m-%d %H:%i:%s') as paidTime
+        FROM
+        plms_paid_info b LEFT JOIN plms_borrow_apply a on a.code=b.borrow_code
+        <where>
+            <if test="customerCode!=null and customerCode!=''">
+                /*关联用户*/
+                b.customer_code = #{customerCode}
+            </if>
+        </where>
+        order by applyTime desc
+    </select>
+    <!--根据放款编号获取放款信息-->
+    <select id="getPaidInfoAndContractByPaidCode" resultType="java.util.Map"
+            parameterType="java.lang.String">
+        select
+             p.paid_amount as paidAmount
+            ,p.paid_time as paidTime
+            ,p.iou_code as iouCode
+            ,p.borrow_code as borrowCode
+            ,c.code as contractCode
+        from  plms_paid_info p
+        join plms_contract_info c on c.code = p.contract_code
+        where p.code = #{paidCode}
+    </select>
+
+    <update id="updatePaidInfoByCode" parameterType="com.vilio.plms.pojo.PaidInfo">
+        UPDATE plms_paid_info
+        <set>
+            <if test="repaymentedServiceFee != null">
+                repaymented_service_fee = ifnull(repaymented_service_fee,0) + #{repaymentedServiceFee},
+            </if>
+            <if test="repaymentedServiceFeePenalty != null">
+                repaymented_service_fee_penalty = ifnull(repaymented_service_fee_penalty,0) + #{repaymentedServiceFeePenalty},
+            </if>
+            <if test="repaymentedPrincipal != null">
+                repaymented_principal = ifnull(repaymented_principal,0) + #{repaymentedPrincipal},
+            </if>
+            <if test="repaymentedInterest != null">
+                repaymented_interest = ifnull(repaymented_interest,0) + #{repaymentedInterest},
+            </if>
+            <if test="repaymentedOverdue != null">
+                repaymented_overdue = ifnull(repaymented_overdue,0) + #{repaymentedOverdue},
+            </if>
+            <if test="repaymentedBail != null">
+                repaymented_bail = ifnull(repaymented_bail,0) + #{repaymentedBail},
+            </if>
+            <if test="repaymentedBailPenalty != null">
+                repaymented_bail_penalty = ifnull(repaymented_bail_penalty,0) + #{repaymentedBailPenalty},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        WHERE
+        CODE = #{code}
+    </update>
+
+    <update id="updatePaidInfoByCodeOriginalData" parameterType="com.vilio.plms.pojo.PaidInfo">
+        UPDATE plms_paid_info
+        <set>
+            <if test="paidAmount != null">
+                paid_amount = #{paidAmount},
+            </if>
+            <if test="interest != null">
+                interest = #{interest},
+            </if>
+            <if test="serviceFee != null">
+                service_fee = #{serviceFee},
+            </if>
+            <if test="bail != null">
+                bail = #{bail},
+            </if>
+        </set>
+        WHERE
+        CODE = #{code}
+    </update>
+
+    <update id="updateFinishedPaidInfoStatusByCodeAndStatus" parameterType="com.vilio.plms.pojo.PaidInfo">
+        update plms_paid_info  set status = #{status}
+        WHERE paid_amount = ifnull(repaymented_principal,0)
+        and code = #{code}
+    </update>
+
+    <!--查询需要放款删除的放款信息-->
+    <select id="queryPaidInfoNeedCancel" resultType="com.vilio.plms.pojo.PaidInfo" parameterType="java.util.Map">
+        SELECT
+        code,
+        paid_amount as paidAmount,
+        paid_time as paidTime,
+        iou_code as iouCode,
+        borrow_code as borrowCode,
+        interest,
+        overdue,
+        service_fee as serviceFee,
+        service_fee_penalty as serviceFeePenalty,
+        repaymented_principal as repaymentedPrincipal,
+        repaymented_interest as repaymentedInterest,
+        repaymented_service_fee as repaymentedServiceFee,
+        repaymented_service_fee_penalty as repaymentedServiceFeePenalty,
+        bail                   as  bail,
+        bail_penalty                    as  bailPenalty,
+        repaymented_bail                       as  repaymentedBail,
+        repaymented_bail_penalty           as  repaymentedBailPenalty,
+        `status`,
+        create_date as createDate,
+        modify_date as modifyDate,
+        repaymented_overdue as repaymentedOverdue,
+        business_code as businessCode,
+        user_code as userCode,
+        contract_code as contractCode,
+        remark,
+        account_code as accountCode
+        FROM
+        plms_paid_info
+        WHERE status = '04'
+
+    </select>
+
+
+</mapper>

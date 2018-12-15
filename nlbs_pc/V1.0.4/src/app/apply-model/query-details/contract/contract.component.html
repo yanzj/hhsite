@@ -1,0 +1,120 @@
+<!--公证抵押tab 和 签约公证tab 共用组件-->
+<!--签约公证 start-->
+<div *ngIf="mortgageData.signingNotarization">
+  <div class="row" *ngIf="mortgageData.contract">
+    <div class="filed-name col-2">签约公证时间：</div>
+    <div class="filed-text col-10">{{mortgageData.signingNotarization.signTime|dealDate}}</div>
+    <div class="filed-name col-2">备注：</div>
+    <div class="filed-text col-10">{{mortgageData.signingNotarization.signRemark}}</div>
+  </div>
+  <!--签约公证 end-->
+  <!--公证抵押 start-->
+  <div class="row" *ngIf="mortgageData.equity">
+    <div class="filed-name col-2">签约公证时间：</div>
+    <div class="filed-text col-4">{{mortgageData.signingNotarization.signTime | dealDate}}</div>
+    <div class="filed-name col-2">抵押时间：</div>
+    <div class="filed-text col-4">{{mortgageData.signingNotarization.mortgageTime | dealDate}}</div>
+  </div>
+  <div class="row" *ngIf="mortgageData.equity">
+    <div class="col-2">
+      <div class="height-80 filed-name-bg">
+        <div class="filed-name-modify">备注：</div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="height-80">
+        <div class="filed-name-modify filed-name-modify-txt">{{mortgageData.signingNotarization.signRemark}}</div>
+      </div>
+    </div>
+    <div class="col-2">
+      <div class="height-80 filed-name-bg">
+        <div class="filed-name-modify">备注：</div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="height-80">
+        <div class="filed-name-modify filed-name-modify-txt">{{mortgageData.signingNotarization.mortgageRemark}}</div>
+      </div>
+    </div>
+  </div>
+  <!--公证抵押 end->
+  <!--签约公证的材料分类与材料清单 start-->
+  <div class="material_tab margin-top-40">
+    <div class="row">
+      <div class="col-6" id="messageTitle_classify">
+        <div class="row margin-bottom-20">
+          <div class="message-title-line"></div>
+          <div class="message-title-name">材料分类</div>
+        </div>
+
+        <div class="material-panel" (click)="meterialNumberFunc(mortgageData.signingNotarization.signFileList)">
+          <label class="material-label">
+            <input type="radio" name="apply" class="material-input" />签约公证材料
+            <em
+              *ngIf="mortgageData.signingNotarization.signFileList&&mortgageData.signingNotarization.signFileList.length>0">({{mortgageData.signingNotarization.signFileList.length}}个文件)</em>
+          </label>
+        </div>
+
+        <div class="material-panel" *ngIf="mortgageData.signingNotarization.haveGuaranteeCompany=='Y'"
+             (click)="meterialNumberFunc(mortgageData.signingNotarization.guaranteeFileList)">
+          <label class="material-label">
+            <input type="radio" name="apply" class="material-input" value="a"/>担保材料
+            <em
+              *ngIf="mortgageData.signingNotarization.guaranteeFileList&&mortgageData.signingNotarization.guaranteeFileList.length>0">({{mortgageData.signingNotarization.guaranteeFileList.length}}个文件)</em>
+          </label>
+        </div>
+        <div class="material-panel" *ngIf="mortgageData.signingNotarization.haveSecureCompany=='Y'"
+             (click)="meterialNumberFunc(mortgageData.signingNotarization.secureFileList)">
+          <label class="material-label">
+            <input type="radio" name="apply" class="material-input" value="b"/>保险材料
+            <em
+              *ngIf="mortgageData.signingNotarization.secureFileList&&mortgageData.signingNotarization.secureFileList.length>0">({{mortgageData.signingNotarization.secureFileList.length}}个文件)</em>
+          </label>
+        </div>
+        <div class="material-panel" *ngIf="mortgageData.equity"
+             (click)="meterialNumberFunc(mortgageData.signingNotarization.mortgageFileList)">
+          <label class="material-label">
+            <input type="radio" name="apply" class="material-input" value="c"/>抵押材料
+            <em
+              *ngIf="mortgageData.signingNotarization.mortgageFileList&&mortgageData.signingNotarization.mortgageFileList.length>0">({{mortgageData.signingNotarization.mortgageFileList.length}}个文件)</em>
+          </label>
+        </div>
+        <div class="material-panel" *ngIf="mortgageData.equity"
+             (click)="meterialNumberFunc(mortgageData.signingNotarization.investFileList)">
+          <label class="material-label">
+            <input type="radio" name="apply" class="material-input" value="d"/>产调查询材料
+            <em
+              *ngIf="mortgageData.signingNotarization.investFileList&&mortgageData.signingNotarization.investFileList.length>0">({{mortgageData.signingNotarization.investFileList.length}}个文件)</em>
+          </label>
+        </div>
+
+
+        <div class="row margin-top-40">
+          <div class="col-4">
+            <button class="orange-button float-left" id="backToapplyQuery2" (click)="querySection()">返回进件查询
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="row margin-bottom-20">
+          <div class="message-title-line"></div>
+          <div class="message-title-name">材料清单</div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="img-list col-4" *ngFor="let item of meterialNumber let i=index">
+              <a class="img-box" (click)="downloadFile(item)"><img src={{selectFileList[i]}}/></a>
+              <p class="upload-file-name ">{{item.fileName}}</p>
+              <div class="upload-file-time">{{item.uploadTime}}</div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--签约公证的材料分类与材料清单 end-->

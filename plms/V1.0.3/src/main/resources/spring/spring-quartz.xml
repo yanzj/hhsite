@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+    <!-- Quartz配置 -->
+    <!-- quartz持久化存储 -->
+    <bean id="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="dataSource">
+            <ref bean="plmsDataSource"/>
+        </property>
+        <property name="startupDelay" value="20"/>
+        <property name="autoStartup" value="true"/>
+        <property name="overwriteExistingJobs" value="true"/>
+        <property name="applicationContextSchedulerContextKey" value="applicationContextKey"/>
+        <property name="configLocation" value="classpath:quartz.properties"/>
+        <property name="schedulerContextAsMap">
+            <map>
+                <!-- spring 管理的service需要放到这里，才能够注入成功 -->
+                <description>schedulerContextAsMap</description>
+                <entry key="payRepaymentScheduleDetailService" value-ref="payRepaymentScheduleDetailService"/>
+                <entry key="clearLoginTimestamp" value="3600000"/>
+            </map>
+        </property>
+        <property name="triggers">
+            <list>
+                <ref bean="receiptsJobTrigger"/>
+                <ref bean="OverdueJobTrigger"/>
+                <ref bean="bmsSynchronizationBaseDataTrigger"/>
+                <ref bean="bmsSynchronizationTrigger"/>
+                <ref bean="receiptsDeleteJobTrigger"/>
+                <ref bean="pushCollectJobTrigger"/>
+                <ref bean="pushMsgJobTrigger"/>
+                <ref bean="pushSmsJobTrigger"/>
+                <ref bean="payRepaymentScheduleDetailJobTrigger"/>
+                <ref bean="paidInfoDeleteJobTrigger"/>
+            </list>
+        </property>
+
+    </bean>
+
+    <bean id="receiptsJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.vilio.plms.quartz.ReceiptsJob"/>
+        <property name="name" value="receiptsJob"/>
+        <property name="durability" value="true"/>
+    </bean>
+
+    <bean id="receiptsJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="receiptsJob"/>
+        <property name="cronExpression" value="${receiptsJobTriggerCronExpression}"/>
+    </bean>
+
+    <bean id="overdueJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.vilio.plms.quartz.OverdueJob"/>
+        <property name="name" value="overdueJob"/>
+        <property name="durability" value="true"/>
+    </bean>
+
+    <bean id="OverdueJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="overdueJob"/>
+        <property name="cronExpression" value="${overdueJobTriggerCronExpression}"/>
+    </bean>
+
+
+    <bean id="receiptsDeleteJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.vilio.plms.quartz.ReceiptsDeleteJob"/>
+        <property name="name" value="receiptsDeleteJob"/>
+        <property name="durability" value="true"/>
+    </bean>
+
+    <bean id="receiptsDeleteJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="receiptsDeleteJob"/>
+        <property name="cronExpression" value="${receiptsDeleteJobTriggerCronExpression}"/>
+    </bean>
+
+    <bean id="pushCollectJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.vilio.plms.quartz.PushCollectJob"/>
+        <property name="name" value="pushCollectJob"/>
+        <property name="durability" value="true"/>
+    </bean>
+
+    <bean id="pushCollectJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="pushCollectJob"/>
+        <property name="cronExpression" value="${pushCollectJobTriggerCronExpression}"/>
+    </bean>
+
+    <bean id="pushMsgJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.vilio.plms.quartz.PushMsgJob"/>
+        <property name="name" value="pushMsgJob"/>
+        <property name="durability" value="true"/>
+    </bean>
+
+    <bean id="pushMsgJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="pushMsgJob"/>
+        <property name="cronExpression" value="${pushMsgJobTriggerCronExpression}"/>
+    </bean>
+
+    <bean id="pushSmsJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.vilio.plms.quartz.PushSmsJob"/>
+        <property name="name" value="pushSmsJob"/>
+        <property name="durability" value="true"/>
+    </bean>
+
+    <bean id="pushSmsJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="pushSmsJob"/>
+        <property name="cronExpression" value="${pushSmsJobTriggerCronExpression}"/>
+    </bean>
+<!--扣款job-->
+    <bean id="payRepaymentScheduleDetailJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.vilio.plms.quartz.PayRepaymentScheduleDetailJob"/>
+        <property name="name" value="payRepaymentScheduleDetailJob"/>
+        <property name="durability" value="true"/>
+    </bean>
+    <!--扣款Trigger-->
+    <bean id="payRepaymentScheduleDetailJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="payRepaymentScheduleDetailJob"/>
+        <property name="cronExpression" value="${PayRepaymentScheduleDetailJobTriggerCronExpression}"/>
+    </bean>
+    <!--放款删除job-->
+    <bean id="paidInfoDeleteJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.vilio.plms.quartz.PaidInfoDeleteJob"/>
+        <property name="name" value="paidInfoDeleteJob"/>
+        <property name="durability" value="true"/>
+    </bean>
+    <!--放款删除Trigger-->
+    <bean id="paidInfoDeleteJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="paidInfoDeleteJob"/>
+        <property name="cronExpression" value="${paidInfoDeleteJobTriggerCronExpression}"/>
+    </bean>
+    <!--基础数据JOB-->
+    <bean id="bmsSynchronizationBaseDataJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.vilio.plms.quartz.BmsSynchronizationBaseDataJob"/>
+        <property name="name" value="bmsSynchronizationBaseDataJob"/>
+        <property name="durability" value="true"/>
+    </bean>
+    <!--基础数据Trigger-->
+    <bean id="bmsSynchronizationBaseDataTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="bmsSynchronizationBaseDataJob"/>
+        <property name="cronExpression" value="${bmsSynchronizationBaseDataTriggerCronExpression}"/>
+    </bean>
+
+    <!--bms数据同步JOB-->
+    <bean id="bmsSynchronizationJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.vilio.plms.quartz.BmsSynchronizationJob"/>
+        <property name="name" value="bmsSynchronizationJob"/>
+        <property name="durability" value="true"/>
+    </bean>
+    <!--bms数据同步Trigger-->
+    <bean id="bmsSynchronizationTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="bmsSynchronizationJob"/>
+        <property name="cronExpression" value="${bmsSynchronizationTriggerCronExpression}"/>
+    </bean>
+
+
+
+
+</beans>
