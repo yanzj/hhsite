@@ -1,0 +1,1 @@
+DELETE FROM nlbs_todo WHERE serial_no in (SELECT nia.bps_code from nlbs_inquiry_apply nia WHERE nia.status = '99');

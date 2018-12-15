@@ -1,0 +1,1 @@
+alter table plms_pay_apply_audit MODIFY COLUMN audit_type varchar(2) comment '01，运营审批；02财务审批；03，提交';

@@ -1,0 +1,14 @@
+use plms;
+update plms_agent set status = '0' where mobile_no = '18621262323';
+update plms_agent set status = '0' where mobile_no = '13916992187';
+update plms_agent set status = '0' where mobile_no = '15000088252';
+update plms_agent set status = '0' where mobile_no = '13817509003';
+update plms_agent set status = '0' where mobile_no = '13641678634';
+update plms_agent set status = '0' where mobile_no = '13817237264' and name = '宋东松';
+update plms_agent set status = '0' where mobile_no = '13564686209';
+update plms_agent set status = '0' where mobile_no = '15821139340';
+update plms_agent set status = '0' where mobile_no = '13902312405';
+update plms_agent set status = '0' where mobile_no = '13052110898';
+update plms_agent set status = '0' where mobile_no = '15921588887';
+update plms_agent set status = '0' where mobile_no = '17765195025';
+update plms_agent set status = '0' where mobile_no = '13816562778';

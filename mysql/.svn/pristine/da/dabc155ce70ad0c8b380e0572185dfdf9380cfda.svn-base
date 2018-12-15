@@ -1,0 +1,1 @@
+alter table plms_apply_interesting modify default_interest_rate decimal(20,6) comment "提前还款违约金利率";

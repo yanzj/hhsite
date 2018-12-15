@@ -1,0 +1,1 @@
+UPDATE um_user_info SET `status`='0' WHERE user_id='2017063015180000000008';

@@ -1,0 +1,1 @@
+INSERT INTO `oas`.`oas_android_version` (`version`, `version_detail`, `title`, `detail`, `force`, `download_url`, `apk_size`, `status`) VALUES ('1', 'v1.0.0', '版本一', '版本一初次发版', '0', 'www.baidu.com', '10', '01');

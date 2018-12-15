@@ -1,0 +1,1 @@
+update um_user_info SET full_name='µË¹ðÆ¼' WHERE user_id='2017073111490000000034'

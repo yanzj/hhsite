@@ -1,0 +1,4 @@
+INSERT INTO `fms`.`fms_model_bean` (`model_code`, `partner_group_name`, `partner_group_code`, `partner_group_type`, `partner_code`, `partner_name`, `mail_receiver_address`, `mail_cc_address`, `short_msg_receiver`, `wechat_receiver`, `model_file_code`, `model_file_name`, `model_name`, `file_suffix`, `need_out_send`, `loan_contract_flag`, `relate_to_mortgage_type`, `service_function_no`, `relate_to_customer`, `email_model`, `msg_model`, `wechat_model`)
+VALUES ('MT-018', '重庆海尔小额贷款有限公司', 'A00047', 'management', NULL, '重庆海尔小额贷款有限公司', 'cailing.rao@vilio.com.cn', NULL, NULL, NULL, '6269f2bb-b247-11e7-951a-d89d672b5244', '借款管理服务协议.ftl', '借款管理服务协议', 'doc', 'N', 'N', 'Y', 'G001', 'N', '您好!此邮件为测试邮件，不必回复。', NULL, NULL);
+
+DELETE FROM `fms`.`fms_model_bean` WHERE model_code = 'MT-005' OR model_code = 'MT-006';

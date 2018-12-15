@@ -1,0 +1,14 @@
+UPDATE fms_model_bean SET model_file_code='7a73ad6c-c5ee-11e7-951a-d89d672b5244', model_file_name='配合卖房承诺书.ftl', model_name='配合卖房承诺书' WHERE model_code in ('MT-010' ,'MT-030');
+UPDATE fms_model_bean SET model_file_code='fe5ce4ae-c5f2-11e7-951a-d89d672b5244', model_file_name='客户推荐函-P4-海尔.ftl', model_name='客户推荐函-P4-海尔' WHERE model_code = 'MT-007';
+UPDATE fms_model_bean SET model_file_code='53e73ccf-c5f3-11e7-951a-d89d672b5244', model_file_name='客户推荐函-P4-百度.ftl', model_name='客户推荐函-P4-百度' WHERE model_code = 'MT-027';
+UPDATE fms_model_bean SET model_file_code='6e7872fe-c5f3-11e7-951a-d89d672b5244', model_file_name='声明书--新版（婚姻+房屋）-海尔.ftl', model_name='声明书--新版（婚姻+房屋）-海尔' WHERE model_code = 'MT-011';
+UPDATE fms_model_bean SET model_file_code='9a490cf5-c5f3-11e7-951a-d89d672b5244', model_file_name='声明书--新版（婚姻+房屋）-百度.ftl', model_name='声明书--新版（婚姻+房屋）-百度' WHERE model_code = 'MT-031';
+UPDATE fms_model_bean SET model_file_code='d17651b4-c5f3-11e7-951a-d89d672b5244', model_file_name='借款管理服务协议房袋袋.ftl', model_name='借款管理服务协议房袋袋' WHERE model_code in ('MT-019' ,'MT-029');
+UPDATE fms_model_bean SET model_file_code='4bde615b-c5f4-11e7-951a-d89d672b5244', model_file_name='借款管理服务协议红鼻子.ftl', model_name='借款管理服务协议红鼻子' WHERE model_code in ('MT-020' ,'MT-040');
+UPDATE fms_model_bean SET model_file_code='916951e5-c5f4-11e7-951a-d89d672b5244', model_file_name='风控审批表.ftl', model_name='风控审批表' WHERE model_code in ('MT-001' ,'MT-021');
+UPDATE fms_model_bean SET model_file_code='b65cc6a3-c5f4-11e7-951a-d89d672b5244', model_file_name='反担保合同.ftl', model_name='反担保合同' WHERE model_code = 'MT-016';
+UPDATE fms_model_bean SET model_file_code='f396ef91-c5f4-11e7-951a-d89d672b5244', model_file_name='多套房产共同还款承诺书.ftl', model_name='多套房产共同还款承诺书' WHERE model_code in ('MT-008' ,'MT-028');
+UPDATE fms_model_bean SET model_file_code='1d605f80-c5f5-11e7-951a-d89d672b5244', model_file_name='担保确认清单-P4-海尔.ftl', model_name='担保确认清单-P4-海尔' WHERE model_code = 'MT-004';
+UPDATE fms_model_bean SET model_file_code='460aab3f-c5f5-11e7-951a-d89d672b5244', model_file_name='担保确认清单-P4-百度.ftl', model_name='担保确认清单-P4-百度' WHERE model_code = 'MT-024';
+UPDATE fms_model_bean SET model_file_code='715ad652-c5f5-11e7-951a-d89d672b5244', model_file_name='担保公司担保函-奇寰.ftl', model_name='担保公司担保函-奇寰' WHERE model_code = 'MT-017';
+UPDATE fms_model_bean SET model_file_code='a1bd7bab-c5f5-11e7-951a-d89d672b5244', model_file_name='保证合同.ftl', model_name='保证合同' WHERE model_code = 'MT-015';

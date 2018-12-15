@@ -1,0 +1,1 @@
+insert into bms_user_distributor (code,distributor_code,user_no) values (UUID(),'10000100','15021000149');

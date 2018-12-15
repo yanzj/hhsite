@@ -1,0 +1,1 @@
+update bps_appraisal_company c set c.api_url='http://test.worldunion.cn:8620' where c.abbr_name='ÊÀÁª'

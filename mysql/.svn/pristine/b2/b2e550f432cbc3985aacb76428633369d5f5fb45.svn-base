@@ -1,0 +1,6 @@
+#新增渠道用户信息
+INSERT INTO bms_user (user_no,mobile,password,user_name,email,full_name,city_code,company_code,department_code,distributor_code,internal_user,status,first_login) values 
+('13758135848','13758135848',md5('13758135848'),'13758135848','jing.he@vilio.com.cn','何靖','330100','00000004',null,null,true,'0',true);
+
+#给新用户授权
+INSERT INTO bms_role_user (role_code,user_no) values ('003','13758135848');

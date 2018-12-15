@@ -1,0 +1,10 @@
+use plms;
+insert plms_account_info (code,name,bank,account_no,status) values (UUID(),'上海永达小额贷款有限公司','中国民生银行上海分行营业部','680230023','1');
+insert plms_account_info (code,name,bank,account_no,status) values (UUID(),'上海永达小额贷款有限公司','中国民生银行上海市南支行','698536896','1');
+insert plms_account_info (code,name,bank,account_no,status) values (UUID(),'马喜','浦发银行上海分行','6217920112922260','1');
+insert plms_account_info (code,name,bank,account_no,status) values (UUID(),'顾正元','浦发银行上海分行','6217920172084977','1');
+insert plms_account_info (code,name,bank,account_no,status) values (UUID(),'曹森','浦发银行上海分行','6217920172284197','1');
+insert plms_account_info (code,name,bank,account_no,status) values (UUID(),'毛羽丰','浦发银行上海分行','6217920172192564','1');
+insert plms_account_info (code,name,bank,account_no,status) values (UUID(),'中航信托股份有限公司','中国建设银行南昌八一路支行','36050100195000000862','1');
+insert plms_account_info (code,name,bank,account_no,status) values (UUID(),'华鑫国际信托有限公司','兴业银行杭州分行营业部','356980100100816129','1');
+insert plms_account_info (code,name,bank,account_no,status) values (UUID(),'刘兆东','招商银行北京广渠门支行','6214830118175552','1');

@@ -1,0 +1,3 @@
+use plms;
+INSERT INTO `plms`.`plms_sysparam_info` (`code`, `syscode`, `sysname`, `item_id`, `item_name`, `item_cval`, `item_ival`, `execute_time`, `item_desc`, `remark`, `remark1`, `remark2`, `create_date`, `modify_date`)
+  VALUES ('7e0aab62-9848-11e7-917f-008cfae4776', 'plms', '贷后系统', 'repaymentNoticeRole', '正常还款提醒角色列表', '2017090814440000000006', '0', '2017-09-29 22:52:36', '正常还款提醒角色列表', '', '', '', '2017-09-29 22:51:57', '2017-09-29 22:52:36');

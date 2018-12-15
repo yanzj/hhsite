@@ -1,0 +1,1 @@
+INSERT INTO `mps_sign_info` VALUES (null, '1000000000000000002', '红鼻子科技', '红鼻子科技', '红鼻子科技短信', '1', null, null, null, null);

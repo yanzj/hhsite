@@ -1,0 +1,1 @@
+update bms_apply_material_type set abbr_name = '借款申请书及外访调查报告',full_name = '借款申请书及外访调查报告' where code = '01';
